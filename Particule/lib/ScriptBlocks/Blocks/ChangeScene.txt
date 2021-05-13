@@ -1,0 +1,5 @@
+Onglet::Capteurs
+TypeForme::Rectangle
+Texte::Changer la scene
+Parametres::[["Label","Charger la scene"],['EmptyCercle']]
+Color::bleu_clair

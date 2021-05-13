@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Losange
+Texte::Et/Ou
+Parametres::[["Booleen"],["Liste",["et","ou"]],["Booleen"]]
+Color::vert

@@ -1,0 +1,725 @@
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+		<title>MonochromeLib - Documentation</title>
+		<style>
+			body, div, p, h1, h2, h3 {
+				padding: 0px;
+				margin: 0px;
+				font-family: TrebuchetMS, "Trebuchet MS";
+				font-size: 15px;
+			}
+			body {
+				padding-bottom: 20px;
+			}
+			p {
+				margin-top: 16px;
+			}
+			a {
+				text-decoration: none;
+				color: blue;
+			}
+			h1 {
+				color: #08088A;
+				font-size: 180%;
+				font-weight: bold;
+			}
+			h2 {
+				color: #610B0B;
+				font-size: 120%;
+				font-weight: bold;
+				text-align: center;
+			}
+			h3 {
+				font-size: 130%;
+				font-weight: bold;
+				margin-top: 20px;
+			}
+			.footer {
+				position: fixed;
+				bottom: 0px;
+				width: 100%;
+				padding: 2px;
+				z-index: 1;
+				background-color: #F2F4F8;
+				border-top: solid 1px #A2A4A8;
+				text-align: center;
+				font-size: 14px;
+				font-family: "Courier New";
+				font-weight: bold;
+				color: #333;
+			}
+			.bloc {
+				background-color: #F3F781;
+				border: solid 1px black;
+				border-radius: 10px;
+				width: 800px;
+				margin: 20px auto;
+				padding: 20px;
+			}
+			.function {
+				background-color: #81BEF7;
+				border: solid 1px black;
+				border-radius: 10px;
+				margin-top: 30px;
+				margin-top: 30px;
+				padding: 10px;
+			}
+			.prototype {
+				background-color: #FFBF00;
+				border: solid 1px black;
+				border-radius: 10px;
+				margin: 10px 0px;
+				padding: 10px;
+				font-size: 15px;
+				font-family: "Courier New";
+				font-weight: bold;
+			}
+			.related:before {
+				content: "See also: ";
+			}
+			.code {
+				font-family: "Courier New";
+				margin: 0px 10px;
+				padding: 5px 20px;
+				background-color: #FBEFEF;
+				border-left: solid 3px #FA5882;
+				border-radius: 3px;
+			}
+			table {
+				border: solid 2px black;
+				border-collapse: collapse;
+				background-color: #CEE3F6;
+				width: 100%;
+			}
+			td {
+				text-align: center;
+				border: solid 1px black;
+			}
+			canvas {
+				margin: 10px;
+			}
+		</style>
+		<script>
+			nb_screen = 0;
+			function getScreenContext(id_screen) {
+				var screen = document.getElementById('screen_'+id_screen);
+				var context = screen.getContext('2d');
+				if(!context) return false;
+				context.beginPath();
+				return context;
+			}
+
+			function newScreen(button) {
+				ML_WHITE = 'rgb(230, 230, 230)';
+				ML_BLACK = 'rgb(0, 0, 0)';
+				nb_screen++;
+				var screen = document.createElement('canvas');
+				screen.setAttribute('id', 'screen_'+nb_screen);
+				screen.setAttribute('width', 256);
+				screen.setAttribute('height', 128);
+				button.parentNode.replaceChild(screen, button);
+				ML_clear_screen(nb_screen);
+				return nb_screen;
+			}
+
+			function ML_clear_screen(id_screen) {
+				if(!(context = getScreenContext(id_screen))) return;
+				context.fillStyle = ML_WHITE;
+				context.rect(0, 0, 256, 128);
+				context.fill();
+			}
+
+			function ML_pixel(id_screen, x, y, color) {
+				if(x&-128 || y&-64) return;
+				if(!(context = getScreenContext(id_screen))) return;
+				switch(color) {
+					case 0: context.fillStyle = ML_WHITE; break;
+					case 1: context.fillStyle = ML_BLACK; break;
+					case 2: context.fillStyle = (context.getImageData(2*x, 2*y, 1, 1).data[0] == 230 ? ML_BLACK : ML_WHITE); break;
+					case 3: context.fillStyle = ((x&1)^(y&1) ? ML_WHITE : ML_BLACK); break;
+				}
+				context.rect(2*x, 2*y, 2, 2);
+				context.fill();
+			}
+
+			function ML_line(id_screen, x1, y1, x2, y2, color) {
+				var i, x, y, dx, dy, sx, sy, cumul;
+				x = x1;
+				y = y1;
+				dx = x2 - x1;
+				dy = y2 - y1;
+				sx = (dx<0 ? -1 : 1);
+				sy = (dy<0 ? -1 : 1);
+				if(dx<0) dx = -dx;
+				if(dy<0) dy = -dy;
+				ML_pixel(id_screen, x, y, color);
+				if(dx > dy ) {
+					cumul = Math.floor(dx / 2);
+					for(i=1 ; i<=dx ; i++) {
+						x += sx;
+						cumul += dy;
+						if(cumul > dx) { cumul -= dx; y += sy; }
+						ML_pixel(id_screen, x, y, color);
+					}
+				} else {
+					cumul = Math.floor(dy / 2);
+					for(i=1 ; i<=dy ; i++) {
+						y += sy;
+						cumul += dx;
+						if(cumul > dy) { cumul -= dy; x += sx; }
+						ML_pixel(id_screen, x, y, color);
+					}
+				}
+			}
+
+			function ML_polygon(id_screen, x, y, nb_vertices, color) {
+				if(nb_vertices < 1) return;
+				for(var i=0 ; i<nb_vertices-1 ; i++)
+					ML_line(id_screen, x[i], y[i], x[i+1], y[i+1], color);
+				ML_line(id_screen, x[i], y[i], x[0], y[0], color);
+			}
+
+			function ML_rectangle(id_screen, x1, y1, x2, y2, border_width, border_color, fill_color) {
+				for(var i=0 ; i<border_width ; i++) {
+					ML_line(id_screen, x1+border_width, y1+i, x2-border_width, y1+i, border_color);
+					ML_line(id_screen, x1+border_width, y2-i, x2-border_width, y2-i, border_color);
+					ML_line(id_screen, x1+i, y1, x1+i, y2, border_color);
+					ML_line(id_screen, x2-i, y1, x2-i, y2, border_color);
+				}
+				for(var x=x1+border_width ; x<=x2-border_width ; x++) {
+					for(var y=y1+border_width ; y<=y2-border_width ; y++)
+						ML_pixel(id_screen, x, y, fill_color);
+				}
+			}
+
+			function ML_bmp(id_screen, bmp, x, y, width, height, mode) {
+			var byte_width = (width-1>>3)+1;
+				for(var i=0 ; i<height ; i++) {
+					for(var j=0 ; j<width ; j++) {
+						if(bmp[i*byte_width+(j>>3)] & (128>>(j&7))) {
+							if(mode=='or') ML_pixel(id_screen, x+j, y+i, 1);
+							if(mode=='xor') ML_pixel(id_screen, x+j, y+i, 2);
+						} else if(mode=='and') ML_pixel(id_screen, x+j, y+i, 0);
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div class="bloc">
+			<h1>MonochromeLib, what is it ?</h1>
+			<p>
+				MonochromeLib is a graphic library for Casio fx-9860G SDK. <br>
+				It provides fast and efficient drawing functions to developpers.<br>
+				Every functions of MonochromeLib are significantly faster than its counterpart from fxlib.h, and this library provides lot of others functionnalities.
+			</p>
+		</div>
+		<div class="bloc">
+			<h1>How to use</h1>
+			<p>To use this library, copy the 2 files in your project directory, add MonochromeLib.c in your project (in window "Files in project" in SDK), add <b>#include "MonochromeLib.h"</b> at the beginning of your code.</p>
+			<p>To add in project only the functions you need, each function is protected by an #ifdef, and the #define of each function is commented by default.</p>
+			<p>To use a function, just edit MonochromeLib.h and uncomment #define of functions you want to use.</p>
+			<p>
+				<span style="color:maroon; font-size:110%;">/!\ Important</span><br>
+				If you encounter a building error like :<br>
+				<span style="color:maroon; font-size:85%;">** L2310 (E) Undefined external symbol "_ML_pixel" referenced in "C:\...\CASIO\fx-9860G SDK\Projet\Debug\MonochromeLib.obj"</span><br>
+				and if the #define of the function is well uncommented in MonochromeLib.h, then you just have to rebuild MonochromeLib.c<br>
+				Use the function <i>Project &gt; Rebuilt all</i> in SDK. If it not solved the problem, delete Debug directory of your project, and rebuild normally.
+			</p>
+		</div>
+		<div class="bloc">
+			<h1>Documentation of functions</h1>
+			<ul>
+				<li><a href="#ML_vram_adress">ML_vram_adress</a></li>
+				<br>
+				<li><a href="#ML_clear_vram">ML_clear_vram</a></li>
+				<li><a href="#ML_clear_screen">ML_clear_screen</a></li>
+				<li><a href="#ML_display_vram">ML_display_vram</a></li>
+				<br>
+				<li><a href="#ML_set_contrast">ML_set_contrast</a></li>
+				<li><a href="#ML_get_contrast">ML_get_contrast</a></li>
+				<br>
+				<li><a href="#ML_pixel">ML_pixel</a></li>
+				<li><a href="#ML_point">ML_point</a></li>
+				<li><a href="#ML_pixel_test">ML_pixel_test</a></li>
+				<br>
+				<li><a href="#ML_line">ML_line</a></li>
+				<li><a href="#ML_horizontal_line">ML_horizontal_line</a></li>
+				<li><a href="#ML_vertical_line">ML_vertical_line</a></li>
+				<br>
+				<li><a href="#ML_rectangle">ML_rectangle</a></li>
+				<br>
+				<li><a href="#ML_polygon">ML_polygon</a></li>
+				<li><a href="#ML_filled_polygon">ML_filled_polygon</a></li>
+				<br>
+				<li><a href="#ML_circle">ML_circle</a></li>
+				<li><a href="#ML_filled_circle">ML_filled_circle</a></li>
+				<br>
+				<li><a href="#ML_ellipse">ML_ellipse</a></li>
+				<li><a href="#ML_ellipse_in_rect">ML_ellipse_in_rect</a></li>
+				<li><a href="#ML_filled_ellipse">ML_filled_ellipse</a></li>
+				<li><a href="#ML_filled_ellipse_in_rect">ML_filled_ellipse_in_rect</a></li>
+				<br>
+				<li><a href="#ML_horizontal_scroll">ML_horizontal_scroll</a></li>
+				<li><a href="#ML_vertical_scroll">ML_vertical_scroll</a></li>
+				<br>
+				<li><a href="#ML_bmp">ML_bmp...</a></li>
+			</ul>
+			<div class="function">
+				<h2 id="ML_vram_adress">ML_vram_adress</h2>
+				<p class="prototype">char* ML_vram_adress();</p>
+				<p class="description">
+					Returns the VRAM adress (which is different on OS 1, OS 2, and emulator).<br>
+					VRAM is a video memory, a buffer of 1024 bytes made to receive drawings before to be copied on screen, on the double-buffering principle.<br>
+					<br>
+					This function is not really useful for a normal use of MonochromeLib, but it's useful for all others functions of the lib.
+				</p>
+				<p class="related"><a href="#VRAM">The VRAM</a>, <a href="#Double_buffering">Double buffering</a>, <a href="#ML_display_vram">ML_display_vram</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_clear_vram">ML_clear_vram</h2>
+				<p class="prototype">void ML_clear_vram();</p>
+				<p class="description">
+					Clears the VRAM.<br>
+					This function is 5 times faster than Bdisp_AllClr_VRAM.
+				</p>
+				<p class="related"><a href="#VRAM">The VRAM</a>, <a href="#ML_clear_screen">ML_clear_screen</a>, <a href="#ML_display_vram">ML_display_vram</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_clear_screen">ML_clear_screen</h2>
+				<p class="prototype">void ML_clear_screen();</p>
+				<p class="description">
+					Clears the screen.<br>
+					This function is 2 times faster than Bdisp_AllClr_DD.<br>
+					Note : It's not necessary to call ML_clear_screen just before ML_display_vram.
+				</p>
+				<p class="related"><a href="#ML_clear_vram">ML_clear_vram</a>, <a href="#ML_display_vram">ML_display_vram</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_display_vram">ML_display_vram</h2>
+				<p class="prototype">void ML_display_vram();</p>
+				<p class="description">
+					Copies VRAM content to screen.<br>
+					This function is 2 times faster than Bdisp_PutDisp_DD.<br>
+					Note : It's not necessary to call ML_clear_screen just before ML_display_vram.
+				</p>
+				<p class="related"><a href="#VRAM">The VRAM</a>, <a href="#ML_clear_vram">ML_clear_vram</a>, <a href="#ML_clear_screen">ML_clear_screen</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_set_contrast">ML_set_contrast</h2>
+				<p class="prototype">void ML_set_contrast(unsigned char contrast);</p>
+				<p class="description">
+					Set contrast value.<br>
+					This value have to be between ML_CONTRAST_MIN and ML_CONTRAST_MAX.
+				</p>
+				<p class="related"><a href="#ML_CONTRAST">ML_CONTRAST</a>, <a href="#ML_get_contrast">ML_get_contrast</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_get_contrast">ML_get_contrast</h2>
+				<p class="prototype">unsigned char ML_get_contrast();</p>
+				<p class="description">
+					Returns actual contrast value.
+				</p>
+				<p class="related"><a href="#ML_CONTRAST">ML_CONTRAST</a>, <a href="#ML_set_contrast">ML_set_contrast</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_pixel">ML_pixel</h2>
+				<p class="prototype">void ML_pixel(int x, int y, ML_Color color);</p>
+				<p class="description">
+					Set the color of a dot in VRAM.<br>
+					The upper left pixel have for coordinate (x=0, y=0), and the bottom right (x=127, y=63).
+				</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_pixel_test">ML_pixel_test</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_point">ML_point</h2>
+				<p class="prototype">void ML_point(int x, int y, int width, ML_Color color);</p>
+				<p class="description">
+					Draws a point (square) in VRAM, centered at (x, y), with sides lenght (in pixel) are defined by parameter width.<br>
+					Example:
+					<p class="code">ML_point(10, 10, 3, ML_BLACK);</p>
+					will draw a black rectangle from (9, 9) to (11, 11).<br>
+					<script>
+						function examplePoint(button) {
+							var screen = newScreen(button);
+							for(var i=9 ; i<=11 ; i++) {
+								for(var j=9 ; j<=11 ; j++)
+									ML_pixel(screen, i, j, 1);
+							}
+						}
+					</script>
+					<button type="button" onclick="Javascript:examplePoint(this)">See result</button>
+				</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_pixel">ML_pixel</a>, <a href="#ML_rectangle">ML_rectangle</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_pixel_test">ML_pixel_test</h2>
+				<p class="prototype">ML_Color ML_pixel_test(int x, int y);</p>
+				<p class="description">
+					Returns the color of the pixel in coordinates (x, y), ML_BLACK or ML_WHITE.<br>
+					If coordinates are out of screen, the function return ML_TRANSPARENT.
+				</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_pixel">ML_pixel</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_line">ML_line</h2>
+				<p class="prototype">void ML_line(int x1, int y1, int x2, int y2, ML_Color color);</p>
+				<p class="description">Draws a line between points in coordinates (x1, y1) and (x2, y2) using Bresenham algorithm.</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_horizontal_line">ML_horizontal_line</a>, <a href="#ML_vertical_line">ML_vertical_line</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_horizontal_line">ML_horizontal_line</h2>
+				<p class="prototype">void ML_horizontal_line(int y, int x1, int x2, ML_Color color);</p>
+				<p class="description">
+					Draws a horizontal line.<br>
+					This function is faster than a call to ML_line with y1==y2.
+				</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_line">ML_line</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_vertical_line">ML_vertical_line</h2>
+				<p class="prototype">void ML_vertical_line(int x, int y1, int y2, ML_Color color);</p>
+				<p class="description">
+					Draws a vertical line.<br>
+					This function is faster than a call to ML_line with x1==x2.
+				</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_line">ML_line</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_rectangle">ML_rectangle</h2>
+				<p class="prototype">void ML_rectangle(int x1, int y1, int x2, int y2, int border_width, ML_Color border_color, ML_Color fill_color);</p>
+				<p class="description">
+					Draws a rectangle with or without border.<br>
+					You can define the border color, and the fill color.<br>
+					If you want no border, set border_width to 0.
+				</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_point">ML_point</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_polygon">ML_polygon</h2>
+				<p class="prototype">void ML_polygon(const int *x, const int *y, int nb_vertices, ML_Color color);</p>
+				<p class="description">
+					Draws a polygon.<br>
+					This function needs as parameters 2 arrays, containing abscissa and ordinates of the polygon vertices. Parameter nb_vertices should be the number of data to read in arrays.<br>
+					This function draws a line between each vertices of the polygon.<br>
+					<br>
+					Example :
+					<p class="code">
+						int abscissa[] = {60, 75, 70, 50, 45};<br>
+						int ordinate[] = {20, 30, 45, 45, 30};<br>
+						ML_clear_vram();<br>
+						ML_polygon(abscissa, ordinate, 5, ML_BLACK);<br>
+						ML_display_vram();
+					</p>
+					Well done, a "pretty" pentagon in the middle of screen.<br>
+					<script>
+						function examplePolygon(button) {
+							var x = [60, 75, 70, 50, 45], y = [20, 30, 45, 45, 30];
+							var screen = newScreen(button);
+							ML_polygon(screen, x, y, 5, 1);
+						}
+					</script>
+					<button type="button" onclick="Javascript:examplePolygon(this)">See result</button>
+				</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_filled_polygon">ML_filled_polygon</a>, <a href="#ML_line">ML_line</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_filled_polygon">ML_filled_polygon</h2>
+				<p class="prototype">void ML_filled_polygon(const int *x, const int *y, int nb_vertices, ML_Color color);</p>
+				<p class="description">Similar to ML_polygon, but draws filled polygon.</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_polygon">ML_polygon</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_circle">ML_circle</h2>
+				<p class="prototype">void ML_circle(int x, int y, int radius, ML_Color color);</p>
+				<p class="description">Draws a circle centered on (x, y) using Bresenham algorithm.</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_filled_circle">ML_filled_circle</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_filled_circle">ML_filled_circle</h2>
+				<p class="prototype">void ML_filled_circle(int x, int y, int radius, ML_Color color);</p>
+				<p class="description">Similar to ML_circle, but draws filled circle..</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_circle">ML_circle</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_ellipse">ML_ellipse</h2>
+				<p class="prototype">void ML_ellipse(int x, int y, int radius1, int radius2, ML_Color color);</p>
+				<p class="description">
+					Draws an ellipse centered on (x, y) with radiuses radius1 et radius2. radius1 is distance between center and lefmost point of ellipse, radius2 is distance between center and upper point of ellipse. Use the Bresenham algorithm.
+				</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_ellipse_in_rect">ML_ellipse_in_rect</a>, <a href="#ML_filled_ellipse">ML_filled_ellipse</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_ellipse_in_rect">ML_ellipse_in_rect</h2>
+				<p class="prototype">void ML_ellipse_in_rect(int x1, int y1, int x2, int y2, ML_Color color);</p>
+				<p class="description">This function calls ML_ellipse. It expect rectangle coordinates, and draw an ellipse in this rectangle..</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_ellipse">ML_ellipse</a>, <a href="#ML_filled_ellipse_in_rect">ML_filled_ellipse_in_rect</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_filled_ellipse">ML_filled_ellipse</h2>
+				<p class="prototype">void ML_filled_ellipse(int x, int y, int radius1, int radius2, ML_Color color);</p>
+				<p class="description">Similar to ML_ellipse, but draws a filled ellipse.</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_ellipse">ML_ellipse</a>, <a href="#ML_filled_ellipse_in_rect">ML_filled_ellipse_in_rect</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_filled_ellipse_in_rect">ML_filled_ellipse_in_rect</h2>
+				<p class="prototype">void ML_filled_ellipse_in_rect(int x, int y, int radius1, int radius2, ML_Color color);</p>
+				<p class="description">Similar to ML_ellipse_in_rect, but draws a filled ellipse.</p>
+				<p class="related"><a href="#ML_Color">ML_Color</a>, <a href="#ML_ellipse_in_rect">ML_ellipse_in_rect</a>, <a href="#ML_filled_ellipse">ML_filled_ellipse</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_horizontal_scroll">ML_horizontal_scroll</h2>
+				<p class="prototype">void ML_horizontal_scroll(int scroll);</p>
+				<p class="description">
+					Shifts all pixels in VRAM to left or right. For example, if scroll=5, then a pixel on (2, 3) will be moved on (7, 3). If scroll is a negative value, pixels will be shift to left. When pixels reach screen boundaries, they reappear on the other side.
+				</p>
+				<p class="related"><a href="#ML_vertical_scroll">ML_vertical_scroll</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_vertical_scroll">ML_vertical_scroll</h2>
+				<p class="prototype">void ML_vertical_scroll(int scroll);</p>
+				<p class="description">Similar to ML_horizontal_scroll, but scroll vertically.</p>
+				<p class="related"><a href="#ML_horizontal_scroll">ML_horizontal_scroll</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_bmp">ML_bmp...</h2>
+				<p class="prototype">
+					void ML_bmp_or(const unsigned char *bmp, int x, int y, int width, int height);<br>
+					void ML_bmp_and(const unsigned char *bmp, int x, int y, int width, int height);<br>
+					void ML_bmp_xor(const unsigned char *bmp, int x, int y, int width, int height);<br>
+					void ML_bmp_or_cl(const unsigned char *bmp, int x, int y, int width, int height);<br>
+					void ML_bmp_and_cl(const unsigned char *bmp, int x, int y, int width, int height);<br>
+					void ML_bmp_xor_cl(const unsigned char *bmp, int x, int y, int width, int height);<br>
+					<br>
+					void ML_bmp_8_or(const unsigned char *bmp, int x, int y);<br>
+					void ML_bmp_8_and(const unsigned char *bmp, int x, int y);<br>
+					void ML_bmp_8_xor(const unsigned char *bmp, int x, int y);<br>
+					void ML_bmp_8_or_cl(const unsigned char *bmp, int x, int y);<br>
+					void ML_bmp_8_and_cl(const unsigned char *bmp, int x, int y);<br>
+					void ML_bmp_8_xor_cl(const unsigned char *bmp, int x, int y);<br>
+					<br>
+					void ML_bmp_16_or(const unsigned short *bmp, int x, int y);<br>
+					void ML_bmp_16_and(const unsigned short *bmp, int x, int y);<br>
+					void ML_bmp_16_xor(const unsigned short *bmp, int x, int y);<br>
+					void ML_bmp_16_or_cl(const unsigned short *bmp, int x, int y);<br>
+					void ML_bmp_16_and_cl(const unsigned short *bmp, int x, int y);<br>
+					void ML_bmp_16_xor_cl(const unsigned short *bmp, int x, int y);
+				</p>
+				<p class="description">
+					These functions are made to draw images in monochrome bitmap format. They are very useful to draw tiles and sprites in games.<br>
+					<br>
+					Functions with prefix <b>ML_bmp_8</b> are used to draw 8*8 sized bitmap.<br>
+					Functions with prefix <b>ML_bmp_16</b> are used to draw 16*16 sized bitmap.<br>
+					Others expect dimensions of the bitmap in width and height parameters.<br>
+					<br>
+					Functions with suffix <b>_cl</b> are <u>with clipping</u>. They can draw the bitmap even if it's not totally in screen.<br>
+					Others draw the bitmap only if it's totally in screen. As a result, they are a little faster.
+				</p>
+				<p class="related"><a href="#Bitmap">Bitmap</a></p>
+			</div>
+		</div>
+		<div class="bloc">
+			<h1>Constants</h1>
+			<ul>
+				<li><a href="#ML_Color">ML_Color</a></li>
+				<br>
+				<li><a href="#ML_SCREEN">ML_SCREEN_WIDTH</a></li>
+				<li><a href="#ML_SCREEN">ML_SCREEN_HEIGHT</a></li>
+				<br>
+				<li><a href="#ML_CONTRAST">ML_CONTRAST_MIN</a></li>
+				<li><a href="#ML_CONTRAST">ML_CONTRAST_NORMAL</a></li>
+				<li><a href="#ML_CONTRAST">ML_CONTRAST_MAX</a></li>
+			</ul>
+			<div class="function">
+				<h2 id="ML_Color">ML_Color</h2>
+				<p class="prototype">typedef enum {ML_TRANSPARENT=-1, ML_WHITE, ML_BLACK, ML_XOR, ML_CHECKER} ML_Color;</p>
+				<p class="description">
+					ML_Color is an enumeration of the different colors usable in MonochromeLib.<br>
+					Only ML_TRANSPARENT is set, with a value of -1, so the compiler give to others the following values :
+					<ul>
+						<li>ML_TRANSPARENT = -1</li>
+						<li>ML_WHITE = 0</li>
+						<li>ML_BLACK = 1</li>
+						<li>ML_XOR = 2</li>
+						<li>ML_CHECKER = 3</li>
+					</ul>
+					ML_XOR reverses actual color of the pixel in VRAM.<br>
+					ML_CHECKER is a "checkerboard" color. It makes black 1 pixel on 2, and white the other, according the following rule :<br>
+					if (x and y are even) or (x and y are odd), then the pixel becomes black, else it becomes white.<br>
+					Example:
+					<p class="code">ML_rectangle(50, 20, 80, 40, 2, ML_BLACK, ML_CHECKER);</p>
+					<script>
+						function exampleChecker(button) {
+							var screen = newScreen(button);
+							ML_rectangle(screen, 50, 20, 80, 40, 2, 1, 3);
+						}
+					</script>
+					<button type="button" onclick="Javascript:exampleChecker(this)">See result</button>
+				</p>
+			</div>
+			<div class="function">
+				<h2 id="ML_SCREEN">ML_SCREEN_WIDTH et ML_SCREEN_HEIGHT</h2>
+				<p class="description">
+					These constants spécify the screen size for which MonochromeLib is made.<br>
+					<ul>
+						<li>ML_SCREEN_WIDTH = 128</li>
+						<li>ML_SCREEN_HEIGHT = 64</li>
+					</ul>
+					These constants are not used by the library, and change will not affect its behavior. MonochromeLib isn't made for working with other screen size.
+				</p>
+				<p class="related"><a href="#ML_vram_adress">ML_vram_adress</a></p>
+			</div>
+			<div class="function">
+				<h2 id="ML_CONTRAST">ML_CONTRAST_MIN, ML_CONTRAST_NORMAL et ML_CONTRAST_MAX</h2>
+				<p class="description">
+					These constants spécify the minimum and maximum values accepted by fx-9860G as contrast.<br>
+					<ul>
+						<li>ML_CONTRAST_MIN = 130</li>
+						<li>ML_CONTRAST_NORMAL = 168</li>
+						<li>ML_CONTRAST_MAX = 190</li>
+					</ul>
+				</p>
+				<p class="related"><a href="#ML_set_contrast">ML_set_contrast</a>, <a href="#ML_get_contrast">ML_get_contrast</a></p>
+			</div>
+		</div>
+		<div class="bloc">
+			<h1>Tutoriels</h1>
+			<ul>
+				<li><a href="#VRAM">The VRAM</a></li>
+				<li><a href="#Double_buffering">Double buffering</a></li>
+				<li><a href="#Bitmap">Bitmap</a></li>
+			</ul>
+			<div class="function">
+				<h2 id="VRAM">The VRAM</h2>
+				<p class="description">
+					VRAM (abbreviation of Video RAM) is a buffer created by the operating system.<br>
+					It allows to practice double-buffering.<br>
+					<br>
+					Screen of the fx-9860G contains 128*64 = 8192 pixels. It's a monochrome screen, that means each pixel have 2 possible states, ON or OFF (black or white).
+					Therefore a pixel can be stored in one bit (0 ou 1). A byte is consisting of 8 bits, so we can store all pixels of the screen in 1024 bytes (8192/8 = 1024).
+					The VRAM is thus a buffer of 1024 bytes.<br>
+					<br>
+					One function in operating system (a syscall) return the VRAM adress in memory. With this adress, we can write and read in VRAM, for draw, or analyze the content. It's this function which is called in ML_vram_adress.<br>
+					At the beginning of fx-9860G programming, this function was unknown, although we known the VRAM adress : 0x8800498D. But this adress have changed with release 2.0 of the operating system, making several programs ineffective. So, the use of this syscall is necessary to guarantee the good working of programs on every operating system version.<br>
+					<br>
+					The VRAM is organized as follows:
+					<table>
+						<tr><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td><td>12</td><td>13</td><td>14</td><td>15</td></tr>
+						<tr><td>16</td><td>17</td><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td><td>24</td><td>25</td><td>26</td><td>27</td><td>28</td><td>29</td><td>30</td><td>31</td></tr>
+						<tr><td colspan="16" style="height: 50px;">...</td></tr>
+						<tr><td>1008</td><td>1009</td><td>1010</td><td>1011</td><td>1012</td><td>1013</td><td>1014</td><td>1015</td><td>1016</td><td>1017</td><td>1018</td><td>1019</td><td>1020</td><td>1021</td><td>1022</td><td>1023</td></tr>
+					</table>
+					the "0" box is the first byte of VRAM, the "1023" box is the last.<br>
+					<br>
+					Example of handling :
+					<p class="code">memset(ML_vram_adress(), 255, 1024);</p>
+					This line will copy the value 255 in the 1024 bytes of VRAM. 255 in binary is written 11111111, only 1. So this line fill VRAM with black. We can then call ML_display_vram and the screen will be all black.
+				</p>
+				<p class="related"><a href="#ML_vram_adress">ML_vram_adress</a>, <a href="#Double_buffering">Double buffering</a></p>
+			</div>
+			<div class="function">
+				<h2 id="Double_buffering">Double buffering</h2>
+				<p class="description">
+					Double buffering is a technique of computer graphics. The principle is to make all drawing operations in a video memory (VRAM) before to copy it on the real screen. This allows not to display an image under construction and prevents screen flicker.<br>
+					<br>
+					At first, clear the VRAM content with ML_clear_vram, next do your drawings, and finally display the VRAM content on screen with ML_display_vram.
+				</p>
+				<p class="related"><a href="#ML_clear_vram">ML_clear_vram</a>, <a href="#ML_display_vram">ML_display_vram</a></p>
+			</div>
+			<div class="function">
+				<h2 id="Bitmap">Bitmap</h2>
+				<p class="description">
+					A bitmap is a data array in which each bit account for one pixel.
+					<h3>Create a 8*8 bitmap</h3>
+					A pixel is either black or white, so we can store its state in one bit (0 or 1). A byte is consisting of 8 bits, therefore 8 pixels. For a 8*8 bitmap, each line fits in a byte, so we need 8 bytes, one per line.<br>
+					Take an example, the picture of a ball :
+					<p class="code">
+						00111100 -> 60<br>
+						01111110 -> 126<br>
+						11111011 -> 251<br>
+						11111101 -> 253<br>
+						11111101 -> 253<br>
+						11111111 -> 255<br>
+						01111110 -> 126<br>
+						00111100 -> 60
+					</p>
+					Here, I taken binary numbers of each line of the picture, and I converted them in decimal.<br>
+					This gives us the following array :
+					<p class="code">char ball[] = {60, 126, 251, 253, 253, 255, 126, 60};</p>
+					This array is a 8*8 bitmap that can be used with ML_bmp functions to draw it.
+					<h3>Create a bitmap of any dimensions</h3>
+					Now we know how 8*8 bitmaps are encoded, it gonna be easy to understand the management of other sizes.<br>
+					For an 16*16 bitmap, we have 16 bits per line, 2 bytes.<br>
+					2 bytes per line multiplied by 16 lines, gives us 32 bytes for a 16*16 bitmap.<br>
+					The first two are the first line, the next two are the second line, etc.<br>
+					<br>
+					For a bitmap whose width is less than 8, each line still take a byte. The last bits of each byte are simply unused.<br>
+					For a bitmap whose width is greater than 8, but non multiple of 8, it will be the same, the last bits of the last byte of each line will be unused.<br>
+					The ML_bmp functions apply a mask on these last bits to disable them, regardless of content. So if I take the ball bitmap created previously, and I draw it this way :
+					<p class="code">ML_bmp_or(ball, x, y, 4, 8);</p>
+					Only the left half will be drawn.
+					<h3>The different drawing modes: OR, AND, XOR</h3>
+					Take for example the ball bitmap created previously, and draw it in the 3 different modes on black and white background :
+					<p class="code">
+						char ball[] = {60, 126, 251, 253, 253, 255, 126, 60};<br>
+						<br>
+						ML_rectangle(1, 1, 12, 32, 0, ML_TRANSPARENT, ML_BLACK); //black background<br>
+						<br>
+						//draw on black background<br>
+						ML_bmp_8_or(ball, 3, 3);<br>
+						ML_bmp_8_and(ball, 3, 13);<br>
+						ML_bmp_8_xor(ball, 3, 23);<br>
+						<br>
+						//draw on white background<br>
+						ML_bmp_8_or(ball, 15, 3);<br>
+						ML_bmp_8_and(ball, 15, 13);<br>
+						ML_bmp_8_xor(ball, 15, 23);
+					</p>
+					<script>
+						function exampleBmp(button) {
+							var screen = newScreen(button);
+							var ball = [60, 126, 251, 253, 253, 255, 126, 60];
+							ML_rectangle(screen, 1, 1, 12, 32, 0, 0, 1);
+							ML_bmp(screen, ball, 3, 3, 8, 8, 'or');
+							ML_bmp(screen, ball, 3, 13, 8, 8, 'and');
+							ML_bmp(screen, ball, 3, 23, 8, 8, 'xor');
+							ML_bmp(screen, ball, 15, 3, 8, 8, 'or');
+							ML_bmp(screen, ball, 15, 13, 8, 8, 'and');
+							ML_bmp(screen, ball, 15, 23, 8, 8, 'xor');
+						}
+					</script>
+					<button type="button" onclick="Javascript:exampleBmp(this)">See result</button><br>
+					<br>
+					The ML_bmp_or functions make a binary OR between bitmap and VRAM bits.<br>
+					Reminder :<br>
+					0 OR 0 = 0<br>
+					0 OR 1 = 1<br>
+					1 OR 0 = 1<br>
+					1 OR 1 = 1<br>
+					So a bitmap drawing in OR mode will copy black pixels of the bitmap and let others like "transparent".<br>
+					<br>
+					The AND mode will copy only white pixels of the bitmap.<br>
+					With XOR mode, the black pixels of the bitmap will reverse the color of VRAM pixels, and the white pixels of the bitmap have no effect.<br>
+					<br>
+					To overwrite VRAM pixels without transparency, draw the bitmap with AND, then with OR.<br>
+					If you have a sprite with black, white and transparent pixels, you need 2 bitmaps. The first containing 0 on white pixels to be applied with AND, the second containing 1 on black pixels to be applied with OR. Pixels at 1 in first and 0 in second, will be transparent.<br>
+					If you want the black pixels of the bitmap to be copied in white in VRAM, you must apply the same bitmap with OR then with XOR.<br>
+					So, with these 3 modes, you can do what you want.<br>
+					<br>
+					<h3>Software to encode bitmap</h3>
+					There is a lot of software which can generate bitmap in this format.
+					<ul>
+						<li><a href="http://www.planet-casio.com/Fr/forums/topic9068-1-Tiles-Creator-(Derniere-version--1.1).html">Tile Creator</a></li>
+						<li><a href="http://orwell01.free.fr/Release/SpriteMaker/">Sprite Maker</a> (makes for AFX, but compatible)</li>
+						<li><a href="http://www.planet-casio.com/Fr/forums/lecture_sujet.php?id=9349&page=6#62458">Find_Sprites_In_Bitmap</a>, a small program of my design.</li>
+					</ul>
+					You can also make your own !<br>
+					It's not really hard, you can program in C, and you now know how bitmaps are encoded.
+				</p>
+				<p class="related"><a href="#ML_bmp">ML_bmp...</a></p>
+			</div>
+		</div>
+		<div class="footer">Documentation available for MonochromeLib 11-22-2011 - <a href="http://www.planet-casio.com/Fr/logiciels/voir_un_logiciel_casio.php?showid=86">Download MonochromeLib</a> - Library and documentation written by PierrotLL</div>
+	</body>
+</html>

@@ -1,0 +1,5 @@
+Onglet::Mouvement
+TypeForme::Rectangle
+Texte::Aller aux coordonnées X et Y
+Parametres::[['Label', 'aller a x:'], ['EmptyCercle'], ['Label', ' y :'], ['EmptyCercle']]
+Color::bleu_fonce

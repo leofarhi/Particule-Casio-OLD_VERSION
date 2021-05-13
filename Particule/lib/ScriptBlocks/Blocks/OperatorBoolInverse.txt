@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Losange
+Texte::Non
+Parametres::[['Label', 'non '],["Booleen"]]
+Color::vert

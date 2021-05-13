@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Cercle
+Texte::Division
+Parametres::[['EmptyCercle'],['Label', '/'],['EmptyCercle']]
+Color::vert

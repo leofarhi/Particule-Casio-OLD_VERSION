@@ -1,0 +1,5 @@
+Onglet::Mouvement
+TypeForme::Cercle
+Texte::ordonnee Y
+Parametres::[['Label', 'ordonnee Y']]
+Color::bleu_fonce

@@ -1,0 +1,5 @@
+Onglet::Editeur
+TypeForme::Rectangle
+Texte::Utiliser une Image
+Parametres::[['Label', "J'utilise l'image :"], ["Liste",[] ]]
+Color::rose

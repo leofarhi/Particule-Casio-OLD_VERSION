@@ -1,0 +1,5 @@
+Onglet::Mouvement
+TypeForme::Rectangle
+Texte::Mettre la Camera aux coordonnées X et Y
+Parametres::[['Label', 'Mettre la Camera a x:'], ['EmptyCercle'], ['Label', ' y :'], ['EmptyCercle']]
+Color::bleu_fonce

@@ -1,0 +1,7 @@
+Onglet::Controle
+TypeForme::Encadrement
+Texte::"Si ? est vrai alors, Sinon ..."
+Parametres::[["Label","Si "],["Booleen"],["Label"," alors"]]
+Color::orange
+Options::[["Encoche",2],["Parametres",[["Label","Sinon"]]]]
+Compile::[["CBasic","IfElseCondition"]]

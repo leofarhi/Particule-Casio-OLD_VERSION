@@ -1,0 +1,6 @@
+Onglet::Editeur
+TypeForme::Encadrement
+Texte::Cacher dans l'editeur
+Parametres::[["Label","Cacher dans l'editeur"]]
+Color::rose
+Compile::[["CBasic","HideInInspector"]]

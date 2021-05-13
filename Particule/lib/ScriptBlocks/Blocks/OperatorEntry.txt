@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Cercle
+Texte::Zone de texte
+Parametres::[['TexteEtNombre', '']]
+Color::vert

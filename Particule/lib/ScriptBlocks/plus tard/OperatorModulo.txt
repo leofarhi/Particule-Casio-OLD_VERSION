@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Cercle
+Texte::Modulo
+Parametres::[['EmptyCercle'],['Label', ' modulo '],['EmptyCercle']]
+Color::vert

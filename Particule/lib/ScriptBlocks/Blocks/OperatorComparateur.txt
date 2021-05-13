@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Losange
+Texte::Comparateurs
+Parametres::[['Booleen'],["Liste",["==","!=",">","<",">=","<="]],['Booleen']]
+Color::vert

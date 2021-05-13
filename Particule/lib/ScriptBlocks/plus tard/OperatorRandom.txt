@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Cercle
+Texte::valeur aléatoire entre deux nombre
+Parametres::[['Label', 'nombre aléatoire entre'],['EmptyCercle'],['Label', 'et'],['EmptyCercle'] ]]
+Color::vert

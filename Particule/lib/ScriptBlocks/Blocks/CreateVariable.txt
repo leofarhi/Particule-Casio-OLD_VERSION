@@ -1,0 +1,5 @@
+Onglet::Editeur
+TypeForme::Rectangle
+Texte::Creer une variable
+Parametres::[['Label', 'Creer une variable'], ['TexteEtNombre', ''], ['Label', 'de type'], ["Liste",[] ],['Label', 'de façon'],["Liste",["public","priver"] ]]
+Color::rose

@@ -1,0 +1,3 @@
+FolderProject::C:/Users/leofa/OneDrive/Documents/PycharmProjects/NouveauProjet
+AllProjects::[['ProjectFolder', 'C:/Users/leofa/OneDrive/Documents/PycharmProjects/ProjectFolder'], ['test', 'C:/Users/leofa/OneDrive/Documents/PycharmProjects/test'], ['NouveauProjet', 'C:/Users/leofa/OneDrive/Documents/PycharmProjects/NouveauProjet']]
+Langue::fr

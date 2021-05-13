@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Cercle
+Texte::Longueur d'un string
+Parametres::[['Label', 'longueur '],['EmptyCercle']]
+Color::vert

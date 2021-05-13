@@ -1,0 +1,467 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 08-Jan-2021 11:21:40  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2\Tutoriel.cpp
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+      Tutoriel.c     1    /*****************************************************************/
+      Tutoriel.c     2    /*                                                               */
+      Tutoriel.c     3    /*   CASIO fx-9860G SDK Library                                  */
+      Tutoriel.c     4    /*                                                               */
+      Tutoriel.c     5    /*   File name : [ProjectName].c                                 */
+      Tutoriel.c     6    /*                                                               */
+      Tutoriel.c     7    /*   Copyright (c) 2006 CASIO COMPUTER CO., LTD.                 */
+      Tutoriel.c     8    /*                                                               */
+      Tutoriel.c     9    /*****************************************************************/
+      Tutoriel.c    10    
+      Tutoriel.c    11    extern "C"
+      Tutoriel.c    12    {
+      Tutoriel.c    13    #include "keybios.h"
+      Tutoriel.c    14    #include "fxlib.h"
+      Tutoriel.c    15    #include <stdio.h>
+      Tutoriel.c    16    #include "stdio.h"
+      Tutoriel.c    17    #include "stdlib.h"
+      Tutoriel.c    18    
+      Tutoriel.c    19    #include "string.h"
+      Tutoriel.c    20    #include "time.h"
+      Tutoriel.c    21    
+      Tutoriel.c    22    
+      Tutoriel.c    23    
+      Tutoriel.c    24    
+      Tutoriel.c    25    }
+      Tutoriel.c    26    #include "usefull.h"
+      Tutoriel.c    27    
+      Tutoriel.c    28    //****************************************************************************
+      Tutoriel.c    29    //  AddIn_main (Sample program main function)
+      Tutoriel.c    30    //
+      Tutoriel.c    31    //  param   :   isAppli   : 1 = This application is launched by MAIN MENU.
+      Tutoriel.c    32    //                        : 0 = This application is launched by a strip in eACT application.
+      Tutoriel.c    33    //
+      Tutoriel.c    34    //              OptionNum : Strip number (0~3)
+      Tutoriel.c    35    //                         (This parameter is only used when isAppli parameter is 0.)
+      Tutoriel.c    36    //
+      Tutoriel.c    37    //  retval  :   1 = No error / 0 = Error
+      Tutoriel.c    38    //
+      Tutoriel.c    39    //****************************************************************************
+      Tutoriel.c    40    #include "ClassParticule.h"
+      Tutoriel.c    41    #include "Component.h"
+      Tutoriel.c    42    //#include "string.h"
+      Tutoriel.c    43    #include "MonochromeLib.h"
+      Tutoriel.c    44    #include "Images.h"
+      Tutoriel.c    45    
+      Tutoriel.c    46    
+      Tutoriel.c    47    int main() {
+P   00000000              _main:                           ; function: main
+                                                           ; frame size=36
+      Tutoriel.c    48        int SceneInBuild[] = {0};
+    00000000 D234                   MOV.L       L292,R2    ; L249
+    00000002 7FDC                   ADD         #-36,R15
+    00000004 6322                   MOV.L       @R2,R3
+      Tutoriel.c    49    
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 08-Jan-2021 11:21:40  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+      Tutoriel.c    50        SceneManager scene(SceneInBuild);
+    00000006 65F3                   MOV         R15,R5
+    00000008 1F38                   MOV.L       R3,@(32,R15)
+    0000000A 64F3                   MOV         R15,R4
+    0000000C D332                   MOV.L       L292+4,R3  ; ___ct__12SceneManagerFPi
+    0000000E 7520                   ADD         #32,R5
+    00000010 430B                   JSR         @R3
+    00000012 7410                   ADD         #16,R4
+      Tutoriel.c    51        unsigned int key;
+      Tutoriel.c    52        int CamX = 0;
+      Tutoriel.c    53        int CamY = 0;
+      Tutoriel.c    54        int vitesse = 3;
+      Tutoriel.c    55    
+      Tutoriel.c    56        BoxCollider box;
+    00000014 D231                   MOV.L       L292+8,R2  ; ___ct__11BoxColliderFv
+    00000016 EB00                   MOV         #0,R11
+    00000018 69B3                   MOV         R11,R9
+    0000001A 68B3                   MOV         R11,R8
+    0000001C 64F3                   MOV         R15,R4
+    0000001E 420B                   JSR         @R2
+    00000020 7408                   ADD         #8,R4
+      Tutoriel.c    57        box.y = 1;
+    00000022 E301                   MOV         #1,R3
+    00000024 1F33                   MOV.L       R3,@(12,R15)
+      Tutoriel.c    58        Component* Liste[] = { &box };
+    00000026 64F3                   MOV         R15,R4
+    00000028 7404                   ADD         #4,R4
+    0000002A 63F3                   MOV         R15,R3
+    0000002C 7308                   ADD         #8,R3
+      Tutoriel.c    59    
+      Tutoriel.c    60        BoxCollider* box2 = (BoxCollider *)Liste[0];
+      Tutoriel.c    61        box2->y = 5;
+    0000002E E205                   MOV         #5,R2
+    00000030 2432                   MOV.L       R3,@R4
+    00000032 6433                   MOV         R3,R4
+    00000034 1421                   MOV.L       R2,@(4,R4)
+      Tutoriel.c    62    
+      Tutoriel.c    63        scene.AllElem[1].Img = (unsigned char*)ImgNelem7;
+    00000036 53F4                   MOV.L       @(16,R15),R3
+    00000038 D229                   MOV.L       L292+12,R2 ; __$ImgNelem7
+    0000003A 7330                   ADD         #48,R3
+    0000003C 2322                   MOV.L       R2,@R3
+      Tutoriel.c    64    
+      Tutoriel.c    65        ML_display_vram();
+    0000003E D329                   MOV.L       L292+16,R3 ; _ML_display_vram
+    00000040 430B                   JSR         @R3
+    00000042 0009                   NOP
+    00000044 DC28                   MOV.L       L292+20,R12; _KeyDown
+      Tutoriel.c    66    
+      Tutoriel.c    67        //Bdisp_AllClr_DDVRAM();
+      Tutoriel.c    68    
+      Tutoriel.c    69    
+      Tutoriel.c    70        /*locate(1, 4);
+      Tutoriel.c    71        Print((unsigned char*)"This application is");
+      Tutoriel.c    72        locate(1, 5);
+      Tutoriel.c    73        Print((unsigned char*)" sample Add-In.");
+      Tutoriel.c    74        locate(1, 6);
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 08-Jan-2021 11:21:40  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+      Tutoriel.c    75        Print((unsigned char*)" create by Farhi");*/
+      Tutoriel.c    76    
+      Tutoriel.c    77    
+      Tutoriel.c    78        while (1) {
+    00000046              L280:                             
+      Tutoriel.c    79            ML_clear_vram();
+    00000046 D329                   MOV.L       L292+24,R3 ; _ML_clear_vram
+    00000048 430B                   JSR         @R3
+    0000004A 0009                   NOP
+      Tutoriel.c    80            for (int i(0); i < scene.AllElemLength; ++i)
+    0000004C A01D                   BRA         L281
+    0000004E 6AB3                   MOV         R11,R10
+    00000050              L282:                             
+      Tutoriel.c    81            {
+      Tutoriel.c    82                for (int j(0); j < scene.AllElem[i].AllCompoLength; ++j)
+    00000050 6DB3                   MOV         R11,R13
+    00000052 6EA3                   MOV         R10,R14
+    00000054 63A3                   MOV         R10,R3
+    00000056 4E00                   SHLL        R14
+    00000058 3E3C                   ADD         R3,R14
+    0000005A 4E08                   SHLL2       R14
+    0000005C A009                   BRA         L283
+    0000005E 4E08                   SHLL2       R14
+    00000060              L284:                             
+      Tutoriel.c    83                {
+      Tutoriel.c    84                    scene.AllElem[i].AllCompo[j].OnUpdate();
+    00000060 54F4                   MOV.L       @(16,R15),R4
+    00000062 63D3                   MOV         R13,R3
+    00000064 D222                   MOV.L       L292+28,R2 ; _OnUpdate__9ComponentFv
+    00000066 34EC                   ADD         R14,R4
+    00000068 544B                   MOV.L       @(44,R4),R4
+    0000006A 4308                   SHLL2       R3
+    0000006C 420B                   JSR         @R2
+    0000006E 343C                   ADD         R3,R4
+    00000070 7D01                   ADD         #1,R13
+    00000072              L283:                             
+    00000072 53F4                   MOV.L       @(16,R15),R3
+    00000074 33EC                   ADD         R14,R3
+    00000076 523A                   MOV.L       @(40,R3),R2
+    00000078 3D23                   CMP/GE      R2,R13
+    0000007A 8BF1                   BF          L284
+      Tutoriel.c    85                }
+      Tutoriel.c    86                scene.AllElem[i].afficher(CamX, CamY);
+    0000007C 54F4                   MOV.L       @(16,R15),R4
+    0000007E 6683                   MOV         R8,R6
+    00000080 D31C                   MOV.L       L292+32,R3 ; _afficher__10GameObjectFiT1
+    00000082 6593                   MOV         R9,R5
+    00000084 430B                   JSR         @R3
+    00000086 34EC                   ADD         R14,R4
+    00000088 7A01                   ADD         #1,R10
+    0000008A              L281:                             
+    0000008A 52F5                   MOV.L       @(20,R15),R2
+    0000008C 3A23                   CMP/GE      R2,R10
+    0000008E 8BDF                   BF          L282
+      Tutoriel.c    87            }
+      Tutoriel.c    88    
+      Tutoriel.c    89            if (IsKeyDown(KEY_CTRL_RIGHT)) {
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 08-Jan-2021 11:21:40  PAGE    4
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000090 4C0B                   JSR         @R12
+    00000092 E41B                   MOV         #27,R4
+    00000094 600C                   EXTU.B      R0,R0
+    00000096 2008                   TST         R0,R0
+    00000098 8D01                   BT/S        L285
+      Tutoriel.c    90                CamX += vitesse;
+      Tutoriel.c    91            }
+      Tutoriel.c    92            if (IsKeyDown(KEY_CTRL_LEFT)) {
+    0000009A E426                   MOV         #38,R4
+    0000009C 7903                   ADD         #3,R9
+    0000009E              L285:                             
+    0000009E 4C0B                   JSR         @R12
+    000000A0 0009                   NOP
+    000000A2 600C                   EXTU.B      R0,R0
+    000000A4 2008                   TST         R0,R0
+    000000A6 8D01                   BT/S        L286
+      Tutoriel.c    93                CamX -= vitesse;
+      Tutoriel.c    94            }
+      Tutoriel.c    95            if (IsKeyDown(KEY_CTRL_UP)) {
+    000000A8 E41C                   MOV         #28,R4
+    000000AA 79FD                   ADD         #-3,R9
+    000000AC              L286:                             
+    000000AC 4C0B                   JSR         @R12
+    000000AE 0009                   NOP
+    000000B0 600C                   EXTU.B      R0,R0
+    000000B2 2008                   TST         R0,R0
+    000000B4 8D01                   BT/S        L287
+      Tutoriel.c    96                CamY -= vitesse;
+      Tutoriel.c    97            }
+      Tutoriel.c    98            if (IsKeyDown(KEY_CTRL_DOWN)) {
+    000000B6 E425                   MOV         #37,R4
+    000000B8 78FD                   ADD         #-3,R8
+    000000BA              L287:                             
+    000000BA 4C0B                   JSR         @R12
+    000000BC 0009                   NOP
+    000000BE 600C                   EXTU.B      R0,R0
+    000000C0 2008                   TST         R0,R0
+    000000C2 8900                   BT          L288
+      Tutoriel.c    99                CamY += vitesse;
+    000000C4 7803                   ADD         #3,R8
+    000000C6              L288:                             
+      Tutoriel.c   100            }
+      Tutoriel.c   101            //Sleep(100);
+      Tutoriel.c   102            GetKey(&key);
+    000000C6 D20C                   MOV.L       L292+36,R2 ; _GetKey
+    000000C8 420B                   JSR         @R2
+    000000CA 64F3                   MOV         R15,R4
+    000000CC AFBB                   BRA         L280
+    000000CE 0009                   NOP
+      Tutoriel.c   103        }
+      Tutoriel.c   104    
+      Tutoriel.c   105        return 1;
+      Tutoriel.c   106    }
+      Tutoriel.c   107    
+      Tutoriel.c   108    extern "C"
+      Tutoriel.c   109    {
+      Tutoriel.c   110    int AddIn_main(int isAppli, unsigned short OptionNum)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 08-Jan-2021 11:21:40  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000000D0              _AddIn_main:                     ; function: AddIn_main
+                                                           ; frame size=0
+      Tutoriel.c   111    {
+      Tutoriel.c   112        return main();
+    000000D0 AF96                   BRA         _main
+    000000D2 0009                   NOP
+    000000D4              L292:                             
+    000000D4 <00000000>             .DATA.L     L249
+    000000D8 <00000000>             .DATA.L     ___ct__12SceneManagerFPi
+    000000DC <00000000>             .DATA.L     ___ct__11BoxColliderFv
+    000000E0 <00000000>             .DATA.L     __$ImgNelem7
+    000000E4 <00000000>             .DATA.L     _ML_display_vram
+    000000E8 <00000000>             .DATA.L     _KeyDown
+    000000EC <00000000>             .DATA.L     _ML_clear_vram
+    000000F0 <00000000>             .DATA.L     _OnUpdate__9ComponentFv
+    000000F4 <00000000>             .DATA.L     _afficher__10GameObjectFiT1
+    000000F8 <00000000>             .DATA.L     _GetKey
+      Tutoriel.c   113    }
+      Tutoriel.c   114    
+      Tutoriel.c   115    
+      Tutoriel.c   116    
+      Tutoriel.c   117    
+      Tutoriel.c   118    //****************************************************************************
+      Tutoriel.c   119    //**************                                              ****************
+      Tutoriel.c   120    //**************                 Notice!                      ****************
+      Tutoriel.c   121    //**************                                              ****************
+      Tutoriel.c   122    //**************  Please do not change the following source.  ****************
+      Tutoriel.c   123    //**************                                              ****************
+      Tutoriel.c   124    //****************************************************************************
+      Tutoriel.c   125    
+      Tutoriel.c   126    
+      Tutoriel.c   127    #pragma section _BR_Size
+      Tutoriel.c   128    unsigned long BR_Size;
+      Tutoriel.c   129    #pragma section
+      Tutoriel.c   130    
+      Tutoriel.c   131    
+      Tutoriel.c   132    #pragma section _TOP
+      Tutoriel.c   133    
+      Tutoriel.c   134    //****************************************************************************
+      Tutoriel.c   135    //  InitializeSystem
+      Tutoriel.c   136    //
+      Tutoriel.c   137    //  param   :   isAppli   : 1 = Application / 0 = eActivity
+      Tutoriel.c   138    //              OptionNum : Option Number (only eActivity)
+      Tutoriel.c   139    //
+      Tutoriel.c   140    //  retval  :   1 = No error / 0 = Error
+      Tutoriel.c   141    //
+      Tutoriel.c   142    //****************************************************************************
+      Tutoriel.c   143    int InitializeSystem(int isAppli, unsigned short OptionNum)
+P_T 00000000              _InitializeSystem:               ; function: InitializeSystem
+                                                           ; frame size=0
+      Tutoriel.c   144    {
+      Tutoriel.c   145        return INIT_ADDIN_APPLICATION(isAppli, OptionNum);
+    00000000 D301                   MOV.L       L293+2,R3  ; _INIT_ADDIN_APPLICATION
+    00000002 432B                   JMP         @R3
+    00000004 0009                   NOP
+    00000006              L293:                             
+    00000006 0000                   .DATA.W     0
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 08-Jan-2021 11:21:40  PAGE    6
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000008 <00000000>             .DATA.L     _INIT_ADDIN_APPLICATION
+      Tutoriel.c   146    }
+      Tutoriel.c   147    
+      Tutoriel.c   148    #pragma section
+      Tutoriel.c   149    }
+C   00000000              __$ImgNelem7:                    ; static: ImgNelem7
+    00000000 7F77808880             .DATA.B     H'7F,H'77,H'80,H'88,H'80,H'88,H'80,H'88,H'7F,H'77,H'00,H'00,H'00,H'00,H'00,H'00,
+             8880887F77 +                       H'00,H'00,H'00,H'00,H'00,H'00,H'00,H'00,H'00,H'00,H'00,H'00,H'00,H'00,H'00,H'00
+             0000000000   
+             0000000000   
+             0000000000   
+             0000000000   
+             0000         
+    00000020              L249:
+    00000020 00000000               .DATA.L     H'00000000
+B_B 00000000              _BR_Size:                        ; static: BR_Size
+    00000000 00000004               .RES.L      1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 08-Jan-2021 11:21:40  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:        49
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:      149
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               000000FC Byte(s)
+PROGRAM  SECTION (P_BR_Size):                       00000000 Byte(s)
+PROGRAM  SECTION (P_TOP):                           0000000C Byte(s)
+CONSTANT SECTION (C):                               00000024 Byte(s)
+CONSTANT SECTION (C_BR_Size):                       00000000 Byte(s)
+CONSTANT SECTION (C_TOP):                           00000000 Byte(s)
+DATA     SECTION (D):                               00000000 Byte(s)
+DATA     SECTION (D_BR_Size):                       00000000 Byte(s)
+DATA     SECTION (D_TOP):                           00000000 Byte(s)
+BSS      SECTION (B):                               00000000 Byte(s)
+BSS      SECTION (B_BR_Size):                       00000004 Byte(s)
+BSS      SECTION (B_TOP):                           00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 00000130 Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:            9
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:           4
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            25
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmk6876.tmp 
+

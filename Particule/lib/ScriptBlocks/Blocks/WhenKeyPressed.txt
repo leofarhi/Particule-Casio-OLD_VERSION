@@ -1,0 +1,6 @@
+Onglet::Capteurs
+TypeForme::Losange
+Texte::"Quand la touche ? est presse"
+Parametres::[["Label","Quand la touche "],["Liste",["CHAR_0","CHAR_1","CHAR_2","CHAR_3","CHAR_4","CHAR_5","CHAR_6","CHAR_7","CHAR_8","CHAR_9","CHAR_DP","CHAR_EXP","CHAR_PMINUS","CHAR_PLUS","CHAR_MINUS","CHAR_MULT","CHAR_DIV","CHAR_FRAC","CHAR_LPAR","CHAR_RPAR","CHAR_COMMA","CHAR_STORE","CHAR_LOG","CHAR_LN","CHAR_SIN","CHAR_COS","CHAR_TAN","CHAR_SQUARE","CHAR_POW","CTRL_EXE","CTRL_DEL","CTRL_AC","CTRL_FD","CTRL_EXIT","CTRL_SHIFT","CTRL_ALPHA","CTRL_OPTN","CTRL_VARS","CTRL_UP","CTRL_DOWN","CTRL_LEFT","CTRL_RIGHT","CTRL_F1","CTRL_F2","CTRL_F3","CTRL_F4","CTRL_F5","CTRL_F6","CTRL_MENU"] ],["Label","est presse"]]
+Color::bleu_clair
+Compile::[["CBasic","WhenKeyPressed"]]

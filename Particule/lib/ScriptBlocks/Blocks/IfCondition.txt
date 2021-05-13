@@ -1,0 +1,6 @@
+Onglet::Controle
+TypeForme::Encadrement
+Texte::"Si ? est vrai alors"
+Parametres::[["Label","Si "],["Booleen"],["Label"," alors"]]
+Color::orange
+Compile::[["CBasic","IfCondition"]]

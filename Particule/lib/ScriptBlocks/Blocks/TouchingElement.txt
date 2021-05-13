@@ -1,0 +1,6 @@
+Onglet::Capteurs
+TypeForme::Losange
+Texte::"Touche L'element ?"
+Parametres::[["Label","touche le"],["Liste",["Sprite","Bord"]]]
+Color::bleu_clair
+Compile::[["CBasic","TouchingElement"]]

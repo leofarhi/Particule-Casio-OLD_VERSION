@@ -1,0 +1,6 @@
+Onglet::Controle
+TypeForme::Encadrement
+Texte::"Tant que"
+Parametres::[["Label","Tant que "],["Booleen"],["Label","est vrai alors"]]
+Color::orange
+Compile::[["CBasic","While"]]

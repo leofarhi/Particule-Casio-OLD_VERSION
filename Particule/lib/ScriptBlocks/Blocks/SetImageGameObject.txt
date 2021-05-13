@@ -1,0 +1,5 @@
+Onglet::Apparence
+TypeForme::Rectangle
+Texte::basculer sur le costume
+Parametres::[['Label', 'basculer sur le costume:'], ['EmptyCercle']]
+Color::violet

@@ -1,0 +1,5 @@
+Onglet::Capteurs
+TypeForme::Cercle
+Texte::Obtenir des donnees d un object
+Parametres::[["Liste",["abscisse x","ordonnee y","largeur","hauteur","nom"]],["Label"," de "],["Liste",[]]]
+Color::bleu_clair

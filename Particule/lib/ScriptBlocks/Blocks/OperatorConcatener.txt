@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Cercle
+Texte::Concatener deux string
+Parametres::[['Label', 'regrouper '],['EmptyCercle'],['Label', 'et'],['EmptyCercle']]
+Color::vert

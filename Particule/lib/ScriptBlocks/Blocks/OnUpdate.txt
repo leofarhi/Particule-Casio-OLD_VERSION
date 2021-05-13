@@ -1,0 +1,6 @@
+Onglet::Evenements
+TypeForme::Vague
+Texte::"Update"
+Parametres::[["Label","A chaque rafraichissement"]]
+Color::jaune
+Compile::[["CBasic","OnStart"]]

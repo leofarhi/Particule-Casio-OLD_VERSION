@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Losange
+Texte::Vrai et Faux
+Parametres::[["Liste",["Vrai","Faux"]]]
+Color::vert

@@ -1,0 +1,6 @@
+Onglet::Editeur
+TypeForme::Vague
+Texte::Dans l'Editeur
+Parametres::[['Label', "Dans l'Editeur"]]
+Color::rose
+Compile::[["CBasic","InEditor"]]

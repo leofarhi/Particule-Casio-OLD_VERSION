@@ -1,0 +1,64 @@
+[DLSimRunSpace]
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel\Tutoriel.c
+Line=191
+Flags=00001012
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel\Tutoriel.c
+Line=194
+Flags=00001012
+Sublevel=1
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel\Tutoriel.c
+Line=194
+Flags=00001012
+Sublevel=2
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2\usefull.cpp
+Line=130
+Flags=00001012
+Sublevel=1
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2\usefull.cpp
+Line=130
+Flags=00001012
+Sublevel=2
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2\Tutoriel.cpp
+Line=46
+Flags=00001012
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2\Tutoriel.cpp
+Line=71
+Flags=00001012
+Sublevel=1
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2\Tutoriel.cpp
+Line=71
+Flags=00001012
+Sublevel=2
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2\Tutoriel.cpp
+Line=61
+Flags=00001012
+Sublevel=1
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2\Tutoriel.cpp
+Line=61
+Flags=00001012
+Sublevel=2
+
+[Breakpoint]
+File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2\Tutoriel.cpp
+Line=57
+Flags=00001012

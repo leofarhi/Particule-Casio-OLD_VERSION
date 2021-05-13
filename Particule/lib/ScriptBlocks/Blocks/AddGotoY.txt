@@ -1,0 +1,5 @@
+Onglet::Mouvement
+TypeForme::Rectangle
+Texte::ajouter a Y
+Parametres::[['Label', 'ajouter a y:'], ['EmptyCercle']]
+Color::bleu_fonce

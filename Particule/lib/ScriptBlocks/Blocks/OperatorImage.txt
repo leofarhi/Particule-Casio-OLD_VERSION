@@ -1,0 +1,5 @@
+Onglet::Apparence
+TypeForme::Cercle
+Texte::Selection d'images
+Parametres::[["Liste",[]]]
+Color::violet

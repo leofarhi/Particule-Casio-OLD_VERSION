@@ -1,0 +1,57 @@
+Projets::Projects
+Apprendre::Learn
+Installs::Installs
+Ajouter/Nouveau::Add/New
+Retirer::Remove
+Ouvrir::Open
+Sélection des blocks::Selection of blocks
+Importé::Imported
+Editeur::Editor
+Evenements::Events
+Controle::Control
+Variable::Variable
+Mes Blocs::My Blocks
+Opérateurs::Operators
+Capteurs::Sensors
+Mouvement::Movement
+Apparence::Appearance
+Stylo::Pen
+Ajouter une variable::Add a variable
+supprimer une variable::delete a variable
+Ajouter::Add
+Supprimer::Remove
+Charger::Charger
+Nouveau::New
+Ouvrir...::To open...
+Enregistrer::Save
+Creer une Scene::Create a Scene
+Ouvrir une Scene::Open a Scene
+Quitter::Quit
+Creer une image casio::Create a casio image
+Creer un Empty::Create an Empty
+Nouveau fichier::New file
+Sauvegarder le fichier::Save file
+Mettre a jour::Update
+A propos::About
+Fichier::File
+Edit::Edit
+Aide::Aide
+Supprimer l'Element::Remove Element
+Creer un Prefab::Create a Prefab
+Nom : ::Last name :
+Position::Position
+Image Sélectionée : ::Selected Image :
+Taille::Size
+Fait par : ::Made by :
+Telechargé::Uploaded
+Propriétés de l'element selectionné::Properties of the selected element
+Image Sélectionnée : ::Selected Image:
+Nom du fichier::File name
+Selectionnez l'emplacement::Select location
+Valider::Validate
+Annuler::Cancel
+confirmation de suppression::deletion confirmation
+Fait par Farhi::Made by Farhi
+Compilateur : Bide.jar fait par Zezombye::Compiler: Bide.jar made by Zezombye
+Valider la suppression::Validate the deletion
+Voulez-vous quitter ?::Do you want to quit?

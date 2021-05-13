@@ -1,0 +1,6 @@
+Onglet::Controle
+TypeForme::EndBox
+Texte::"Stoper ce script ou tout"
+Parametres::[["Label","Stoper "],["Liste",["Ce script","Tout"] ]]
+Color::orange
+Compile::[["CBasic","Stop"]]

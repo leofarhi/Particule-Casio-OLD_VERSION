@@ -1,0 +1,5 @@
+Onglet::Mouvement
+TypeForme::Rectangle
+Texte::ajouter a X
+Parametres::[['Label', 'ajouter a x:'], ['EmptyCercle']]
+Color::bleu_fonce

@@ -1,0 +1,5 @@
+Onglet::Mouvement
+TypeForme::Cercle
+Texte::abscisse X
+Parametres::[['Label', 'abscisse X']]
+Color::bleu_fonce

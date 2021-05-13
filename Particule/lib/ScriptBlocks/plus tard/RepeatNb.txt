@@ -1,0 +1,6 @@
+Onglet::Controle
+TypeForme::Encadrement
+Texte::"Repeter un certains nombre de fois"
+Parametres::[["Label","repeter "],['EmptyCercle'],["Label","fois avec la variable :"],["TexteEtNombre"]]
+Color::orange
+Compile::[["CBasic","RepeatNb"]]

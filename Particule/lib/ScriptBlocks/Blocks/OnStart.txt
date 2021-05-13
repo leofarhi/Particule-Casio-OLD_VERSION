@@ -1,0 +1,6 @@
+Onglet::Evenements
+TypeForme::Vague
+Texte::"Au demarrage"
+Parametres::[["Label","Au demarrage"]]
+Color::jaune
+Compile::[["CBasic","OnStart"]]

@@ -1,0 +1,5 @@
+Onglet::Opérateurs
+TypeForme::Cercle
+Texte::Convertit Int/Float/string
+Parametres::[['Label', 'Convertit '],['EmptyCercle'],['Label', 'en '],["Liste",["int","float",string] ]]
+Color::vert

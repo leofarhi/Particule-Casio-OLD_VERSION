@@ -1,0 +1,5 @@
+Onglet::Variable
+TypeForme::Cercle
+Texte::GetVariable
+Parametres::[["Liste",[]]]
+Color::orange_fonce

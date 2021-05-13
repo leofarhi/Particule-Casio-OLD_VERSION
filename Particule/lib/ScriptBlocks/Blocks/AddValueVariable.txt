@@ -1,0 +1,5 @@
+Onglet::Variable
+TypeForme::Rectangle
+Texte::ajouter une valeur à une variable
+Parametres::[['Label', 'ajouter'],["Liste",[]],['Label', 'à'],['EmptyCercle']]
+Color::orange_fonce

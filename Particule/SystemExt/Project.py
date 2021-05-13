@@ -1,0 +1,17 @@
+ElementSlc=None
+action=""
+FolderProject=""
+Elements=[]
+selected=None
+CamX=0
+CamY=0
+ImageLoad=[]
+AllComponentListRep=[]
+AllComponentList=[]
+LastLenAllComponentList=0
+AllType=["Default","Player","Environnement"]
+TypeOrdre=["Default","Environnement","Player"]
+Platforms=["Graph 35 à 100 (CFX)","Graph 25/25+ (Pro) (fx-7400)","Graph 35+USB/75/85/95 (SD)","Graph 100/100+ (AFX)","ClassPad 300/330","Fx-CG 10/20,Fx-CP 400","Graph 90+E"]
+AllTypeVariable=["int","float","bool","string","image"]
+DefaultValueVariable=[0,0.0,True,"",'None']
+ObligeVar=["InEditor",'OnStart','OnUpdate']
