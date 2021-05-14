@@ -5,8 +5,8 @@
 # Directory defines
 TCDIR = C:\Users\leofa\Applications\CASIO\fx9860 Dev Kit\OS\SH
 OSDIR = C:\Users\leofa\Applications\CASIO\fx9860 Dev Kit\OS
-APPDIR = C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2
-OUTDIR = C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel V2\Debug
+APPDIR = C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule
+OUTDIR = C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Debug
 
 ################
 # Main Defines
@@ -14,7 +14,7 @@ SH_EXEDIR=$(TCDIR)\bin
 
 # Hitachi SH C/C++ Compiler02 phase
 SHCC02_EXE=shc.exe
-SHCC02_DEP="$(OSDIR)\FX\include\fxlib.h" "MonochromeLib.h" "time.h" "Images.h" "ClassParticule.h" "usefull.h" "Component.h"
+SHCC02_DEP="$(OSDIR)\FX\include\fxlib.h" "MonochromeLib.h" "time.h" "usefull.h" "Announcement.h" "ParticuleEngine.h" "List.h" "Ressources.h"
 
 # Hitachi SH Assembler03 phase
 SHASM03_EXE=asmsh.exe
@@ -35,17 +35,11 @@ FILEOBJ1="$(OUTDIR)\$(FILE1).obj"
 FILE2=Tutoriel
 FILESRC2="$(APPDIR)\$(FILE2).cpp"
 FILEOBJ2="$(OUTDIR)\$(FILE2).obj"
-FILE3=ClassParticule
+FILE3=usefull
 FILESRC3="$(APPDIR)\$(FILE3).cpp"
 FILEOBJ3="$(OUTDIR)\$(FILE3).obj"
-FILE4=usefull
-FILESRC4="$(APPDIR)\$(FILE4).cpp"
-FILEOBJ4="$(OUTDIR)\$(FILE4).obj"
-FILE5=Component
-FILESRC5="$(APPDIR)\$(FILE5).cpp"
-FILEOBJ5="$(OUTDIR)\$(FILE5).obj"
 RFILE=FXADDINror
-USERALLOBJ=$(FILEOBJ0) $(FILEOBJ1) $(FILEOBJ2) $(FILEOBJ3) $(FILEOBJ4) $(FILEOBJ5)
+USERALLOBJ=$(FILEOBJ0) $(FILEOBJ1) $(FILEOBJ2) $(FILEOBJ3)
 
 #######################
 # nmake "all" statement
@@ -131,40 +125,6 @@ $(FILEOBJ3) : $(FILESRC3) $(SHCC02_DEP)
 -chgincpath
 -errorpath
 $(FILESRC3)
--lang=cpp
--nologo
--debug
-<<
-
-$(FILEOBJ4) : $(FILESRC4) $(SHCC02_DEP)
-	"$(SH_EXEDIR)\$(SHCC02_EXE)" -subcommand=<<
--cpu=sh3
--include="$(OSDIR)\FX\include","$(APPDIR)"
--objectfile=$(FILEOBJ4)
--show=source
--listfile="$(OUTDIR)\$(FILE4).lst"
--size
--noinline
--chgincpath
--errorpath
-$(FILESRC4)
--lang=cpp
--nologo
--debug
-<<
-
-$(FILEOBJ5) : $(FILESRC5) $(SHCC02_DEP)
-	"$(SH_EXEDIR)\$(SHCC02_EXE)" -subcommand=<<
--cpu=sh3
--include="$(OSDIR)\FX\include","$(APPDIR)"
--objectfile=$(FILEOBJ5)
--show=source
--listfile="$(OUTDIR)\$(FILE5).lst"
--size
--noinline
--chgincpath
--errorpath
-$(FILESRC5)
 -lang=cpp
 -nologo
 -debug

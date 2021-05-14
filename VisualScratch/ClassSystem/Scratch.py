@@ -51,7 +51,6 @@ class Scratch:
         #Constantes
         self.ScratchBlockIcon = []
         self.FolderProject = ""
-        self.RepFolderSaveLoad = "__pycache__"
         self.RepFolderBlocks = "Blocks"
         self.RepFolderPython = "Python"
         self.TypeBox = ["Editeur", "Evenements", "Controle", "Variable", "Opérateurs", "Capteurs", "Mouvement", "Apparence",
@@ -130,12 +129,11 @@ class Scratch:
     def SaveAllWidget(self):
         if self.file==None:
             return
-        if self.RepFolderSaveLoad == "": return
         Lst = []
         #read_file.save(self.RepFolderSaveLoad + "/settings.txt", "self.Variables", str(self.Variables))
         for forme in list(self.WindCanvas.AllWidget.values()):
             Lst.append(forme.SaveData())
-        read_file.save(self.RepFolderSaveLoad + "/"+self.file, "AllWidget", str(Lst))
+        read_file.save(self.file, "AllWidget", str(Lst))
         for forme in list(self.WindCanvas.AllWidget.values()):
             if forme.ParentBlock == None:
                 forme.update()
@@ -148,7 +146,7 @@ class Scratch:
                 forme.RemoveSelf()
         self.WindCanvas.CamX = 0
         self.WindCanvas.CamY = 0
-        Lst = read_file.GetList(self.RepFolderSaveLoad + "/"+file, "AllWidget")
+        Lst = read_file.GetList(file, "AllWidget")
         if Lst == False: return
         LstWid = []
         for i in range(len(Lst)):

@@ -67,6 +67,7 @@ from SystemExt import download as Dwn
 from lib import AddBlockTk
 import pygame
 from inspect import isclass
+import importlib
 from pkgutil import iter_modules
 import pkgutil
 from pathlib import Path
@@ -140,6 +141,8 @@ class Particule:
     def __init__(self,FolderProject=os.getcwd()+"/ProjectFolder"):
         self.Process = []
         self.version = "2021.1.0"
+        self.VisualScratchPath="C:\\Users\\leofa\\output\\main\\main.exe"
+
         self.rep_sys = os.getcwd()
         self.FolderProject = FolderProject
         self.All_UUID = []
@@ -147,8 +150,6 @@ class Particule:
 
         self.SLN_System = SLN_System(self)
 
-        path = os.path.dirname(os.path.abspath(__file__))
-        path += "/ClassParticule/Components/"
         #print(path)
 
         #search_path = [path]  # set to None to see all modules importable from sys.path
@@ -158,19 +159,10 @@ class Particule:
         # package_dir = Path(__file__).resolve().parent+"/Components/"
         # print(package_dir)
         self.AllComponent = []
-        for (_, module_name, _) in iter_modules([path]):
-
-            # import the module and iterate through its attributes
-            module = import_module(f"ClassParticule.Components.{module_name}")
-            for attribute_name in dir(module):
-                attribute = getattr(module, attribute_name)
-
-                if isclass(attribute):
-                    # Add the class to this package's variables
-                    globals()[attribute_name] = attribute
-                #print(attribute_name)
-                if attribute_name+".py" in os.listdir(path) and (not attribute in self.AllComponent):
-                    self.AllComponent.append(attribute)
+        self.PersonnalModule = []
+        self.GetCodeFromVisualScratch()
+        sys.path.append(self.FolderProject+ "/Library/ScriptEditor")
+        self.LoadComponents()
         #print(self.AllComponent)
         # print(getattr(sys.modules[__name__], "Camera"))
         # getattr(module, class_name)
@@ -245,8 +237,25 @@ class Particule:
 
         #self.CanevasAsset.UpdateScreen()
         self.Mafenetre.protocol("WM_DELETE_WINDOW", self.on_closing)
-
         self.Mafenetre.mainloop()
+
+    def GetCodeFromVisualScratch(self):
+        for i in os.listdir(self.FolderProject+ "/Library/ScriptEditor/"):
+            if ".py" in i:
+                os.remove(self.FolderProject+ "/Library/ScriptEditor/"+i)
+        process = subprocess.Popen([self.VisualScratchPath,self.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
+        #print(eval(process.stdout.readlines()[-1]))
+        code=eval(process.stdout.readlines()[-1])
+        PythonCode=code[0]
+        for i in PythonCode:
+            name = os.path.basename(i[0])
+            name = os.path.splitext(name)[0]
+            with open(self.FolderProject+ "/Library/ScriptEditor/"+name+".py","w",encoding="ascii") as fic:
+                fic.write(i[1])
+
+
+
+
     def on_closing(self):
         if messagebox.askokcancel("Quit", TradTxt("Voulez-vous quitter ?")):
             self.Mafenetre.destroy()
@@ -259,11 +268,53 @@ class Particule:
         self.fullScreenState = False
         self.Mafenetre.attributes("-fullscreen", self.fullScreenState)
 
+    def LoadComponents(self):
+        path = os.path.dirname(os.path.abspath(__file__))
+        path += "/ClassParticule/Components/"
+        path2 = self.FolderProject+ "/Library/ScriptEditor"
+        for (_, module_name, _) in iter_modules([path]):
+
+            # import the module and iterate through its attributes
+            module = import_module(f"ClassParticule.Components.{module_name}")
+            for attribute_name in dir(module):
+                attribute = getattr(module, attribute_name)
+
+                if isclass(attribute):
+                    # Add the class to this package's variables
+                    globals()[attribute_name] = attribute
+                # print(attribute_name)
+                if attribute_name + ".py" in os.listdir(path) and (not attribute in self.AllComponent):
+                    self.AllComponent.append(attribute)
+        for i in self.PersonnalModule:
+            self.AllComponent.remove(i)
+        self.PersonnalModule=[]
+        PersonnalModuleName=[]
+        for (_, module_name, _) in iter_modules([path2]):
+
+            # import the module and iterate through its attributes
+
+            module = import_module(module_name)
+            #print(module, module_name)
+            #getattr(module, module_name)
+            for attribute_name in dir(module):
+                attribute = getattr(module, attribute_name)
+
+                if isclass(attribute):
+                    # Add the class to this package's variables
+                    globals()[attribute_name] = attribute
+                # print(attribute_name)
+                if attribute_name + ".py" in os.listdir(path2):
+                    importlib.reload(module)
+                if attribute_name + ".py" in os.listdir(path2) and (not str(attribute) in PersonnalModuleName):
+                    PersonnalModuleName.append(str(attribute))
+                    self.PersonnalModule.append(attribute)
+                    self.AllComponent.append(attribute)
+
     def CreateUUID(self,UUID = False):
         if UUID == False:
-            UUID = str(uuid.uuid4())
+            UUID = "UUID_"+(str(uuid.uuid4()).replace("-","_"))
             while UUID in self.All_UUID:
-                UUID= str(uuid.uuid4())
+                UUID = "UUID_"+(str(uuid.uuid4()).replace("-","_"))
             self.All_UUID.append(UUID)
         else:
             if UUID not in self.All_UUID:
@@ -272,19 +323,42 @@ class Particule:
     def VerifFocusSet(self):
         self.Scene.surface.focus_set()
 
-    def UpdateOnFocus(self,event,*args):
-        if str(event.widget)!=".":
-            return
+    def UpdateOnFocus(self,event=None,*args):
+        if event!=None:
+            if str(event.widget)!=".":
+                return
         print("FocusMainWindow")
         if self.UpdateOnFocus in self.Process:
             return
         self.Process.append(self.UpdateOnFocus)
         progress = ProgressBarPopup(self.Mafenetre)
-        self.FolderWindow.CreateMetaFile()
+
+        self.GetCodeFromVisualScratch()
+        self.LoadComponents()
+        self.LoadComponents()
         progress.SetValue(30)
+        self.FolderWindow.CreateMetaFile()
+        progress.SetValue(50)
         self.FolderWindow.GetAll_UUID()
         progress.SetValue(70)
+        self.SLN_System.UpdateSLN()
+        progress.SetValue(90)
         self.FolderWindow.update_search_files()
+        progress.SetValue(95)
+        ItemSelected = None
+        if self.Hierarchy.ItemSelected!=None:
+            ItemSelected = self.Hierarchy.ItemSelected.ID
+        tempSlc = self.Hierarchy.t.selection()
+        self.SaveData.SaveScene()
+        if self.SaveData.PathScene!=None:
+            self.SaveData.LoadScene(self.SaveData.PathScene)
+            time.sleep(0.02)
+            self.ScreenOrganization.ChangeInspector("Inspector")
+            self.Hierarchy.t.selection_set(tempSlc)
+            if ItemSelected != None:
+                ItemSelected=self.Hierarchy.allGameObjectOnScene[self.Hierarchy.t.item(ItemSelected)['values'][0]]
+                self.Hierarchy.ItemSelected=ItemSelected
+                self.Inspector.UpdateItemSelected()
         progress.SetValue(100)
         progress.destroy()
         self.Process.remove(self.UpdateOnFocus)

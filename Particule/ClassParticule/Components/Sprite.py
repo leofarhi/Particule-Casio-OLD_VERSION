@@ -62,6 +62,7 @@ class Sprite(Component):
 
     def Destroy(self):
         self.Particule.Scene.surface.delete(self.Mesh)
+        Component.Destroy(self)
 
     def SaveDataDict(self):
         data = Component.SaveDataDict(self)

@@ -7,6 +7,7 @@ class DragAndDropSys:
         self.IsDarg = False
     def Drop(self,Data=None):
         if self.IsDarg:
+            self.IsDarg = False
             #print("Drop")
             if Data!=None:
                 self.Data = Data
@@ -17,7 +18,6 @@ class DragAndDropSys:
                 if fx<=mouseX<=fx+fw and fy<=mouseY<=fy+fh:
                     frame.Drop(self.Data)
         self.Data = {}
-        self.IsDarg = False
     def Drag(self,Data=None):
         #print("Drag")
         if Data != None:

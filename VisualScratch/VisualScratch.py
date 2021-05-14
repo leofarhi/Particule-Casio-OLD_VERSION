@@ -1,6 +1,12 @@
 __author__ = 'Farhi'
 
 from sys import platform as _platform
+import sys,os
+
+abspath = os.path.abspath(__file__)
+dname = os.path.dirname(abspath)
+os.chdir(dname)
+#print(dname)
 
 if _platform == "win32":
     Game_OS = "win"
@@ -60,7 +66,6 @@ import ClassSystem.read_file
 #sys.setrecursionlimit(10000)
 from ClassSystem.ScreenOrganization import ScreenOrganization
 from ClassSystem.MoveObject import MoveObject
-from ClassSystem.ScreenOrganization import ScreenOrganization
 from PIL import ImageTk,Image
 from ClassSystem.BlockSys import *
 
@@ -88,7 +93,7 @@ class Loading:
 
 
 class VisualScratch:
-    def __init__(self,PathSLN = None):
+    def __init__(self,PathSLN = None,BuildMode=False):
         if PathSLN == None:
             self.SLN = {"PathParticule": "","Version": "2021.1.0","Files": []}
         else:
@@ -97,6 +102,8 @@ class VisualScratch:
             self.SLN = json.loads(dataSLN)
         self.LastTexte = [""] * 20
         self.Mafenetre = Tk()
+        if BuildMode:
+            self.Mafenetre.withdraw()
         self.Mafenetre.title('Visual Scratch')
         self.Mafenetre.grid_columnconfigure(0, weight=1)
         self.Mafenetre.grid_rowconfigure(0, weight=1)
@@ -119,6 +126,12 @@ class VisualScratch:
         self.ScreenOrganization.Bind_Setup()
 
         self.Mafenetre.protocol("WM_DELETE_WINDOW", self.on_closing)
+        if BuildMode:
+            code=(self.GetAllScriptPython(),self.GetAllScriptCasio())
+            self.Mafenetre.destroy()
+            print(code)
+            sys.exit(code)
+            return
         self.Mafenetre.mainloop()
 
     def OpenFile(self):
@@ -166,6 +179,32 @@ class VisualScratch:
             return a
         else:
             return ""
+
+    def GetAllScriptCasio(self):
+        self.Scratch.SaveAllWidget()
+        lst = []
+        for i in self.Hierarchy.ALLfiles:
+            name = os.path.basename(i)
+            name = os.path.splitext(name)[0]
+            self.Hierarchy.currentSelection = i
+            self.Scratch.LoadAllWidget(i)
+            code = self.Scratch.GetCodeLst()
+            CasioCode = self.GenerateCasioCode(code)
+            lst.append((i,CasioCode))
+        return lst
+
+    def GetAllScriptPython(self):
+        self.Scratch.SaveAllWidget()
+        lst = []
+        for i in self.Hierarchy.ALLfiles:
+            name = os.path.basename(i)
+            name = os.path.splitext(name)[0]
+            self.Hierarchy.currentSelection = i
+            self.Scratch.LoadAllWidget(i)
+            code = self.Scratch.GetCodeLst()
+            PythonCode = self.GeneratePythonCode(code)
+            lst.append((i,PythonCode))
+        return lst
 
 
     def NewFile(self):

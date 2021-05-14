@@ -37,47 +37,29 @@ extern "C"
 //  retval  :   1 = No error / 0 = Error
 //
 //****************************************************************************
-#include "ClassParticule.h"
+#include "Announcement.h"
+#include "ParticuleEngine.h"
+#include "List.h"
+//#include "ClassParticule.h"
 //#include "string.h"
 #include "MonochromeLib.h"
-#include "Images.h"
+#include "Ressources.h"
+
 
 
 int main() {
-    int SceneInBuild[] = {0};
+    SceneManager sceneManager;
+    //reference croise
+    sceneManager.LoadScene(0);
 
-    SceneManager scene(SceneInBuild);
-
-    ML_display_vram();
-
-    //Bdisp_AllClr_DDVRAM();
-
-
-    /*locate(1, 4);
-    Print((unsigned char*)"This application is");
-    locate(1, 5);
-    Print((unsigned char*)" sample Add-In.");
-    locate(1, 6);
-    Print((unsigned char*)" create by Farhi");*/
-
-
-    while (1) {
+    while (true)
+    {
         ML_clear_vram();
-        for (int i(0); i < scene.AllElemLength; ++i)
-        {
-            if (scene.AllElem[i]->x - scene.CamX + scene.AllElem[i]->w > 0 && scene.AllElem[i]->x - scene.CamX < 128 && scene.AllElem[i]->y - scene.CamY + scene.AllElem[i]->h>0 && scene.AllElem[i]->y - scene.CamY < 64) {
-                for (int j(0); j < scene.AllElem[i]->AllCompoLength; ++j)
-                {
-                    scene.AllElem[i]->AllCompo[j]->OnUpdate();
-                }
-                scene.AllElem[i]->afficher(scene.CamX, scene.CamY);
-            }
-        }
+        sceneManager.UpdateScene();
 
         Sleep(100);
         ML_display_vram();
     }
-
     return 1;
 }
 

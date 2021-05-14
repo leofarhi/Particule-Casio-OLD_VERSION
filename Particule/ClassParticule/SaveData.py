@@ -12,6 +12,7 @@ from ClassParticule.Layer import Layer
 class SaveData:
     def __init__(self,Particule):
         self.Particule=Particule
+        self.PathScene=None
 
     def GetAll_UUID_Scene(self,path):
         with open(path,"r") as fic:
@@ -67,6 +68,7 @@ class SaveData:
         with open(self.Particule.FolderProject+"/"+path,"r") as fic:
             dataTxt = fic.read()
         data = json.loads(dataTxt)
+        self.PathScene = path
         self.Particule.Scene.scenes = [data["NameScene"]]
         dataGameObject = data["GameObjects"]
         gameObjects = []

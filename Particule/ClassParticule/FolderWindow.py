@@ -15,6 +15,7 @@ from ClassSystem.EditorWindow import EditorWindow
 from ClassParticule.Texture import Texture
 import tkinter as tk
 from tkinter import simpledialog
+import psutil
 
 class FolderWindow(EditorWindow):
     def __init__(self,RootWindow):
@@ -219,8 +220,8 @@ class FolderWindow(EditorWindow):
             return
         fileName = self.repertoirSlc + "/" + name +".SBAsset"
         with open(fileName,"w") as fic:
-            fic.write("AllWidget::[]")
-        self.update_search_files()
+            fic.write("""AllWidget::[[100, 100, 'Forme0', [None], None, [['Label', None]], 'InEditor', [['Label', "Dans l'Editeur"]], []]]""")
+        self.Particule.UpdateOnFocus()
 
     def popup(self, event):
         """action in event of button 3 on tree view"""
@@ -536,7 +537,9 @@ class FolderWindow(EditorWindow):
             else:
                 if self.file_list[self.current_file_index].split(".")[-1] == "particule":
                     self.Particule.SaveData.LoadScene(self.detailed_file_list[self.current_file_index])
-
+                if self.file_list[self.current_file_index].split(".")[-1] == "SBAsset":
+                    if not "main.exe" in (i.name() for i in psutil.process_iter()):
+                        subprocess.Popen([self.Particule.VisualScratchPath, self.Particule.FolderProject + '/SLN/Solution.sls'])
 
     def file_properties_window(self):
         # Check number of files selected

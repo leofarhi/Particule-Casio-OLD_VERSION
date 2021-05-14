@@ -1,6 +1,7 @@
 import inspect
 from Particule import *
 from ClassParticule.Vector2 import Vector2
+from ClassParticule.Texture import Texture
 from ClassSystem.TypeGUI import TypeGUI
 
 from ClassParticule.Object import Object
@@ -72,7 +73,48 @@ class Component(Object):
         self.gameObject.ListOfComponent.remove(self)
         if (self.myFrame!=None):
             self.myFrame.destroy()
+        for i in self._valueGUI:
+            i.destroy()
         self.Particule.Inspector.UpdateItemSelected()
+
+    def GetInitValueAttributCasio(self,Type):
+        if Type == "int":
+            return "0"
+        elif Type == "float":
+            return "0"
+        elif Type == "string":
+            return '""'
+        elif Type == "bool":
+            return "false"
+        elif Type == "Vector2":
+            return "Vector2()"
+        elif Type == "Texture":
+            return 'Texture()'
+
+    def BuildValue(self):
+        if type(self).__name__ == "Transform":
+            return ("\n","\n")
+        parametres=","
+        for i in self.AttributVisible:
+            var = getattr(self,i)
+            if type(var) in [int,float,str,bool]:
+                if type(var) is str:
+                    parametres +='(unsigned char*)"'
+                parametres+= var
+                if type(var) is str:
+                    parametres+='"'
+            else:
+                if type(var) is Vector2:
+                    parametres+="new Vector2("+str(var.x)+","+str(var.y)+")"
+                elif type(var) is Texture:
+                    path = os.path.basename(var.path)
+                    path = os.path.splitext(path)[0]
+                    parametres +='new Texture("'+str(var.name)+'",'+str(var.width)+","+str(var.height)+","+path+',"'+var.ID+'")'
+                else:
+                    parametres +=var.ID
+            parametres+=","
+        return (type(self).__name__+"* "+self.ID+";\n",
+                self.ID+" = new "+type(self).__name__+'('+self.gameObject.ID+parametres+'"'+self.ID+'");\n')
 
 
 

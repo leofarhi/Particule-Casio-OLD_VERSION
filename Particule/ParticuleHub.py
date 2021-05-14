@@ -46,10 +46,12 @@ class ParticuleHub:
         M.create_rep(Folder + "/Assets/MyAsset")
         M.create_rep(Folder + "/Library")
         M.create_rep(Folder + "/Library/ImagesBmpCache")
+        M.create_rep(Folder + "/Library/ScriptEditor")
         M.create_rep(Folder + "/Library/lib")
         M.create_rep(Folder + "/Package")
         M.create_rep(Folder + "/ProjectSettings")
         M.create_rep(Folder + "/Temp")
+        M.create_rep(Folder + "/Temp/Compile")
         M.create_rep(Folder + "/SLN")
         shutil.copyfile("lib/vide.png", Folder + "/Library/lib/vide.png")
 

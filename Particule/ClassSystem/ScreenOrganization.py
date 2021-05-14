@@ -24,6 +24,10 @@ from SystemExt import File_Folder as Fl
 class ScreenOrganization:
     def __init__(self,_Particule):
         self.Particule=_Particule
+
+        if not "BuildSettings.txt" in os.listdir(self.Particule.FolderProject + "/ProjectSettings"):
+            rf.save(self.Particule.FolderProject + "/ProjectSettings/BuildSettings.txt","ScenesInBuild",[])
+
         self.CreateDefaultScene()
 
         self.Particule.SaveData = SaveData(self.Particule)
@@ -75,7 +79,7 @@ class ScreenOrganization:
 
         pwTop = PanedWindow(self.GridCenterTop, orient='horizontal')
         pwTop.Particule = self.Particule
-        self.GridCenter = Notebook(pwTop,width=980,height=500)
+        self.GridCenter = Notebook(pwTop,width=930,height=500)
         self.GridCenter.pack(fill=BOTH, expand=True)
         self.GridCenterLeft = Notebook(pwTop,width=230,height=500)
         self.GridCenterLeft.pack(fill=BOTH, expand=True)

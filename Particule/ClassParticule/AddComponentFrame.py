@@ -30,7 +30,7 @@ class AddComponentFrame(EditorWindow):
         self.frame_Compo.pack(fill=BOTH, expand=True)
 
         self.frame_AllCompo = ScrollableFrame(self.frame_Compo,bt.winfo_width())
-        self.frame_AllCompo.pack(fill=BOTH, expand=True)
+        self.frame_AllCompo.pack(fill=X, expand=True)
 
         #self.Particule.AllComponent=range(100)
         self.lstButton=[]

@@ -1,5 +1,6 @@
 extern "C"
 {
+#pragma once
 #ifndef USEFULL_H
 #define USEFULL_H
 

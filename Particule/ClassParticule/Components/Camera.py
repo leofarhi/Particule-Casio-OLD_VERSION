@@ -28,3 +28,4 @@ class Camera(Component):
                                             int((x-self.Particule.Scene.x+127)*z),int((y+self.Particule.Scene.y+63)*z))
     def Destroy(self):
         self.Particule.Scene.surface.delete(self.Mesh)
+        Component.Destroy(self)

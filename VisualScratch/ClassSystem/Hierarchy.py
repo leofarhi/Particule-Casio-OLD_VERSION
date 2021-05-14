@@ -22,14 +22,14 @@ class Hierarchy(EditorWindow):
         self.listBox.delete(0, tk.END)
         self.ALLfiles = self.Sys.SLN["Files"]
         for i in self.ALLfiles:
-            self.listBox.insert(0,i.split("/")[-1])
+            self.listBox.insert('end',i.split("/")[-1])
 
     def callback(self,event):
         selection = event.widget.curselection()
         if (len(selection)>0):
             self.currentSelection = self.listBox.get(selection)
             self.Sys.Scratch.SaveAllWidget()
-            self.Sys.Scratch.LoadAllWidget(self.listBox.get(selection))
+            self.Sys.Scratch.LoadAllWidget(self.ALLfiles[selection[0]])#self.listBox.get(selection))
 
     def RecursionFoundFile(self):
         pass

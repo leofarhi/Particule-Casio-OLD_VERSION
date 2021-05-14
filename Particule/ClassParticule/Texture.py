@@ -1,6 +1,6 @@
 from Particule import *
 from ClassParticule.Object import Object
-from ClassParticule.Component import Component
+
 from PIL import ImageFilter
 class Texture(Object):
     def __init__(self, Particule,width=None,height=None,Path="Library/lib/vide.png", name="", scene="", **kwargs):

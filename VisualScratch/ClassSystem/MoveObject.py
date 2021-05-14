@@ -123,7 +123,7 @@ class MoveObject:
                         self.DragAndInOtherBlock.NextBlockIn[self.NbBoxCollider] = None
                         tempB.ParentBlock = None
 
-                        MoveWidget(tempB, tempB.x, tempB.y, tempB.x + 20, tempB.y + 20)
+                        self.WindCanvas.MoveWidget(tempB, tempB.x, tempB.y, tempB.x + 20, tempB.y + 20)
                         tempB.update()
 
                     # self.DragAndInOtherBlock.GroupeWidget+=self.WidgetIsDrabed.GroupeWidget

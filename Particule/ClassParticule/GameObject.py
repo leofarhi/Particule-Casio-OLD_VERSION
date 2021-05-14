@@ -45,8 +45,9 @@ class GameObject(Object):
             if name == (compo.__name__).split(".")[-1]:
                 self.AddComponent(compo)
     def Destroy(self):
-        for i in self.ListOfComponent:
-            i.Destroy()
+
+        for i in range(len(self.ListOfComponent)):
+            self.ListOfComponent[i].Destroy()
     def BroadcastMessage(self):
         pass
     def CompareTag(self):
