@@ -1,7 +1,7 @@
 from Particule import *
 from ClassSystem.ScrollableFrame import ScrollableFrame
 from ClassSystem.CheckboxTreeview import *
-
+from PIL import ImageFilter
 class BuildSettings(EditorWindow):
     def __init__(self, RootWindow):
         #bt = RootWindow.Particule.Inspector.Bouton_AddComponent
@@ -81,27 +81,37 @@ class BuildSettings(EditorWindow):
 
     def BuildAll(self,*args):
         self.Particule.SaveData.SaveScene()
-        AllImages=[]
+        AllImages=""
+        CodeOfScenes = ""
+
         path = self.Particule.FolderProject + "/Library/ImagesBmpCache"
         for i in os.listdir(path):
             if ".meta" in i : continue
             name = os.path.basename(i)
             name = os.path.splitext(name)[0]
             img = SpriteCoder.ConvertImg(path+"/"+i,name)[0]
-            AllImages.append(img)
+            AllImages+=img+"\n"
+
+            Img = ImageTk.Image.open(path+"/"+i)
+            width = Img.width
+            height = Img.height
+            CodeOfScenes += "Texture* Texture_"+name+'= new Texture("Texture",' + str(width) + "," + str(height) + "," + name+');\n'
+
         #print(AllImages)
         scenes = rf.GetList(self.Particule.FolderProject + "/ProjectSettings/BuildSettings.txt", "ScenesInBuild")
 
-        CodeOfScenes=""
         for ind,i in enumerate(scenes):
             if i[1]:
-                CodeOfScenes+="if (index == "+str(ind)+")"
+                CodeOfScenes+="if (index == "+str(ind)+"){\n"
                 code = ""
                 components = ""
                 self.Particule.SaveData.LoadScene(i[0])
                 for i in self.Particule.Hierarchy.allGameObjectOnScene.items():
                     code += "GameObject* "+i[0]+'= new GameObject(newScene, "'+i[1].name+'","'+i[0]+'");\n'
                     code += i[0]+'->transform->position.Set('+str(i[1].transform.position.x)+','+str(i[1].transform.position.y)+');\n'
+                    code += i[0] + '->transform->localPosition.Set(' + str(i[1].transform.localPosition.x) + ',' + str(i[1].transform.localPosition.y) + ');\n'
+                    if i[1].transform.parent!=None:
+                        code+=i[0]+"->transform->SetParent("+i[1].transform.parent.gameObject.ID+"->transform);"
                     for compo in i[1].ListOfComponent:
                         data = compo.BuildValue()
                         code = data[0]+code
@@ -112,7 +122,11 @@ class BuildSettings(EditorWindow):
                 code +=components
                 CodeOfScenes +=code
                 CodeOfScenes +="\n}"
-        desti = self.FolderProject + "/Temp/Compile"
+
+        Announcement,CasioCode = self.GetCodeCasioFromVisualScratch()
+
+
+        desti = self.Particule.FolderProject + "/Temp/Compile"
         for i in os.listdir(desti):
             try:
                 os.remove(desti + "/" + i)
@@ -123,3 +137,43 @@ class BuildSettings(EditorWindow):
                 shutil.copy("lib/Moteur/SDK Graph 75 85 95/" + i, desti + "/" + i)
             except:
                 shutil.copytree("lib/Moteur/SDK Graph 75 85 95/" + i, desti + "/" + i)
+
+        with open(desti+"/Ressources.h","r") as fic:
+            txt=fic.read()
+        txt = txt.replace("//AddImages",AllImages)
+        with open(desti+"/Ressources.h","w") as fic:
+            fic.write(txt)
+
+        with open(desti+"/ParticuleEngine.h","r") as fic:
+            txt=fic.read()
+        txt = txt.replace("//AddScenes",CodeOfScenes)
+        txt = txt.replace("//Components", CasioCode)
+        with open(desti+"/ParticuleEngine.h","w") as fic:
+            fic.write(txt)
+
+        with open(desti+"/Announcement.h","r") as fic:
+            txt=fic.read()
+        txt +=Announcement
+        with open(desti+"/Announcement.h","w") as fic:
+            fic.write(txt)
+
+        subprocess.Popen(r'explorer /select,"' + desti+"/ParticuleEngine.h" + '"')
+
+
+    def GetCodeCasioFromVisualScratch(self):
+        for i in os.listdir(self.Particule.FolderProject+ "/Library/ScriptEditor/"):
+            if ".py" in i:
+                os.remove(self.Particule.FolderProject+ "/Library/ScriptEditor/"+i)
+        process = subprocess.Popen([self.Particule.VisualScratchPath,self.Particule.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
+        #print(eval(process.stdout.readlines()[-1]))
+        code=eval(process.stdout.readlines()[-1])
+        CasioCodeLst=code[1]
+        CasioCode=""
+        for i in CasioCodeLst:
+            CasioCode+=i[1]+"\n"
+        Announcement="\n"
+        for i in CasioCodeLst:
+            name = os.path.basename(i[0])
+            name = os.path.splitext(name)[0]
+            Announcement+="class "+name+";\n"
+        return (Announcement,CasioCode)

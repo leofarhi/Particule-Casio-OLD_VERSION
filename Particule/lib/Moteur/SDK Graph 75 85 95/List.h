@@ -138,6 +138,30 @@ public:
         return value;
     }
 
+    T Remove(T obj) {
+        int index = IndexOf(obj);
+        if (index < 0)
+            return NULL;
+
+        if (index == 0)
+            return prepop();
+
+        Node<T>* it = get_node(index);
+
+        if (it == NULL)
+            return NULL;
+
+        if (it->next == NULL)
+            return Pop();
+        T value = it->data;
+        it->next->prev = it->prev;
+        it->prev->next = it->next;
+
+        delete it;
+        Count--;
+        return value;
+    }
+
     void Clear() {
         while(Count>0)
         {

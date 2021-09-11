@@ -4,6 +4,8 @@
 #include "Announcement.h"
 #include "MonochromeLib.h"
 #include "List.h"
+#include <iostream>
+#include <math.h>
 #include "usefull.h"
 #include "Ressources.h"
 
@@ -213,10 +215,8 @@ public:
 };
 class Transform : public Component {
     //https://docs.unity3d.com/ScriptReference/Transform.html
-private:
-    List<GameObject*> childs;
 public:
-
+    List<Transform*> childs;
     int childCount;
     Vector2 eulerAngles;
     //Vector2 forward;
@@ -259,6 +259,25 @@ public:
         //self.up = None
         worldToLocalMatrix = NULL;
     };
+
+    void SetParent(Transform* transform) {
+        if (parent != NULL) {
+            parent->childs.Remove(this);
+        }
+        transform->childs.Add(this);
+        parent = transform;
+    }
+
+    void Update() {
+        childCount = childs.Count;
+        if (parent == NULL) {
+
+        }
+        else
+        {
+            position.Set(localPosition + parent->position);
+        }
+    }
 };
 
 
@@ -420,9 +439,18 @@ public:
     };
 
     void Update() {
+        this->transform->Update();
         for (int i = 0; i < ListOfComponent.Count; i++)
         {
             ListOfComponent[i]->Update();
+        }
+    };
+
+    void Start() {
+        this->transform->Start();
+        for (int i = 0; i < ListOfComponent.Count; i++)
+        {
+            ListOfComponent[i]->Start();
         }
     };
 
@@ -431,7 +459,14 @@ public:
     };
     void BroadcastMessage();
     void CompareTag();
-    void GetComponent();
+    Component* GetComponent(const char* name) {
+        for (int i = 0; i < ListOfComponent.Count; i++)
+        {
+            if (ListOfComponent[i]->name == (unsigned char*)name)
+                return ListOfComponent[i];
+        }
+        return NULL;
+    };
     void GetComponentInChildren();
     void GetComponentInParent();
     void GetComponents();
@@ -465,6 +500,13 @@ public:
         for (int i = 0; i < AllGameObject.Count; i++)
         {
             AllGameObject[i]->Update();
+        }
+    };
+
+    void Start() {
+        for (int i = 0; i < AllGameObject.Count; i++)
+        {
+            AllGameObject[i]->Start();
         }
     };
 
@@ -550,7 +592,7 @@ public:
 
     };
 
-    void OnStart() {
+    void Start() {
         this->velocity.Set(0,0);
     }
     
@@ -568,6 +610,29 @@ class BoxCollider2D : Collider2D {
 public:
     
 };
+
+class Text : MonoBehaviour {
+
+public:
+    unsigned char* text;
+
+    Text(GameObject* gameObject, unsigned char* text, const char* UUID = NULL) : MonoBehaviour("Text", gameObject, UUID) {
+        this->text = text;
+
+    };
+
+    void Update() {
+        float posX = gameObject->transform->position.x;
+        float posY = gameObject->transform->position.y;
+        float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position.x;
+        float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position.y;
+        PrintMini((int)(posX - camX), (int)(posY - camY), (unsigned char*)this->text, MINI_OVER);
+    }
+
+
+};
+
+//Components
 
 
 class SceneManager {
@@ -608,6 +673,13 @@ public:
             AllSceneLoaded[i]->Update();
         }
     };
+
+    void StartScene() {
+        for (int i = 0; i < AllSceneLoaded.Count; i++)
+        {
+            AllSceneLoaded[i]->Start();
+        }
+    }
 private:
     List<Scene*> AllSceneLoaded;
 
@@ -633,8 +705,6 @@ private:
         return NULL;
     }
 };
-
-//Components
 
 
 #endif

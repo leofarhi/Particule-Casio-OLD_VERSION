@@ -51,7 +51,7 @@ int main() {
     SceneManager sceneManager;
     //reference croise
     sceneManager.LoadScene(0);
-
+    sceneManager.StartScene();
     while (true)
     {
         ML_clear_vram();

@@ -5,8 +5,8 @@
 # Directory defines
 TCDIR = C:\Users\leofa\Applications\CASIO\fx9860 Dev Kit\OS\SH
 OSDIR = C:\Users\leofa\Applications\CASIO\fx9860 Dev Kit\OS
-APPDIR = C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule
-OUTDIR = C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Debug
+APPDIR = C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95
+OUTDIR = C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Debug
 
 ################
 # Main Defines

@@ -10,7 +10,7 @@ if exist FXADDINror.bin  del FXADDINror.bin
 cd ..
 if not exist debug\FXADDINror.bin  goto error
 
-"C:\Users\leofa\Applications\CASIO\fx9860 Dev Kit\Tools\MakeAddinHeader363.exe" "C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule"
+"C:\Users\leofa\Applications\CASIO\fx9860 Dev Kit\Tools\MakeAddinHeader363.exe" "C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95"
 if not exist TUTORIEL.G1A  goto error
 echo Build has completed.
 goto end

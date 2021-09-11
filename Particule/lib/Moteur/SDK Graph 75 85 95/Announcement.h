@@ -12,3 +12,4 @@ class SceneManager;
 class Texture;
 class Camera;
 class Image;
+class Text;

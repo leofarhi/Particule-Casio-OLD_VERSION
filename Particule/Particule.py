@@ -141,7 +141,7 @@ class Particule:
     def __init__(self,FolderProject=os.getcwd()+"/ProjectFolder"):
         self.Process = []
         self.version = "2021.1.0"
-        self.VisualScratchPath="C:\\Users\\leofa\\output\\main\\main.exe"
+        self.VisualScratchPath="C:\\Users\\leofa\\OneDrive\\Documents\\PycharmProjects\\Particule-Casio\\VS Out\\main\\main.exe"
 
         self.rep_sys = os.getcwd()
         self.FolderProject = FolderProject
@@ -247,11 +247,14 @@ class Particule:
         #print(eval(process.stdout.readlines()[-1]))
         code=eval(process.stdout.readlines()[-1])
         PythonCode=code[0]
-        for i in PythonCode:
-            name = os.path.basename(i[0])
-            name = os.path.splitext(name)[0]
-            with open(self.FolderProject+ "/Library/ScriptEditor/"+name+".py","w",encoding="ascii") as fic:
-                fic.write(i[1])
+        try:
+            for i in PythonCode:
+                name = os.path.basename(i[0])
+                name = os.path.splitext(name)[0]
+                with open(self.FolderProject+ "/Library/ScriptEditor/"+name+".py","w",encoding="ascii") as fic:
+                    fic.write(i[1])
+        except:
+            return
 
 
 

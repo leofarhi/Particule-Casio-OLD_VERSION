@@ -109,7 +109,14 @@ class Component(Object):
                 elif type(var) is Texture:
                     path = os.path.basename(var.path)
                     path = os.path.splitext(path)[0]
+                    parametres += "Texture_"+path
+                    """
+                elif type(var) is Texture:
+                    path = os.path.basename(var.path)
+                    path = os.path.splitext(path)[0]
                     parametres +='new Texture("'+str(var.name)+'",'+str(var.width)+","+str(var.height)+","+path+',"'+var.ID+'")'
+                    """
+
                 else:
                     parametres +=var.ID
             parametres+=","

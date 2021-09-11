@@ -1,4 +1,4 @@
-;HITACHI OPTIMIZING LINKAGE EDITOR GENERATED FILE 2021.05.14
+;HITACHI OPTIMIZING LINKAGE EDITOR GENERATED FILE 2021.05.15
 ;fsymbol = P
 
 ;SECTION NAME = P
@@ -89,123 +89,101 @@ _main: .equ h'00302d48
  .export _AddIn_main
 _AddIn_main: .equ h'00302dd8
  .export _OSVersionAsInt
-_OSVersionAsInt: .equ h'00303dec
+_OSVersionAsInt: .equ h'00302f80
  .export _GetKeyMod
-_GetKeyMod: .equ h'00303e26
+_GetKeyMod: .equ h'00302fba
  .export _delay
-_delay: .equ h'00303e64
+_delay: .equ h'00302ff8
  .export _CheckKeyRow
-_CheckKeyRow: .equ h'00303e74
+_CheckKeyRow: .equ h'00303008
  .export _KeyDown
-_KeyDown: .equ h'00303f64
+_KeyDown: .equ h'003030f8
  .export ___LINK_PROTECT
-___LINK_PROTECT: .equ h'00304018
+___LINK_PROTECT: .equ h'003031ac
  .export _SetQuitHandler
-_SetQuitHandler: .equ h'0030401c
+_SetQuitHandler: .equ h'003031b0
  .export _OnAppCloseDefault
-_OnAppCloseDefault: .equ h'00304022
+_OnAppCloseDefault: .equ h'003031b6
  .export __INITSCT_ADDIN
-__INITSCT_ADDIN: .equ h'00304076
+__INITSCT_ADDIN: .equ h'0030320a
  .export _INIT_ADDIN_APPLICATION
-_INIT_ADDIN_APPLICATION: .equ h'003040be
+_INIT_ADDIN_APPLICATION: .equ h'00303252
  .export __addd
-__addd: .equ h'00304204
+__addd: .equ h'00303398
  .export __subdr
-__subdr: .equ h'0030414c
+__subdr: .equ h'003032e0
  .export __subd
-__subd: .equ h'00304134
+__subd: .equ h'003032c8
  .export __adds
-__adds: .equ h'003044ca
+__adds: .equ h'0030365e
  .export __subs
-__subs: .equ h'003044c4
+__subs: .equ h'00303658
  .export __dtoi
-__dtoi: .equ h'00304730
+__dtoi: .equ h'003038c4
  .export __dtou
-__dtou: .equ h'00304730
+__dtou: .equ h'003038c4
  .export __dtos
-__dtos: .equ h'003047bc
+__dtos: .equ h'00303950
  .export __gtd
-__gtd: .equ h'00304898
- .export __gts
-__gts: .equ h'00304940
+__gtd: .equ h'00303a2c
  .export __itod
-__itod: .equ h'003049b8
+__itod: .equ h'00303ad4
  .export __itos
-__itos: .equ h'00304a0c
+__itos: .equ h'00303b28
  .export __lts
-__lts: .equ h'00304a64
+__lts: .equ h'00303b80
  .export __muld
-__muld: .equ h'00304b80
- .export __stou
-__stou: .equ h'00304cf0
- .export __stoi
-__stoi: .equ h'00304cf0
+__muld: .equ h'00303c9c
  .export __divls
-__divls: .equ h'00304d48
+__divls: .equ h'00303e0c
  .export __modls
-__modls: .equ h'00304dfc
- .export __quick_odd_mvn
-__quick_odd_mvn: .equ h'00304ed0
- .export __quick_evn_mvn
-__quick_evn_mvn: .equ h'00304ec4
+__modls: .equ h'00303ec0
  .export _abs
-_abs: .equ h'00304f68
+_abs: .equ h'00303f88
  .export _memcpy
-_memcpy: .equ h'00304f78
+_memcpy: .equ h'00303f98
  .export ___memzero
-___memzero: .equ h'00305038
+___memzero: .equ h'00304058
  .export ___nw__FUl
-___nw__FUl: .equ h'0030504c
- .export ___dt__Q2_3std9type_infoFv
-___dt__Q2_3std9type_infoFv: .equ h'003050c0
- .export ___eq__Q2_3std9type_infoCFRCQ2_3std9type_info
-___eq__Q2_3std9type_infoCFRCQ2_3std9type_info: .equ h'003050de
- .export ___ne__Q2_3std9type_infoCFRCQ2_3std9type_info
-___ne__Q2_3std9type_infoCFRCQ2_3std9type_info: .equ h'003050fa
- .export _before__Q2_3std9type_infoCFRCQ2_3std9type_info
-_before__Q2_3std9type_infoCFRCQ2_3std9type_info: .equ h'00305116
- .export _name__Q2_3std9type_infoCFv
-_name__Q2_3std9type_infoCFv: .equ h'0030512e
+___nw__FUl: .equ h'0030406c
  .export _Bdel_cychdr
-_Bdel_cychdr: .equ h'0030513c
+_Bdel_cychdr: .equ h'003040e0
  .export _BfileFLS_CloseFile
-_BfileFLS_CloseFile: .equ h'0030514c
+_BfileFLS_CloseFile: .equ h'003040f0
  .export _Bkey_Set_RepeatTime_Default
-_Bkey_Set_RepeatTime_Default: .equ h'0030515c
+_Bkey_Set_RepeatTime_Default: .equ h'00304100
  .export _CallbackAtQuitMainFunction
-_CallbackAtQuitMainFunction: .equ h'0030516c
+_CallbackAtQuitMainFunction: .equ h'00304110
  .export _flsFindClose
-_flsFindClose: .equ h'0030517c
+_flsFindClose: .equ h'00304120
  .export _free
-_free: .equ h'0030518c
+_free: .equ h'00304130
  .export _GetKey
-_GetKey: .equ h'0030519c
+_GetKey: .equ h'00304140
  .export _GLibAddinAplExecutionCheck
-_GLibAddinAplExecutionCheck: .equ h'003051ac
+_GLibAddinAplExecutionCheck: .equ h'00304150
  .export _Hmem_SetMMU
-_Hmem_SetMMU: .equ h'003051bc
+_Hmem_SetMMU: .equ h'00304160
  .export _malloc
-_malloc: .equ h'003051cc
+_malloc: .equ h'00304170
  .export _GetSDKLibraryVersion
-_GetSDKLibraryVersion: .equ h'003051dc
+_GetSDKLibraryVersion: .equ h'00304180
  .export _SetTimer
-_SetTimer: .equ h'003051e2
+_SetTimer: .equ h'00304186
  .export _KillTimer
-_KillTimer: .equ h'00305236
+_KillTimer: .equ h'003041da
  .export _Sleep
-_Sleep: .equ h'0030527a
- .export ___dl__FPv
-___dl__FPv: .equ h'003052dc
+_Sleep: .equ h'0030421e
  .export _memset
-_memset: .equ h'003052f0
+_memset: .equ h'00304280
  .export ___default_new_handler__Fv
-___default_new_handler__Fv: .equ h'00305308
+___default_new_handler__Fv: .equ h'00304298
  .export _Bcre_cychdr
-_Bcre_cychdr: .equ h'0030530c
+_Bcre_cychdr: .equ h'0030429c
  .export _BSrl_DummyWAIT
-_BSrl_DummyWAIT: .equ h'0030531c
+_BSrl_DummyWAIT: .equ h'003042ac
  .export _Bsta_cychdr
-_Bsta_cychdr: .equ h'0030532c
+_Bsta_cychdr: .equ h'003042bc
  .export _Bstp_cychdr
-_Bstp_cychdr: .equ h'0030533c
+_Bstp_cychdr: .equ h'003042cc
  .end

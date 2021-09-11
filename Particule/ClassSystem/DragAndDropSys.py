@@ -13,10 +13,14 @@ class DragAndDropSys:
                 self.Data = Data
             mouseX,mouseY= self.Particule.Mafenetre.winfo_pointerx(), self.Particule.Mafenetre.winfo_pointery()
             for frame in self.FameEvent:
-                fx,fy,fw,fh=frame.winfo_rootx(), frame.winfo_rooty(), frame.winfo_width(), frame.winfo_height()
-                #print(fx,fy,fw,fh,mouseX,mouseY)
-                if fx<=mouseX<=fx+fw and fy<=mouseY<=fy+fh:
-                    frame.Drop(self.Data)
+                try:
+                    fx,fy,fw,fh=frame.winfo_rootx(), frame.winfo_rooty(), frame.winfo_width(), frame.winfo_height()
+                    #print(fx,fy,fw,fh,mouseX,mouseY)
+                    if fx<=mouseX<=fx+fw and fy<=mouseY<=fy+fh:
+                        frame.Drop(self.Data)
+                except:
+                    self.IsDarg = False
+                    self.Data = {}
         self.Data = {}
     def Drag(self,Data=None):
         #print("Drag")
