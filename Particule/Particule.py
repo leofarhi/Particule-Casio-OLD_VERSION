@@ -73,7 +73,6 @@ import pkgutil
 from pathlib import Path
 from importlib import import_module
 from SystemExt import SpriteCoder
-from ClassSystem.DragAndDropSys import DragAndDropSys
 
 #Build :
 from SystemExt import BuildSDKGraph
@@ -81,7 +80,6 @@ from SystemExt import BuildSDKGraph
 
 from ClassSystem.MenuItem import MenuItem
 from ClassSystem.Notebook import Notebook
-from ClassSystem.FrameDragAndDrop import FrameDragAndDrop
 from ClassSystem.Editor import Editor
 from ClassSystem.EditorWindow import EditorWindow
 from ClassSystem.MonoBehaviour import MonoBehaviour
@@ -91,7 +89,7 @@ import uuid
 from ClassSystem.TypeGUI import TypeGUI
 from ClassSystem.SLN_System import SLN_System
 from ClassSystem.ProgressBarPopup import ProgressBarPopup
-
+import ClassParticule.Component
 """
 from ClassParticule.Inspector import Inspector
 from ClassSystem.WindowPanel import *
@@ -145,8 +143,7 @@ class Particule:
 
         self.rep_sys = os.getcwd()
         self.FolderProject = FolderProject
-        self.All_UUID = []
-        self.DragAndDropSys = DragAndDropSys(self)
+        self.All_UUID = {}
 
         self.SLN_System = SLN_System(self)
 
@@ -240,14 +237,15 @@ class Particule:
         self.Mafenetre.mainloop()
 
     def GetCodeFromVisualScratch(self):
-        for i in os.listdir(self.FolderProject+ "/Library/ScriptEditor/"):
-            if ".py" in i:
-                os.remove(self.FolderProject+ "/Library/ScriptEditor/"+i)
+
         process = subprocess.Popen([self.VisualScratchPath,self.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
         #print(eval(process.stdout.readlines()[-1]))
         code=eval(process.stdout.readlines()[-1])
         PythonCode=code[0]
         try:
+            for i in os.listdir(self.FolderProject + "/Library/ScriptEditor/"):
+                if ".py" in i:
+                    os.remove(self.FolderProject + "/Library/ScriptEditor/" + i)
             for i in PythonCode:
                 name = os.path.basename(i[0])
                 name = os.path.splitext(name)[0]
@@ -286,7 +284,9 @@ class Particule:
                     # Add the class to this package's variables
                     globals()[attribute_name] = attribute
                 # print(attribute_name)
-                if attribute_name + ".py" in os.listdir(path) and (not attribute in self.AllComponent):
+                if attribute_name + ".py" in os.listdir(path) \
+                        and (not attribute in self.AllComponent) \
+                        and "ClassParticule.Components" in str(attribute):
                     self.AllComponent.append(attribute)
         for i in self.PersonnalModule:
             self.AllComponent.remove(i)
@@ -313,16 +313,22 @@ class Particule:
                     self.PersonnalModule.append(attribute)
                     self.AllComponent.append(attribute)
 
-    def CreateUUID(self,UUID = False):
+    def CreateUUID(self,TypeObject,UUID = False):
         if UUID == False:
             UUID = "UUID_"+(str(uuid.uuid4()).replace("-","_"))
             while UUID in self.All_UUID:
                 UUID = "UUID_"+(str(uuid.uuid4()).replace("-","_"))
-            self.All_UUID.append(UUID)
+            self.All_UUID.update({UUID:TypeObject})
         else:
-            if UUID not in self.All_UUID:
-                self.All_UUID.append(UUID)
+            if UUID not in [i[0] for i in self.All_UUID]:
+                self.All_UUID.update({UUID:TypeObject})
         return UUID
+    def GetObjectWithUUID(self,UUID):
+        if UUID in self.All_UUID:
+            return self.All_UUID[UUID]
+        else:
+            return None
+
     def VerifFocusSet(self):
         self.Scene.surface.focus_set()
 
@@ -359,8 +365,11 @@ class Particule:
             self.ScreenOrganization.ChangeInspector("Inspector")
             self.Hierarchy.t.selection_set(tempSlc)
             if ItemSelected != None:
-                ItemSelected=self.Hierarchy.allGameObjectOnScene[self.Hierarchy.t.item(ItemSelected)['values'][0]]
-                self.Hierarchy.ItemSelected=ItemSelected
+                try:
+                    ItemSelected=self.Hierarchy.allGameObjectOnScene[self.Hierarchy.t.item(ItemSelected)['values'][0]]
+                except:
+                    ItemSelected=None
+                self.Hierarchy.ItemSelected = ItemSelected
                 self.Inspector.UpdateItemSelected()
         progress.SetValue(100)
         progress.destroy()

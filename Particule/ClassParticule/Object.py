@@ -3,7 +3,7 @@ class Object:
         self.Particule = Particule
         self.hideFlags = hideFlags
         self.name = name
-        self.ID = self.Particule.CreateUUID(UUID)
+        self.ID = self.Particule.CreateUUID(self,UUID)
     def UpdateOnGUI(self):
         pass
     def GetInstanceID(self):

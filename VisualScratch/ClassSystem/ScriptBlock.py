@@ -24,6 +24,9 @@ class ScriptBlock:
     def WhenUpdate(self):
         pass
 
+    def AfterUpdate(self):
+        pass
+
     def WhenRemove(self):
         pass
 

@@ -18,48 +18,48 @@ Flags=00001012
 Sublevel=2
 
 [Breakpoint]
-File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\usefull.cpp
+File=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\usefull.cpp
 Line=130
 Flags=00001012
 Sublevel=1
 
 [Breakpoint]
-File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\usefull.cpp
+File=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\usefull.cpp
 Line=130
 Flags=00001012
 Sublevel=2
 
 [Breakpoint]
-File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Tutoriel.cpp
+File=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Tutoriel.cpp
 Line=46
 Flags=00001012
 
 [Breakpoint]
-File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Tutoriel.cpp
+File=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Tutoriel.cpp
 Line=71
 Flags=00001012
 Sublevel=1
 
 [Breakpoint]
-File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Tutoriel.cpp
+File=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Tutoriel.cpp
 Line=71
 Flags=00001012
 Sublevel=2
 
 [Breakpoint]
-File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Tutoriel.cpp
+File=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Tutoriel.cpp
 Line=61
 Flags=00001012
 Sublevel=1
 
 [Breakpoint]
-File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Tutoriel.cpp
+File=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Tutoriel.cpp
 Line=61
 Flags=00001012
 Sublevel=2
 
 [Breakpoint]
-File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Tutoriel.cpp
+File=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Tutoriel.cpp
 Line=57
 Flags=00001012
 
@@ -70,7 +70,7 @@ Name=main:list.head->prev
 Flags=00000042
 
 [Breakpoint]
-File=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Tutoriel.cpp
+File=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Tutoriel.cpp
 Line=54
 Flags=00001012
 

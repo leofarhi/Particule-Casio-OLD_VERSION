@@ -78,7 +78,6 @@ class BlockSys:
         return self.GetCodePython((lst[2])[index],base)
 
     TypeAttributs = ["int","float","string","bool","Vector2","Texture"]
-    Etoile = ["int", "float","bool", "string", "Vector2"]
     def GetInitValueAttributPython(self,Type):
         if Type == "int":
             return "0"
@@ -116,6 +115,14 @@ class BlockSys:
         elif Type == "bool":
             return "false"
         elif Type == "Vector2":
-            return "Vector2()"
+            return "new Vector2()"
         elif Type == "Texture":
-            return 'Texture()'
+            return 'new Texture()'
+
+    def GetTypeValueAttributCasio(self,Type):
+        if Type in ["int","float","bool","Vector2"]:
+            return Type
+        elif Type=="string":
+            return "unsigned char*"
+        else:
+            return Type+"*"

@@ -10,6 +10,7 @@ class Encadrement(Forme):
         self.StartType()
 
     def StartType(self):
+        r=0
         self.CanPutInBlock = True
         self.CanAddBlock = True
         Encoche = 1
@@ -22,6 +23,8 @@ class Encadrement(Forme):
                 End = i[1]
             if i[0] == "Parametres":
                 Parametre.append(i[1])
+            if i[0] == "AddSize":
+                r += i[1]
         h = 15
         d = 0
         e = 0
@@ -38,7 +41,7 @@ class Encadrement(Forme):
             except:
                 self.Parametres = []
             d += e
-            r = 30
+            r += 30
             r = self.espace(r)
             e = 0
             if i == 0:

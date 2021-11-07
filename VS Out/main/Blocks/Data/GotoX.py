@@ -15,4 +15,8 @@ class ScriptBlockPython(ScriptBlock):
         self.SelfGetForme = None
         self.Image = None
 
+    def WhenCompileForCasio(self,lst):
+        code = "this->gameObject->transform->position.x = " + self.BlockSys.GetParametre(lst,0) + ";\n"
+        code += self.BlockSys.GetSuite(lst, 0)
+        return code
     

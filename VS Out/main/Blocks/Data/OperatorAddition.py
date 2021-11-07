@@ -8,11 +8,13 @@ class ScriptBlockPython(ScriptBlock):
         self.Onglet="Opérateurs"
         self.TypeForme="Cercle"
         self.Texte="Addition"
-        self.Parametres=[['EmptyCercle'],['Label', '+'],['EmptyCercle']]
+        self.Parametres=[['EmptyCercle'],['Label', ' + '],['EmptyCercle']]
         self.Color=Couleurs.vert
         self.Compile="OperatorAddition"
         self.Options = []
         self.SelfGetForme = None
         self.Image = None
 
-    
+    def WhenCompileForCasio(self,lst):
+        code = "((" + self.BlockSys.GetParametre(lst,0) + ")+(" + self.BlockSys.GetParametre(lst,1) + "))"
+        return code

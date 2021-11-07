@@ -16,4 +16,6 @@ class ScriptBlockPython(ScriptBlock):
         self.Image = None
 
 
-    
+    def WhenCompileForCasio(self,lst):
+        code = "mod((int)" + self.BlockSys.GetParametre(lst,0) + ",(int)" + self.BlockSys.GetParametre(lst,1) + ")"
+        return code

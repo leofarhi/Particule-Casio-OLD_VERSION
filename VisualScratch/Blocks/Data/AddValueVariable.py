@@ -20,7 +20,7 @@ class ScriptBlockPython(ScriptBlock):
         (self.SelfGetForme.Parametres[1])[1]=self._Sys.Scratch.ActuVarible
 
     def WhenCompileForCasio(self,lst):
-        code = "this->" +str(self.BlockSys.GetVariable(lst,0)[1])+"=" + self.BlockSys.GetParametre(lst,0)+";\n"
+        code = "this->" +str(self.BlockSys.GetVariable(lst,0)[2])+"+=" + self.BlockSys.GetParametre(lst,1)+";\n"
         code += self.BlockSys.GetSuite(lst,0)
         return code
 

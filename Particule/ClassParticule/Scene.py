@@ -1,6 +1,52 @@
 from Particule import *
 from ClassSystem.EditorWindow import EditorWindow
+import math
+class Arrow:
+    def __init__(self,canvas,angle,color):
+        self.x,self.y = 0,0
+        self.canvas = canvas
+        self.angle = angle
+        self.length = 50
+        self.size = 3
+        self.color = color
+        self.line = self.canvas.create_line(self.x,self.y, self.x+math.cos(self.angle)*self.length,self.y+math.sin(self.angle)*self.length, width=self.size, fill=self.color)
+        self.line2 = self.canvas.create_line(self.x + math.cos(self.angle) * self.length,self.y + math.sin(self.angle) * self.length,
+                                             self.x + math.cos(self.angle + (math.pi / 12)) * (self.length / 1.5),
+                                             self.y + math.sin(self.angle + (math.pi / 12)) * (self.length / 1.5),
+                                            width=self.size, fill=self.color)
+        self.line3 = self.canvas.create_line(self.x + math.cos(self.angle) * self.length,
+                                             self.y + math.sin(self.angle) * self.length,
+                                             self.x + math.cos(self.angle - (math.pi / 12)) * (self.length / 1.5),
+                                             self.y + math.sin(self.angle - (math.pi / 12)) * (self.length / 1.5),
+                                             width=self.size, fill=self.color)
+    def Update(self):
+        coords = (self.x, self.y, self.x + math.cos(self.angle) * self.length, self.y + math.sin(self.angle) * self.length)
+        self.canvas.coords(self.line, coords)
+        coords = (self.x + math.cos(self.angle) * self.length,self.y + math.sin(self.angle) * self.length,
+                  self.x + math.cos(self.angle + (math.pi / 12)) * (self.length/1.5),
+                  self.y + math.sin(self.angle + (math.pi / 12)) * (self.length/1.5))
+        self.canvas.coords(self.line2, coords)
+        coords = (self.x + math.cos(self.angle) * self.length, self.y + math.sin(self.angle) * self.length,
+                  self.x + math.cos(self.angle - (math.pi / 12)) * (self.length / 1.5),
+                  self.y + math.sin(self.angle - (math.pi / 12)) * (self.length / 1.5))
+        self.canvas.coords(self.line3, coords)
+        self.canvas.tag_raise(self.line)
+        self.canvas.tag_raise(self.line2)
+        self.canvas.tag_raise(self.line3)
+    def Move(self,X,Y):
+        self.x =X
+        self.y = Y
+        self.Update()
 
+    def Hide(self):
+        self.canvas.itemconfig(self.line, state='hidden')
+        self.canvas.itemconfig(self.line2, state='hidden')
+        self.canvas.itemconfig(self.line3, state='hidden')
+    def Show(self):
+        self.canvas.itemconfig(self.line, state='normal')
+        self.canvas.itemconfig(self.line2, state='normal')
+        self.canvas.itemconfig(self.line3, state='normal')
+        self.Update()
 class Scene(EditorWindow):
     def __init__(self,RootWindow):
         EditorWindow.__init__(self,RootWindow,Resize=True,ScrollbarShow=False)
@@ -18,6 +64,13 @@ class Scene(EditorWindow):
 
         self.surface = Canvas(self, background='white')
         self.surface.pack(fill=tkinter.BOTH, expand=True)#.grid(row=1, column=0)
+
+        """
+        self.arrowX = Arrow(self.surface,0,"blue")
+        self.arrowX.Move(100, 100)
+        self.arrowY = Arrow(self.surface, math.pi/2,"green")
+        self.arrowY.Move(100, 100)
+        """
 
         class MClic:
             def __init__(self, root):

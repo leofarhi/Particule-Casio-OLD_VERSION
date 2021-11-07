@@ -15,6 +15,9 @@ class Cercle(Forme):
         r = 0
         r = self.espace(r)
         h = 15
+        for i in self.Options:
+            if i[0] == "AddSize":
+                r += i[1]
         A = self.Canevas.create_oval(self.x, self.y - ((h / 2) * self.Zoom), self.x + (h * self.Zoom),
                                      self.y + ((h / 2) * self.Zoom), outline=color(Couleurs.gris), fill=self.Color)
         MyGroupWidget.append(A)

@@ -15,7 +15,10 @@ from ClassSystem.EditorWindow import EditorWindow
 from ClassParticule.Texture import Texture
 import tkinter as tk
 from tkinter import simpledialog
+from tkinter.messagebox import askyesno
 import psutil
+import pyperclip
+from ClassParticule.FileVariable import FileVariable
 
 class FolderWindow(EditorWindow):
     def __init__(self,RootWindow):
@@ -121,6 +124,11 @@ class FolderWindow(EditorWindow):
         self.whipFTP_icon = PhotoImage(file='lib/Icons/whipFTP_large.png')
         self.goto_icon = PhotoImage(file='lib/Icons/gotopath_big.png')
 
+        self.Picturefile_icon = PhotoImage(file='lib/Icons/picture.png')
+        self.VisualScratchfile_icon = PhotoImage(file='lib/Icons/VisualScratch.png')
+        self.Scenefile_icon = PhotoImage(file='lib/Icons/SceneFile.png')
+        self.PrefabFile_icon = PhotoImage(file='lib/Icons/PrefabFile.png')
+
         # Load glow version of icons
         self.connect_glow_icon = PhotoImage(file='lib/Icons_glow/connect_big_glow.png')
         self.upload_glow_icon = PhotoImage(file='lib/Icons_glow/upload_big_glow.png')
@@ -160,6 +168,15 @@ class FolderWindow(EditorWindow):
         self.status_label = ttk.Label(self, textvariable=self.current_status, anchor='center')
         self.status_label.pack(fill=X)
 
+        #Drag System
+        self.mitem = tkinter.Toplevel(self)
+        self.mitem.canvasDrag = Canvas(self.mitem, width=32, height=32)
+        self.mitem.canvasDrag.pack(expand=True, fill=BOTH)
+        self.mitem.canvasDrag.create_image(16, 16, image=self.folder_icon)
+        self.mitem.overrideredirect(1)
+        self.mitem.config(bg="white")
+        self.mitem.withdraw()
+
 
         # Bind events
         self.bind_events()
@@ -186,7 +203,7 @@ class FolderWindow(EditorWindow):
         self.canvas.bind('<Double-Button-1>', self.change_dir)
         self.canvas.bind('<Control-Button-1>', self.ctrl_select)
         self.canvas.bind("<ButtonRelease-1>", self.mouserelease)
-        #self.canvas.bind('<B1-Motion>', self.drag_select)
+        self.canvas.bind('<B1-Motion>', self.drag_select)
 
         # Bind events for statusbar and scroll bar
         self.vbar.bind('<Motion>', lambda event, arg='Scrollbar.': self.update_status(event, arg))
@@ -207,11 +224,30 @@ class FolderWindow(EditorWindow):
         self.CreateMenu = Menu(self.Particule.Mafenetre, tearoff=False)
         self.contextMenu.add_cascade(label= "Create",menu=self.CreateMenu)
         self.CreateMenu.add_command(label="Scratch Script",command=self.CreateScratchScript)
+        self.CreateMenu.add_separator()
+        self.CreateMenu.add_command(label="Folder", command=self.create_dir)
 
         self.contextMenu.add_separator()
         self.contextMenu.add_command(label="Rename")
-        self.contextMenu.add_command(label="Duplicate")
-        self.contextMenu.add_command(label="Delete")
+        #self.contextMenu.add_command(label="Duplicate")
+        self.contextMenu.add_command(label="Delete", command=self.Destroy)
+
+
+    def Destroy(self,*args):
+        try:
+            file = self.detailed_file_list[self.current_file_index]
+        except:
+            return
+        if (os.path.basename(file)=="<---"):
+            return
+        valid = askyesno(title='confirmation',
+                    message='êtes-vous sûr de vouloir supprimer "'+os.path.basename(file)+'" ?')
+        if valid:
+            if (os.path.isfile(file)):
+                os.remove(file)
+            else:
+                shutil.rmtree(file)
+            self.Particule.UpdateOnFocus()
 
     def CreateScratchScript(self,*args):
         name = simpledialog.askstring(title="Nom de fichier",
@@ -228,6 +264,7 @@ class FolderWindow(EditorWindow):
         self.contextMenu.post(event.x_root, event.y_root)
 
     def mouserelease(self, event):
+        self.mitem.withdraw()
         if len(self.selected_file_indices)>0:
             if (self.current_file_index >= 0 and self.current_file_index < len(
                     self.file_list) and self.mouse_x < self.max_width):
@@ -242,8 +279,6 @@ class FolderWindow(EditorWindow):
                         texture = Texture(self.Particule, Path=self.Particule.FolderProject + "/Library/ImagesBmpCache/" +guid+'.bmp',
                                           name=os.path.basename(self.detailed_file_list[list(self.selected_file_indices)[0]]))
                     except:pass
-                    self.Particule.DragAndDropSys.Drag()
-                    self.Particule.DragAndDropSys.Drop({"Object": texture, "Type": "Texture", "Window": "Folder"})
         #print(str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)) )
         #print(self.selected_file_indices)
         #print(self.repertoirSlc +"/"+self.detailed_file_list[list(self.selected_file_indices)[0]])
@@ -254,7 +289,8 @@ class FolderWindow(EditorWindow):
         lst = os.listdir(rep)
         for i in lst:
             if ".meta" in i and os.path.isfile(rep + "/" + i):
-                UUID = self.Particule.CreateUUID(rf.found(rep + "/" + i,"guid"))
+                TempID=rf.found(rep + "/" + i,"guid")
+                UUID = self.Particule.CreateUUID(FileVariable(self.Particule,rep + "/" + i,TempID),TempID)
                 rf.save(rep + "/" + i, "guid", UUID)
                 org = os.path.splitext(i)[0]
                 if os.path.splitext(org)[1] == ".particule":
@@ -303,6 +339,20 @@ class FolderWindow(EditorWindow):
         if path==self.repertoirSlc +"/"+self.nameFilereturn:
             return True
         return not os.path.isfile(path)
+
+    def SelectIconWithExtention(self,file):
+        if os.path.isdir(file):
+            return self.folder_icon
+        ext= os.path.splitext(file)[1]
+        if ext in [".bmp",".png",".jpeg",".jpg"]:
+            return self.Picturefile_icon
+        elif ext == ".SBAsset":
+            return self.VisualScratchfile_icon
+        elif ext == ".particule":
+            return self.Scenefile_icon
+        elif ext == ".prefab":
+            return self.PrefabFile_icon
+        return self.textfile_icon
     def draw_icons(self, event=None):
         # Calculate cell width
         self.cell_width = 80
@@ -338,7 +388,7 @@ class FolderWindow(EditorWindow):
                 file_name = file_name.split(".")[0]
                 if len(file_name) > 8:
                     file_name = file_name[:8] + "..."
-                self.canvas.create_image(25 + (x * self.cell_width), 18 + (y * self.cell_height), image=self.textfile_icon)
+                self.canvas.create_image(25 + (x * self.cell_width), 18 + (y * self.cell_height), image=self.SelectIconWithExtention(file_details))
                 #canvas_id = self.canvas.create_text(45 + (x * self.cell_width), 13 + (y * 35), anchor='nw')
                 canvas_id = self.canvas.create_text(0 + (x * self.cell_width), 45 + (y * self.cell_height), anchor='nw')
                 self.canvas.itemconfig(canvas_id, text=file_name)
@@ -455,9 +505,9 @@ class FolderWindow(EditorWindow):
             if (self.current_file_index not in self.selected_file_indices):
                 # Draw a 'selected' highlighting rectangle and save a reference to the rectangle in selected file list
                 self.selected_file_indices[self.current_file_index] = self.canvas.create_rectangle(
-                    self.x_cell_pos * self.cell_width + 2, self.y_cell_pos * self.cell_height + 2,
-                    (self.x_cell_pos + 1) * self.cell_width - 1, (self.y_cell_pos + 1) * self.cell_height - 1,
-                    fill='', outline='Red')
+                self.x_cell_pos * self.cell_width + 2 -(self.cell_width//4), self.y_cell_pos * self.cell_height + 2,
+                (self.x_cell_pos + 1) * self.cell_width - 1 -(self.cell_width//4), (self.y_cell_pos + 1) * 70 - 1,
+                fill='', outline='Red')
             # If WAS selected already
             else:
                 # Remove from selected file list
@@ -470,8 +520,20 @@ class FolderWindow(EditorWindow):
 
     def drag_select(self, event):
         # Update to get current mouse position
-        self.update_status_and_mouse(event)
-        self.Particule.DragAndDropSys.Drag()
+        #self.update_status_and_mouse(event)
+        #self.t = event.widget
+        #n = self.t.selection()
+        #self.moveitem.set(self.t.focus())
+        try:
+            file = self.detailed_file_list[self.current_file_index]
+        except:
+            return
+        self.mitem.canvasDrag.itemconfig(1,image =self.SelectIconWithExtention(file))
+        x = self.Particule.Mafenetre.winfo_pointerx()
+        y = self.Particule.Mafenetre.winfo_pointery()
+        self.mitem.geometry("%dx%d+%d+%d" % (32, 32, x, y))
+        self.mitem.deiconify()
+        #self.t['cursor'] = "hand2"
         return
         # Calculate steps and offsets for x-direction
         if (self.x_cell_pos <= self.start_x):
@@ -501,7 +563,13 @@ class FolderWindow(EditorWindow):
                                                                                           (j + 1) * self.cell_height - 1, fill='',
                                                                                           outline='Red')
 
-
+    def create_dir(self,*args):
+        name = simpledialog.askstring(title="Nom de fichier",
+                                      prompt="Quel est le nom du dossier")
+        if name == None:
+            return
+        M.create_rep(self.repertoirSlc+"/"+name)
+        self.Particule.UpdateOnFocus()
     def show_dnd_icon(self, action, actions, type, win, X, Y, x, y, data):
         # If there is another child window, disable dnd
         if (len(self.children) != 4): return
@@ -540,6 +608,14 @@ class FolderWindow(EditorWindow):
                 if self.file_list[self.current_file_index].split(".")[-1] == "SBAsset":
                     if not "main.exe" in (i.name() for i in psutil.process_iter()):
                         subprocess.Popen([self.Particule.VisualScratchPath, self.Particule.FolderProject + '/SLN/Solution.sls'])
+                if self.file_list[self.current_file_index].split(".")[-1] == "prefab":
+                    valid = askyesno(title='confirmation',
+                                     message='êtes-vous sûr de vouloir ajouter cette prefab ? ')
+                    if valid:
+                        path = self.detailed_file_list[self.current_file_index]
+                        with open(path,"r") as fic:
+                            pyperclip.copy(fic.read())
+                            self.Particule.Hierarchy.PastObject()
 
     def file_properties_window(self):
         # Check number of files selected
@@ -619,35 +695,9 @@ class FolderWindow(EditorWindow):
         self.process_thread_requests()
 
 
-    def create_dir_window(self):
-        self.create_dir_dialog = Filedialogs.name_dialog(self, 'Create a new folder', self.create_dir_thread,
-                                                         self.newfolder_icon)
 
-    def create_dir_thread(self):
-        # Create thread
-        self.thread = threading.Thread(target=self.create_dir,
-                                       args=(self.ftpController, self.create_dir_dialog.rename_entry.get()))
-        # Destroy rename window
-        self.create_dir_dialog.destroy()
-        # Show message box
-        self.start_wait()
-        # Start thread and process requests
-        self.thread.daemon = True
-        self.thread.start()
-        self.process_thread_requests()
 
-    def create_dir(self, ftpController, dir_name):
-        try:
-            # Deselect everything
-            thread_request_queue.put(lambda: self.selected_file_indices.clear())
-            ftpController.mkd(dir_name)
-            # update file list and redraw icons
-            thread_request_queue.put(lambda: self.cont_wait())
-            thread_request_queue.put(lambda: self.update_file_list())
-        except:
-            thread_request_queue.put(lambda: self.update_status_red(
-                'Unable to create folder, either invalid characters or not having permission may be the reason or directory already exists.'))
-            thread_request_queue.put(lambda: self.lock_status_bar())
+
 
 
 
@@ -879,6 +929,7 @@ class FolderWindow(EditorWindow):
         self.canvas.bind("<Control-Button-1>", self.ctrl_select)
         self.canvas.bind("<B1-Motion>", self.drag_select)
         self.canvas.bind("<Motion>", self.update_status_and_mouse)
+
 
     def start_wait(self, event=None):
         if (self.change_status is False): return

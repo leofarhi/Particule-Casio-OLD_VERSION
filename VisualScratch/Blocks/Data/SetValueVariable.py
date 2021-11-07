@@ -15,4 +15,10 @@ class ScriptBlockPython(ScriptBlock):
         self.SelfGetForme = None
         self.Image = None
 
-    
+    def WhenUpdate(self):
+        (self.SelfGetForme.Parametres[1])[1]=self._Sys.Scratch.ActuVarible
+
+    def WhenCompileForCasio(self,lst):
+        code = "this->" +str(self.BlockSys.GetVariable(lst,0)[2])+"=" + self.BlockSys.GetParametre(lst,1)+";\n"
+        code += self.BlockSys.GetSuite(lst,0)
+        return code

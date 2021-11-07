@@ -16,6 +16,9 @@ class EndBox(Forme):
         r = 25
         r = self.espace(r)
         h = 15
+        for i in self.Options:
+            if i[0] == "AddSize":
+                r += i[1]
         posi = (self.x, self.y, self.x + (5 * self.Zoom), self.y, self.x + (10 * self.Zoom), self.y + (5 * self.Zoom),
                 self.x + (15 * self.Zoom), self.y + (5 * self.Zoom), self.x + (20 * self.Zoom), self.y,
                 self.x + (r * self.Zoom), self.y, self.x + (r * self.Zoom), self.y + (h * self.Zoom), self.x,

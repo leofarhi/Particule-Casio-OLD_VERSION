@@ -104,10 +104,15 @@ class BuildSettings(EditorWindow):
             if i[1]:
                 CodeOfScenes+="if (index == "+str(ind)+"){\n"
                 code = ""
+                CodeInit = ""
                 components = ""
                 self.Particule.SaveData.LoadScene(i[0])
                 for i in self.Particule.Hierarchy.allGameObjectOnScene.items():
-                    code += "GameObject* "+i[0]+'= new GameObject(newScene, "'+i[1].name+'","'+i[0]+'");\n'
+                    CodeInit+="GameObject* "+i[0]+";\n"
+                    code += i[0]+'= new GameObject(newScene, "'+i[1].name+'","'+i[0]+'");\n'
+                    code += i[0]+"->activeSelf = "+str(i[1].activeSelf).lower()+";\n"
+                    code += i[0] + "->activeInHierarchy = " + str(i[1].activeInHierarchy).lower() + ";\n"
+                    code += i[0] + "->isStatic = " + str(i[1].isStatic).lower() + ";\n"
                     code += i[0]+'->transform->position.Set('+str(i[1].transform.position.x)+','+str(i[1].transform.position.y)+');\n'
                     code += i[0] + '->transform->localPosition.Set(' + str(i[1].transform.localPosition.x) + ',' + str(i[1].transform.localPosition.y) + ');\n'
                     if i[1].transform.parent!=None:
@@ -120,6 +125,7 @@ class BuildSettings(EditorWindow):
                             components +=i[0]+"->AddComponent((Component*)"+compo.ID+");\n"
                     code+="newScene->AddGameObject("+i[0]+");\n"
                 code +=components
+                code = CodeInit+code
                 CodeOfScenes +=code
                 CodeOfScenes +="\n}"
 
@@ -127,6 +133,7 @@ class BuildSettings(EditorWindow):
 
 
         desti = self.Particule.FolderProject + "/Temp/Compile"
+        M.create_rep(desti)
         for i in os.listdir(desti):
             try:
                 os.remove(desti + "/" + i)
@@ -157,7 +164,9 @@ class BuildSettings(EditorWindow):
         with open(desti+"/Announcement.h","w") as fic:
             fic.write(txt)
 
-        subprocess.Popen(r'explorer /select,"' + desti+"/ParticuleEngine.h" + '"')
+        #subprocess.Popen(r'explorer /select,"' + desti+"/ParticuleEngine.h" + '"')
+        FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
+        subprocess.run([FILEBROWSER_PATH, os.path.abspath(desti)])
 
 
     def GetCodeCasioFromVisualScratch(self):

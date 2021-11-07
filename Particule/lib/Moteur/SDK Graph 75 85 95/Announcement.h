@@ -13,3 +13,4 @@ class Texture;
 class Camera;
 class Image;
 class Text;
+void LoadScene(Scene* scene, int nb);

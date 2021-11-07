@@ -1,0 +1,4 @@
+Coordonnées de caméra
+Coordonnées de l'objet
+Ecrire et lire un fichier
+Chercher un objet avec son nom

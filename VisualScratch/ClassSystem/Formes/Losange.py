@@ -15,6 +15,9 @@ class Losange(Forme):
         r = 5
         r = self.espace(r)
         h = 15
+        for i in self.Options:
+            if i[0] == "AddSize":
+                r += i[1]
         # print(r,self.Parametres)
         posi = (self.x + (h * self.Zoom), self.y,
                 self.x + (r * self.Zoom) + (h * self.Zoom), self.y,

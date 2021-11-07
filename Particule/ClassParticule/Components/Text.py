@@ -7,6 +7,7 @@ class Text(Component):
         Component.__init__(self,gameObject,__name__.split(".")[-1],**kwargs)
         self.text= ""
         self.font = "Consolas"
+        self.TypeVariables.update({"text": {"Type": str}})
 
         self.Mesh = self.Particule.Scene.surface.create_text(0, 0, fill="black",font=(self.font, 5),anchor="nw",
                                text=self.text)

@@ -21,7 +21,7 @@ class Forme:
         self.PythonScript = PythonScript
         self.PythonScript._Sys = self.WindCanvas._Sys
         self.PythonScript.SelfGetForme = self
-        self.PythonScript.WhenAdded()
+        #self.PythonScript.WhenAdded()
         # ------------
 
         self.GroupeParametre = []
@@ -30,6 +30,8 @@ class Forme:
 
         self.WindCanvas.AddWidget(self)
         if Load != False: self.LoadData(Load)
+
+        self.PythonScript.WhenAdded()
 
     def Init(self):
         self.h = 15
@@ -346,6 +348,7 @@ class Forme:
             self.WindCanvas.MoveWidget(self, self.x, self.y,
                        x_add, y_add)
         self.StartType()
+        if self.PythonScript != None: self.PythonScript.AfterUpdate()
         self.childUpdate()
 
     def update(self):

@@ -3,6 +3,7 @@ from Particule import *
 from ClassParticule.Vector2 import Vector2
 from ClassParticule.Texture import Texture
 from ClassSystem.TypeGUI import TypeGUI
+import ClassParticule
 
 from ClassParticule.Object import Object
 class Component(Object):
@@ -13,6 +14,9 @@ class Component(Object):
         self.AttributVisible=[]
         self.myFrame = None
         self._valueGUI = []
+        self.TypeVariables = {"name":{"Type":str},
+                              "gameObject":{"Type":ClassParticule.GameObject.GameObject}
+                              }
 
     def SaveDataDict(self):
         return {"name":self.name,
@@ -20,6 +24,12 @@ class Component(Object):
     def LoadDataDict(self,data,component,dataCompo,dicoGameObject,dicoComponent):
         self.gameObject = dicoGameObject[dataCompo["gameObject"]]
         self.name = dataCompo["name"]
+
+    def Copy(self):
+        dico = self.SaveDataDict()
+        dico["TypeObject"] = self.name
+        Data = {self.ID:dico}
+        return Data
 
     def GetAttribut(self):
         lst=[]
@@ -41,10 +51,10 @@ class Component(Object):
         #self.myFrame.pack(fill=tkinter.BOTH, expand=True)
         self.myFrame.bind("<Button-3>", self.popup)
         self.contextMenu = Menu(self.Particule.Mafenetre, tearoff=False)
-        self.contextMenu.add_command(label="Copy")
-        self.contextMenu.add_command(label="Past")
+        #self.contextMenu.add_command(label="Copy")
+        #self.contextMenu.add_command(label="Past")
         self.contextMenu.add_separator()
-        self.contextMenu.add_command(label="Duplicate")
+        #self.contextMenu.add_command(label="Duplicate")
         self.contextMenu.add_command(label="Delete", command=self.Destroy)
         one = False
         count = 0
@@ -77,47 +87,40 @@ class Component(Object):
             i.destroy()
         self.Particule.Inspector.UpdateItemSelected()
 
-    def GetInitValueAttributCasio(self,Type):
-        if Type == "int":
-            return "0"
-        elif Type == "float":
-            return "0"
-        elif Type == "string":
-            return '""'
-        elif Type == "bool":
-            return "false"
-        elif Type == "Vector2":
-            return "Vector2()"
-        elif Type == "Texture":
-            return 'Texture()'
-
     def BuildValue(self):
         if type(self).__name__ == "Transform":
             return ("\n","\n")
         parametres=","
         for i in self.AttributVisible:
             var = getattr(self,i)
-            if type(var) in [int,float,str,bool]:
-                if type(var) is str:
+            #print(var, i,eval("self."+i))
+            dicoVar= self.TypeVariables[i]
+            if dicoVar["Type"] in [int,float,str,bool]:
+                if dicoVar["Type"] is str:
                     parametres +='(unsigned char*)"'
                 parametres+= var
-                if type(var) is str:
+                if dicoVar["Type"] is str:
                     parametres+='"'
             else:
-                if type(var) is Vector2:
+                if dicoVar["Type"] is Vector2:
                     parametres+="new Vector2("+str(var.x)+","+str(var.y)+")"
-                elif type(var) is Texture:
+                elif dicoVar["Type"] is Texture:
                     path = os.path.basename(var.path)
                     path = os.path.splitext(path)[0]
-                    parametres += "Texture_"+path
+                    if (var.path=="Library/lib/vide.png"):
+                        parametres +="new Texture()"
+                    else:
+                        parametres += "Texture_"+path
                     """
                 elif type(var) is Texture:
                     path = os.path.basename(var.path)
                     path = os.path.splitext(path)[0]
                     parametres +='new Texture("'+str(var.name)+'",'+str(var.width)+","+str(var.height)+","+path+',"'+var.ID+'")'
                     """
-
+                elif dicoVar["Type"] is list:
+                    Errorrrrr
                 else:
+                    #print(eval("self."+i))
                     parametres +=var.ID
             parametres+=","
         return (type(self).__name__+"* "+self.ID+";\n",

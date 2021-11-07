@@ -18,6 +18,32 @@ class GameObject(Object):
         self.transform = Transform(self)
         self.ListOfComponent=[self.transform]
 
+
+    def SaveDataDict(self):
+        TempDico = {"name": self.name,
+                    ""
+                    "activeInHierarchy": self.activeInHierarchy,
+                    "activeSelf": self.activeSelf,
+                    "isStatic": self.isStatic,
+                    "layer": self.layer.value,
+                    "scene": self.scene,
+                    "sceneCullingMask": self.sceneCullingMask,
+                    "tag": self.tag.value,
+                    "transform": self.transform.ID,
+                    "ListOfComponent": [i.ID for i in self.ListOfComponent]
+                    }
+        return TempDico
+
+    def Copy(self):
+        DicoCompo = {}
+        for i in self.ListOfComponent:
+            DicoCompo.update(i.Copy())
+        DicoSave = self.SaveDataDict()
+        DicoSave["TypeObject"]="GameObject"
+        DicoSave["ListOfComponent"] = DicoCompo
+        Data = {self.ID:DicoSave}
+        return Data
+
     def UpdateOnGUI(self):
         if self.transform.parent == None:
             self.activeInHierarchy = True
@@ -44,10 +70,11 @@ class GameObject(Object):
         for compo in self.Particule.AllComponent:
             if name == (compo.__name__).split(".")[-1]:
                 self.AddComponent(compo)
-    def Destroy(self):
 
-        for i in range(len(self.ListOfComponent)):
-            self.ListOfComponent[i].Destroy()
+
+    def Destroy(self):
+        while len(self.ListOfComponent)>0:
+            self.ListOfComponent[0].Destroy()
     def BroadcastMessage(self):
         pass
     def CompareTag(self):

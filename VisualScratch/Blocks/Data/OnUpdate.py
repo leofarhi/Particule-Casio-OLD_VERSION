@@ -18,6 +18,6 @@ class ScriptBlockPython(ScriptBlock):
 
 
     def WhenCompileForCasio(self,lst):
-        code = "OnUpdate(){\n" + self.BlockSys.GetSuite(lst,0) + "\n}"
+        code = "void Update(){\n" + self.BlockSys.GetSuite(lst,0) + "\n}"
         return code
     

@@ -14,6 +14,7 @@ class Sprite(Component):
         self._lastRepImg = self.texture.path
         #self._lastRepImg = texture.path
         self._lastZoom=1
+        self.TypeVariables.update({"texture": {"Type": Texture}})
 
         self.Img = self.texture.Img
         self.Mesh = self.Particule.Scene.surface.create_image(0, 0, anchor=tkinter.NW, image=self.Img)

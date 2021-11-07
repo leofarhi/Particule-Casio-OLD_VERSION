@@ -9,6 +9,14 @@
 #include "usefull.h"
 #include "Ressources.h"
 
+int LenChar(char* txt) {
+    return strlen(txt);
+}
+
+int mod(int x, int m) {
+    return (x % m + m) % m;
+}
+
 enum Tag
 {
     Untagged = 0,
@@ -95,6 +103,11 @@ public:
         this->name = (unsigned char*)name;
         this->ID = (unsigned char*)UUID;
     };
+
+    ~Object() {
+        delete name;
+        delete ID;
+    }
     //hideFlags c'est pour l'éditeur donc il n'est pas présent
     unsigned char* name;
 
@@ -134,6 +147,10 @@ public:
     {
         this->gameObject = gameObject;
     };
+
+    ~Component() {
+        delete tag;
+    }
 
     void BroadcastMessage();
     void CompareTag();
@@ -259,6 +276,15 @@ public:
         //self.up = None
         worldToLocalMatrix = NULL;
     };
+
+    ~Transform() {
+        delete localRotation;
+        delete localToWorldMatrix;
+        delete parent;
+        delete root;
+        delete rotation;
+        delete worldToLocalMatrix;
+    }
 
     void SetParent(Transform* transform) {
         if (parent != NULL) {
@@ -438,8 +464,30 @@ public:
         //ListOfComponent.Add(transform);
     };
 
+    ~GameObject() {
+        delete transform;
+    }
+
+    bool IsActive() {
+        if (!activeSelf) {
+            activeInHierarchy = false;
+            return false;
+        }
+        if (transform->parent != NULL) {
+            if (!transform->parent->gameObject->activeInHierarchy || !transform->parent->gameObject->activeSelf) {
+                activeInHierarchy = false;
+                return false;
+            }
+        }
+        activeInHierarchy = true;
+        return true;
+    }
+
     void Update() {
         this->transform->Update();
+        if (!IsActive()) {
+            return;
+        }
         for (int i = 0; i < ListOfComponent.Count; i++)
         {
             ListOfComponent[i]->Update();
@@ -448,6 +496,9 @@ public:
 
     void Start() {
         this->transform->Start();
+        if (!IsActive()) {
+            return;
+        }
         for (int i = 0; i < ListOfComponent.Count; i++)
         {
             ListOfComponent[i]->Start();
@@ -489,6 +540,7 @@ class Scene {
 private:
     List<GameObject*> AllGameObject;
 public:
+    SceneManager* sceneManager;
     void GetRootGameObjects();
     bool IsValid();
 
@@ -686,6 +738,7 @@ private:
 
     Scene* GetSceneInBuild(int index) {
         Scene* newScene = new Scene();
+        newScene->sceneManager = this;
 
         //AddScenes
 
@@ -706,5 +759,10 @@ private:
     }
 };
 
+
+void LoadScene(Scene* scene, int nb) {
+    scene->sceneManager->LoadScene(nb);
+    scene->sceneManager->StartScene();
+};
 
 #endif

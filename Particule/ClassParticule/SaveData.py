@@ -21,43 +21,39 @@ class SaveData:
         dataGameObject = data["GameObjects"]
         UUID_temp=[]
         for index, i in dataGameObject.items():
-            self.Particule.CreateUUID(index)
+            #self.Particule.CreateUUID(i,index)
             UUID_temp.append(index)
         dataComponent = data["Components"]
         for index, component in dataComponent.items():
-            self.Particule.CreateUUID(index)
+            #self.Particule.CreateUUID(component,index)
             UUID_temp.append(index)
         return UUID_temp
+    def GetDataScene(self,scene):
+        H = self.Particule.Hierarchy
+        try:
+            dico = H.GetDictOfChild(scene, {})
+        except:return {}
+        gameObjects = []
+        for index, i in dico.items():
+            if i[0] != "":
+                gameObjects.append(H.allGameObjectOnScene[index])
+        data = {"NameScene": H.t.set(scene, "chemin")}
+        dataGameObject = {}
+        for gameObject in gameObjects:
+            TempDico = gameObject.SaveDataDict()
+
+            dataGameObject.update({gameObject.ID: TempDico})
+        data.update({"GameObjects": dataGameObject})
+        dataComponent = {}
+        for gameObject in gameObjects:
+            for component in gameObject.ListOfComponent:
+                dataComponent.update({component.ID: component.SaveDataDict()})
+        data.update({"Components": dataComponent})
+        return data
     def SaveScene(self):
         H = self.Particule.Hierarchy
         for scene in H.t.get_children(""):
-            dico = H.GetDictOfChild(scene,{})
-            gameObjects =[]
-            for index, i in dico.items():
-                if i[0]!="":
-                    gameObjects.append(H.allGameObjectOnScene[index])
-            data = {"NameScene":H.t.set(scene,"chemin")}
-            dataGameObject = {}
-            for gameObject in gameObjects:
-
-                TempDico = {"name":gameObject.name,
-                            "activeInHierarchy":gameObject.activeInHierarchy,
-                            "activeSelf":gameObject.activeSelf,
-                            "isStatic":gameObject.isStatic,
-                            "layer":gameObject.layer.value,
-                            "scene":gameObject.scene,
-                            "sceneCullingMask":gameObject.sceneCullingMask,
-                            "tag":gameObject.tag.value,
-                            "transform":gameObject.transform.ID,
-                            "ListOfComponent":[i.ID for i in gameObject.ListOfComponent]
-                            }
-                dataGameObject.update({gameObject.ID : TempDico})
-            data.update({"GameObjects":dataGameObject})
-            dataComponent={}
-            for gameObject in gameObjects:
-                for component in gameObject.ListOfComponent:
-                    dataComponent.update({component.ID:component.SaveDataDict()})
-            data.update({"Components":dataComponent})
+            data = self.GetDataScene(scene)
             dataSaved = json.dumps(data, indent=4)
             path = data["NameScene"]
             path = path.replace(self.Particule.FolderProject, "")
@@ -69,7 +65,7 @@ class SaveData:
             dataTxt = fic.read()
         data = json.loads(dataTxt)
         self.PathScene = path
-        self.Particule.Scene.scenes = [data["NameScene"]]
+        self.Particule.Scene.scenes = [path]#[data["NameScene"]]
         dataGameObject = data["GameObjects"]
         gameObjects = []
         dicoGameObject= {}
@@ -89,6 +85,8 @@ class SaveData:
                 classCompo = getattr(sys.modules['Particule'], component["name"])
             except:
                 classCompo = getattr(sys.modules['Particule'], "MissingScript")
+            if not component["gameObject"] in dicoGameObject:
+                continue
             temp = classCompo(dicoGameObject[component["gameObject"]],UUID=index)
             components.append(temp)
             dicoComponent.update({temp.ID: temp})
@@ -105,14 +103,24 @@ class SaveData:
             gameObject.activeSelf = i["activeSelf"]
             gameObject.isStatic = i["isStatic"]
             gameObject.layer = Layer(i["layer"])
-            gameObject.scene = i["scene"]
+            gameObject.scene = path#i["scene"]
             gameObject.sceneCullingMask = i["sceneCullingMask"]
             gameObject.tag = Tag(i["tag"])
             gameObject.transform = dicoComponent[i["transform"]]
-            gameObject.ListOfComponent = [dicoComponent[o] for o in i["ListOfComponent"]]
+            tempListOfComponentDico = []
+            for o in i["ListOfComponent"]:
+                if o in dicoComponent:
+                    tempListOfComponentDico.append(dicoComponent[o])
+            gameObject.ListOfComponent = tempListOfComponentDico
 
         for component in components:
             try:
+                """
+                print(data)
+                print(component)
+                print(dataComponent[str(component.ID)])
+                print(dicoGameObject)
+                print(dicoComponent)"""
                 component.LoadDataDict(data,component,dataComponent[str(component.ID)],dicoGameObject,dicoComponent)
             except:
                 pass
@@ -129,7 +137,9 @@ class SaveData:
             H.t.delete(i)
         H.allGameObjectOnScene = {}
         H.ItemSelected = None
-        H.t.insert("", "end", data["NameScene"], text=(data["NameScene"].split("/")[-1]).split(".")[0], values=(data["NameScene"], "dir"))
+        H.t.insert("", "end",
+                   path,#data["NameScene"],
+                   text=(path.split("/")[-1]).split(".")[0], values=(path, "dir"))
         for index,parent in dicoHier.items():
             H.CreateObject(root=parent, name=None, gameObject=dicoGameObject[index])
     def GetDictOfChild(self,parent,dico):

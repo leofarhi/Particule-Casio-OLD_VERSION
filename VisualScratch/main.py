@@ -18,6 +18,11 @@ except:
     pass
 if not BuildMode:
     loading = Loading()
+
+#######Debug Test
+PathSLN="C:\\Users\\leofa\\OneDrive\\Documents\\PycharmProjects\\NouveauProjet\\SLN\\Solution.sls"
+#################
+
 VisualScratch(PathSLN,BuildMode)
 
 # See PyCharm help at https://www.jetbrains.com/help/pycharm/

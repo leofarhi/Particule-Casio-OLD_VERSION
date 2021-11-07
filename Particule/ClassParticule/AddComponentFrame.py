@@ -36,7 +36,10 @@ class AddComponentFrame(EditorWindow):
         self.lstButton=[]
         ItemSelected = self.Particule.Hierarchy.ItemSelected
         for compo in self.Particule.AllComponent:
-            temp = Button(self.frame_AllCompo.scrollable_frame,text=(compo.__name__).split(".")[-1],
+            name=(compo.__name__).split(".")[-1]
+            if self.RemoveTypeComponent(name):
+                continue
+            temp = Button(self.frame_AllCompo.scrollable_frame,text=name,
                           width=self.frame_AllCompo.canvas.winfo_width(),command = partial(ItemSelected.AddComponent,compo))
             temp.pack(fill=tkinter.X, expand=True)
             self.lstButton.append(temp)
@@ -61,3 +64,6 @@ class AddComponentFrame(EditorWindow):
             temp.pack(fill=tkinter.X, expand=True)
             self.lstButton.append(temp)
 
+    def RemoveTypeComponent(self,name):
+        Lst=["MissingScript","Transform"]
+        return name in Lst

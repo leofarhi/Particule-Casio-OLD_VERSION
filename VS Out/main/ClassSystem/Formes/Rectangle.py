@@ -16,6 +16,9 @@ class Rectangle(Forme):
         r = 25
         r = self.espace(r)
         h = 15
+        for i in self.Options:
+            if i[0] == "AddSize":
+                r += i[1]
         # print(r,self.Parametres)
         posi = (self.x, self.y,
                 self.x + (5 * self.Zoom), self.y, self.x + (10 * self.Zoom), self.y + (5 * self.Zoom),

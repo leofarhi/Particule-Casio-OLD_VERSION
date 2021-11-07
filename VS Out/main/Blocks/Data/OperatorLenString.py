@@ -15,4 +15,6 @@ class ScriptBlockPython(ScriptBlock):
         self.SelfGetForme = None
         self.Image = None
 
-    
+    def WhenCompileForCasio(self,lst):
+        code = "LenChar((char*)" + self.BlockSys.GetParametre(lst,0) + ")"
+        return code

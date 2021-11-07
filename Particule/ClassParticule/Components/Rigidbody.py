@@ -10,6 +10,11 @@ class Rigidbody(Component):
         self.UseGravity = False
         self.IsKinematic = False
 
+        self.TypeVariables.update({"Mass": {"Type": int},
+                                   "UseGravity": {"Type": bool},
+                                   "IsKinematic": {"Type": bool}
+                                   })
+
         self.AttributVisible = ["Mass", "UseGravity", "IsKinematic", ]
 
     def SaveDataDict(self):

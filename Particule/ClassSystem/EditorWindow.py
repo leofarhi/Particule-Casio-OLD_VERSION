@@ -4,7 +4,6 @@ from tkinter.messagebox import *
 import tkinter.simpledialog
 from tkinter.filedialog import *
 from tkinter import ttk
-from ClassSystem.FrameDragAndDrop import FrameDragAndDrop
 from ClassSystem.PFrame import PFrame
 from ClassSystem.WinFrameBas import WinFrameBas
 

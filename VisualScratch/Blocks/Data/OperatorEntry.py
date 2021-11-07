@@ -20,6 +20,9 @@ class ScriptBlockPython(ScriptBlock):
     def WhenCompileForCasio(self,lst):
         code = ""
         temp = str(self.BlockSys.GetVariable(lst,0)[1])
+        if temp[0]=='"' or temp[-1]=='"':
+            code += str(temp)
+            return code
         try:
             temp_ = int(temp)
             code += str(temp_)

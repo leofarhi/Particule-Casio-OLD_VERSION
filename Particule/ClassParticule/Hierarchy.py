@@ -8,7 +8,18 @@ import tkinter as tk
 import time
 from ClassSystem.EditorWindow import EditorWindow
 from ClassParticule.GameObject import GameObject
+from ClassParticule.Component import Component
+import ClassParticule
 from ClassParticule.Vector2 import Vector2
+import pyperclip
+from ClassParticule.Tag import Tag
+from ClassParticule.Layer import Layer
+import os,sys
+from inspect import isclass
+from pkgutil import iter_modules
+import pkgutil
+from pathlib import Path
+from importlib import import_module
 
 class Hierarchy(EditorWindow):
     def __init__(self,RootWindow):
@@ -53,13 +64,14 @@ class Hierarchy(EditorWindow):
         # Button-3 is right click on windows
         self.t.bind("<Button-3>", self.popup)
         self.contextMenu = Menu(self.Particule.Mafenetre,tearoff=False)
-        self.contextMenu.add_command(label="Copy")
-        self.contextMenu.add_command(label="Past")
+        self.contextMenu.add_command(label="Copy",command =self.CopyObject)
+        self.contextMenu.add_command(label="Past",command =self.PastObject)
         self.contextMenu.add_separator()
         self.contextMenu.add_command(label="Rename")
-        self.contextMenu.add_command(label="Duplicate")
+        self.contextMenu.add_command(label="Duplicate",command =self.DuplicateObject)
         self.contextMenu.add_command(label="Delete",command = self.deleteObject)
         self.contextMenu.add_separator()
+        self.contextMenu.add_command(label="Create Prefab in Folder",command =self.CreatePrefabInFolder)
         self.contextMenu.add_command(label="Select Children")
         self.contextMenu.add_command(label="Select Prefab Root")
         self.contextMenu.add_separator()
@@ -83,11 +95,113 @@ class Hierarchy(EditorWindow):
             # occurs when items do not fill frame
             # no action required
             pass
+    def CreatePrefabInFolder(self):
+        print("ok")
+        temp = self.t.focus()
+        if self.t.parent(temp) == "":
+            return
+        gameObj=self.allGameObjectOnScene[temp]
+        print("ok2")
+        lstTemp=os.listdir(self.Particule.FolderWindow.repertoirSlc)
+        if gameObj.name+".prefab" in lstTemp:
+            nb = 0
+            while gameObj.name+" "+str(nb)+ ".prefab" in lstTemp:
+                path = self.Particule.FolderWindow.repertoirSlc + "/" + gameObj.name+" "+str(nb)+ ".prefab"
+                nb+=1
+        else:
+            path = self.Particule.FolderWindow.repertoirSlc + "/" + gameObj.name + ".prefab"
+        with open(path,"w") as fic:
+            fic.write(str(gameObj.Copy()))
+        self.Particule.UpdateOnFocus()
     def deleteObject(self,*args):
         temp = self.t.focus()
         if self.t.parent(temp) == "":
             return
         self.DestroyGameObject(temp)
+        self.ItemSelected = None
+        for item in self.t.selection():
+            self.t.selection_remove(item)
+
+    def CopyObject(self,*args):
+        temp = self.t.focus()
+        if self.t.parent(temp) == "":
+            return
+        pyperclip.copy(str(self.allGameObjectOnScene[temp].Copy()))
+    def PastObject(self,*args):
+        dico = pyperclip.paste()
+        try: dico=eval(dico)
+        except:
+            return
+        if type(dico)!=dict:
+            return
+        for gameobject in dico.items():
+            datas=gameobject[1]
+            if datas["TypeObject"]!="GameObject":continue
+            root = self.t.get_children("")[0]
+            count = 0
+            for _, i in self.allGameObjectOnScene.items():
+                if datas["name"] in i.name:
+                    count += 1
+            nb = ""
+            if count > 0:
+                nb = " (" + str(count) + ")"
+            gameObject = GameObject(self.Particule, datas["name"] + nb,
+                                    self.t.set(self.t.get_children("")[0], "chemin"))
+            gameObject.activeInHierarchy = datas["activeInHierarchy"]
+            gameObject.activeSelf = datas["activeSelf"]
+            gameObject.isStatic = datas["isStatic"]
+            gameObject.layer = Layer(datas["layer"])
+            gameObject.sceneCullingMask = datas["sceneCullingMask"]
+            gameObject.tag = Tag(datas["tag"])
+            scenePath = datas["scene"]
+            dataComponent = datas["ListOfComponent"]
+            DatasSceneInfo = self.Particule.SaveData.GetDataScene(scenePath)
+            MyCompo=[]
+            for index, component in dataComponent.items():
+                try:
+                    classCompo = getattr(sys.modules['Particule'], component["TypeObject"])
+                except:
+                    classCompo = getattr(sys.modules['Particule'], "MissingScript")
+                temp = None
+                component["gameObject"] = gameObject.ID
+                if component["TypeObject"] == "Transform":
+                    temp = gameObject.transform
+                    component = eval(str(component).replace(index,gameObject.transform.ID))
+                else:
+                    temp = classCompo(gameObject)
+                    component = eval(str(component).replace(index, temp.ID))
+                MyCompo.append([temp,component])
+            ALLInScene=[]
+            for i in self.Particule.All_UUID.values():
+                if issubclass(type(i),ClassParticule.Component.Component):
+                    ALLInScene.append(i)
+                if issubclass(type(i),ClassParticule.GameObject.GameObject):
+                    ALLInScene.append(i)
+            DicoAllScene = {}
+            for i in ALLInScene+[o[0] for o in MyCompo]:
+                if i!= None:
+                    DicoAllScene[i.ID] = i
+            for i in MyCompo:
+                if type(i[0]) is type(gameObject.transform):
+                    gameObject.transform.LoadDataDict(DatasSceneInfo, gameObject.transform, i[1], DicoAllScene, DicoAllScene)
+                else:
+                    i[0].LoadDataDict(DatasSceneInfo, i[0], i[1], DicoAllScene, DicoAllScene)
+                    gameObject.ListOfComponent.append(i[0])
+                    i[0].gameObject = gameObject
+            gameObject.transform = gameObject.transform
+            name = gameObject.name
+            if gameObject.activeSelf:
+                tag = 'Active'
+            else:
+                tag = 'Desactive'
+            self.allGameObjectOnScene.update({gameObject.ID: gameObject})
+            NewT = self.t.insert(root, "end", str(gameObject.ID), text=name, values=(gameObject.ID, "dir"), tags=(tag))
+            self.t.see(NewT)
+            self.t.update()
+            return gameObject
+    def DuplicateObject(self,*args):
+        self.CopyObject()
+        self.PastObject()
     def DestroyGameObject(self,temp):
         dico = self.GetDictOfChild(temp,{})
         #del self.allGameObjectOnScene[temp['values'][0]]
@@ -136,13 +250,13 @@ class Hierarchy(EditorWindow):
         self.t = event.widget
         n = self.t.selection()
         self.moveitem.set(self.t.focus())
-        x = event.x
-        y = event.y
-        self.mitem.geometry("%dx%d+%d+%d" % (20, 10, x, y + 90))
+        #x = event.x
+        #y = event.y
+        x = self.Particule.Mafenetre.winfo_pointerx()
+        y = self.Particule.Mafenetre.winfo_pointery()
+        self.mitem.geometry("%dx%d+%d+%d" % (20, 10, x, y))
         self.mitem.deiconify()
         self.t['cursor'] = "hand2"
-        # DragAndDropSys
-        self.Particule.DragAndDropSys.Drag()
 
     def foundChild(self, parent, dest):
         reponse = False
@@ -169,7 +283,6 @@ class Hierarchy(EditorWindow):
             else:
                 tempI = tempI
                 self.ItemSelected = self.allGameObjectOnScene[tempI]
-                self.Particule.DragAndDropSys.Drop({"Object":self.ItemSelected,"Window":"Hierarchy","Type":"GameObject"})
             self.Particule.Inspector.UpdateItemSelected()
         except:
             return
@@ -180,8 +293,6 @@ class Hierarchy(EditorWindow):
         src = self.moveitem.get()
         self.Particule.ScreenOrganization.ChangeInspector("Inspector")
         self.SetItemSelect()
-        # DragAndDropSys
-        self.Particule.DragAndDropSys.Drop()
 
         if src and self.t.identify_region(event.x, event.y) == "tree":
             dest = self.t.identify_row(event.y)

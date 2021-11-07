@@ -24,6 +24,28 @@ class Transform(Component):
         self.up = None
         self.worldToLocalMatrix = None
 
+        self.TypeVariables.update({"childCount": {"Type": int},
+                                   "eulerAngles": {"Type": None},
+                                   "forward": {"Type": None},
+                                   "hasChanged": {"Type": None},
+                                   "hierarchyCapacity": {"Type": None},
+                                   "hierarchyCount": {"Type": None},
+                                   "localEulerAngles": {"Type": None},
+                                   "localPosition": {"Type": Vector2},
+                                   "localRotation": {"Type": None},
+                                   "localScale": {"Type": None},
+                                   "localToWorldMatrix": {"Type": None},
+                                   "lossyScale": {"Type": None},
+                                   "parent": {"Type": Transform},
+                                   "childs": {"Type":list,"LstValueType":Transform,"LstType":"List"},
+                                   "position": {"Type": Vector2},
+                                   "right": {"Type": None},
+                                   "root": {"Type": None},
+                                   "rotation": {"Type": None},
+                                   "up": {"Type": None},
+                                   "worldToLocalMatrix": {"Type": None}
+                                   })
+
         #Attributs privés
         self._localPosition = Vector2()
         self._position = Vector2()

@@ -200,7 +200,7 @@ class ScreenOrganization:
         self.MenuItem.AddItem("Edit/Clear All PlayerPrefs")
 
         self.MenuItem.AddItem("Asset/Create")
-        self.MenuItem.AddItem("Asset/Show in Explorer")
+        self.MenuItem.AddItem("Asset/Show in Explorer",self.ShowInExplorer)
         self.MenuItem.AddItem("Asset/Open")
         self.MenuItem.AddItem("Asset/Delete")
         self.MenuItem.AddItem("Asset/Rename")
@@ -314,5 +314,9 @@ class ScreenOrganization:
         self.MenuItem.AddItem("Aide/Quick Search")
 
         self.MenuItem.Update()
+
+    def ShowInExplorer(self):
+        FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
+        subprocess.run([FILEBROWSER_PATH, os.path.abspath(self.Particule.FolderProject)])
 
 

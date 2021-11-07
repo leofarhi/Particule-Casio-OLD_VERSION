@@ -52,27 +52,23 @@ class ScriptBlockPython(ScriptBlock):
                 GetPrivate.append((i.split(":Private&&")[0]).split(":Type:"))
 
 
-        etoile = self.BlockSys.Etoile
 
         public = ""
         for i in GetPublic:
-            type = i[1]
-            if not type in etoile:
-                type+="*"
-            public += type + " " + i[0]+";\n"
+            Type = i[1]
+            Type = self.BlockSys.GetTypeValueAttributCasio(Type)
+            public += Type + " " + i[0]+";\n"
         private = ""
         for i in GetPrivate:
-            type = i[1]
-            if not type in etoile:
-                type += "*"
-            private += type + " " + i[0] + ";\n"
+            Type = i[1]
+            Type = self.BlockSys.GetTypeValueAttributCasio(Type)
+            private += Type + " " + i[0] + ";\n"
 
         listInit=","
         for i in GetPublic:
-            type = i[1]
-            if not type in etoile:
-                type += "*"
-            listInit += type + " " + i[0] + ","
+            Type = i[1]
+            Type = self.BlockSys.GetTypeValueAttributCasio(Type)
+            listInit += Type + " " + i[0] + ","
 
         initPrivate=""
         for i in GetPrivate:
