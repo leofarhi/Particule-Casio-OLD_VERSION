@@ -7,7 +7,7 @@ class ScriptBlockPython(ScriptBlock):
         ScriptBlock.__init__(self,_Sys)
         self.Onglet="Mes Blocs"
         self.TypeForme="Vague"
-        self.Texte="Au demarrage"
+        self.Texte="Ma Fonction"
         self.Parametres=[["Label","void"],['TexteEtNombre', ''],["Label","("],['TexteEtNombre', ''],["Label",")"]]
         self.Color=Couleurs.jaune
         self.Compile="MyCMDFunction"

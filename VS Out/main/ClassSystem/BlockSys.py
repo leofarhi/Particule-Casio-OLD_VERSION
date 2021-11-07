@@ -98,6 +98,23 @@ class BlockSys:
             return '"'+name+'":self.'+name+".get()"
         elif Type == "Texture":
             return '"'+name+'":self.'+name+".path"
+    def GetSetTypeDicoPython(self,Type):
+        if Type == "int":
+            return '{"Type":int}'
+        elif Type == "float":
+            return '{"Type":float}'
+        elif Type == "string":
+            return '{"Type":str}'
+        elif Type == "bool":
+            return '{"Type":bool}'
+        elif Type == "Vector2":
+            return '{"Type":Vector2}'
+        elif Type == "Texture":
+            return '{"Type":Texture}'
+        elif Type == "list(int)":
+            return '{"Type":list,"LstValueType":int,"LstType":"List"}'
+        elif Type == "array(int)":
+            return '{"Type":list,"LstValueType":int,"LstType":"Array"}'
     def GetLoadValueAttributPython(self,Type,name):
         if Type in ["int","float","string","bool"]:
             return 'self.'+name+'= dataCompo["'+name+'"]'

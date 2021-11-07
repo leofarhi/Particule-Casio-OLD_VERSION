@@ -14,3 +14,4 @@ class Camera;
 class Image;
 class Text;
 void LoadScene(Scene* scene, int nb);
+GameObject* FindWithName(unsigned char* name,GameObject* gameObject);

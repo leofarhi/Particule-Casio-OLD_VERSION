@@ -232,58 +232,61 @@ public:
 };
 class Transform : public Component {
     //https://docs.unity3d.com/ScriptReference/Transform.html
+private:
+    Vector2* lastPosition;
 public:
     List<Transform*> childs;
     int childCount;
-    Vector2 eulerAngles;
-    //Vector2 forward;
+    //Vector2* eulerAngles;
+    //Vector2* forward;
     bool hasChanged;
     int hierarchyCapacity;
     int hierarchyCount;
-    Vector2 localEulerAngles;
-    Vector2 localPosition;
-    Quaternion* localRotation;
-    Vector2 localScale;
-    Matrix4x4* localToWorldMatrix;
-    Vector2 lossyScale;
+    //Vector2* localEulerAngles;
+    Vector2* localPosition;
+    //Quaternion* localRotation;
+    Vector2* localScale;
+    //Matrix4x4* localToWorldMatrix;
+    Vector2* lossyScale;
     Transform* parent;
-    Vector2 position;
-    //Vector2 right;
+    Vector2* position;
+    //Vector2* right;
     Transform* root;
-    Quaternion* rotation;
-    //Vector2 up;
-    Matrix4x4* worldToLocalMatrix;
+    //Quaternion* rotation;
+    //Vector2* up;
+    //Matrix4x4* worldToLocalMatrix;
 
     Transform(GameObject* gameObject, const char* UUID = NULL, const char* name = "Transform") : Component(name,gameObject,UUID){
         childCount = 0;
-        eulerAngles = Vector2();
+        //eulerAngles = new Vector2();
         //forward = None
         hasChanged = NULL;
         hierarchyCapacity = NULL;
         hierarchyCount = NULL;
-        localEulerAngles = Vector2();
-        localPosition = Vector2();
-        localRotation = NULL;
-        localScale = Vector2(1,1);
-        localToWorldMatrix = NULL;
-        lossyScale = Vector2(1,1);
+        //localEulerAngles = new Vector2();
+        localPosition = new Vector2();
+        //localRotation = NULL;
+        localScale = new Vector2(1,1);
+        //localToWorldMatrix = NULL;
+        lossyScale = new Vector2(1,1);
         parent = NULL;
         //childs = []
-        position = Vector2();
+        position = new Vector2();
         //self.right = None
         root = NULL;
-        rotation = NULL;
+        //rotation = NULL;
         //self.up = None
-        worldToLocalMatrix = NULL;
+        //worldToLocalMatrix = NULL;
+        lastPosition = new Vector2();
     };
 
     ~Transform() {
-        delete localRotation;
-        delete localToWorldMatrix;
+        //delete localRotation;
+        //delete localToWorldMatrix;
         delete parent;
         delete root;
-        delete rotation;
-        delete worldToLocalMatrix;
+        //delete rotation;
+        //delete worldToLocalMatrix;
     }
 
     void SetParent(Transform* transform) {
@@ -294,15 +297,36 @@ public:
         parent = transform;
     }
 
+    void Start() {
+        lastPosition->x = position->x;
+        lastPosition->y = position->y;
+    }
+
     void Update() {
         childCount = childs.Count;
+
         if (parent == NULL) {
 
+            if (*position != *localPosition) {
+                if (*localPosition != *lastPosition) {
+                    position->x = localPosition->x;
+                    position->y = localPosition->y;
+                }
+            }
+            localPosition->x = position->x;
+            localPosition->y = position->y;
         }
         else
         {
-            position.Set(localPosition + parent->position);
+            //return;
+            if ((*position != *lastPosition) && (*position == (*localPosition + *parent->position))) {
+                localPosition->Set(*localPosition + (*lastPosition - *position));
+            }
+            position->Set(*localPosition + *parent->position);
+
         }
+        lastPosition->x = position->x;
+        lastPosition->y = position->y;
     }
 };
 
@@ -529,7 +553,9 @@ public:
     void TryGetComponent();
 
     static void CreatePrimitive();
-    static void Find();
+    GameObject* Find(unsigned char* name) {
+        return FindWithName(name, this);
+    };
     static void FindGameObjectsWithTag();
     static void FindWithTag();
 };
@@ -537,9 +563,8 @@ public:
 
 class Scene {
     //https://docs.unity3d.com/ScriptReference/SceneManagement.Scene.html
-private:
-    List<GameObject*> AllGameObject;
 public:
+    List<GameObject*> AllGameObject;
     SceneManager* sceneManager;
     void GetRootGameObjects();
     bool IsValid();
@@ -596,10 +621,10 @@ public:
     };
 
     void Update() {
-        float posX = gameObject->transform->position.x;
-        float posY = gameObject->transform->position.y;
-        float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position.x;
-        float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position.y;
+        float posX = gameObject->transform->position->x;
+        float posY = gameObject->transform->position->y;
+        float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
+        float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
         if (posX - camX + image->height > 0 && posX - camX < 128 && posY - camY + image->height>0 && posY - camY < 64)
             ML_bmp_or_cl((const unsigned char*)image->textureData, (int)(posX - camX), (int)(posY - camY), image->width, image->height);
     };
@@ -617,10 +642,10 @@ public:
     };
 
     void Update() {
-        float posX = gameObject->transform->position.x;
-        float posY = gameObject->transform->position.y;
-        float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position.x;
-        float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position.y;
+        float posX = gameObject->transform->position->x;
+        float posY = gameObject->transform->position->y;
+        float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
+        float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
         if (posX - camX + image->height > 0 && posX - camX < 128 && posY - camY + image->height>0 && posY - camY < 64)
             ML_bmp_or_cl((const unsigned char*)image->textureData, (int)(posX - camX), (int)(posY - camY), image->width, image->height);
     };
@@ -634,18 +659,18 @@ public:
     float Mass;
     bool UseGravity;
     bool IsKinematic;
-    Vector2 velocity;
+    Vector2* velocity;
 
     Rigidbody(GameObject* gameObject, float Mass, bool UseGravity, bool IsKinematic, const char* UUID = NULL) : MonoBehaviour("Rigidbody", gameObject, UUID) {
         this->Mass = Mass;
         this->UseGravity = UseGravity;
         this->IsKinematic = IsKinematic;
-        this->velocity = Vector2();
+        this->velocity = new Vector2();
 
     };
 
     void Start() {
-        this->velocity.Set(0,0);
+        this->velocity->Set(0,0);
     }
     
 };
@@ -674,10 +699,10 @@ public:
     };
 
     void Update() {
-        float posX = gameObject->transform->position.x;
-        float posY = gameObject->transform->position.y;
-        float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position.x;
-        float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position.y;
+        float posX = gameObject->transform->position->x;
+        float posY = gameObject->transform->position->y;
+        float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
+        float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
         PrintMini((int)(posX - camX), (int)(posY - camY), (unsigned char*)this->text, MINI_OVER);
     }
 
@@ -713,6 +738,18 @@ public:
     static void MoveGameObjectToScene();
     static void SetActiveScene();
     static void UnloadSceneAsync();
+
+    GameObject* FindWithName(unsigned char* name) {
+        for (int i = 0; i < AllSceneLoaded.Count; i++)
+        {
+            for (int o = 0; o < AllSceneLoaded[i]->AllGameObject.Count; o++) {
+                if (AllSceneLoaded[i]->AllGameObject[o]->name == name) {
+                    return AllSceneLoaded[i]->AllGameObject[o];
+                }
+            }
+        }
+        return NULL;
+    }
 
     //Events
     static void activeSceneChanged();
@@ -763,6 +800,10 @@ private:
 void LoadScene(Scene* scene, int nb) {
     scene->sceneManager->LoadScene(nb);
     scene->sceneManager->StartScene();
+};
+
+GameObject* FindWithName(unsigned char* name, GameObject* gameObject) {
+    return gameObject->scene->sceneManager->FindWithName(name);
 };
 
 #endif

@@ -9,7 +9,7 @@ class ScriptBlockPython(ScriptBlock):
         self.TypeForme="Rectangle"
         self.Texte="Changer la scene"
         self.Parametres=[["Label","Charger la scene"],['EmptyCercle']]
-        self.Color=Couleurs.bleu_clair
+        self.Color=Couleurs.jaune
         self.Compile="ChangeScene"
         self.Options = []
         self.SelfGetForme = None

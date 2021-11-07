@@ -35,7 +35,9 @@ class ScriptBlockPython(ScriptBlock):
 
     #Pour Particule :
     def WhenCompileForPython(self,lst,base):
+        VarSetType = 'self.TypeVariables["'+str(self.BlockSys.GetVariable(lst,0)[1])+'"] = '+self.BlockSys.GetSetTypeDicoPython(str(self.BlockSys.GetVariable(lst,1)[2]))
         line = "self."+str(self.BlockSys.GetVariable(lst,0)[1])+"= "+self.BlockSys.GetInitValueAttributPython(str(self.BlockSys.GetVariable(lst,1)[2]))+"""
+        """+VarSetType+"""
         $$Attributs"""
         code = base.replace("$$Attributs",line)
         if self.BlockSys.GetVariable(lst,2)[2] == "public":
