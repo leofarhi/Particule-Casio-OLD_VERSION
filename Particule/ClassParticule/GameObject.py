@@ -18,6 +18,11 @@ class GameObject(Object):
         self.transform = Transform(self)
         self.ListOfComponent=[self.transform]
 
+        if self.scene!="":
+            indexScene = self.Particule.Scene.scenes.index(self.scene)
+            if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
+                self.Particule.Scene.UUID_Objects[indexScene].update({self.ID:self})
+
 
     def SaveDataDict(self):
         TempDico = {"name": self.name,
@@ -45,6 +50,10 @@ class GameObject(Object):
         return Data
 
     def UpdateOnGUI(self):
+        if self.scene!="":
+            indexScene = self.Particule.Scene.scenes.index(self.scene)
+            if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
+                self.Particule.Scene.UUID_Objects[indexScene].update({self.ID:self})
         if self.transform.parent == None:
             self.activeInHierarchy = True
         else:
@@ -73,6 +82,11 @@ class GameObject(Object):
 
 
     def Destroy(self):
+        Object.Destroy(self)
+        if self.scene != "":
+            indexScene = self.Particule.Scene.scenes.index(self.scene)
+            if self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
+                del (self.Particule.Scene.UUID_Objects[indexScene])[self.ID]
         while len(self.ListOfComponent)>0:
             self.ListOfComponent[0].Destroy()
     def BroadcastMessage(self):

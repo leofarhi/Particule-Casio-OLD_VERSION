@@ -17,6 +17,10 @@ class Component(Object):
         self.TypeVariables = {"name":{"Type":str},
                               "gameObject":{"Type":ClassParticule.GameObject.GameObject}
                               }
+        if self.gameObject.scene!="":
+            indexScene = self.Particule.Scene.scenes.index(self.gameObject.scene)
+            if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
+                self.Particule.Scene.UUID_Objects[indexScene].update({self.ID:self})
 
     def SaveDataDict(self):
         return {"name":self.name,
@@ -44,32 +48,37 @@ class Component(Object):
         return lst
 
     def RefreshGUI(self):
+        if self.gameObject.scene!="":
+            indexScene = self.Particule.Scene.scenes.index(self.gameObject.scene)
+            if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
+                self.Particule.Scene.UUID_Objects[indexScene].update({self.ID:self})
         if self.myFrame != None:
             self.myFrame.destroy()
         self.myFrame = LabelFrame(self.Particule.Inspector.mainComponentsFrame, text=self.name)
         self.myFrame.Particule = self.Particule
-        #self.myFrame.pack(fill=tkinter.BOTH, expand=True)
-        self.myFrame.bind("<Button-3>", self.popup)
-        self.contextMenu = Menu(self.Particule.Mafenetre, tearoff=False)
-        #self.contextMenu.add_command(label="Copy")
-        #self.contextMenu.add_command(label="Past")
-        self.contextMenu.add_separator()
-        #self.contextMenu.add_command(label="Duplicate")
-        self.contextMenu.add_command(label="Delete", command=self.Destroy)
+        self.AddContextMenu()
         one = False
         count = 0
         for i in self.GetAttribut():
             if i[0] in self.AttributVisible:
                 # print(i[0],getattr(self,i[0]))
                 one = True
-                tempUI = TypeGUI(self.myFrame, self, i[0])
+                tempUI = TypeGUI(self.myFrame, self, i[0],self.TypeVariables[i[0]])
                 tempUI.grid(row=count, column=0, sticky='EWNS')
                 self._valueGUI.append(tempUI)
                 count += 1
                 # Button(self.myFrame,text=self.gameObject.name+i[0]+" : "+str(i[1].get())).pack()
         if not one:
             Label(self.myFrame, text="Pas de paramètres").pack()
-
+    def AddContextMenu(self):
+        # self.myFrame.pack(fill=tkinter.BOTH, expand=True)
+        self.myFrame.bind("<Button-3>", self.popup)
+        self.contextMenu = Menu(self.Particule.Mafenetre, tearoff=False)
+        # self.contextMenu.add_command(label="Copy")
+        # self.contextMenu.add_command(label="Past")
+        self.contextMenu.add_separator()
+        # self.contextMenu.add_command(label="Duplicate")
+        self.contextMenu.add_command(label="Delete", command=self.Destroy)
     def PrintOnGui(self):
         if self.myFrame ==None:
             self.RefreshGUI()
@@ -80,6 +89,11 @@ class Component(Object):
     def popup(self, event):
         self.contextMenu.post(event.x_root, event.y_root)
     def Destroy(self,*args):
+        Object.Destroy(self)
+        if self.gameObject.scene != "":
+            indexScene = self.Particule.Scene.scenes.index(self.gameObject.scene)
+            if self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
+                del (self.Particule.Scene.UUID_Objects[indexScene])[self.ID]
         self.gameObject.ListOfComponent.remove(self)
         if (self.myFrame!=None):
             self.myFrame.destroy()
@@ -98,7 +112,7 @@ class Component(Object):
             if dicoVar["Type"] in [int,float,str,bool]:
                 if dicoVar["Type"] is str:
                     parametres +='(unsigned char*)"'
-                parametres+= var
+                parametres+= str(var)
                 if dicoVar["Type"] is str:
                     parametres+='"'
             else:
@@ -125,6 +139,12 @@ class Component(Object):
             parametres+=","
         return (type(self).__name__+"* "+self.ID+";\n",
                 self.ID+" = new "+type(self).__name__+'('+self.gameObject.ID+parametres+'"'+self.ID+'");\n')
+
+    def AddScriptBeforInitCasio(self):
+        return ""
+
+    def AddScriptAfterInitCasio(self):
+        return ""
 
 
 

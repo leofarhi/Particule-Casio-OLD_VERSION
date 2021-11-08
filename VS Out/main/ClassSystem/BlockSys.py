@@ -137,7 +137,7 @@ class BlockSys:
             return 'new Texture()'
 
     def GetTypeValueAttributCasio(self,Type):
-        if Type in ["int","float","bool","Vector2"]:
+        if Type in ["int","float","bool"]:
             return Type
         elif Type=="string":
             return "unsigned char*"

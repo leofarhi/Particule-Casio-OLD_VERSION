@@ -24,6 +24,8 @@ class FolderWindow(EditorWindow):
     def __init__(self,RootWindow):
         EditorWindow.__init__(self, RootWindow, Resize=True, ScrollbarShow=False)
 
+        self.TextureVide = Texture(self.Particule,name="None")
+
         # Cell width of each cell
         self.cell_width = 190
         self.cell_height = 70
@@ -290,7 +292,10 @@ class FolderWindow(EditorWindow):
         for i in lst:
             if ".meta" in i and os.path.isfile(rep + "/" + i):
                 TempID=rf.found(rep + "/" + i,"guid")
-                UUID = self.Particule.CreateUUID(FileVariable(self.Particule,rep + "/" + i,TempID),TempID)
+                if TempID in list(self.Particule.All_UUID.keys()):
+                    UUID = TempID
+                else:
+                    UUID = self.Particule.CreateUUID(FileVariable(self.Particule,rep + "/" + i,TempID),TempID)
                 rf.save(rep + "/" + i, "guid", UUID)
                 org = os.path.splitext(i)[0]
                 if os.path.splitext(org)[1] == ".particule":

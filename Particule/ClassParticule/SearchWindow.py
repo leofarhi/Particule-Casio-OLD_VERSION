@@ -4,7 +4,8 @@ from ClassSystem.Notebook import Notebook
 from tkinter import ttk
 
 class SearchWindow(EditorWindow):
-    def __init__(self, RootWindow):
+    def __init__(self, RootWindow,Object,TypeSearch):
+        self.Object = Object
         #bt = RootWindow.Particule.Inspector.Bouton_AddComponent
         #geo = str(bt.winfo_width()) + "x250"
         #geo += "+" + str(bt.winfo_rootx()) + "+" + str(bt.winfo_rooty() + bt.winfo_height())
@@ -28,22 +29,23 @@ class SearchWindow(EditorWindow):
         self.FolderFrame.pack(fill=BOTH, expand=True)
         self.SceneFrame.pack(fill=BOTH, expand=True)
 
-        onglets.add(self.FolderFrame, text='Folder')
+        onglets.add(self.FolderFrame, text='All')#'Folder')
         onglets.add(self.SceneFrame, text='Scene')
 
         scrollbarFolder = Scrollbar(self.FolderFrame)
         scrollbarFolder.pack(side=RIGHT, fill=Y)
 
         self.mylistFolder = Listbox(self.FolderFrame, yscrollcommand=scrollbarFolder.set)
-        for line in range(100):
-            self.mylistFolder.insert(END, "This is line Folder " + str(line))
+        for UUID,Obj in list(self.Particule.All_UUID.items()):
+            if type(Obj)==TypeSearch:
+                self.mylistFolder.insert(END, Obj.name)
+
 
         self.mylistFolder.pack(side=LEFT, fill=BOTH, expand=True)
         scrollbarFolder.config(command=self.mylistFolder.yview)
 
-        self.mylistFolder.delete(0, END)
 
-
+        """
         #####################
 
         scrollbarScene = Scrollbar(self.SceneFrame)
@@ -55,10 +57,11 @@ class SearchWindow(EditorWindow):
 
         self.mylistScene.pack(side=LEFT, fill=BOTH, expand=True)
         scrollbarScene.config(command=self.mylistScene.yview)
+        """
 
     def ClearListe(self):
         self.mylistFolder.delete(0, END)
-        self.mylistScene.delete(0, END)
+        #self.mylistScene.delete(0, END)
 
 
     def OnLostFocus(self,_=None):

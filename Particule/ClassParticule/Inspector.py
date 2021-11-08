@@ -12,7 +12,7 @@ class Inspector(EditorWindow):
         self.GameObjectWindow.pack(fill=tkinter.BOTH, expand=True)
 
         self.mainframe = LabelFrame(self.GameObjectWindow)
-        self.mainframe.grid(row=0,column=0, sticky='EWNS')#.pack(fill=tkinter.X, expand=True,side=tkinter.TOP, anchor=NW)
+        self.mainframe.pack(fill=tkinter.X,side=TOP)#.pack(fill=tkinter.X, expand=True,side=tkinter.TOP, anchor=NW)
 
         self.ApercuWidth = 50
         self.ApercuHeight = self.ApercuWidth
@@ -67,12 +67,30 @@ class Inspector(EditorWindow):
         self.LstAllSelectLayer.grid(row=0, column=3)
         self.LstAllSelectLayer.bind('<<ComboboxSelected>>', self.updateDataGameObj)
 
-        self.mainComponentsFrame = LabelFrame(self.GameObjectWindow)
-        self.mainComponentsFrame.grid(row=1, column=0, sticky='EWNS')
+        FrameTemp = Frame(self.GameObjectWindow)
+        FrameTemp.pack(fill=tkinter.BOTH,expand=True,side=TOP)
+        self.ZoneComponentCanvas = Canvas(FrameTemp)
+        self.ZoneComponentCanvas.pack(side=LEFT,fill=tkinter.BOTH,expand=True, anchor=N)
 
-        self.Bouton_AddComponent = Button(self.GameObjectWindow, text="Add Component",command=partial(AddComponentFrame,self.Particule.Mafenetre))
-        self.Bouton_AddComponent.grid(row=2,column=0, sticky='EWNS',padx=10,pady=10)#.pack(padx=10,pady=10,fill=tkinter.X, expand=True)#,side=tkinter.TOP, anchor=N)
+        yscrollbar = ttk.Scrollbar(FrameTemp,orient="vertical",command = self.ZoneComponentCanvas.yview)
+        yscrollbar.pack(side=RIGHT,fill="y")
 
+        self.ZoneComponentCanvas.bind('<Configure>',lambda e:self.ZoneComponentCanvas.configure(scrollregion = self.ZoneComponentCanvas.bbox('all')))
+        self.ZoneComponentCanvas.bind('<Button-1>', lambda e: self.ZoneComponentCanvas.configure(
+            scrollregion=self.ZoneComponentCanvas.bbox('all')))
+
+        self.ZoneComponentCanvas.configure(yscrollcommand = yscrollbar.set)
+
+        FrameTemp2 = Frame(self.ZoneComponentCanvas)
+        self.ZoneComponentCanvas.create_window((0,0),window=FrameTemp2,anchor='n')
+
+
+
+        self.mainComponentsFrame = LabelFrame(FrameTemp2)
+        self.mainComponentsFrame.pack(fill=tkinter.BOTH,expand=True, anchor=N)
+
+        self.Bouton_AddComponent = Button(FrameTemp2, text="Add Component",command=partial(AddComponentFrame,self.Particule.Mafenetre))
+        self.Bouton_AddComponent.pack(fill=tkinter.X,expand=True, anchor=N,padx=10,pady=10)#.pack(padx=10,pady=10,fill=tkinter.X, expand=True)#,side=tkinter.TOP, anchor=N)
     def updateDataGameObj(self,*args):
         ItemSelected = self.Particule.Hierarchy.ItemSelected
         if ItemSelected==None:
@@ -90,6 +108,7 @@ class Inspector(EditorWindow):
             tag = 'Desactive'
         self.Particule.Hierarchy.t.item(str(ItemSelected.ID), text=ItemSelected.name,tags=(tag))
     def OnFocus(self,event=None):
+        self.ZoneComponentCanvas.configure(scrollregion=self.ZoneComponentCanvas.bbox('all'))
         self.LstAllSelectTag["values"] = [i.replace("Tag.","") for i in list(map(str, Tag))]
         self.LstAllSelectLayer["values"] = [i.replace("Layer.","") for i in list(map(str, Layer))]
 
@@ -121,6 +140,7 @@ class Inspector(EditorWindow):
             i.pack_forget()
         for i in ItemSelected.ListOfComponent:
             i.PrintOnGui()
+        self.ZoneComponentCanvas.configure(scrollregion=self.ZoneComponentCanvas.bbox('all'))
 
     def all_children(self, wid):
         finList=[]

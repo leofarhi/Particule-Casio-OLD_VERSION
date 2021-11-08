@@ -66,6 +66,7 @@ class SaveData:
         data = json.loads(dataTxt)
         self.PathScene = path
         self.Particule.Scene.scenes = [path]#[data["NameScene"]]
+        self.Particule.Scene.UUID_Objects = [{}]
         dataGameObject = data["GameObjects"]
         gameObjects = []
         dicoGameObject= {}

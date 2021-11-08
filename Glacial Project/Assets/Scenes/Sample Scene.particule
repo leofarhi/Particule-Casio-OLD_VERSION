@@ -15,6 +15,37 @@
                 "UUID_119da866_ec58_467d_b8d8_38f1b7c4aaa5",
                 "UUID_73ea44a9_6256_47d4_be2b_b37bb79f0ba4"
             ]
+        },
+        "UUID_400c4826_db9d_4390_963a_d132c010b431": {
+            "name": "Player",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "Assets/Scenes/Sample Scene.particule",
+            "sceneCullingMask": "",
+            "tag": 5,
+            "transform": "UUID_f4e41afb_1752_4494_82ac_4edd5a02e3ba",
+            "ListOfComponent": [
+                "UUID_f4e41afb_1752_4494_82ac_4edd5a02e3ba",
+                "UUID_6640de22_b0db_4537_8522_f3a7a703d68f",
+                "UUID_43fd50a2_fd6b_402d_ab19_3ccb56f74fc3"
+            ]
+        },
+        "UUID_131a6cdf_9eb2_4aa9_a1a7_af674e8990ca": {
+            "name": "Tilemap",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "Assets/Scenes/Sample Scene.particule",
+            "sceneCullingMask": "",
+            "tag": 0,
+            "transform": "UUID_0b12afd5_7a33_4f30_aacf_5def4082ce20",
+            "ListOfComponent": [
+                "UUID_0b12afd5_7a33_4f30_aacf_5def4082ce20",
+                "UUID_7e3a4722_d0c8_447d_ab17_ce537fe428c4"
+            ]
         }
     },
     "Components": {
@@ -36,6 +67,193 @@
         "UUID_73ea44a9_6256_47d4_be2b_b37bb79f0ba4": {
             "name": "Camera",
             "gameObject": "UUID_7f4f5e06_f8a9_41f1_b9f9_dae0dba98d46"
+        },
+        "UUID_f4e41afb_1752_4494_82ac_4edd5a02e3ba": {
+            "name": "Transform",
+            "gameObject": "UUID_400c4826_db9d_4390_963a_d132c010b431",
+            "childCount": 0,
+            "localPosition": [
+                44.0,
+                20.0
+            ],
+            "position": [
+                44.0,
+                20.0
+            ],
+            "parent": null,
+            "childs": []
+        },
+        "UUID_6640de22_b0db_4537_8522_f3a7a703d68f": {
+            "name": "PlayerController",
+            "gameObject": "UUID_400c4826_db9d_4390_963a_d132c010b431",
+            "Bas1": "Library/ImagesBmpCache/UUID_6432dbba_ba4c_4f25_a9d3_15cf97c6e1ea.bmp",
+            "Bas2": "Library/ImagesBmpCache/UUID_53848287_45f6_410e_b7f2_b01019c5a1e9.bmp",
+            "Bas3": "Library/ImagesBmpCache/UUID_3b28f421_9575_4c12_91c4_2c145b435538.bmp",
+            "Haut1": "Library/ImagesBmpCache/UUID_e870f483_8f84_44ae_b86c_bb1978372306.bmp",
+            "Haut2": "Library/ImagesBmpCache/UUID_355aae99_e49f_4a07_b7b8_ecf7673e547c.bmp",
+            "Haut3": "Library/ImagesBmpCache/UUID_9b63aa6b_0684_4171_a80a_a82e6e29f6ae.bmp",
+            "Droite1": "Library/ImagesBmpCache/UUID_600cd8e3_41c3_4a5e_8550_1ef2c44147af.bmp",
+            "Droite2": "Library/ImagesBmpCache/UUID_f018f68e_6f34_4b9a_bbc4_9513b3bc17c6.bmp",
+            "Droite3": "Library/ImagesBmpCache/UUID_dc9afec8_2e2e_4996_8271_1ac4cb193c2f.bmp",
+            "Gauche1": "Library/ImagesBmpCache/UUID_e4cf6d14_c9f2_4336_bb03_53529e5e4d6f.bmp",
+            "Gauche2": "Library/ImagesBmpCache/UUID_a1bc752c_94cf_41b4_a8f3_a32ec3d9312b.bmp",
+            "Gauche3": "Library/ImagesBmpCache/UUID_a9e4b5ab_ecdd_4525_8dbd_dbfaef28a6f6.bmp",
+            "Vitesse": 5
+        },
+        "UUID_43fd50a2_fd6b_402d_ab19_3ccb56f74fc3": {
+            "name": "Sprite",
+            "gameObject": "UUID_400c4826_db9d_4390_963a_d132c010b431",
+            "repImg": "Library/ImagesBmpCache/UUID_6432dbba_ba4c_4f25_a9d3_15cf97c6e1ea.bmp"
+        },
+        "UUID_0b12afd5_7a33_4f30_aacf_5def4082ce20": {
+            "name": "Transform",
+            "gameObject": "UUID_131a6cdf_9eb2_4aa9_a1a7_af674e8990ca",
+            "childCount": 0,
+            "localPosition": [
+                0,
+                0
+            ],
+            "position": [
+                0,
+                0
+            ],
+            "parent": null,
+            "childs": []
+        },
+        "UUID_7e3a4722_d0c8_447d_ab17_ce537fe428c4": {
+            "name": "Tilemap",
+            "gameObject": "UUID_131a6cdf_9eb2_4aa9_a1a7_af674e8990ca",
+            "repImg": "Library/lib/vide.png",
+            "SizeTilemap": [
+                10,
+                10
+            ],
+            "SizeCase": [
+                16,
+                16
+            ],
+            "DataTilemap": [
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ],
+                [
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0
+                ]
+            ]
         }
     }
 }

@@ -37,7 +37,7 @@ class Transform(Component):
                                    "localToWorldMatrix": {"Type": None},
                                    "lossyScale": {"Type": None},
                                    "parent": {"Type": Transform},
-                                   "childs": {"Type":list,"LstValueType":Transform,"LstType":"List"},
+                                   "childs": {"Type":list,"LstValueType":{"Type":Transform},"LstType":"List"},
                                    "position": {"Type": Vector2},
                                    "right": {"Type": None},
                                    "root": {"Type": None},

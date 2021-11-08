@@ -23,44 +23,45 @@ class ListVar:
     def GetAll(self):
         return self.Val
 class TypeGUI(PFrame):
-    def __init__(self,root,Objet,VarName,Recursion=None,Value=None):
+    def __init__(self,root,Objet,VarName,TypeVariables,Recursion=None,Value=None):
         PFrame.__init__(self,root)
         self.Objet = Objet
         self.VarName = VarName
+        self.TypeVariables = TypeVariables
         if Recursion:
             variable = Value
         else:
             variable = getattr(Objet,VarName)
         self.IsDragable = False
         self.Data = None
-        if (type(variable)==int):
+        if (TypeVariables["Type"]==int):
             self.var = IntVar()
             self.var.set(variable)
             Label(self, text=self.VarName).grid(row=0, column=0)
             self.entry = Entry(self, textvariable=self.var)
             self.entry.bind('<KeyRelease>', self.changeIntFloatStrBool)
             self.entry.grid(row=0, column=1, sticky='EWNS')#.pack(fill=tkinter.BOTH, expand=True)
-        elif (type(variable)==float):
+        elif (TypeVariables["Type"]==float):
             self.var = DoubleVar()
             self.var.set(variable)
             Label(self, text=self.VarName).grid(row=0, column=0)
             self.entry = Entry(self, textvariable=self.var)
             self.entry.bind('<KeyRelease>', self.changeIntFloatStrBool)
             self.entry.grid(row=0, column=1, sticky='EWNS')#.pack(fill=tkinter.BOTH, expand=True)
-        elif type(variable)==str:
+        elif TypeVariables["Type"]==str:
             self.var = StringVar()
             self.var.set(variable)
             Label(self, text=self.VarName).grid(row=0, column=0)
             self.entry = Entry(self, textvariable=self.var)
             self.entry.bind('<KeyRelease>', self.changeIntFloatStrBool)
             self.entry.grid(row=0, column=1, sticky='EWNS')#.pack(fill=tkinter.BOTH, expand=True)
-        elif type(variable)==bool:
+        elif TypeVariables["Type"]==bool:
             self.var = IntVar()
             self.var.set(0)
             self.check = Checkbutton(self, variable=self.var, text=self.VarName, offvalue=0, onvalue=1,command=self.changeIntFloatStrBool)
             self.check.bind('<KeyRelease>', self.changeIntFloatStrBool)
             self.check.grid(row=0, column=1, sticky='EWNS')#.pack(fill=tkinter.BOTH, expand=True)
-        elif type(variable)==list:
+        elif TypeVariables["Type"]==list:
             self.FrameList = LabelFrame(self,text = str(VarName))
             self.FrameList.Particule = self.Particule
             self.FrameList.pack(fill=tkinter.BOTH, expand=True)
@@ -73,10 +74,10 @@ class TypeGUI(PFrame):
             self.entrySize.grid(row=0, column=0, sticky='EWNS')  # .pack(fill=tkinter.BOTH, expand=True)
             for ind, i in enumerate(variable):
                 self.var.Val.append(i)
-                tempUI = TypeGUI(self.FrameList, self.var, ind,True,i)
+                tempUI = TypeGUI(self.FrameList, self.var, ind,TypeVariables["LstValueType"],True,i)
                 tempUI.grid(row=ind+1, column=0, sticky='EWNS')
                 self.AllValueUI.append(tempUI)
-        elif type(variable)==Vector2:
+        elif TypeVariables["Type"]==Vector2:
             self.var1 = IntVar()
             self.var2 = IntVar()
             self.var1.set(variable.x)
@@ -97,7 +98,7 @@ class TypeGUI(PFrame):
             self.var = StringVar()
             self.var.set(variable)
             Label(self, text=self.VarName).grid(row=0, column=0)
-            self.entry = Entry(self, textvariable=self.var)#, state=DISABLED)###########
+            self.entry = Entry(self, textvariable=self.var, state=DISABLED)###########
             self.entry.bind('<KeyRelease>', self.changeIntFloatStrBool)############
             #self.entry.bind("<ButtonRelease-1>", self.mouseRelease)
             #self.entry.bind("<Enter>", self.mouseEnter)
@@ -105,7 +106,7 @@ class TypeGUI(PFrame):
             # self.entry.bind("<Leave>", self.mouserelease)
             self.entry.grid(row=0, column=1, sticky='EWNS')  # .pack(fill=tkinter.BOTH, expand=True)
             self.entry.xview_moveto(1)
-            self.bouttonSlc = Button(self,command = partial(SearchWindow,self.Particule.Mafenetre))
+            self.bouttonSlc = Button(self,command = partial(SearchWindow,self.Particule.Mafenetre,self,TypeVariables["Type"]))
             self.bouttonSlc.grid(row=0, column=2, sticky='EWNS')
 
     """def mouseRelease(self, event):
@@ -118,15 +119,6 @@ class TypeGUI(PFrame):
         print("ok1")
         print(event.x,event.y)
         self.focus()"""
-    def Drop(self,Data):#DragAndDropSys
-        #print(type(Data["Object"]),type(getattr(self.Objet,self. VarName)))
-        if (not self.IsDragable) or type(Data["Object"])!=type(getattr(self.Objet,self. VarName)):
-        #if (not self.IsDragable) or Data["Type"] != type(getattr(self.Objet, self.VarName)).__name__:
-            return
-        #print(Data["Object"].ToString())
-        self.var.set(Data["Object"].ToString())
-        self.Data = Data["Object"]
-        self.changeOther()
 
     def ChangeSizeLst(self,*args):
         long= int(self.SizeLst.get())
@@ -135,7 +127,7 @@ class TypeGUI(PFrame):
         elif len(self.var.Val)<=long:
             for ind in range(len(self.var.Val),long):
                 self.var.Val.append(0)
-                tempUI = TypeGUI(self.FrameList, self.var, ind, True, 0)
+                tempUI = TypeGUI(self.FrameList, self.var, ind,self.TypeVariables["LstValueType"], True, 0)
                 tempUI.grid(row=ind + 1, column=0, sticky='EWNS')
                 self.AllValueUI.append(tempUI)
         elif len(self.var.Val) >= long:
@@ -143,6 +135,7 @@ class TypeGUI(PFrame):
                 self.AllValueUI[-1].destroy()
                 del self.AllValueUI[-1]
                 del self.var.Val[-1]
+
     def Update(self):
         if type(self.Objet)==ListVar:
             variable = self.Objet.Val[self.VarName]
@@ -180,6 +173,7 @@ class TypeGUI(PFrame):
             v.y = int(self.var2.get())
         except:
             pass
+
     def changeOther(self,event=None):
         if type(self.Objet) == ListVar:
             return

@@ -8,7 +8,7 @@ class Sprite(Component):
         #Repertoir de l'image
         #repImg = "C:/Users/leofa/OneDrive/Documents/PycharmProjects/Particule/lib/logo.png"
         if texture==None:
-            self.texture = Texture(self.Particule,name="None")
+            self.texture = self.Particule.FolderWindow.TextureVide
         else:
             self.texture = texture
         self._lastRepImg = self.texture.path

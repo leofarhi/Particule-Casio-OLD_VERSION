@@ -120,9 +120,11 @@ class BuildSettings(EditorWindow):
                     for compo in i[1].ListOfComponent:
                         data = compo.BuildValue()
                         code = data[0]+code
+                        components+=compo.AddScriptBeforInitCasio()+"\n"
                         components+=data[1]
                         if type(compo).__name__ != "Transform":
                             components +=i[0]+"->AddComponent((Component*)"+compo.ID+");\n"
+                        components += compo.AddScriptAfterInitCasio() + "\n"
                     code+="newScene->AddGameObject("+i[0]+");\n"
                 code +=components
                 code = CodeInit+code

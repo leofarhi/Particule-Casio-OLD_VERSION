@@ -11,7 +11,8 @@ class Object:
     def ToString(self):
         return self.name
     def Destroy(self):
-        pass
+        if self.ID in self.Particule.All_UUID:
+            del self.Particule.All_UUID[self.ID]
     def DestroyImmediate(self):
         pass
     def DontDestroyOnLoad(self):

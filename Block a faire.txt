@@ -1,4 +1,4 @@
-Coordonnées de caméra
-Coordonnées de l'objet
 Ecrire et lire un fichier
-Chercher un objet avec son nom
+réparer TypeGUI
+réparer Static et Delete C++
+"class Component" et "TypeGUi" réparer les Type en utilisant TypeVariables

@@ -709,6 +709,43 @@ public:
 
 };
 
+class Tilemap : MonoBehaviour { 
+public:
+
+    Texture** images;
+    int* Datas;
+    Vector2* sizeTilemap;
+    Vector2* sizeCase;
+
+
+    Tilemap(GameObject* gameObject, Vector2* sizeTilemap, Vector2* sizeCase, const char* UUID = NULL) : MonoBehaviour("Tilemap", gameObject, UUID) {
+        this->sizeTilemap = sizeTilemap;
+        this->sizeCase = sizeCase;
+    };
+
+    void Start() {
+
+    }
+
+    void Update() {
+        float posX = gameObject->transform->position->x;
+        float posY = gameObject->transform->position->y;
+        float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
+        float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
+        for (int h = 0; h < sizeTilemap->y; h++) {
+            int x = 0;
+            for (int w = h * sizeTilemap->x; w < (h + 1) * sizeTilemap->x; w++) {
+                int tempx = (int)((posX - camX) + x * sizeCase->x);
+                int tempy = (int)((posY - camY) + h * sizeCase->y);
+                if (tempx + sizeCase->x > 0 && tempx < 128 && tempy + sizeCase->y>0 && tempy < 64)
+                    ML_bmp_or_cl((const unsigned char*)(images[Datas[w]])->textureData, tempx, tempy, (images[Datas[w]])->width, (images[Datas[w]])->height);
+                x++;
+            }
+        }
+
+    };
+};
+
 //Components
 
 

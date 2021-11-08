@@ -52,6 +52,7 @@ class Scene(EditorWindow):
         EditorWindow.__init__(self,RootWindow,Resize=True,ScrollbarShow=False)
 
         self.scenes = []#repertoire des scenes
+        self.UUID_Objects=[]
 
         self.x = 0
         self.y = 0

@@ -61,7 +61,7 @@ class ScreenOrganization:
 
         pw.add(self.GridLeft)
         pw.add(self.GridRight)
-        pw.pack(fill=BOTH, expand=True)
+        pw.pack(fill=BOTH, expand=True, anchor=N)
         pw.configure(sashrelief=RAISED)
 
 
@@ -79,7 +79,7 @@ class ScreenOrganization:
 
         pwTop = PanedWindow(self.GridCenterTop, orient='horizontal')
         pwTop.Particule = self.Particule
-        self.GridCenter = Notebook(pwTop,width=930,height=500)
+        self.GridCenter = Notebook(pwTop,width=885,height=500)
         self.GridCenter.pack(fill=BOTH, expand=True)
         self.GridCenterLeft = Notebook(pwTop,width=230,height=500)
         self.GridCenterLeft.pack(fill=BOTH, expand=True)
@@ -91,7 +91,7 @@ class ScreenOrganization:
         pwTop.configure(sashrelief=RAISED)
 
     def SetWindows(self):
-        self.CanevasAsset = AssetStore(self.GridCenter, self.Particule)
+        #self.CanevasAsset = AssetStore(self.GridCenter, self.Particule)
         self.Particule.Scene = Scene(self.GridCenter)
         self.Particule.Scene.pack(fill=BOTH, expand=True)
 
@@ -100,8 +100,8 @@ class ScreenOrganization:
 
         self.GridCenter.add(self.Particule.Scene, text='Scene')
         self.GridCenter.add(self.Particule.Animator, text='Animator')
-        self.GridCenter.add(self.CanevasAsset.FrameAssetStore, text='Asset Store')
-        self.GridCenter.add(self.CanevasAsset.FrameAssetImport, text='My Asset')
+        #self.GridCenter.add(self.CanevasAsset.FrameAssetStore, text='Asset Store')
+        #self.GridCenter.add(self.CanevasAsset.FrameAssetImport, text='My Asset')
 
         self.Particule.Hierarchy = Hierarchy(self.GridCenterLeft)
         self.Particule.Hierarchy.pack(side="left",fill=BOTH, expand=True)
