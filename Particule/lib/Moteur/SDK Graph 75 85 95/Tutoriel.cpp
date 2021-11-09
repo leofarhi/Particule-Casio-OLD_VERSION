@@ -38,8 +38,8 @@ extern "C"
 //
 //****************************************************************************
 #include "Announcement.h"
-#include "ParticuleEngine.h"
 #include "List.h"
+#include "ParticuleEngine.hpp"
 //#include "ClassParticule.h"
 //#include "string.h"
 #include "MonochromeLib.h"
@@ -48,14 +48,14 @@ extern "C"
 
 
 int main() {
-    SceneManager sceneManager;
+    static SceneManager* sceneManager = new SceneManager();
     //reference croise
-    sceneManager.LoadScene(0);
-    sceneManager.StartScene();
+    sceneManager->LoadScene(0);
+    sceneManager->StartScene();
     while (true)
     {
         ML_clear_vram();
-        sceneManager.UpdateScene();
+        sceneManager->UpdateScene();
 
         Sleep(100);
         ML_display_vram();

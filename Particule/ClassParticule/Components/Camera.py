@@ -26,6 +26,7 @@ class Camera(Component):
         x,y = self.gameObject.transform.position.get()
         self.Particule.Scene.surface.coords(self.Mesh,int((x-self.Particule.Scene.x)*z),int((y+self.Particule.Scene.y)*z),
                                             int((x-self.Particule.Scene.x+127)*z),int((y+self.Particule.Scene.y+63)*z))
+        self.Particule.Scene.surface.tag_raise(self.Mesh)
     def Destroy(self):
         self.Particule.Scene.surface.delete(self.Mesh)
         Component.Destroy(self)

@@ -290,6 +290,7 @@ class FolderWindow(EditorWindow):
         if rep == None:
             rep = self.Particule.FolderProject
         lst = os.listdir(rep)
+        AllFileVariable=[]
         for i in lst:
             if ".meta" in i and os.path.isfile(rep + "/" + i):
                 TempID=rf.found(rep + "/" + i,"guid")
@@ -298,13 +299,16 @@ class FolderWindow(EditorWindow):
                 else:
                     fv = FileVariable(self.Particule, rep + "/" + i, TempID)
                     UUID = self.Particule.CreateUUID(fv,TempID)
-                    fv.UpdateCheck()
+                    AllFileVariable.append(fv)
+                    #fv.UpdateCheck()
                 rf.save(rep + "/" + i, "guid", UUID)
                 org = os.path.splitext(i)[0]
                 if os.path.splitext(org)[1] == ".particule":
                     rf.save(rep + "/" + i, "UUID_In_Scene",self.Particule.SaveData.GetAll_UUID_Scene(rep + "/" +org))
             if not os.path.isfile(rep+"/"+i):
                 self.GetAll_UUID(rep+"/"+i)
+        for i in AllFileVariable:
+            i.UpdateCheck()
     def CreateMetaFile(self,rep=None):
         if rep == None:
             rep = self.Particule.FolderProject

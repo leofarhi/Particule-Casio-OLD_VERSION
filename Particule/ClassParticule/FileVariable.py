@@ -17,10 +17,11 @@ class FileVariable(Object):
         ext = os.path.splitext(self.path)[1]
         if ext in [".png",".bmp",".jpg"]:
             if os.path.abspath(self.Particule.FolderProject+"/Library/ImagesBmpCache") in os.path.abspath(self.path):
-                texture = Texture(self.Particule, Path=self.path, name=os.path.basename(self.path),UUID = self.ID)
-                texture.name = os.path.basename(self.path)
+                MpathFile = os.path.abspath(rf.found(self.pathMeta, "pathFile"))
+                MainUUID = os.path.splitext(os.path.basename(MpathFile))[0]
+                texture = Texture(self.Particule, Path=self.path, name=os.path.basename(self.Particule.All_UUID[MainUUID].path),UUID = self.ID)
+                texture.name = os.path.basename(self.Particule.All_UUID[MainUUID].path)
                 texture.fileVariable = self
-                print(self.ID,self.path)
                 self.Particule.All_UUID[self.ID] = texture
 
 

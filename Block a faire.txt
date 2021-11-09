@@ -2,3 +2,4 @@ Ecrire et lire un fichier
 réparer TypeGUI
 réparer Static et Delete C++
 "class Component" et "TypeGUi" réparer les Type en utilisant TypeVariables
+réglé l'ordre des Sprite (le joueur tout à la fin)

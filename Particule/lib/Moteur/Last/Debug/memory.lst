@@ -1,0 +1,2315 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel\memory.c
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        memory.c     1    /****************************************************************/
+        memory.c     2    /*                                                              */
+        memory.c     3    /*                            Memory                            */
+        memory.c     4    /*                                                              */
+        memory.c     5    /*  Description: Fonctions de manipulation de la memoire        */
+        memory.c     6    /*  Auteur:      LePhenixNoir                                   */
+        memory.c     7    /*  Version:     3.0                                            */
+        memory.c     8    /*  Date:        11.06.2014                                     */
+        memory.c     9    /*  Fichier:     memory.c - Code des fonctions                  */
+        memory.c    10    /*                                                              */
+        memory.c    11    /****************************************************************/
+        memory.c    12    
+        memory.c    13    #ifndef __FXLIB_H__
+        memory.c    14      #include "fxlib.h"
+        memory.c    15    #endif
+        memory.c    16    
+        memory.c    17    #ifndef _STDIO
+        memory.c    18      #include <stdio.h>
+        memory.c    19    #endif
+        memory.c    20    
+        memory.c    21    #ifndef _STDLIB
+        memory.c    22      #include <stdlib.h>
+        memory.c    23    #endif
+        memory.c    24    
+        memory.c    25    #ifndef _STRING
+        memory.c    26      #include <string.h>
+        memory.c    27    #endif
+        memory.c    28    
+        memory.c    29    #include "memory.h"
+        memory.c    30    
+        memory.c    31    int memory_errors = 0;
+        memory.c    32    
+        memory.c    33    void memory_seterrors(int e)
+P   00000000              _memory_seterrors:               ; function: memory_seterrors
+                                                           ; frame size=0
+        memory.c    34    {
+        memory.c    35      memory_errors = (e!=0);
+    00000000 D384                   MOV.L       L737+2,R3  ; _memory_errors
+    00000002 2448                   TST         R4,R4
+    00000004 0029                   MOVT        R0
+    00000006 CA01                   XOR         #1,R0
+        memory.c    36    }
+    00000008 000B                   RTS
+    0000000A 2302                   MOV.L       R0,@R3
+        memory.c    37    
+        memory.c    38    void memory_error(char *from, char *func, int val)
+    0000000C              _memory_error:                   ; function: memory_error
+                                                           ; frame size=56
+    0000000C 2FE6                   MOV.L       R14,@-R15
+    0000000E 2FD6                   MOV.L       R13,@-R15
+    00000010 4F22                   STS.L       PR,@-R15
+    00000012 7FDC                   ADD         #-36,R15
+        memory.c    39    {
+        memory.c    40      unsigned int key;
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        memory.c    41      char info[20];
+        memory.c    42      if(!memory_errors) return;  
+    00000014 D27F                   MOV.L       L737+2,R2  ; _memory_errors
+    00000016 1F42                   MOV.L       R4,@(8,R15)
+    00000018 1F53                   MOV.L       R5,@(12,R15)
+    0000001A 2F62                   MOV.L       R6,@R15
+    0000001C 6322                   MOV.L       @R2,R3
+    0000001E 2338                   TST         R3,R3
+    00000020 896B                   BT          L638
+        memory.c    43    
+        memory.c    44      sprintf(info,"%d",val);
+    00000022 63F2                   MOV.L       @R15,R3
+    00000024 D27C                   MOV.L       L737+6,R2  ; L399
+    00000026 2F36                   MOV.L       R3,@-R15
+    00000028 2F26                   MOV.L       R2,@-R15
+    0000002A 64F3                   MOV         R15,R4
+    0000002C D37B                   MOV.L       L737+10,R3 ; _sprintf
+    0000002E 430B                   JSR         @R3
+    00000030 7418                   ADD         #24,R4
+    00000032 7F08                   ADD         #8,R15
+        memory.c    45      PopUpWin(6);
+    00000034 D27A                   MOV.L       L737+14,R2 ; _PopUpWin
+    00000036 420B                   JSR         @R2
+    00000038 E406                   MOV         #6,R4
+        memory.c    46    
+        memory.c    47      locate(4,2); Print((unsigned char *)"Memory ERROR !!");
+    0000003A E502                   MOV         #2,R5
+    0000003C DD79                   MOV.L       L737+18,R13; _locate
+    0000003E 4D0B                   JSR         @R13
+    00000040 E404                   MOV         #4,R4
+    00000042 DE79                   MOV.L       L737+22,R14; _Print
+    00000044 D479                   MOV.L       L737+26,R4 ; L400
+    00000046 4E0B                   JSR         @R14
+    00000048 0009                   NOP
+        memory.c    48      locate(3,4); Print((unsigned char *)"FROM:");
+    0000004A E504                   MOV         #4,R5
+    0000004C 4D0B                   JSR         @R13
+    0000004E E403                   MOV         #3,R4
+    00000050 D477                   MOV.L       L737+30,R4 ; L401
+    00000052 4E0B                   JSR         @R14
+    00000054 0009                   NOP
+        memory.c    49      locate(8,4); Print((unsigned char *)from);
+    00000056 E504                   MOV         #4,R5
+    00000058 4D0B                   JSR         @R13
+    0000005A E408                   MOV         #8,R4
+    0000005C 4E0B                   JSR         @R14
+    0000005E 54F2                   MOV.L       @(8,R15),R4
+        memory.c    50      locate(3,5); Print((unsigned char *)"FUNC:");
+    00000060 E505                   MOV         #5,R5
+    00000062 4D0B                   JSR         @R13
+    00000064 E403                   MOV         #3,R4
+    00000066 D473                   MOV.L       L737+34,R4 ; L402
+    00000068 4E0B                   JSR         @R14
+    0000006A 0009                   NOP
+        memory.c    51      locate(8,5); Print((unsigned char *)func);
+    0000006C E505                   MOV         #5,R5
+    0000006E 4D0B                   JSR         @R13
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000070 E408                   MOV         #8,R4
+    00000072 4E0B                   JSR         @R14
+    00000074 54F3                   MOV.L       @(12,R15),R4
+        memory.c    52      locate(3,6); Print((unsigned char *)"INFO:");
+    00000076 E506                   MOV         #6,R5
+    00000078 4D0B                   JSR         @R13
+    0000007A E403                   MOV         #3,R4
+    0000007C D46E                   MOV.L       L737+38,R4 ; L403
+    0000007E 4E0B                   JSR         @R14
+    00000080 0009                   NOP
+        memory.c    53      locate(8,6); Print((unsigned char *)info);
+    00000082 E506                   MOV         #6,R5
+    00000084 4D0B                   JSR         @R13
+    00000086 E408                   MOV         #8,R4
+    00000088 64F3                   MOV         R15,R4
+    0000008A 4E0B                   JSR         @R14
+    0000008C 7410                   ADD         #16,R4
+        memory.c    54      locate(3,7); Print((unsigned char *)"META:");
+    0000008E E507                   MOV         #7,R5
+    00000090 4D0B                   JSR         @R13
+    00000092 E403                   MOV         #3,R4
+    00000094 D469                   MOV.L       L737+42,R4 ; L404
+    00000096 4E0B                   JSR         @R14
+    00000098 0009                   NOP
+        memory.c    55      locate(8,7);
+    0000009A E507                   MOV         #7,R5
+    0000009C 4D0B                   JSR         @R13
+    0000009E E408                   MOV         #8,R4
+        memory.c    56    
+        memory.c    57      switch(val)
+    000000A0 60F2                   MOV.L       @R15,R0
+    000000A2 8801                   CMP/EQ      #1,R0
+    000000A4 890D                   BT          L572
+    000000A6 88FF                   CMP/EQ      #-1,R0
+    000000A8 890E                   BT          L574
+    000000AA 88FB                   CMP/EQ      #-5,R0
+    000000AC 890F                   BT          L576
+    000000AE 88F8                   CMP/EQ      #-8,R0
+    000000B0 8910                   BT          L578
+    000000B2 88F2                   CMP/EQ      #-14,R0
+    000000B4 8911                   BT          L580
+    000000B6 88E1                   CMP/EQ      #-31,R0
+    000000B8 8912                   BT          L582
+    000000BA 88DD                   CMP/EQ      #-35,R0
+    000000BC 8913                   BT          L584
+    000000BE A015                   BRA         L586
+    000000C0 0009                   NOP
+    000000C2              L572:                            ; case label 
+        memory.c    58      {
+        memory.c    59        case  1:  Print((unsigned char *)"NotEnoughRAM"); break;
+    000000C2 D45F                   MOV.L       L737+46,R4 ; L406
+    000000C4 A013                   BRA         L733
+    000000C6 0009                   NOP
+    000000C8              L574:                            ; case label 
+        memory.c    60        case -1:  Print((unsigned char *)"Nonexisting");  break;
+    000000C8 D45E                   MOV.L       L737+50,R4 ; L407
+    000000CA A010                   BRA         L733
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE    4
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000000CC 0009                   NOP
+    000000CE              L576:                            ; case label 
+        memory.c    61        case -5:  Print((unsigned char *)"WrongDevice");  break;
+    000000CE D45E                   MOV.L       L737+54,R4 ; L408
+    000000D0 A00D                   BRA         L733
+    000000D2 0009                   NOP
+    000000D4              L578:                            ; case label 
+        memory.c    62        case -8:  Print((unsigned char *)"AccessDenied"); break;
+    000000D4 D45D                   MOV.L       L737+58,R4 ; L409
+    000000D6 A00A                   BRA         L733
+    000000D8 0009                   NOP
+    000000DA              L580:                            ; case label 
+        memory.c    63        case -14: Print((unsigned char *)"ReadOnly");     break;
+    000000DA D45D                   MOV.L       L737+62,R4 ; L410
+    000000DC A007                   BRA         L733
+    000000DE 0009                   NOP
+    000000E0              L582:                            ; case label 
+        memory.c    64        case -31: Print((unsigned char *)"DeviceError");  break;
+    000000E0 D45C                   MOV.L       L737+66,R4 ; L411
+    000000E2 A004                   BRA         L733
+    000000E4 0009                   NOP
+    000000E6              L584:                            ; case label 
+        memory.c    65        case -35: Print((unsigned char *)"NotEmpty");     break;
+    000000E6 D45C                   MOV.L       L737+70,R4 ; L412
+    000000E8 A001                   BRA         L733
+    000000EA 0009                   NOP
+    000000EC              L586:                            ; default label 
+        memory.c    66        default:  Print((unsigned char *)"Other");        break;
+    000000EC D45B                   MOV.L       L737+74,R4 ; L413
+    000000EE              L733:                             
+    000000EE 4E0B                   JSR         @R14
+    000000F0 0009                   NOP
+        memory.c    67      }
+        memory.c    68      GetKey(&key);
+    000000F2 64F3                   MOV         R15,R4
+    000000F4 D35A                   MOV.L       L737+78,R3 ; _GetKey
+    000000F6 430B                   JSR         @R3
+    000000F8 7404                   ADD         #4,R4
+        memory.c    69    }
+    000000FA              L638:                             
+    000000FA 7F24                   ADD         #36,R15
+    000000FC 4F26                   LDS.L       @R15+,PR
+    000000FE 6DF6                   MOV.L       @R15+,R13
+    00000100 000B                   RTS
+    00000102 6EF6                   MOV.L       @R15+,R14
+        memory.c    70    
+        memory.c    71    FONTCHARACTER *memory_char2font(char *adresse)
+    00000104              _memory_char2font:               ; function: memory_char2font
+                                                           ; frame size=20
+    00000104 2FE6                   MOV.L       R14,@-R15
+    00000106 2FD6                   MOV.L       R13,@-R15
+    00000108 2FC6                   MOV.L       R12,@-R15
+    0000010A 2FB6                   MOV.L       R11,@-R15
+    0000010C 4F22                   STS.L       PR,@-R15
+        memory.c    72    {
+        memory.c    73      FONTCHARACTER *adr;
+        memory.c    74      int i;
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        memory.c    75    
+        memory.c    76      adr = calloc((strlen(adresse)+1),sizeof(FONTCHARACTER));
+    0000010E DB55                   MOV.L       L737+82,R11; _strlen
+    00000110 4B0B                   JSR         @R11
+    00000112 6D43                   MOV         R4,R13
+    00000114 D354                   MOV.L       L737+86,R3 ; _calloc
+    00000116 6403                   MOV         R0,R4
+    00000118 7401                   ADD         #1,R4
+    0000011A 430B                   JSR         @R3
+    0000011C E502                   MOV         #2,R5
+    0000011E 6C03                   MOV         R0,R12
+        memory.c    77      for(i=0;i<strlen(adresse);i++) *(adr+i) = *(adresse+i);
+    00000120 A007                   BRA         L640
+    00000122 EE00                   MOV         #0,R14
+    00000124              L641:                             
+    00000124 63E3                   MOV         R14,R3
+    00000126 4300                   SHLL        R3
+    00000128 33CC                   ADD         R12,R3
+    0000012A 60E3                   MOV         R14,R0
+    0000012C 02DC                   MOV.B       @(R0,R13),R2
+    0000012E 7E01                   ADD         #1,R14
+    00000130 2321                   MOV.W       R2,@R3
+    00000132              L640:                             
+    00000132 4B0B                   JSR         @R11
+    00000134 64D3                   MOV         R13,R4
+    00000136 3E02                   CMP/HS      R0,R14
+    00000138 8BF4                   BF          L641
+        memory.c    78      return adr;
+    0000013A 60C3                   MOV         R12,R0
+        memory.c    79    }
+    0000013C 4F26                   LDS.L       @R15+,PR
+    0000013E 6BF6                   MOV.L       @R15+,R11
+    00000140 6CF6                   MOV.L       @R15+,R12
+    00000142 6DF6                   MOV.L       @R15+,R13
+    00000144 000B                   RTS
+    00000146 6EF6                   MOV.L       @R15+,R14
+        memory.c    80    
+        memory.c    81    int memory_createfile(char *adresse, int size)
+    00000148              _memory_createfile:              ; function: memory_createfile
+                                                           ; frame size=16
+    00000148 2FE6                   MOV.L       R14,@-R15
+    0000014A 2FD6                   MOV.L       R13,@-R15
+    0000014C 4F22                   STS.L       PR,@-R15
+    0000014E 7FFC                   ADD         #-4,R15
+        memory.c    82    {
+        memory.c    83      FONTCHARACTER *adr = memory_char2font(adresse);
+    00000150 BFD8                   BSR         _memory_char2font
+    00000152 2F52                   MOV.L       R5,@R15
+        memory.c    84      int i = Bfile_CreateFile(adr,size);
+    00000154 65F2                   MOV.L       @R15,R5
+    00000156 6E03                   MOV         R0,R14
+    00000158 D344                   MOV.L       L737+90,R3 ; _Bfile_CreateFile
+    0000015A 430B                   JSR         @R3
+    0000015C 64E3                   MOV         R14,R4
+    0000015E 6D03                   MOV         R0,R13
+        memory.c    85      if(i<0) memory_error("createfile()","CreateFile()",i);
+    00000160 4D11                   CMP/PZ      R13
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE    6
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000162 8903                   BT          L643
+    00000164 D542                   MOV.L       L737+94,R5 ; L424
+    00000166 D443                   MOV.L       L737+98,R4 ; L423
+    00000168 BF50                   BSR         _memory_error
+    0000016A 66D3                   MOV         R13,R6
+    0000016C              L643:                             
+        memory.c    86    
+        memory.c    87      free(adr);
+    0000016C D242                   MOV.L       L737+102,R2; _free
+    0000016E 420B                   JSR         @R2
+    00000170 64E3                   MOV         R14,R4
+        memory.c    88      return i;
+    00000172 60D3                   MOV         R13,R0
+        memory.c    89    }
+    00000174 7F04                   ADD         #4,R15
+    00000176 4F26                   LDS.L       @R15+,PR
+    00000178 6DF6                   MOV.L       @R15+,R13
+    0000017A 000B                   RTS
+    0000017C 6EF6                   MOV.L       @R15+,R14
+        memory.c    90    
+        memory.c    91    int memory_createdir(char *adresse)
+    0000017E              _memory_createdir:               ; function: memory_createdir
+                                                           ; frame size=8
+    0000017E 2FE6                   MOV.L       R14,@-R15
+    00000180 4F22                   STS.L       PR,@-R15
+        memory.c    92    {
+        memory.c    93      FONTCHARACTER *adr = memory_char2font(adresse);
+    00000182 BFBF                   BSR         _memory_char2font
+    00000184 0009                   NOP
+    00000186 6E03                   MOV         R0,R14
+        memory.c    94      int i = Bfile_CreateDirectory(adr);
+    00000188 D23C                   MOV.L       L737+106,R2; _Bfile_CreateDirectory
+    0000018A 420B                   JSR         @R2
+    0000018C 6403                   MOV         R0,R4
+    0000018E 6403                   MOV         R0,R4
+        memory.c    95      if(i<0) memory_error("createdir()","CreateDir.()",i);
+    00000190 4411                   CMP/PZ      R4
+    00000192 8904                   BT          L645
+    00000194 D53A                   MOV.L       L737+110,R5; L430
+    00000196 6643                   MOV         R4,R6
+    00000198 D43A                   MOV.L       L737+114,R4; L429
+    0000019A BF37                   BSR         _memory_error
+    0000019C 0009                   NOP
+    0000019E              L645:                             
+        memory.c    96    
+        memory.c    97      free(adr);
+    0000019E D336                   MOV.L       L737+102,R3; _free
+    000001A0 430B                   JSR         @R3
+    000001A2 64E3                   MOV         R14,R4
+        memory.c    98      return 1;
+        memory.c    99    }
+    000001A4 4F26                   LDS.L       @R15+,PR
+    000001A6 E001                   MOV         #1,R0
+    000001A8 000B                   RTS
+    000001AA 6EF6                   MOV.L       @R15+,R14
+        memory.c   100    
+        memory.c   101    int memory_openfile(char *adresse, int mode)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE    7
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000001AC              _memory_openfile:                ; function: memory_openfile
+                                                           ; frame size=16
+    000001AC 2FE6                   MOV.L       R14,@-R15
+    000001AE 2FD6                   MOV.L       R13,@-R15
+    000001B0 4F22                   STS.L       PR,@-R15
+    000001B2 7FFC                   ADD         #-4,R15
+        memory.c   102    {
+        memory.c   103      FONTCHARACTER *adr = memory_char2font(adresse);
+    000001B4 BFA6                   BSR         _memory_char2font
+    000001B6 2F52                   MOV.L       R5,@R15
+        memory.c   104      int i = Bfile_OpenFile(adr,mode);
+    000001B8 65F2                   MOV.L       @R15,R5
+    000001BA 6E03                   MOV         R0,R14
+    000001BC D332                   MOV.L       L737+118,R3; _Bfile_OpenFile
+    000001BE 430B                   JSR         @R3
+    000001C0 64E3                   MOV         R14,R4
+    000001C2 6D03                   MOV         R0,R13
+        memory.c   105      if(i<0) memory_error("openfile()","OpenFile()",i);
+    000001C4 4D11                   CMP/PZ      R13
+    000001C6 8903                   BT          L647
+    000001C8 D530                   MOV.L       L737+122,R5; L437
+    000001CA D431                   MOV.L       L737+126,R4; L436
+    000001CC BF1E                   BSR         _memory_error
+    000001CE 66D3                   MOV         R13,R6
+    000001D0              L647:                             
+        memory.c   106    
+        memory.c   107      free(adr);
+    000001D0 D229                   MOV.L       L737+102,R2; _free
+    000001D2 420B                   JSR         @R2
+    000001D4 64E3                   MOV         R14,R4
+        memory.c   108      return i;
+    000001D6 60D3                   MOV         R13,R0
+        memory.c   109    }
+    000001D8 7F04                   ADD         #4,R15
+    000001DA 4F26                   LDS.L       @R15+,PR
+    000001DC 6DF6                   MOV.L       @R15+,R13
+    000001DE 000B                   RTS
+    000001E0 6EF6                   MOV.L       @R15+,R14
+        memory.c   110    
+        memory.c   111    int memory_deletefile(char *adresse)
+    000001E2              _memory_deletefile:              ; function: memory_deletefile
+                                                           ; frame size=12
+    000001E2 2FE6                   MOV.L       R14,@-R15
+    000001E4 2FD6                   MOV.L       R13,@-R15
+    000001E6 4F22                   STS.L       PR,@-R15
+        memory.c   112    {
+        memory.c   113      FONTCHARACTER *adr = memory_char2font(adresse);
+    000001E8 BF8C                   BSR         _memory_char2font
+    000001EA 0009                   NOP
+        memory.c   114      int i = Bfile_DeleteFile(adr);
+    000001EC D229                   MOV.L       L737+130,R2; _Bfile_DeleteFile
+    000001EE 6D03                   MOV         R0,R13
+    000001F0 420B                   JSR         @R2
+    000001F2 6403                   MOV         R0,R4
+    000001F4 6E03                   MOV         R0,R14
+        memory.c   115      if(i<0) memory_error("deletefil.()","DeleteFil.()",i);
+    000001F6 4E11                   CMP/PZ      R14
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE    8
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000001F8 8903                   BT          L649
+    000001FA D527                   MOV.L       L737+134,R5; L443
+    000001FC D427                   MOV.L       L737+138,R4; L442
+    000001FE BF05                   BSR         _memory_error
+    00000200 66E3                   MOV         R14,R6
+    00000202              L649:                             
+        memory.c   116    
+        memory.c   117      free(adr);
+    00000202 D31D                   MOV.L       L737+102,R3; _free
+    00000204 430B                   JSR         @R3
+    00000206 64D3                   MOV         R13,R4
+        memory.c   118      return i;
+        memory.c   119    }
+    00000208 4F26                   LDS.L       @R15+,PR
+    0000020A 60E3                   MOV         R14,R0
+    0000020C 6DF6                   MOV.L       @R15+,R13
+    0000020E 000B                   RTS
+    00000210 6EF6                   MOV.L       @R15+,R14
+    00000212              L737:                             
+    00000212 0000                   .DATA.W     0
+    00000214 <00000000>             .DATA.L     _memory_errors
+    00000218 <00000000>             .DATA.L     L399
+    0000021C <00000000>             .DATA.L     _sprintf
+    00000220 <00000000>             .DATA.L     _PopUpWin
+    00000224 <00000000>             .DATA.L     _locate
+    00000228 <00000000>             .DATA.L     _Print
+    0000022C <00000000>             .DATA.L     L400
+    00000230 <00000000>             .DATA.L     L401
+    00000234 <00000000>             .DATA.L     L402
+    00000238 <00000000>             .DATA.L     L403
+    0000023C <00000000>             .DATA.L     L404
+    00000240 <00000000>             .DATA.L     L406
+    00000244 <00000000>             .DATA.L     L407
+    00000248 <00000000>             .DATA.L     L408
+    0000024C <00000000>             .DATA.L     L409
+    00000250 <00000000>             .DATA.L     L410
+    00000254 <00000000>             .DATA.L     L411
+    00000258 <00000000>             .DATA.L     L412
+    0000025C <00000000>             .DATA.L     L413
+    00000260 <00000000>             .DATA.L     _GetKey
+    00000264 <00000000>             .DATA.L     _strlen
+    00000268 <00000000>             .DATA.L     _calloc
+    0000026C <00000000>             .DATA.L     _Bfile_CreateFile
+    00000270 <00000000>             .DATA.L     L424
+    00000274 <00000000>             .DATA.L     L423
+    00000278 <00000000>             .DATA.L     _free
+    0000027C <00000000>             .DATA.L     _Bfile_CreateDirectory
+    00000280 <00000000>             .DATA.L     L430
+    00000284 <00000000>             .DATA.L     L429
+    00000288 <00000000>             .DATA.L     _Bfile_OpenFile
+    0000028C <00000000>             .DATA.L     L437
+    00000290 <00000000>             .DATA.L     L436
+    00000294 <00000000>             .DATA.L     _Bfile_DeleteFile
+    00000298 <00000000>             .DATA.L     L443
+    0000029C <00000000>             .DATA.L     L442
+        memory.c   120    
+        memory.c   121    char **memory_alloc(int l)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE    9
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000002A0              _memory_alloc:                   ; function: memory_alloc
+                                                           ; frame size=24
+    000002A0 2FE6                   MOV.L       R14,@-R15
+    000002A2 2FD6                   MOV.L       R13,@-R15
+    000002A4 2FC6                   MOV.L       R12,@-R15
+    000002A6 6C43                   MOV         R4,R12
+    000002A8 2FB6                   MOV.L       R11,@-R15
+    000002AA 2FA6                   MOV.L       R10,@-R15
+    000002AC 4F22                   STS.L       PR,@-R15
+        memory.c   122    {
+        memory.c   123      char **p = calloc(l,sizeof(char *));
+    000002AE DB8F                   MOV.L       L738+2,R11 ; _calloc
+    000002B0 4B0B                   JSR         @R11
+    000002B2 E504                   MOV         #4,R5
+    000002B4 6A03                   MOV         R0,R10
+        memory.c   124      int i; for(i=0;i<l;i++) *(p+i) = calloc(20,1);
+    000002B6 ED00                   MOV         #0,R13
+    000002B8 EE00                   MOV         #0,R14
+    000002BA 4C15                   CMP/PL      R12
+    000002BC 8F08                   BF/S        L651
+    000002BE 3EAC                   ADD         R10,R14
+    000002C0              L652:                             
+    000002C0 E501                   MOV         #1,R5
+    000002C2 4B0B                   JSR         @R11
+    000002C4 E414                   MOV         #20,R4
+    000002C6 7D01                   ADD         #1,R13
+    000002C8 2E02                   MOV.L       R0,@R14
+    000002CA 3DC3                   CMP/GE      R12,R13
+    000002CC 8FF8                   BF/S        L652
+    000002CE 7E04                   ADD         #4,R14
+    000002D0              L651:                             
+        memory.c   125      return p;
+        memory.c   126    }
+    000002D0 4F26                   LDS.L       @R15+,PR
+    000002D2 60A3                   MOV         R10,R0
+    000002D4 6AF6                   MOV.L       @R15+,R10
+    000002D6 6BF6                   MOV.L       @R15+,R11
+    000002D8 6CF6                   MOV.L       @R15+,R12
+    000002DA 6DF6                   MOV.L       @R15+,R13
+    000002DC 000B                   RTS
+    000002DE 6EF6                   MOV.L       @R15+,R14
+        memory.c   127    
+        memory.c   128    void memory_free(char **p, int l)
+    000002E0              _memory_free:                    ; function: memory_free
+                                                           ; frame size=24
+    000002E0 2FE6                   MOV.L       R14,@-R15
+    000002E2 2FD6                   MOV.L       R13,@-R15
+    000002E4 2FC6                   MOV.L       R12,@-R15
+        memory.c   129    {
+        memory.c   130      int i; for(i=0;i<l;i++) free(*(p+i));
+    000002E6 ED00                   MOV         #0,R13
+    000002E8 2FB6                   MOV.L       R11,@-R15
+    000002EA 6B53                   MOV         R5,R11
+    000002EC DC80                   MOV.L       L738+6,R12 ; _free
+    000002EE 4B15                   CMP/PL      R11
+    000002F0 4F22                   STS.L       PR,@-R15
+    000002F2 7FFC                   ADD         #-4,R15
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   10
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000002F4 2F42                   MOV.L       R4,@R15
+    000002F6 8F05                   BF/S        L654
+    000002F8 6E43                   MOV         R4,R14
+    000002FA              L655:                             
+    000002FA 4C0B                   JSR         @R12
+    000002FC 64E6                   MOV.L       @R14+,R4
+    000002FE 7D01                   ADD         #1,R13
+    00000300 3DB3                   CMP/GE      R11,R13
+    00000302 8BFA                   BF          L655
+    00000304              L654:                             
+        memory.c   131      free(p);
+    00000304 4C0B                   JSR         @R12
+    00000306 64F2                   MOV.L       @R15,R4
+        memory.c   132    }
+    00000308 7F04                   ADD         #4,R15
+    0000030A 4F26                   LDS.L       @R15+,PR
+    0000030C 6BF6                   MOV.L       @R15+,R11
+    0000030E 6CF6                   MOV.L       @R15+,R12
+    00000310 6DF6                   MOV.L       @R15+,R13
+    00000312 000B                   RTS
+    00000314 6EF6                   MOV.L       @R15+,R14
+        memory.c   133    
+        memory.c   134    int memory_find(char *adresse, char **files, int max)
+    00000316              _memory_find:                    ; function: memory_find
+                                                           ; frame size=120
+    00000316 2FE6                   MOV.L       R14,@-R15
+    00000318 2FD6                   MOV.L       R13,@-R15
+    0000031A 2FC6                   MOV.L       R12,@-R15
+    0000031C 2FB6                   MOV.L       R11,@-R15
+    0000031E 6B53                   MOV         R5,R11
+    00000320 2FA6                   MOV.L       R10,@-R15
+    00000322 2F96                   MOV.L       R9,@-R15
+    00000324 2F86                   MOV.L       R8,@-R15
+    00000326 4F22                   STS.L       PR,@-R15
+    00000328 7FA8                   ADD         #-88,R15
+        memory.c   135    {
+        memory.c   136      FONTCHARACTER *adr = memory_char2font(adresse);
+    0000032A BEEB                   BSR         _memory_char2font
+    0000032C 1F61                   MOV.L       R6,@(4,R15)
+    0000032E 6903                   MOV         R0,R9
+        memory.c   137      FONTCHARACTER found[30];
+        memory.c   138      FILE_INFO fileInfo;
+        memory.c   139      int searchHandle,i=1,j,x;
+        memory.c   140    
+        memory.c   141      if(x = Bfile_FindFirst(adr,&searchHandle,found,&fileInfo)) return 0;
+    00000330 D270                   MOV.L       L738+10,R2 ; _Bfile_FindFirst
+    00000332 EC01                   MOV         #1,R12
+    00000334 6EF3                   MOV         R15,R14
+    00000336 7E1C                   ADD         #28,R14
+    00000338 67F3                   MOV         R15,R7
+    0000033A 7708                   ADD         #8,R7
+    0000033C 66E3                   MOV         R14,R6
+    0000033E 65F3                   MOV         R15,R5
+    00000340 420B                   JSR         @R2
+    00000342 6403                   MOV         R0,R4
+    00000344 2008                   TST         R0,R0
+    00000346 8901                   BT          L656
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   11
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000348 A042                   BRA         L657
+    0000034A E000                   MOV         #0,R0
+    0000034C              L656:                             
+        memory.c   142      for(j=0;j<14 && *(found+j);j++) *(*files+j) = *(found+j);
+    0000034C EA00                   MOV         #0,R10
+    0000034E ED0E                   MOV         #14,R13
+    00000350 A008                   BRA         L658
+    00000352 64A3                   MOV         R10,R4
+    00000354              L659:                             
+    00000354 62B2                   MOV.L       @R11,R2
+    00000356 6343                   MOV         R4,R3
+    00000358 324C                   ADD         R4,R2
+    0000035A 4300                   SHLL        R3
+    0000035C 33EC                   ADD         R14,R3
+    0000035E 7401                   ADD         #1,R4
+    00000360 8431                   MOV.B       @(1,R3),R0
+    00000362 2200                   MOV.B       R0,@R2
+    00000364              L658:                             
+    00000364 34D3                   CMP/GE      R13,R4
+    00000366 8907                   BT          L660
+    00000368 6243                   MOV         R4,R2
+    0000036A 4200                   SHLL        R2
+    0000036C 63F3                   MOV         R15,R3
+    0000036E 731C                   ADD         #28,R3
+    00000370 323C                   ADD         R3,R2
+    00000372 6121                   MOV.W       @R2,R1
+    00000374 2118                   TST         R1,R1
+    00000376 8BED                   BF          L659
+    00000378              L660:                             
+    00000378 D85F                   MOV.L       L738+14,R8 ; _Bfile_FindNext
+        memory.c   143    
+        memory.c   144      while(Bfile_FindNext(searchHandle,found,&fileInfo)==0 && i<max) {
+    0000037A A018                   BRA         L661
+    0000037C 0009                   NOP
+    0000037E              L662:                             
+        memory.c   145        for(j=0;j<14 && *(found+j);j++) *(*(files+i)+j) = *(found+j);
+    0000037E 64A3                   MOV         R10,R4
+    00000380 65C3                   MOV         R12,R5
+    00000382 4508                   SHLL2       R5
+    00000384 A008                   BRA         L663
+    00000386 35BC                   ADD         R11,R5
+    00000388              L664:                             
+    00000388 6352                   MOV.L       @R5,R3
+    0000038A 6243                   MOV         R4,R2
+    0000038C 334C                   ADD         R4,R3
+    0000038E 4200                   SHLL        R2
+    00000390 32EC                   ADD         R14,R2
+    00000392 7401                   ADD         #1,R4
+    00000394 8421                   MOV.B       @(1,R2),R0
+    00000396 2300                   MOV.B       R0,@R3
+    00000398              L663:                             
+    00000398 34D3                   CMP/GE      R13,R4
+    0000039A 8907                   BT          L665
+    0000039C 6243                   MOV         R4,R2
+    0000039E 4200                   SHLL        R2
+    000003A0 63F3                   MOV         R15,R3
+    000003A2 731C                   ADD         #28,R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   12
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000003A4 323C                   ADD         R3,R2
+    000003A6 6121                   MOV.W       @R2,R1
+    000003A8 2118                   TST         R1,R1
+    000003AA 8BED                   BF          L664
+    000003AC              L665:                             
+        memory.c   146        i++; }
+    000003AC 7C01                   ADD         #1,R12
+    000003AE              L661:                             
+    000003AE 66F3                   MOV         R15,R6
+    000003B0 7608                   ADD         #8,R6
+    000003B2 65E3                   MOV         R14,R5
+    000003B4 480B                   JSR         @R8
+    000003B6 64F2                   MOV.L       @R15,R4
+    000003B8 2008                   TST         R0,R0
+    000003BA 8B02                   BF          L666
+    000003BC 52F1                   MOV.L       @(4,R15),R2
+    000003BE 3C23                   CMP/GE      R2,R12
+    000003C0 8BDD                   BF          L662
+    000003C2              L666:                             
+        memory.c   147    
+        memory.c   148      Bfile_FindClose(searchHandle);
+    000003C2 D34E                   MOV.L       L738+18,R3 ; _Bfile_FindClose
+    000003C4 430B                   JSR         @R3
+    000003C6 64F2                   MOV.L       @R15,R4
+        memory.c   149      free(adr);
+    000003C8 D249                   MOV.L       L738+6,R2  ; _free
+    000003CA 420B                   JSR         @R2
+    000003CC 6493                   MOV         R9,R4
+        memory.c   150      return i;
+    000003CE 60C3                   MOV         R12,R0
+        memory.c   151    }
+    000003D0              L657:                             
+    000003D0 7F58                   ADD         #88,R15
+    000003D2 4F26                   LDS.L       @R15+,PR
+    000003D4 68F6                   MOV.L       @R15+,R8
+    000003D6 69F6                   MOV.L       @R15+,R9
+    000003D8 6AF6                   MOV.L       @R15+,R10
+    000003DA 6BF6                   MOV.L       @R15+,R11
+    000003DC 6CF6                   MOV.L       @R15+,R12
+    000003DE 6DF6                   MOV.L       @R15+,R13
+    000003E0 000B                   RTS
+    000003E2 6EF6                   MOV.L       @R15+,R14
+        memory.c   152    
+        memory.c   153    int memory_exists(char *adresse)
+    000003E4              _memory_exists:                  ; function: memory_exists
+                                                           ; frame size=16
+    000003E4 2FE6                   MOV.L       R14,@-R15
+    000003E6 4F22                   STS.L       PR,@-R15
+        memory.c   154    {
+        memory.c   155      char *file[1];
+        memory.c   156      int x;
+        memory.c   157    
+        memory.c   158      *file = malloc(14); **file=0;
+    000003E8 D345                   MOV.L       L738+22,R3 ; _malloc
+    000003EA 7FF8                   ADD         #-8,R15
+    000003EC 2F42                   MOV.L       R4,@R15
+    000003EE 6EF3                   MOV         R15,R14
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   13
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000003F0 7E04                   ADD         #4,R14
+    000003F2 430B                   JSR         @R3
+    000003F4 E40E                   MOV         #14,R4
+    000003F6 6203                   MOV         R0,R2
+    000003F8 2E02                   MOV.L       R0,@R14
+    000003FA E300                   MOV         #0,R3
+    000003FC 2230                   MOV.B       R3,@R2
+        memory.c   159      x = memory_find(adresse,file,1);
+    000003FE E601                   MOV         #1,R6
+    00000400 65E3                   MOV         R14,R5
+    00000402 BF88                   BSR         _memory_find
+    00000404 64F2                   MOV.L       @R15,R4
+    00000406 2F02                   MOV.L       R0,@R15
+        memory.c   160      free(*file);
+    00000408 D339                   MOV.L       L738+6,R3  ; _free
+    0000040A 430B                   JSR         @R3
+    0000040C 64E2                   MOV.L       @R14,R4
+        memory.c   161    
+        memory.c   162      return x!=0;
+    0000040E 60F2                   MOV.L       @R15,R0
+    00000410 2008                   TST         R0,R0
+    00000412 0029                   MOVT        R0
+    00000414 CA01                   XOR         #1,R0
+        memory.c   163    }
+    00000416 7F08                   ADD         #8,R15
+    00000418 4F26                   LDS.L       @R15+,PR
+    0000041A 000B                   RTS
+    0000041C 6EF6                   MOV.L       @R15+,R14
+        memory.c   164    
+        memory.c   165    void *memory_load(char *adresse)
+    0000041E              _memory_load:                    ; function: memory_load
+                                                           ; frame size=24
+    0000041E 2FE6                   MOV.L       R14,@-R15
+    00000420 2FD6                   MOV.L       R13,@-R15
+    00000422 2FC6                   MOV.L       R12,@-R15
+    00000424 2FB6                   MOV.L       R11,@-R15
+    00000426 2FA6                   MOV.L       R10,@-R15
+    00000428 4F22                   STS.L       PR,@-R15
+        memory.c   166    {
+        memory.c   167      FONTCHARACTER *adr = memory_char2font(adresse);
+    0000042A BE6B                   BSR         _memory_char2font
+    0000042C 0009                   NOP
+    0000042E 6D03                   MOV         R0,R13
+        memory.c   168      int handle, x, size;
+        memory.c   169      void *p;
+        memory.c   170    
+        memory.c   171      if((handle=Bfile_OpenFile(adr,_OPENMODE_READ))<0) { memory_error("load()","OpenFile()",handle); return N
+                         +ULL; }
+    00000430 DA34                   MOV.L       L738+26,R10; L476
+    00000432 E501                   MOV         #1,R5
+    00000434 D234                   MOV.L       L738+30,R2 ; _Bfile_OpenFile
+    00000436 420B                   JSR         @R2
+    00000438 6403                   MOV         R0,R4
+    0000043A 4011                   CMP/PZ      R0
+    0000043C 8D06                   BT/S        L669
+    0000043E 6E03                   MOV         R0,R14
+    00000440 D532                   MOV.L       L738+34,R5 ; L437
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   14
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000442 66E3                   MOV         R14,R6
+    00000444 BDE2                   BSR         _memory_error
+    00000446 64A3                   MOV         R10,R4
+    00000448 A022                   BRA         L735
+    0000044A 0009                   NOP
+    0000044C              L669:                             
+        memory.c   172      size = Bfile_GetFileSize(handle)+1;
+    0000044C D330                   MOV.L       L738+38,R3 ; _Bfile_GetFileSize
+    0000044E 430B                   JSR         @R3
+    00000450 64E3                   MOV         R14,R4
+    00000452 6B03                   MOV         R0,R11
+        memory.c   173      p = calloc(size,1);
+    00000454 D225                   MOV.L       L738+2,R2  ; _calloc
+    00000456 E501                   MOV         #1,R5
+    00000458 7B01                   ADD         #1,R11
+    0000045A 420B                   JSR         @R2
+    0000045C 64B3                   MOV         R11,R4
+    0000045E 6C03                   MOV         R0,R12
+        memory.c   174    
+        memory.c   175      if(!p) {
+    00000460 2CC8                   TST         R12,R12
+    00000462 8B02                   BF          L671
+        memory.c   176        memory_error("load()","malloc()",1);
+    00000464 D52B                   MOV.L       L738+42,R5 ; L478
+    00000466 A00B                   BRA         L734
+    00000468 E601                   MOV         #1,R6
+    0000046A              L671:                             
+        memory.c   177        Bfile_CloseFile(handle); free(adr); return NULL; }
+        memory.c   178      if((x=Bfile_ReadFile(handle,p,size,0))<0) {
+    0000046A E700                   MOV         #0,R7
+    0000046C D22A                   MOV.L       L738+46,R2 ; _Bfile_ReadFile
+    0000046E 66B3                   MOV         R11,R6
+    00000470 65C3                   MOV         R12,R5
+    00000472 420B                   JSR         @R2
+    00000474 64E3                   MOV         R14,R4
+    00000476 4011                   CMP/PZ      R0
+    00000478 8D0C                   BT/S        L672
+    0000047A 6403                   MOV         R0,R4
+        memory.c   179        memory_error("load()","ReadFile()",x);
+    0000047C D527                   MOV.L       L738+50,R5 ; L480
+    0000047E 6643                   MOV         R4,R6
+    00000480              L734:                             
+    00000480 BDC4                   BSR         _memory_error
+    00000482 64A3                   MOV         R10,R4
+        memory.c   180        Bfile_CloseFile(handle); free(adr); return NULL; }
+    00000484 D326                   MOV.L       L738+54,R3 ; _Bfile_CloseFile
+    00000486 430B                   JSR         @R3
+    00000488 64E3                   MOV         R14,R4
+    0000048A D219                   MOV.L       L738+6,R2  ; _free
+    0000048C 420B                   JSR         @R2
+    0000048E 64D3                   MOV         R13,R4
+    00000490              L735:                             
+    00000490 A007                   BRA         L670
+    00000492 E000                   MOV         #0,R0
+    00000494              L672:                             
+        memory.c   181    
+        memory.c   182      Bfile_CloseFile(handle);
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   15
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000494 D322                   MOV.L       L738+54,R3 ; _Bfile_CloseFile
+    00000496 430B                   JSR         @R3
+    00000498 64E3                   MOV         R14,R4
+        memory.c   183      free(adr);
+    0000049A D215                   MOV.L       L738+6,R2  ; _free
+    0000049C 420B                   JSR         @R2
+    0000049E 64D3                   MOV         R13,R4
+        memory.c   184      return p;
+    000004A0 60C3                   MOV         R12,R0
+        memory.c   185    }
+    000004A2              L670:                             
+    000004A2 4F26                   LDS.L       @R15+,PR
+    000004A4 6AF6                   MOV.L       @R15+,R10
+    000004A6 6BF6                   MOV.L       @R15+,R11
+    000004A8 6CF6                   MOV.L       @R15+,R12
+    000004AA 6DF6                   MOV.L       @R15+,R13
+    000004AC 000B                   RTS
+    000004AE 6EF6                   MOV.L       @R15+,R14
+        memory.c   186    
+        memory.c   187    int memory_save(char *adresse, void *data, int l)
+    000004B0              _memory_save:                    ; function: memory_save
+                                                           ; frame size=36
+    000004B0 2FE6                   MOV.L       R14,@-R15
+    000004B2 2FD6                   MOV.L       R13,@-R15
+    000004B4 2FC6                   MOV.L       R12,@-R15
+    000004B6 2FB6                   MOV.L       R11,@-R15
+    000004B8 2FA6                   MOV.L       R10,@-R15
+    000004BA 4F22                   STS.L       PR,@-R15
+    000004BC 7FF4                   ADD         #-12,R15
+    000004BE 2F42                   MOV.L       R4,@R15
+    000004C0 1F52                   MOV.L       R5,@(8,R15)
+    000004C2 1F61                   MOV.L       R6,@(4,R15)
+        memory.c   188    {
+        memory.c   189      FONTCHARACTER *adr = memory_char2font(adresse);
+    000004C4 BE1E                   BSR         _memory_char2font
+    000004C6 64F2                   MOV.L       @R15,R4
+    000004C8 6D03                   MOV         R0,R13
+        memory.c   190      int x=0, handle;
+    000004CA EE00                   MOV         #0,R14
+        memory.c   191    
+        memory.c   192      if(memory_exists(adresse)) x = Bfile_DeleteFile(adr);
+    000004CC BF8A                   BSR         _memory_exists
+    000004CE 64F2                   MOV.L       @R15,R4
+    000004D0 2008                   TST         R0,R0
+    000004D2 8903                   BT          L673
+    000004D4 D313                   MOV.L       L738+58,R3 ; _Bfile_DeleteFile
+    000004D6 430B                   JSR         @R3
+    000004D8 64D3                   MOV         R13,R4
+    000004DA 6E03                   MOV         R0,R14
+    000004DC              L673:                             
+        memory.c   193      if(x<0) { memory_error("save()","DeleteFile()",x); free(adr); return x; }
+    000004DC DA04                   MOV.L       L738+6,R10 ; _free
+    000004DE 4E11                   CMP/PZ      R14
+    000004E0 DB11                   MOV.L       L738+62,R11; L489
+    000004E2 8925                   BT          L674
+    000004E4 D511                   MOV.L       L738+66,R5 ; L490
+    000004E6 A02D                   BRA         L736
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   16
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000004E8 66E3                   MOV         R14,R6
+    000004EA              L738:                             
+    000004EA 0000                   .DATA.W     0
+    000004EC <00000000>             .DATA.L     _calloc
+    000004F0 <00000000>             .DATA.L     _free
+    000004F4 <00000000>             .DATA.L     _Bfile_FindFirst
+    000004F8 <00000000>             .DATA.L     _Bfile_FindNext
+    000004FC <00000000>             .DATA.L     _Bfile_FindClose
+    00000500 <00000000>             .DATA.L     _malloc
+    00000504 <00000000>             .DATA.L     L476
+    00000508 <00000000>             .DATA.L     _Bfile_OpenFile
+    0000050C <00000000>             .DATA.L     L437
+    00000510 <00000000>             .DATA.L     _Bfile_GetFileSize
+    00000514 <00000000>             .DATA.L     L478
+    00000518 <00000000>             .DATA.L     _Bfile_ReadFile
+    0000051C <00000000>             .DATA.L     L480
+    00000520 <00000000>             .DATA.L     _Bfile_CloseFile
+    00000524 <00000000>             .DATA.L     _Bfile_DeleteFile
+    00000528 <00000000>             .DATA.L     L489
+    0000052C <00000000>             .DATA.L     L490
+    00000530              L674:                             
+        memory.c   194      x = Bfile_CreateFile(adr,l+1);
+    00000530 55F1                   MOV.L       @(4,R15),R5
+    00000532 7501                   ADD         #1,R5
+    00000534 D340                   MOV.L       L739+6,R3  ; _Bfile_CreateFile
+    00000536 430B                   JSR         @R3
+    00000538 64D3                   MOV         R13,R4
+    0000053A 6E03                   MOV         R0,R14
+        memory.c   195      if(x<0) { memory_error("save()","CreateFile()",x); free(adr); return x; }
+    0000053C 4E11                   CMP/PZ      R14
+    0000053E 8905                   BT          L676
+    00000540 D53E                   MOV.L       L739+10,R5 ; L424
+    00000542 66E3                   MOV         R14,R6
+    00000544              L736:                             
+    00000544 BD62                   BSR         _memory_error
+    00000546 64B3                   MOV         R11,R4
+    00000548 A01B                   BRA         L563
+    0000054A 0009                   NOP
+    0000054C              L676:                             
+        memory.c   196      handle = Bfile_OpenFile(adr,0x02);
+    0000054C D33C                   MOV.L       L739+14,R3 ; _Bfile_OpenFile
+    0000054E E502                   MOV         #2,R5
+    00000550 430B                   JSR         @R3
+    00000552 64D3                   MOV         R13,R4
+    00000554 6C03                   MOV         R0,R12
+        memory.c   197      if(handle<0) { memory_error("save()","OpenFile()",handle); free(adr); return handle; }
+    00000556 4C11                   CMP/PZ      R12
+    00000558 8907                   BT          L677
+    0000055A 66C3                   MOV         R12,R6
+    0000055C D539                   MOV.L       L739+18,R5 ; L437
+    0000055E BD55                   BSR         _memory_error
+    00000560 64B3                   MOV         R11,R4
+    00000562 4A0B                   JSR         @R10
+    00000564 64D3                   MOV         R13,R4
+    00000566 A016                   BRA         L675
+    00000568 60C3                   MOV         R12,R0
+    0000056A              L677:                             
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   17
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        memory.c   198      x = memory_writefile(handle,data,l);
+    0000056A 56F1                   MOV.L       @(4,R15),R6
+    0000056C 55F2                   MOV.L       @(8,R15),R5
+    0000056E D336                   MOV.L       L739+22,R3 ; _Bfile_WriteFile
+    00000570 430B                   JSR         @R3
+    00000572 64C3                   MOV         R12,R4
+    00000574 6E03                   MOV         R0,R14
+        memory.c   199      if(x<0) { memory_error("save()","WriteFile()",x); free(adr); return x; }
+    00000576 4E11                   CMP/PZ      R14
+    00000578 8907                   BT          L678
+    0000057A 66E3                   MOV         R14,R6
+    0000057C D533                   MOV.L       L739+26,R5 ; L494
+    0000057E BD45                   BSR         _memory_error
+    00000580 64B3                   MOV         R11,R4
+    00000582              L563:
+    00000582 4A0B                   JSR         @R10
+    00000584 64D3                   MOV         R13,R4
+    00000586 A006                   BRA         L675
+    00000588 60E3                   MOV         R14,R0
+    0000058A              L678:                             
+        memory.c   200      memory_closefile(handle);
+    0000058A D231                   MOV.L       L739+30,R2 ; _Bfile_CloseFile
+    0000058C 420B                   JSR         @R2
+    0000058E 64C3                   MOV         R12,R4
+        memory.c   201    
+        memory.c   202      free(adr);
+    00000590 4A0B                   JSR         @R10
+    00000592 64D3                   MOV         R13,R4
+        memory.c   203      return 0;
+    00000594 E000                   MOV         #0,R0
+        memory.c   204    }
+    00000596              L675:                             
+    00000596 7F0C                   ADD         #12,R15
+    00000598 4F26                   LDS.L       @R15+,PR
+    0000059A 6AF6                   MOV.L       @R15+,R10
+    0000059C 6BF6                   MOV.L       @R15+,R11
+    0000059E 6CF6                   MOV.L       @R15+,R12
+    000005A0 6DF6                   MOV.L       @R15+,R13
+    000005A2 000B                   RTS
+    000005A4 6EF6                   MOV.L       @R15+,R14
+        memory.c   205    
+        memory.c   206    int memory_user_select(char **files, int n, int extension, int exit)
+    000005A6              _memory_user_select:             ; function: memory_user_select
+                                                           ; frame size=396
+                                                           ; used runtime library name:
+                                                           ; __quick_mvn, __slow_mvn, __slow_strcmp1
+    000005A6 2FE6                   MOV.L       R14,@-R15
+    000005A8 2FD6                   MOV.L       R13,@-R15
+    000005AA 2FC6                   MOV.L       R12,@-R15
+    000005AC 2FB6                   MOV.L       R11,@-R15
+    000005AE EC00                   MOV         #0,R12
+        memory.c   207    {
+        memory.c   208      const unsigned char icons[7][32] = {
+        memory.c   209      { 0x0,0x3c,0xf,0xc4,0xf0,0x4,0x80,0x4,0x80,0x2,0x80,0x2,0x40,0x2,0x40,0x2,0x40,0x2,0x40,0x2,0x40,0x1,0x4
+                         +0,0x1,0x20,0x1,0x20,0xf,0x23,0xf0,0x3c,0x0 },
+        memory.c   210      { 0x0,0x3c,0xf,0xc4,0xf0,0x4,0x80,0x74,0x87,0x82,0x98,0x2,0x40,0x2,0x40,0x3a,0x43,0xc2,0x5c,0x2,0x40,0x3
+                         +9,0x43,0xc1,0x2c,0x1,0x20,0xf,0x23,0xf0,0x3c,0x0 },
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   18
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        memory.c   211      { 0x0,0x3c,0xf,0xc4,0xf0,0x74,0x87,0x94,0xb8,0x12,0xa0,0xa,0x63,0x8a,0x52,0x8a,0x54,0x4a,0x54,0x66,0x54,
+                         +0x25,0x48,0x1d,0x29,0xe1,0x2e,0xf,0x23,0xf0,0x3c,0x0 },
+        memory.c   212      { 0x0,0x3c,0xf,0xc4,0xf0,0x4,0x87,0xc4,0x88,0x22,0x8c,0x62,0x4b,0xa2,0x44,0x42,0x42,0x82,0x42,0x82,0x42,
+                         +0x81,0x44,0x41,0x2f,0xe1,0x20,0xf,0x23,0xf0,0x3c,0x0 },
+        memory.c   213      { 0x0,0x3c,0xf,0xc4,0xf0,0x4,0x87,0xe4,0x88,0x12,0x88,0x12,0x48,0x12,0x47,0xe2,0x44,0x22,0x44,0x22,0x44,
+                         +0x21,0x44,0x21,0x23,0xc1,0x20,0xf,0x23,0xf0,0x3c,0x0 },
+        memory.c   214      { 0x0,0x3c,0xf,0xc4,0xf0,0x4,0x80,0x64,0x87,0xb2,0x98,0x52,0x51,0xb2,0x57,0x52,0x51,0xd2,0x4b,0xa,0x48,0
+                         +x19,0x49,0xe1,0x2e,0x1,0x20,0xf,0x23,0xf0,0x3c,0x0 },
+        memory.c   215      { 0x0,0x3c,0xf,0xc4,0xf0,0x4,0x80,0xe4,0x9c,0xa2,0x90,0xa2,0x58,0xe2,0x50,0x2,0x40,0x12,0x4a,0x2a,0x4a,0
+                         +x39,0x4e,0x29,0x22,0x1,0x20,0xf,0x23,0xf0,0x3c,0x0 } };
+    000005B0 9140                   MOV.W       L739+2,R1  ; H'008C
+    000005B2 2FA6                   MOV.L       R10,@-R15
+    000005B4 2F96                   MOV.L       R9,@-R15
+    000005B6 6A53                   MOV         R5,R10
+    000005B8 D226                   MOV.L       L739+34,R2 ; L501
+    000005BA 2F86                   MOV.L       R8,@-R15
+    000005BC 4F22                   STS.L       PR,@-R15
+    000005BE 9038                   MOV.W       L739,R0    ; H'FE94
+    000005C0 D325                   MOV.L       L739+38,R3 ; __slow_mvn
+    000005C2 3F0C                   ADD         R0,R15
+    000005C4 1F48                   MOV.L       R4,@(32,R15)
+    000005C6 2F62                   MOV.L       R6,@R15
+    000005C8 1F7A                   MOV.L       R7,@(40,R15)
+    000005CA 9034                   MOV.W       L739+4,R0  ; H'00E0
+    000005CC 430B                   JSR         @R3
+    000005CE 31FC                   ADD         R15,R1
+        memory.c   216      char *exts[19] = { ".txt", ".c", ".h", ".cpp", ".hpp", ".bmp",".jpg",".png",".gif", ".sav", ".g1m",".g2m
+                         +",".g1r",".g2r", ".g1e",".g2e",".g1a", ".hex",".bin" };
+    000005D0 D222                   MOV.L       L739+42,R2 ; L503
+    000005D2 69F3                   MOV         R15,R9
+    000005D4 D322                   MOV.L       L739+46,R3 ; __quick_mvn
+    000005D6 61F3                   MOV         R15,R1
+    000005D8 7940                   ADD         #64,R9
+    000005DA 7140                   ADD         #64,R1
+    000005DC 430B                   JSR         @R3
+    000005DE E04C                   MOV         #76,R0
+        memory.c   217      unsigned char indexs[19] = { 1,1,1,1,1, 2,2,2,2, 3, 4,4,4,4, 5,5,5, 6,6 };
+    000005E0 D220                   MOV.L       L739+50,R2 ; L524
+    000005E2 61F3                   MOV         R15,R1
+    000005E4 D31C                   MOV.L       L739+38,R3 ; __slow_mvn
+    000005E6 712C                   ADD         #44,R1
+    000005E8 430B                   JSR         @R3
+    000005EA E013                   MOV         #19,R0
+        memory.c   218      unsigned char *icoind = malloc(n);
+    000005EC D11E                   MOV.L       L739+54,R1 ; _malloc
+    000005EE 410B                   JSR         @R1
+    000005F0 64A3                   MOV         R10,R4
+    000005F2 6803                   MOV         R0,R8
+        memory.c   219      unsigned int key;
+        memory.c   220    
+        memory.c   221      int i,j,k,t;
+        memory.c   222      int p=0, offset=0;
+    000005F4 6BC3                   MOV         R12,R11
+        memory.c   223    
+        memory.c   224      if(!icoind) { memory_error("user_sele.()","malloc()",1); return -2; }
+    000005F6 2888                   TST         R8,R8
+    000005F8 8F06                   BF/S        L679
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   19
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000005FA 6DC3                   MOV         R12,R13
+    000005FC D51B                   MOV.L       L739+58,R5 ; L478
+    000005FE D41C                   MOV.L       L739+62,R4 ; L534
+    00000600 BD04                   BSR         _memory_error
+    00000602 E601                   MOV         #1,R6
+    00000604 A162                   BRA         L680
+    00000606 E0FE                   MOV         #-2,R0
+    00000608              L679:                             
+        memory.c   225    
+        memory.c   226      for(i=0;i<n;i++)
+    00000608 6EC3                   MOV         R12,R14
+    0000060A 6393                   MOV         R9,R3
+    0000060C 734C                   ADD         #76,R3
+    0000060E 62F3                   MOV         R15,R2
+    00000610 1F32                   MOV.L       R3,@(8,R15)
+    00000612 722C                   ADD         #44,R2
+    00000614 1F27                   MOV.L       R2,@(28,R15)
+    00000616 1F99                   MOV.L       R9,@(36,R15)
+    00000618 60F2                   MOV.L       @R15,R0
+    0000061A 2008                   TST         R0,R0
+    0000061C 0029                   MOVT        R0
+    0000061E A064                   BRA         L682
+    00000620 1F06                   MOV.L       R0,@(24,R15)
+    00000622              L683:                             
+        memory.c   227      {
+        memory.c   228        for(t=-1,j=0;*(*(files+i)+j);j++) if(*(*(files+i)+j) == '.') t = j;
+    00000622 E3FF                   MOV         #-1,R3
+    00000624 1F31                   MOV.L       R3,@(4,R15)
+    00000626 64C3                   MOV         R12,R4
+    00000628 53F8                   MOV.L       @(32,R15),R3
+    0000062A 69E3                   MOV         R14,R9
+    0000062C 4908                   SHLL2       R9
+    0000062E A026                   BRA         L684
+    00000630 393C                   ADD         R3,R9
+    00000632              L739:                             
+    00000632 FE94                   .DATA.W     H'FE94
+    00000634 008C                   .DATA.W     H'008C
+    00000636 00E0                   .DATA.W     H'00E0
+    00000638 <00000000>             .DATA.L     _Bfile_CreateFile
+    0000063C <00000000>             .DATA.L     L424
+    00000640 <00000000>             .DATA.L     _Bfile_OpenFile
+    00000644 <00000000>             .DATA.L     L437
+    00000648 <00000000>             .DATA.L     _Bfile_WriteFile
+    0000064C <00000000>             .DATA.L     L494
+    00000650 <00000000>             .DATA.L     _Bfile_CloseFile
+    00000654 <00000000>             .DATA.L     L501
+    00000658 <00000000>             .DATA.L     __slow_mvn
+    0000065C <00000000>             .DATA.L     L503
+    00000660 <00000000>             .DATA.L     __quick_mvn
+    00000664 <00000000>             .DATA.L     L524
+    00000668 <00000000>             .DATA.L     _malloc
+    0000066C <00000000>             .DATA.L     L478
+    00000670 <00000000>             .DATA.L     L534
+    00000674              L685:                             
+    00000674 004C                   MOV.B       @(R0,R4),R0
+    00000676 882E                   CMP/EQ      #46,R0
+    00000678 8B00                   BF          L686
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   20
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000067A 1F41                   MOV.L       R4,@(4,R15)
+    0000067C              L686:                             
+    0000067C 7401                   ADD         #1,R4
+    0000067E              L684:                             
+    0000067E 6092                   MOV.L       @R9,R0
+    00000680 034C                   MOV.B       @(R0,R4),R3
+    00000682 2338                   TST         R3,R3
+    00000684 8BF6                   BF          L685
+        memory.c   229        icoind[i] = (t==-1?1:0);
+    00000686 61E3                   MOV         R14,R1
+    00000688 318C                   ADD         R8,R1
+    0000068A 1F15                   MOV.L       R1,@(20,R15)
+    0000068C 50F1                   MOV.L       @(4,R15),R0
+    0000068E 88FF                   CMP/EQ      #-1,R0
+    00000690 0329                   MOVT        R3
+    00000692 2130                   MOV.B       R3,@R1
+    00000694 51F7                   MOV.L       @(28,R15),R1
+    00000696 1F13                   MOV.L       R1,@(12,R15)
+    00000698 53F9                   MOV.L       @(36,R15),R3
+    0000069A 2F32                   MOV.L       R3,@R15
+        memory.c   230        for(k=0;k<19;k++)
+    0000069C 52F2                   MOV.L       @(8,R15),R2
+    0000069E 6133                   MOV         R3,R1
+    000006A0 3122                   CMP/HS      R2,R1
+    000006A2 8917                   BT          L689
+    000006A4              L690:                             
+        memory.c   231          if(!strcmp(*(files+i)+t,exts[k])) { icoind[i]=indexs[k]; break; }
+    000006A4 65F2                   MOV.L       @R15,R5
+    000006A6 53F1                   MOV.L       @(4,R15),R3
+    000006A8 6492                   MOV.L       @R9,R4
+    000006AA 343C                   ADD         R3,R4
+    000006AC D32B                   MOV.L       L740+4,R3  ; __slow_strcmp1
+    000006AE 430B                   JSR         @R3
+    000006B0 6552                   MOV.L       @R5,R5
+    000006B2 2008                   TST         R0,R0
+    000006B4 8B05                   BF          L691
+    000006B6 53F5                   MOV.L       @(20,R15),R3
+    000006B8 52F3                   MOV.L       @(12,R15),R2
+    000006BA 6120                   MOV.B       @R2,R1
+    000006BC 2310                   MOV.B       R1,@R3
+    000006BE A009                   BRA         L689
+    000006C0 0009                   NOP
+    000006C2              L691:                             
+    000006C2 52F3                   MOV.L       @(12,R15),R2
+    000006C4 7201                   ADD         #1,R2
+    000006C6 1F23                   MOV.L       R2,@(12,R15)
+    000006C8 63F2                   MOV.L       @R15,R3
+    000006CA 7304                   ADD         #4,R3
+    000006CC 2F32                   MOV.L       R3,@R15
+    000006CE 51F2                   MOV.L       @(8,R15),R1
+    000006D0 3312                   CMP/HS      R1,R3
+    000006D2 8BE7                   BF          L690
+    000006D4              L689:                             
+        memory.c   232        if(!extension && t+1) *(*(files+i)+t) = 0;
+    000006D4 53F6                   MOV.L       @(24,R15),R3
+    000006D6 2338                   TST         R3,R3
+    000006D8 8906                   BT          L693
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   21
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000006DA 53F1                   MOV.L       @(4,R15),R3
+    000006DC 7301                   ADD         #1,R3
+    000006DE 2338                   TST         R3,R3
+    000006E0 8902                   BT          L693
+    000006E2 51F1                   MOV.L       @(4,R15),R1
+    000006E4 6092                   MOV.L       @R9,R0
+    000006E6 01C4                   MOV.B       R12,@(R0,R1)
+    000006E8              L693:                             
+    000006E8 7E01                   ADD         #1,R14
+    000006EA              L682:                             
+    000006EA 3EA3                   CMP/GE      R10,R14
+    000006EC 8B99                   BF          L683
+    000006EE              L695:                             
+        memory.c   233      }
+        memory.c   234    
+        memory.c   235      while(1)
+        memory.c   236      {
+        memory.c   237        Bdisp_AllClr_VRAM();
+    000006EE D91C                   MOV.L       L740+8,R9  ; _Bdisp_AllClr_VRAM
+    000006F0 490B                   JSR         @R9
+    000006F2 0009                   NOP
+        memory.c   238    
+        memory.c   239        for(t=0;t<(n>3?3:n);t++)
+    000006F4 2FC2                   MOV.L       R12,@R15
+    000006F6 63D3                   MOV         R13,R3
+    000006F8 4308                   SHLL2       R3
+    000006FA A059                   BRA         L696
+    000006FC 1F36                   MOV.L       R3,@(24,R15)
+    000006FE              L697:                             
+    000006FE 60E3                   MOV         R14,R0
+    00000700 942A                   MOV.W       L740,R4    ; H'00FF
+    00000702 30DC                   ADD         R13,R0
+    00000704 63F2                   MOV.L       @R15,R3
+    00000706 6233                   MOV         R3,R2
+    00000708 4308                   SHLL2       R3
+    0000070A 332C                   ADD         R2,R3
+    0000070C 4308                   SHLL2       R3
+    0000070E 1F31                   MOV.L       R3,@(4,R15)
+    00000710 028C                   MOV.B       @(R0,R8),R2
+    00000712 622C                   EXTU.B      R2,R2
+    00000714 3240                   CMP/EQ      R4,R2
+    00000716 893C                   BT          L698
+    00000718 62F2                   MOV.L       @R15,R2
+        memory.c   240        {
+        memory.c   241          if(icoind[offset+i]!=255) for(i=0;i<32;i++) {
+    0000071A 6EC3                   MOV         R12,R14
+    0000071C 32DC                   ADD         R13,R2
+    0000071E 328C                   ADD         R8,R2
+    00000720 1F27                   MOV.L       R2,@(28,R15)
+    00000722 A033                   BRA         L699
+    00000724 1F31                   MOV.L       R3,@(4,R15)
+    00000726              L700:                             
+    00000726 E901                   MOV         #1,R9
+        memory.c   242            k = icons[icoind[offset+t]][i];
+    00000728 50F7                   MOV.L       @(28,R15),R0
+    0000072A 61E3                   MOV         R14,R1
+    0000072C 9315                   MOV.W       L740+2,R3  ; H'008C
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   22
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000072E 29E9                   AND         R14,R9
+    00000730 6000                   MOV.B       @R0,R0
+    00000732 33FC                   ADD         R15,R3
+    00000734 600C                   EXTU.B      R0,R0
+    00000736 4008                   SHLL2       R0
+    00000738 4008                   SHLL2       R0
+    0000073A 4000                   SHLL        R0
+    0000073C 303C                   ADD         R3,R0
+    0000073E 4908                   SHLL2       R9
+    00000740 02EC                   MOV.B       @(R0,R14),R2
+    00000742 4900                   SHLL        R9
+    00000744 622C                   EXTU.B      R2,R2
+    00000746 790B                   ADD         #11,R9
+    00000748 1F23                   MOV.L       R2,@(12,R15)
+    0000074A 4121                   SHAR        R1
+        memory.c   243            for(j=0;j<8;j++) {
+    0000074C 1FC2                   MOV.L       R12,@(8,R15)
+    0000074E 50F1                   MOV.L       @(4,R15),R0
+    00000750 310C                   ADD         R0,R1
+    00000752 7104                   ADD         #4,R1
+    00000754 A015                   BRA         L701
+    00000756 1F15                   MOV.L       R1,@(20,R15)
+    00000758              L740:                             
+    00000758 00FF                   .DATA.W     H'00FF
+    0000075A 008C                   .DATA.W     H'008C
+    0000075C <00000000>             .DATA.L     __slow_strcmp1
+    00000760 <00000000>             .DATA.L     _Bdisp_AllClr_VRAM
+    00000764              L702:                             
+        memory.c   244              if(k&1) Bdisp_SetPoint_VRAM(11-j+8*(i&1),20*t+4+(i>>1),1);
+    00000764 50F3                   MOV.L       @(12,R15),R0
+    00000766 C801                   TST         #1,R0
+    00000768 8904                   BT          L703
+    0000076A E601                   MOV         #1,R6
+    0000076C 55F5                   MOV.L       @(20,R15),R5
+    0000076E D338                   MOV.L       L741+4,R3  ; _Bdisp_SetPoint_VRAM
+    00000770 430B                   JSR         @R3
+    00000772 6493                   MOV         R9,R4
+    00000774              L703:                             
+        memory.c   245              k >>= 1; } }
+    00000774 52F3                   MOV.L       @(12,R15),R2
+    00000776 79FF                   ADD         #-1,R9
+    00000778 4221                   SHAR        R2
+    0000077A 1F23                   MOV.L       R2,@(12,R15)
+    0000077C 51F2                   MOV.L       @(8,R15),R1
+    0000077E 7101                   ADD         #1,R1
+    00000780 1F12                   MOV.L       R1,@(8,R15)
+    00000782              L701:                             
+    00000782 E408                   MOV         #8,R4
+    00000784 53F2                   MOV.L       @(8,R15),R3
+    00000786 3343                   CMP/GE      R4,R3
+    00000788 8BEC                   BF          L702
+    0000078A 7E01                   ADD         #1,R14
+    0000078C              L699:                             
+    0000078C E420                   MOV         #32,R4
+    0000078E 3E43                   CMP/GE      R4,R14
+    00000790 8BC9                   BF          L700
+    00000792              L698:                             
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   23
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        memory.c   246          PrintXY(24,20*t+9,(const unsigned char *)*(files+offset+t),0);
+    00000792 E700                   MOV         #0,R7
+    00000794 66F2                   MOV.L       @R15,R6
+    00000796 4608                   SHLL2       R6
+    00000798 53F6                   MOV.L       @(24,R15),R3
+    0000079A 363C                   ADD         R3,R6
+    0000079C 50F8                   MOV.L       @(32,R15),R0
+    0000079E 066E                   MOV.L       @(R0,R6),R6
+    000007A0 55F1                   MOV.L       @(4,R15),R5
+    000007A2 7509                   ADD         #9,R5
+    000007A4 D22B                   MOV.L       L741+8,R2  ; _PrintXY
+    000007A6 420B                   JSR         @R2
+    000007A8 E418                   MOV         #24,R4
+    000007AA 63F2                   MOV.L       @R15,R3
+    000007AC 7301                   ADD         #1,R3
+    000007AE 2F32                   MOV.L       R3,@R15
+    000007B0              L696:                             
+    000007B0 E403                   MOV         #3,R4
+    000007B2 3A47                   CMP/GT      R4,R10
+    000007B4 8B01                   BF          L704
+    000007B6 A001                   BRA         L705
+    000007B8 6343                   MOV         R4,R3
+    000007BA              L704:                             
+    000007BA 63A3                   MOV         R10,R3
+    000007BC              L705:                             
+    000007BC 62F2                   MOV.L       @R15,R2
+    000007BE 3233                   CMP/GE      R3,R2
+    000007C0 8B9D                   BF          L697
+        memory.c   247        }
+        memory.c   248        Bdisp_DrawLineVRAM(2,20*p+3,2,20*p+20);
+    000007C2 67B3                   MOV         R11,R7
+    000007C4 D924                   MOV.L       L741+12,R9 ; _Bdisp_DrawLineVRAM
+    000007C6 63B3                   MOV         R11,R3
+    000007C8 4708                   SHLL2       R7
+    000007CA 373C                   ADD         R3,R7
+    000007CC 4708                   SHLL2       R7
+    000007CE E602                   MOV         #2,R6
+    000007D0 2F72                   MOV.L       R7,@R15
+    000007D2 7714                   ADD         #20,R7
+    000007D4 1F71                   MOV.L       R7,@(4,R15)
+    000007D6 65F2                   MOV.L       @R15,R5
+    000007D8 7503                   ADD         #3,R5
+    000007DA 1F53                   MOV.L       R5,@(12,R15)
+    000007DC 490B                   JSR         @R9
+    000007DE 6463                   MOV         R6,R4
+        memory.c   249        Bdisp_DrawLineVRAM(3,20*p+2,99,20*p+2);
+    000007E0 67F2                   MOV.L       @R15,R7
+    000007E2 E663                   MOV         #99,R6
+    000007E4 7702                   ADD         #2,R7
+    000007E6 6573                   MOV         R7,R5
+    000007E8 1F72                   MOV.L       R7,@(8,R15)
+    000007EA 490B                   JSR         @R9
+    000007EC E403                   MOV         #3,R4
+        memory.c   250        Bdisp_DrawLineVRAM(3,20*p+21,99,20*p+21);
+    000007EE E663                   MOV         #99,R6
+    000007F0 67F2                   MOV.L       @R15,R7
+    000007F2 7715                   ADD         #21,R7
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   24
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000007F4 1F72                   MOV.L       R7,@(8,R15)
+    000007F6 6573                   MOV         R7,R5
+    000007F8 490B                   JSR         @R9
+    000007FA E403                   MOV         #3,R4
+        memory.c   251        Bdisp_DrawLineVRAM(100,20*p+3,100,20*p+20);
+    000007FC 57F1                   MOV.L       @(4,R15),R7
+    000007FE E664                   MOV         #100,R6
+    00000800 55F3                   MOV.L       @(12,R15),R5
+    00000802 490B                   JSR         @R9
+    00000804 6463                   MOV         R6,R4
+        memory.c   252        if(offset>0) PrintXY(114,6,(const unsigned char *)"\346\234",0);
+    00000806 4D15                   CMP/PL      R13
+    00000808 8B06                   BF          L706
+    0000080A E700                   MOV         #0,R7
+    0000080C D211                   MOV.L       L741+8,R2  ; _PrintXY
+    0000080E E506                   MOV         #6,R5
+    00000810 D912                   MOV.L       L741+16,R9 ; L541
+    00000812 6693                   MOV         R9,R6
+    00000814 420B                   JSR         @R2
+    00000816 E472                   MOV         #114,R4
+    00000818              L706:                             
+    00000818 69D3                   MOV         R13,R9
+    0000081A 7903                   ADD         #3,R9
+    0000081C 39A3                   CMP/GE      R10,R9
+    0000081E 8905                   BT          L709
+        memory.c   253        if(offset+3<n) PrintXY(114,51,(const unsigned char *)"\346\235",0);
+    00000820 D60F                   MOV.L       L741+20,R6 ; L542
+    00000822 E533                   MOV         #51,R5
+    00000824 D20B                   MOV.L       L741+8,R2  ; _PrintXY
+    00000826 E700                   MOV         #0,R7
+    00000828 420B                   JSR         @R2
+    0000082A E472                   MOV         #114,R4
+        memory.c   254    
+        memory.c   255        while(1)
+    0000082C              L709:                             
+        memory.c   256        {
+        memory.c   257          GetKey(&key);
+    0000082C D20D                   MOV.L       L741+24,R2 ; _GetKey
+    0000082E 64F3                   MOV         R15,R4
+    00000830 420B                   JSR         @R2
+    00000832 7410                   ADD         #16,R4
+        memory.c   258          if(key==30002 && exit) { free(icoind); return -1; }
+    00000834 940A                   MOV.W       L741,R4    ; H'7532
+    00000836 53F4                   MOV.L       @(16,R15),R3
+    00000838 3340                   CMP/EQ      R4,R3
+    0000083A 8B17                   BF          L710
+    0000083C 51FA                   MOV.L       @(40,R15),R1
+    0000083E 2118                   TST         R1,R1
+    00000840 8914                   BT          L710
+    00000842 D309                   MOV.L       L741+28,R3 ; _free
+    00000844 430B                   JSR         @R3
+    00000846 6483                   MOV         R8,R4
+    00000848 A040                   BRA         L680
+    0000084A E0FF                   MOV         #-1,R0
+    0000084C              L741:                             
+    0000084C 7532                   .DATA.W     H'7532
+    0000084E 0000                   .DATA.W     0
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   25
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000850 <00000000>             .DATA.L     _Bdisp_SetPoint_VRAM
+    00000854 <00000000>             .DATA.L     _PrintXY
+    00000858 <00000000>             .DATA.L     _Bdisp_DrawLineVRAM
+    0000085C <00000000>             .DATA.L     L541
+    00000860 <00000000>             .DATA.L     L542
+    00000864 <00000000>             .DATA.L     _GetKey
+    00000868 <00000000>             .DATA.L     _free
+    0000086C              L710:                             
+        memory.c   259          if(key==30004) break;
+    0000086C 9239                   MOV.W       L742,R2    ; H'7534
+    0000086E 53F4                   MOV.L       @(16,R15),R3
+    00000870 3320                   CMP/EQ      R2,R3
+    00000872 8920                   BT          L712
+        memory.c   260          if(key==30018 && (offset||p))    { if(p==2) p--; else if(offset)     offset--; else p--; break; }
+    00000874 9436                   MOV.W       L742+2,R4  ; H'7542
+    00000876 52F4                   MOV.L       @(16,R15),R2
+    00000878 3240                   CMP/EQ      R4,R2
+    0000087A 8B0C                   BF          L713
+    0000087C 2DD8                   TST         R13,R13
+    0000087E 8B01                   BF          L714
+    00000880 2BB8                   TST         R11,R11
+    00000882 8908                   BT          L713
+    00000884              L714:                             
+    00000884 60B3                   MOV         R11,R0
+    00000886 8802                   CMP/EQ      #2,R0
+    00000888 8903                   BT          L564
+    0000088A 2DD8                   TST         R13,R13
+    0000088C 8901                   BT          L564
+    0000088E A012                   BRA         L712
+    00000890 7DFF                   ADD         #-1,R13
+    00000892              L564:
+    00000892 A010                   BRA         L712
+    00000894 7BFF                   ADD         #-1,R11
+    00000896              L713:                             
+        memory.c   261          if(key==30023 && (offset+p+1<n)) { if(p==0) p++; else if(offset+3<n) offset++; else p++; break; }
+    00000896 9426                   MOV.W       L742+4,R4  ; H'7547
+    00000898 52F4                   MOV.L       @(16,R15),R2
+    0000089A 3240                   CMP/EQ      R4,R2
+    0000089C 8BC6                   BF          L709
+    0000089E 61B3                   MOV         R11,R1
+    000008A0 31DC                   ADD         R13,R1
+    000008A2 7101                   ADD         #1,R1
+    000008A4 31A3                   CMP/GE      R10,R1
+    000008A6 89C1                   BT          L709
+    000008A8 2BB8                   TST         R11,R11
+    000008AA 8903                   BT          L565
+    000008AC 39A3                   CMP/GE      R10,R9
+    000008AE 8901                   BT          L565
+    000008B0 A001                   BRA         L712
+    000008B2 7D01                   ADD         #1,R13
+    000008B4              L565:
+    000008B4 7B01                   ADD         #1,R11
+    000008B6              L712:                             
+        memory.c   262        }
+        memory.c   263    
+        memory.c   264        if(key==30004) break;
+    000008B6 9314                   MOV.W       L742,R3    ; H'7534
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   26
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000008B8 52F4                   MOV.L       @(16,R15),R2
+    000008BA 3230                   CMP/EQ      R3,R2
+    000008BC 8901                   BT          L743
+    000008BE AF16                   BRA         L695
+    000008C0 0009                   NOP
+    000008C2              L743:                             
+        memory.c   265      }
+        memory.c   266    
+        memory.c   267      free(icoind);
+    000008C2 D30A                   MOV.L       L742+10,R3 ; _free
+    000008C4 430B                   JSR         @R3
+    000008C6 6483                   MOV         R8,R4
+        memory.c   268      return offset+p;
+    000008C8 60B3                   MOV         R11,R0
+    000008CA 30DC                   ADD         R13,R0
+        memory.c   269    }
+    000008CC              L680:                             
+    000008CC 910C                   MOV.W       L742+6,R1  ; H'016C
+    000008CE 3F1C                   ADD         R1,R15
+    000008D0 4F26                   LDS.L       @R15+,PR
+    000008D2 68F6                   MOV.L       @R15+,R8
+    000008D4 69F6                   MOV.L       @R15+,R9
+    000008D6 6AF6                   MOV.L       @R15+,R10
+    000008D8 6BF6                   MOV.L       @R15+,R11
+    000008DA 6CF6                   MOV.L       @R15+,R12
+    000008DC 6DF6                   MOV.L       @R15+,R13
+    000008DE 000B                   RTS
+    000008E0 6EF6                   MOV.L       @R15+,R14
+    000008E2              L742:                             
+    000008E2 7534                   .DATA.W     H'7534
+    000008E4 7542                   .DATA.W     H'7542
+    000008E6 7547                   .DATA.W     H'7547
+    000008E8 016C                   .DATA.W     H'016C
+    000008EA 0000                   .DATA.W     0
+    000008EC <00000000>             .DATA.L     _free
+        memory.c   270    
+        memory.c   271    void *memory_user_autoload(char *prefix, char *selector, int l, int extension, int exit)
+    000008F0              _memory_user_autoload:           ; function: memory_user_autoload
+                                                           ; frame size=60
+    000008F0 2FE6                   MOV.L       R14,@-R15
+    000008F2 2FD6                   MOV.L       R13,@-R15
+    000008F4 2FC6                   MOV.L       R12,@-R15
+    000008F6 2FB6                   MOV.L       R11,@-R15
+    000008F8 2FA6                   MOV.L       R10,@-R15
+    000008FA 6B43                   MOV         R4,R11
+    000008FC 2F86                   MOV.L       R8,@-R15
+    000008FE 6A63                   MOV         R6,R10
+    00000900 4F22                   STS.L       PR,@-R15
+    00000902 7FF8                   ADD         #-8,R15
+    00000904 2F52                   MOV.L       R5,@R15
+    00000906 1F71                   MOV.L       R7,@(4,R15)
+        memory.c   272    {
+        memory.c   273      char **files = memory_alloc(l);
+    00000908 BCCA                   BSR         _memory_alloc
+    0000090A 64A3                   MOV         R10,R4
+        memory.c   274      char *adr = malloc(strlen(prefix)+strlen(selector)+1);
+    0000090C DD26                   MOV.L       L744,R13   ; _strlen
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   27
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000090E 6E03                   MOV         R0,R14
+    00000910 4D0B                   JSR         @R13
+    00000912 64B3                   MOV         R11,R4
+    00000914 6803                   MOV         R0,R8
+    00000916 4D0B                   JSR         @R13
+    00000918 64F2                   MOV.L       @R15,R4
+    0000091A 380C                   ADD         R0,R8
+    0000091C D323                   MOV.L       L744+4,R3  ; _malloc
+    0000091E 6483                   MOV         R8,R4
+    00000920 430B                   JSR         @R3
+    00000922 7401                   ADD         #1,R4
+        memory.c   275      void *data;
+        memory.c   276      int x;
+        memory.c   277    
+        memory.c   278      sprintf(adr,"%s%s",prefix,selector);
+    00000924 62F2                   MOV.L       @R15,R2
+    00000926 6C03                   MOV         R0,R12
+    00000928 D321                   MOV.L       L744+8,R3  ; L557
+    0000092A 2F26                   MOV.L       R2,@-R15
+    0000092C 2FB6                   MOV.L       R11,@-R15
+    0000092E 2F36                   MOV.L       R3,@-R15
+    00000930 D220                   MOV.L       L744+12,R2 ; _sprintf
+    00000932 420B                   JSR         @R2
+    00000934 64C3                   MOV         R12,R4
+        memory.c   279      x = memory_find(adr,files,l);
+    00000936 66A3                   MOV         R10,R6
+    00000938 65E3                   MOV         R14,R5
+    0000093A BCEC                   BSR         _memory_find
+    0000093C 64C3                   MOV         R12,R4
+    0000093E 1F03                   MOV.L       R0,@(12,R15)
+        memory.c   280      free(adr);
+    00000940 D31D                   MOV.L       L744+16,R3 ; _free
+    00000942 430B                   JSR         @R3
+    00000944 64C3                   MOV         R12,R4
+        memory.c   281      x = memory_user_select(files,x,extension,exit);
+    00000946 57FC                   MOV.L       @(48,R15),R7
+    00000948 56F4                   MOV.L       @(16,R15),R6
+    0000094A 55F3                   MOV.L       @(12,R15),R5
+    0000094C BE2B                   BSR         _memory_user_select
+    0000094E 64E3                   MOV         R14,R4
+    00000950 1F03                   MOV.L       R0,@(12,R15)
+        memory.c   282    
+        memory.c   283      adr = malloc(strlen(prefix)+strlen(files[x])+1);
+    00000952 4D0B                   JSR         @R13
+    00000954 64B3                   MOV         R11,R4
+    00000956 6803                   MOV         R0,R8
+    00000958 54F3                   MOV.L       @(12,R15),R4
+    0000095A 4408                   SHLL2       R4
+    0000095C 34EC                   ADD         R14,R4
+    0000095E 1F44                   MOV.L       R4,@(16,R15)
+    00000960 4D0B                   JSR         @R13
+    00000962 6442                   MOV.L       @R4,R4
+    00000964 D311                   MOV.L       L744+4,R3  ; _malloc
+    00000966 380C                   ADD         R0,R8
+    00000968 6483                   MOV         R8,R4
+    0000096A 430B                   JSR         @R3
+    0000096C 7401                   ADD         #1,R4
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   28
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000096E 6D03                   MOV         R0,R13
+        memory.c   284      sprintf(adr,"%s%s",prefix,files[x]);
+    00000970 52F4                   MOV.L       @(16,R15),R2
+    00000972 6322                   MOV.L       @R2,R3
+    00000974 D20E                   MOV.L       L744+8,R2  ; L557
+    00000976 2F36                   MOV.L       R3,@-R15
+    00000978 2FB6                   MOV.L       R11,@-R15
+    0000097A 2F26                   MOV.L       R2,@-R15
+    0000097C D30D                   MOV.L       L744+12,R3 ; _sprintf
+    0000097E 430B                   JSR         @R3
+    00000980 64D3                   MOV         R13,R4
+        memory.c   285      data = memory_load(adr);
+    00000982 BD4C                   BSR         _memory_load
+    00000984 64D3                   MOV         R13,R4
+    00000986 1F06                   MOV.L       R0,@(24,R15)
+        memory.c   286    
+        memory.c   287      free(adr);
+    00000988 D30B                   MOV.L       L744+16,R3 ; _free
+    0000098A 430B                   JSR         @R3
+    0000098C 64D3                   MOV         R13,R4
+        memory.c   288      memory_free(files,l);
+    0000098E 65A3                   MOV         R10,R5
+    00000990 BCA6                   BSR         _memory_free
+    00000992 64E3                   MOV         R14,R4
+        memory.c   289      return data;
+    00000994 50F6                   MOV.L       @(24,R15),R0
+        memory.c   290    }
+    00000996 7F20                   ADD         #32,R15
+    00000998 4F26                   LDS.L       @R15+,PR
+    0000099A 68F6                   MOV.L       @R15+,R8
+    0000099C 6AF6                   MOV.L       @R15+,R10
+    0000099E 6BF6                   MOV.L       @R15+,R11
+    000009A0 6CF6                   MOV.L       @R15+,R12
+    000009A2 6DF6                   MOV.L       @R15+,R13
+    000009A4 000B                   RTS
+    000009A6 6EF6                   MOV.L       @R15+,R14
+    000009A8              L744:                             
+    000009A8 <00000000>             .DATA.L     _strlen
+    000009AC <00000000>             .DATA.L     _malloc
+    000009B0 <00000000>             .DATA.L     L557
+    000009B4 <00000000>             .DATA.L     _sprintf
+    000009B8 <00000000>             .DATA.L     _free
+        memory.c   291    
+D   00000000              _memory_errors:                  ; static: memory_errors
+    00000000 00000000               .DATA.L     H'00000000
+C   00000000              L399:
+    00000000 2564                   .SDATA      "%d"
+    00000002 00                     .DATA.B     H'00
+    00000003 00000001               .RES.B      1
+    00000004              L400:
+    00000004 4D656D6F72             .SDATA      "Memory ERROR !!"
+             7920455252   
+             4F52202121   
+    00000013 00                     .DATA.B     H'00
+    00000014              L401:
+    00000014 46524F4D3A             .SDATA      "FROM:"
+    00000019 00                     .DATA.B     H'00
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   29
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000001A 00000002               .RES.W      1
+    0000001C              L402:
+    0000001C 46554E433A             .SDATA      "FUNC:"
+    00000021 00                     .DATA.B     H'00
+    00000022 00000002               .RES.W      1
+    00000024              L403:
+    00000024 494E464F3A             .SDATA      "INFO:"
+    00000029 00                     .DATA.B     H'00
+    0000002A 00000002               .RES.W      1
+    0000002C              L404:
+    0000002C 4D4554413A             .SDATA      "META:"
+    00000031 00                     .DATA.B     H'00
+    00000032 00000002               .RES.W      1
+    00000034              L406:
+    00000034 4E6F74456E             .SDATA      "NotEnoughRAM"
+             6F75676852   
+             414D         
+    00000040 00                     .DATA.B     H'00
+    00000041 00000001               .RES.B      1
+    00000042 00000002               .RES.W      1
+    00000044              L407:
+    00000044 4E6F6E6578             .SDATA      "Nonexisting"
+             697374696E   
+             67           
+    0000004F 00                     .DATA.B     H'00
+    00000050              L408:
+    00000050 57726F6E67             .SDATA      "WrongDevice"
+             4465766963   
+             65           
+    0000005B 00                     .DATA.B     H'00
+    0000005C              L409:
+    0000005C 4163636573             .SDATA      "AccessDenied"
+             7344656E69   
+             6564         
+    00000068 00                     .DATA.B     H'00
+    00000069 00000001               .RES.B      1
+    0000006A 00000002               .RES.W      1
+    0000006C              L410:
+    0000006C 526561644F             .SDATA      "ReadOnly"
+             6E6C79       
+    00000074 00                     .DATA.B     H'00
+    00000075 00000001               .RES.B      1
+    00000076 00000002               .RES.W      1
+    00000078              L411:
+    00000078 4465766963             .SDATA      "DeviceError"
+             654572726F   
+             72           
+    00000083 00                     .DATA.B     H'00
+    00000084              L412:
+    00000084 4E6F74456D             .SDATA      "NotEmpty"
+             707479       
+    0000008C 00                     .DATA.B     H'00
+    0000008D 00000001               .RES.B      1
+    0000008E 00000002               .RES.W      1
+    00000090              L413:
+    00000090 4F74686572             .SDATA      "Other"
+    00000095 00                     .DATA.B     H'00
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   30
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000096 00000002               .RES.W      1
+    00000098              L423:
+    00000098 6372656174             .SDATA      "createfile()"
+             6566696C65   
+             2829         
+    000000A4 00                     .DATA.B     H'00
+    000000A5 00000001               .RES.B      1
+    000000A6 00000002               .RES.W      1
+    000000A8              L424:
+    000000A8 4372656174             .SDATA      "CreateFile()"
+             6546696C65   
+             2829         
+    000000B4 00                     .DATA.B     H'00
+    000000B5 00000001               .RES.B      1
+    000000B6 00000002               .RES.W      1
+    000000B8              L429:
+    000000B8 6372656174             .SDATA      "createdir()"
+             6564697228   
+             29           
+    000000C3 00                     .DATA.B     H'00
+    000000C4              L430:
+    000000C4 4372656174             .SDATA      "CreateDir.()"
+             654469722E   
+             2829         
+    000000D0 00                     .DATA.B     H'00
+    000000D1 00000001               .RES.B      1
+    000000D2 00000002               .RES.W      1
+    000000D4              L436:
+    000000D4 6F70656E66             .SDATA      "openfile()"
+             696C652829   
+    000000DE 00                     .DATA.B     H'00
+    000000DF 00000001               .RES.B      1
+    000000E0              L437:
+    000000E0 4F70656E46             .SDATA      "OpenFile()"
+             696C652829   
+    000000EA 00                     .DATA.B     H'00
+    000000EB 00000001               .RES.B      1
+    000000EC              L442:
+    000000EC 64656C6574             .SDATA      "deletefil.()"
+             6566696C2E   
+             2829         
+    000000F8 00                     .DATA.B     H'00
+    000000F9 00000001               .RES.B      1
+    000000FA 00000002               .RES.W      1
+    000000FC              L443:
+    000000FC 44656C6574             .SDATA      "DeleteFil.()"
+             6546696C2E   
+             2829         
+    00000108 00                     .DATA.B     H'00
+    00000109 00000001               .RES.B      1
+    0000010A 00000002               .RES.W      1
+    0000010C              L476:
+    0000010C 6C6F616428             .SDATA      "load()"
+             29           
+    00000112 00                     .DATA.B     H'00
+    00000113 00000001               .RES.B      1
+    00000114              L478:
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   31
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000114 6D616C6C6F             .SDATA      "malloc()"
+             632829       
+    0000011C 00                     .DATA.B     H'00
+    0000011D 00000001               .RES.B      1
+    0000011E 00000002               .RES.W      1
+    00000120              L480:
+    00000120 5265616446             .SDATA      "ReadFile()"
+             696C652829   
+    0000012A 00                     .DATA.B     H'00
+    0000012B 00000001               .RES.B      1
+    0000012C              L489:
+    0000012C 7361766528             .SDATA      "save()"
+             29           
+    00000132 00                     .DATA.B     H'00
+    00000133 00000001               .RES.B      1
+    00000134              L490:
+    00000134 44656C6574             .SDATA      "DeleteFile()"
+             6546696C65   
+             2829         
+    00000140 00                     .DATA.B     H'00
+    00000141 00000001               .RES.B      1
+    00000142 00000002               .RES.W      1
+    00000144              L494:
+    00000144 5772697465             .SDATA      "WriteFile()"
+             46696C6528   
+             29           
+    0000014F 00                     .DATA.B     H'00
+    00000150              L501:
+    00000150 003C0FC4F0             .DATA.B     H'00,H'3C,H'0F,H'C4,H'F0,H'04,H'80,H'04,H'80,H'02,H'80,H'02,H'40,H'02,H'40,H'02,
+             0480048002 +                       H'40,H'02,H'40,H'02,H'40,H'01,H'40,H'01,H'20,H'01,H'20,H'0F,H'23,H'F0,H'3C,H'00,
+             8002400240 +                       H'00,H'3C,H'0F,H'C4,H'F0,H'04,H'80,H'74,H'87,H'82,H'98,H'02,H'40,H'02,H'40,H'3A,
+             0240024002 +                       H'43,H'C2,H'5C,H'02,H'40,H'39,H'43,H'C1,H'2C,H'01,H'20,H'0F,H'23,H'F0,H'3C,H'00,
+             4001400120 +                       H'00,H'3C,H'0F,H'C4,H'F0,H'74,H'87,H'94,H'B8,H'12,H'A0,H'0A,H'63,H'8A,H'52,H'8A,
+             01200F23F0 +                       H'54,H'4A,H'54,H'66,H'54,H'25,H'48,H'1D,H'29,H'E1,H'2E,H'0F,H'23,H'F0,H'3C,H'00,
+             3C00003C0F +                       H'00,H'3C,H'0F,H'C4,H'F0,H'04,H'87,H'C4,H'88,H'22,H'8C,H'62,H'4B,H'A2,H'44,H'42,
+             C4F0048074 +                       H'42,H'82,H'42,H'82,H'42,H'81,H'44,H'41,H'2F,H'E1,H'20,H'0F,H'23,H'F0,H'3C,H'00,
+             8782980240 +                       H'00,H'3C,H'0F,H'C4,H'F0,H'04,H'87,H'E4,H'88,H'12,H'88,H'12,H'48,H'12,H'47,H'E2,
+             02403A43C2 +                       H'44,H'22,H'44,H'22,H'44,H'21,H'44,H'21,H'23,H'C1,H'20,H'0F,H'23,H'F0,H'3C,H'00,
+             5C02403943 +                       H'00,H'3C,H'0F,H'C4,H'F0,H'04,H'80,H'64,H'87,H'B2,H'98,H'52,H'51,H'B2,H'57,H'52,
+             C12C01200F +                       H'51,H'D2,H'4B,H'0A,H'48,H'19,H'49,H'E1,H'2E,H'01,H'20,H'0F,H'23,H'F0,H'3C,H'00,
+             23F03C0000 +                       H'00,H'3C,H'0F,H'C4,H'F0,H'04,H'80,H'E4,H'9C,H'A2,H'90,H'A2,H'58,H'E2,H'50,H'02,
+             3C0FC4F074 +                       H'40,H'12,H'4A,H'2A
+             8794B812A0   
+             0A638A528A   
+             544A546654   
+             25481D29E1   
+             2E0F23F03C   
+             00003C0FC4   
+             F00487C488   
+             228C624BA2   
+             4442428242   
+             8242814441   
+             2FE1200F23   
+             F03C00003C   
+             0FC4F00487   
+             E488128812   
+             481247E244   
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   32
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+             2244224421   
+             442123C120   
+             0F23F03C00   
+             003C0FC4F0   
+             04806487B2   
+             985251B257   
+             5251D24B0A   
+             481949E12E   
+             01200F23F0   
+             3C00003C0F   
+             C4F00480E4   
+             9CA290A258   
+             E250024012   
+             4A2A         
+    00000224 4A394E2922             .DATA.B     H'4A,H'39,H'4E,H'29,H'22,H'01,H'20,H'0F,H'23,H'F0,H'3C,H'00
+             01200F23F0   
+             3C00         
+    00000230              L503:
+    00000230 <00000000>             .DATA.L     L504,L505,L506,L507,L508,L509,L510,L511,L512,L513,L514,L515,L516,L517,L518,L519,
+             <00000000> +                       L520,L521,L522
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+             <00000000>   
+    0000027C              L524:
+    0000027C 0101010101             .DATA.B     H'01,H'01,H'01,H'01,H'01,H'02,H'02,H'02,H'02,H'03,H'04,H'04,H'04,H'04,H'05,H'05,
+             0202020203 +                       H'05,H'06,H'06
+             0404040405   
+             05050606     
+    0000028F 00000001               .RES.B      1
+    00000290              L534:
+    00000290 757365725F             .SDATA      "user_sele.()"
+             73656C652E   
+             2829         
+    0000029C 00                     .DATA.B     H'00
+    0000029D 00000001               .RES.B      1
+    0000029E 00000002               .RES.W      1
+    000002A0              L541:
+    000002A0 E69C00                 .DATA.B     H'E6,H'9C,H'00
+    000002A3 00000001               .RES.B      1
+    000002A4              L542:
+    000002A4 E69D00                 .DATA.B     H'E6,H'9D,H'00
+    000002A7 00000001               .RES.B      1
+    000002A8              L557:
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   33
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000002A8 25732573               .SDATA      "%s%s"
+    000002AC 00                     .DATA.B     H'00
+    000002AD 00000001               .RES.B      1
+    000002AE 00000002               .RES.W      1
+    000002B0              L504:
+    000002B0 2E747874               .SDATA      ".txt"
+    000002B4 00                     .DATA.B     H'00
+    000002B5 00000001               .RES.B      1
+    000002B6 00000002               .RES.W      1
+    000002B8              L505:
+    000002B8 2E63                   .SDATA      ".c"
+    000002BA 00                     .DATA.B     H'00
+    000002BB 00000001               .RES.B      1
+    000002BC              L506:
+    000002BC 2E68                   .SDATA      ".h"
+    000002BE 00                     .DATA.B     H'00
+    000002BF 00000001               .RES.B      1
+    000002C0              L507:
+    000002C0 2E637070               .SDATA      ".cpp"
+    000002C4 00                     .DATA.B     H'00
+    000002C5 00000001               .RES.B      1
+    000002C6 00000002               .RES.W      1
+    000002C8              L508:
+    000002C8 2E687070               .SDATA      ".hpp"
+    000002CC 00                     .DATA.B     H'00
+    000002CD 00000001               .RES.B      1
+    000002CE 00000002               .RES.W      1
+    000002D0              L509:
+    000002D0 2E626D70               .SDATA      ".bmp"
+    000002D4 00                     .DATA.B     H'00
+    000002D5 00000001               .RES.B      1
+    000002D6 00000002               .RES.W      1
+    000002D8              L510:
+    000002D8 2E6A7067               .SDATA      ".jpg"
+    000002DC 00                     .DATA.B     H'00
+    000002DD 00000001               .RES.B      1
+    000002DE 00000002               .RES.W      1
+    000002E0              L511:
+    000002E0 2E706E67               .SDATA      ".png"
+    000002E4 00                     .DATA.B     H'00
+    000002E5 00000001               .RES.B      1
+    000002E6 00000002               .RES.W      1
+    000002E8              L512:
+    000002E8 2E676966               .SDATA      ".gif"
+    000002EC 00                     .DATA.B     H'00
+    000002ED 00000001               .RES.B      1
+    000002EE 00000002               .RES.W      1
+    000002F0              L513:
+    000002F0 2E736176               .SDATA      ".sav"
+    000002F4 00                     .DATA.B     H'00
+    000002F5 00000001               .RES.B      1
+    000002F6 00000002               .RES.W      1
+    000002F8              L514:
+    000002F8 2E67316D               .SDATA      ".g1m"
+    000002FC 00                     .DATA.B     H'00
+    000002FD 00000001               .RES.B      1
+    000002FE 00000002               .RES.W      1
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE   34
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000300              L515:
+    00000300 2E67326D               .SDATA      ".g2m"
+    00000304 00                     .DATA.B     H'00
+    00000305 00000001               .RES.B      1
+    00000306 00000002               .RES.W      1
+    00000308              L516:
+    00000308 2E673172               .SDATA      ".g1r"
+    0000030C 00                     .DATA.B     H'00
+    0000030D 00000001               .RES.B      1
+    0000030E 00000002               .RES.W      1
+    00000310              L517:
+    00000310 2E673272               .SDATA      ".g2r"
+    00000314 00                     .DATA.B     H'00
+    00000315 00000001               .RES.B      1
+    00000316 00000002               .RES.W      1
+    00000318              L518:
+    00000318 2E673165               .SDATA      ".g1e"
+    0000031C 00                     .DATA.B     H'00
+    0000031D 00000001               .RES.B      1
+    0000031E 00000002               .RES.W      1
+    00000320              L519:
+    00000320 2E673265               .SDATA      ".g2e"
+    00000324 00                     .DATA.B     H'00
+    00000325 00000001               .RES.B      1
+    00000326 00000002               .RES.W      1
+    00000328              L520:
+    00000328 2E673161               .SDATA      ".g1a"
+    0000032C 00                     .DATA.B     H'00
+    0000032D 00000001               .RES.B      1
+    0000032E 00000002               .RES.W      1
+    00000330              L521:
+    00000330 2E686578               .SDATA      ".hex"
+    00000334 00                     .DATA.B     H'00
+    00000335 00000001               .RES.B      1
+    00000336 00000002               .RES.W      1
+    00000338              L522:
+    00000338 2E62696E               .SDATA      ".bin"
+    0000033C 00                     .DATA.B     H'00
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 02-Nov-2020 16:01:55  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:         0
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:      291
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               000009BC Byte(s)
+CONSTANT SECTION (C):                               0000033D Byte(s)
+DATA     SECTION (D):                               00000004 Byte(s)
+BSS      SECTION (B):                               00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 00000CFD Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:           27
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:          16
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:           180
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmkD516.tmp 
+

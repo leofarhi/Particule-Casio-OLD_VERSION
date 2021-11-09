@@ -14,7 +14,7 @@ SH_EXEDIR=$(TCDIR)\bin
 
 # Hitachi SH C/C++ Compiler02 phase
 SHCC02_EXE=shc.exe
-SHCC02_DEP="$(OSDIR)\FX\include\fxlib.h" "MonochromeLib.h" "time.h" "usefull.h" "Announcement.h" "ParticuleEngine.h" "List.h" "Ressources.h"
+SHCC02_DEP="$(OSDIR)\FX\include\fxlib.h" "MonochromeLib.h" "time.h" "usefull.h" "Announcement.h" "List.h" "Ressources.h" "ParticuleEngine.hpp"
 
 # Hitachi SH Assembler03 phase
 SHASM03_EXE=asmsh.exe
@@ -38,8 +38,11 @@ FILEOBJ2="$(OUTDIR)\$(FILE2).obj"
 FILE3=usefull
 FILESRC3="$(APPDIR)\$(FILE3).cpp"
 FILEOBJ3="$(OUTDIR)\$(FILE3).obj"
+FILE4=ParticuleEngine
+FILESRC4="$(APPDIR)\$(FILE4).cpp"
+FILEOBJ4="$(OUTDIR)\$(FILE4).obj"
 RFILE=FXADDINror
-USERALLOBJ=$(FILEOBJ0) $(FILEOBJ1) $(FILEOBJ2) $(FILEOBJ3)
+USERALLOBJ=$(FILEOBJ0) $(FILEOBJ1) $(FILEOBJ2) $(FILEOBJ3) $(FILEOBJ4)
 
 #######################
 # nmake "all" statement
@@ -125,6 +128,23 @@ $(FILEOBJ3) : $(FILESRC3) $(SHCC02_DEP)
 -chgincpath
 -errorpath
 $(FILESRC3)
+-lang=cpp
+-nologo
+-debug
+<<
+
+$(FILEOBJ4) : $(FILESRC4) $(SHCC02_DEP)
+	"$(SH_EXEDIR)\$(SHCC02_EXE)" -subcommand=<<
+-cpu=sh3
+-include="$(OSDIR)\FX\include","$(APPDIR)"
+-objectfile=$(FILEOBJ4)
+-show=source
+-listfile="$(OUTDIR)\$(FILE4).lst"
+-size
+-noinline
+-chgincpath
+-errorpath
+$(FILESRC4)
 -lang=cpp
 -nologo
 -debug

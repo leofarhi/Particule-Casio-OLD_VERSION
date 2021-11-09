@@ -1,6 +1,7 @@
 import inspect
 from ClassSystem.PFrame import PFrame
 from ClassParticule.Vector2 import Vector2
+from ClassParticule.Texture import Texture
 from Particule import *
 from ClassParticule.SearchWindow import SearchWindow
 from functools import partial
@@ -96,7 +97,7 @@ class TypeGUI(PFrame):
             self.Data = variable
             self.IsDragable = True
             self.var = StringVar()
-            self.var.set(variable)
+            self.var.set(str(variable))
             Label(self, text=self.VarName).grid(row=0, column=0)
             self.entry = Entry(self, textvariable=self.var, state=DISABLED)###########
             self.entry.bind('<KeyRelease>', self.changeIntFloatStrBool)############
@@ -126,8 +127,9 @@ class TypeGUI(PFrame):
             return
         elif len(self.var.Val)<=long:
             for ind in range(len(self.var.Val),long):
-                self.var.Val.append(0)
-                tempUI = TypeGUI(self.FrameList, self.var, ind,self.TypeVariables["LstValueType"], True, 0)
+                valtemp=self.GetDefaulfValue((self.TypeVariables["LstValueType"])['Type'])
+                self.var.Val.append(valtemp)
+                tempUI = TypeGUI(self.FrameList, self.var, ind,self.TypeVariables["LstValueType"], True, valtemp)
                 tempUI.grid(row=ind + 1, column=0, sticky='EWNS')
                 self.AllValueUI.append(tempUI)
         elif len(self.var.Val) >= long:
@@ -136,18 +138,36 @@ class TypeGUI(PFrame):
                 del self.AllValueUI[-1]
                 del self.var.Val[-1]
 
+    def GetDefaulfValue(self,TYPE):
+        if TYPE == int:
+            return 0
+        elif TYPE == float:
+            return 0
+        elif TYPE == str:
+            return ""
+        elif TYPE == bool:
+            return False
+        elif TYPE == list:
+            return []
+        elif TYPE == Vector2:
+            return Vector2(0,0)
+        elif TYPE == Texture:
+            return self.Particule.FolderWindow.TextureVide
+        else:
+            return None
+
     def Update(self):
         if type(self.Objet)==ListVar:
             variable = self.Objet.Val[self.VarName]
         else:
             variable = getattr(self.Objet,self.VarName)
-        if (type(variable) == int):
+        if (self.TypeVariables["Type"] == int):
             self.var.set(variable)
-        elif type(variable) == str:
+        elif self.TypeVariables["Type"] == str:
             self.var.set(variable)
-        elif type(variable) == list:
+        elif self.TypeVariables["Type"] == list:
             self.var.Val = variable
-        elif type(variable) == Vector2:
+        elif self.TypeVariables["Type"] == Vector2:
             self.var1.set(variable.x)
             self.var2.set(variable.y)
         else:
@@ -165,7 +185,7 @@ class TypeGUI(PFrame):
 
     def changeVector2(self,event):
         if type(self.Objet)==ListVar:
-            return
+            self.Objet.Val[self.VarName] = Vector2(int(self.var1.get()),int(self.var2.get()))
         try:
             [self.var1.get(),self.var2.get()]
             v = getattr(self.Objet, self.VarName)
@@ -174,9 +194,10 @@ class TypeGUI(PFrame):
         except:
             pass
 
+
     def changeOther(self,event=None):
         if type(self.Objet) == ListVar:
-            return
+            self.Objet.Val[self.VarName] = self.Data
         try:
             setattr(self.Objet, self.VarName, self.Data)
         except:

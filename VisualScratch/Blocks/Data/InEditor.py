@@ -72,7 +72,9 @@ class ScriptBlockPython(ScriptBlock):
 
         initPrivate=""
         for i in GetPrivate:
-            initPrivate += "this->" + i[0] + "=" + self.BlockSys.GetInitValueAttributCasio(i[1]) + ";\n"
+            try:
+                initPrivate += "this->" + i[0] + "=" + self.BlockSys.GetInitValueAttributCasio(i[1]) + ";\n"
+            except:pass
 
         initPublic=""
         for i in GetPublic:

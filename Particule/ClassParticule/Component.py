@@ -104,8 +104,9 @@ class Component(Object):
     def BuildValue(self):
         if type(self).__name__ == "Transform":
             return ("\n","\n")
+        CodeBefore=""
         parametres=","
-        for i in self.AttributVisible:
+        for indexAtt,i in enumerate(self.AttributVisible):
             var = getattr(self,i)
             #print(var, i,eval("self."+i))
             dicoVar= self.TypeVariables[i]
@@ -132,7 +133,24 @@ class Component(Object):
                     parametres +='new Texture("'+str(var.name)+'",'+str(var.width)+","+str(var.height)+","+path+',"'+var.ID+'")'
                     """
                 elif dicoVar["Type"] is list:
-                    Errorrrrr
+                    typeRecur = (dicoVar["LstValueType"])['Type']
+                    if typeRecur==list:
+                        raise Exception("les listes de listes ne sont pas encore pris en compte")
+                    if dicoVar["LstType"]=="List":
+                        raise Exception("les listes ne sont pas encore pris en compte")
+                    if dicoVar["LstType"]=="Array":
+                        Etoile="*"
+                        if not typeRecur in [int,float,str,bool]:
+                            Etoile+="*"
+                        Etoile += " "
+                        code = "static "+typeRecur.__name__+Etoile+"Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)+\
+                               "= new "+ typeRecur.__name__+(Etoile[-2])+"["+str(len(var))+"];\n"
+                        for ind,o in enumerate(var):
+                            code+="Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)+"["+ind+"] = "+o+";\n"
+                            raise Exception("les listes ne sont pas encore pris en compte")
+                        raise Exception("rajouter CodeBefore")
+                        CodeBefore+=code
+                        parametres +="Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)
                 else:
                     #print(eval("self."+i))
                     parametres +=var.ID

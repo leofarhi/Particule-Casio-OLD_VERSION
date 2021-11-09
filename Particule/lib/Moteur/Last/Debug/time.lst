@@ -1,0 +1,137 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:29  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\time.c
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+          time.c     1    static int SysCallCode[] = {0xD201422B,0x60F20000,0x80010070};
+          time.c     2    static int (*SysCall)( int R4, int R5, int R6, int R7, int FNo ) = (void*)&SysCallCode;
+          time.c     3    int getTicks()
+P   00000000              _getTicks:                       ; function: getTicks
+                                                           ; frame size=8
+    00000000 4F22                   STS.L       PR,@-R15
+          time.c     4    {
+          time.c     5        return (*SysCall)(0, 0, 0, 0, 0x3B);
+    00000002 E23B                   MOV         #59,R2
+    00000004 D305                   MOV.L       L240,R3    ; __$SysCall
+    00000006 E700                   MOV         #0,R7
+    00000008 6032                   MOV.L       @R3,R0
+    0000000A 6673                   MOV         R7,R6
+    0000000C 2F26                   MOV.L       R2,@-R15
+    0000000E 6573                   MOV         R7,R5
+    00000010 400B                   JSR         @R0
+    00000012 6473                   MOV         R7,R4
+          time.c     6    }
+    00000014 7F04                   ADD         #4,R15
+    00000016 4F26                   LDS.L       @R15+,PR
+    00000018 000B                   RTS
+    0000001A 0009                   NOP
+    0000001C              L240:                             
+    0000001C <00000000>             .DATA.L     __$SysCall
+D   00000000              __$SysCallCode:                  ; static: SysCallCode
+    00000000 D201422B60             .DATA.L     H'D201422B,H'60F20000,H'80010070
+             F200008001   
+             0070         
+    0000000C              __$SysCall:                      ; static: SysCall
+    0000000C <00000000>             .DATA.L     __$SysCallCode
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:29  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:         0
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:        6
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               00000020 Byte(s)
+CONSTANT SECTION (C):                               00000000 Byte(s)
+DATA     SECTION (D):                               00000010 Byte(s)
+BSS      SECTION (B):                               00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 00000030 Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:            0
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:           1
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:             2
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmk18BB.tmp 
+

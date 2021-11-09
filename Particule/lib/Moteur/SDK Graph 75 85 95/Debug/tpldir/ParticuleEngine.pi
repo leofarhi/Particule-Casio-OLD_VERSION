@@ -1,14 +1,14 @@
 #_USE_RECOMPILE
--We=--template_info_file=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Debug\tpldir\ParticuleEngine.ti
--We=--ii_file=C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Debug\tpldir\ParticuleEngine.ii
+-We=--template_info_file=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Debug\tpldir\ParticuleEngine.ti
+-We=--ii_file=C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Debug\tpldir\ParticuleEngine.ii
 -We=--no_auto_instantiation
  
 
 -cpu=sh3
--include="C:\Users\leofa\Applications\CASIO\fx9860 Dev Kit\OS\FX\include","C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule"
--objectfile="C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Debug\ParticuleEngine.obj"
+-include="C:\Users\leofa\Applications\CASIO\fx9860 Dev Kit\OS\FX\include","C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95"
+-objectfile="C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Debug\ParticuleEngine.obj"
 -show=source
--listfile="C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\Debug\ParticuleEngine.lst"
+-listfile="C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Debug\ParticuleEngine.lst"
 -size
 -noinline
 -chgincpath
@@ -17,4 +17,4 @@
 -nologo
 -debug
 
-"C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Particule\ParticuleEngine.cpp"
+"C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\ParticuleEngine.cpp"

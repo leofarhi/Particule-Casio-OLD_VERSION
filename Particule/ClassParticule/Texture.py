@@ -8,6 +8,7 @@ class Texture(Object):
         Object.__init__(self, Particule, name, **kwargs)
         self.fileVariable = None
         self.path = Path
+        self.ImgStd = None
         self.Img = None
         #print(self.path)
         self.ReloadImg()
@@ -21,9 +22,9 @@ class Texture(Object):
     def ReloadImg(self):
         if self.path !=None:
             self.path = self.path.replace(self.Particule.FolderProject, "").replace("\\", "/")
-            self.Img = Image.open(self.Particule.FolderProject + "/" + self.path)
-            self.Img = ImageTk.PhotoImage(self.Img)
+            self.ImgStd = Image.open(self.Particule.FolderProject + "/" + self.path)
+            self.Img = ImageTk.PhotoImage(self.ImgStd)
             self.name = self.path.split("/")[1]
     def ToString(self):
-        return self.path
+        return self.name
 

@@ -97,7 +97,7 @@ class BlockSys:
         elif Type == "Vector2":
             return '"'+name+'":self.'+name+".get()"
         elif Type == "Texture":
-            return '"'+name+'":self.'+name+".path"
+            return '"'+name+'":self.'+name+".ID"
     def GetSetTypeDicoPython(self,Type):
         if Type == "int":
             return '{"Type":int}'

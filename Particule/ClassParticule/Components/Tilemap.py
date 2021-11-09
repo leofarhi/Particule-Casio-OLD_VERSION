@@ -2,41 +2,51 @@ from Particule import *
 from ClassParticule.Component import Component
 from ClassParticule.Texture import Texture
 from ClassParticule.Vector2 import Vector2
-from PIL import ImageFilter
+import numpy
+import PIL
+from PIL import ImageFilter, ImageOps
 class Tilemap(Component):
-    def __init__(self,gameObject,texture=None,**kwargs):
+    def __init__(self,gameObject,**kwargs):
         Component.__init__(self,gameObject,__name__.split(".")[-1],**kwargs)
         #Repertoir de l'image
         #repImg = "C:/Users/leofa/OneDrive/Documents/PycharmProjects/Particule/lib/logo.png"
-        if texture==None:
-            self.texture = self.Particule.FolderWindow.TextureVide
-        else:
-            self.texture = texture
 
+        self.canvas = self.Particule.Scene.surface
 
-        self._lastRepImg = self.texture.path
-        #self._lastRepImg = texture.path
         self._lastZoom=1
 
         self.SizeTilemap=Vector2(10,10)
         self.SizeCase = Vector2(16, 16)
         self.Textures = [self.Particule.FolderWindow.TextureVide]
         self.DataTilemap=[]
-        self.TypeVariables.update({"texture": {"Type": Texture},
-                                   "SizeTilemap": {"Type": Vector2},
+        self.TypeVariables.update({"SizeTilemap": {"Type": Vector2},
                                    "SizeCase": {"Type": Vector2},
                                    "Textures": {"Type":list,"LstValueType":{"Type":Texture},"LstType":"Array"},
                                    })
+        self._lastRepImgs = str([o.path for o in self.Textures])
+        self.Meshs=[]
+        self.Imgs=[]
+        self.grille = []
+        self.LoadMap()
+        self.PaintPen = 1
 
-        self.Img = self.texture.Img
-        self.Mesh = self.Particule.Scene.surface.create_image(0, 0, anchor=tkinter.NW, image=self.Img)
-        self.ReloadImg()
-
-        self.Particule.Scene.surface.tag_bind(self.Mesh,'<Button-1>', self.Clic)  # evevement clic gauche (press)
-        #self.Particule.Scene.surface.tag_bind(self.Mesh,'<ButtonRelease-1>', self.Drop)
 
 
-        self.AttributVisible = ["texture","SizeTilemap","SizeCase"]
+        self.AttributVisible = ["SizeTilemap","SizeCase"]
+
+    def SetPen(self,index,*args):
+        self.PaintPen =index
+    def UpdatePalette(self,*args):
+        self.FramePaletteButton.destroy()
+        self.RefeshPalette()
+    def RefeshPalette(self):
+        self.FramePaletteButton = Frame(self.FramePalette)
+        self.FramePaletteButton.pack(fill=tkinter.BOTH, expand=True)
+        Button(self.FramePaletteButton, text="Mise à Jour de la Palette",command=self.UpdatePalette).pack(side=TOP,padx=10,pady=10)
+        Button(self.FramePaletteButton, text="TextureVide",command=partial(self.SetPen,0)).pack(side=TOP)
+        for ind,photo in enumerate(self.Textures):
+            if (ind==0):continue
+            Button(self.FramePaletteButton, image=photo.Img,command=partial(self.SetPen,ind)).pack(side=TOP)
     def RefreshGUI(self):
         if self.myFrame != None:
             self.myFrame.destroy()
@@ -55,15 +65,18 @@ class Tilemap(Component):
 
         self.FrameSettings.Particule = self.Particule
         self.FramePalette.Particule = self.Particule
+
+        self.RefeshPalette()
+
         # self.myFrame.pack(fill=tkinter.BOTH, expand=True)
         self.AddContextMenu()
         one = False
         count = 0
         for i in self.GetAttribut():
-            if i[0] in self.AttributVisible:
+            if i[0] in ["Textures"]+self.AttributVisible:
                 # print(i[0],getattr(self,i[0]))
                 one = True
-                tempUI = TypeGUI(self.FrameSettings, self, i[0])
+                tempUI = TypeGUI(self.FrameSettings, self, i[0],self.TypeVariables[i[0]])
                 tempUI.grid(row=count, column=0, sticky='EWNS')
                 self._valueGUI.append(tempUI)
                 count += 1
@@ -73,43 +86,77 @@ class Tilemap(Component):
 
 
     def Clic(self, event):
-        self.Particule.Hierarchy.t.focus(str(self.gameObject.ID))
-        self.Particule.Hierarchy.t.selection_set(str(self.gameObject.ID))
-        self.Particule.Hierarchy.SetItemSelect()
+        if self.myFrame!=None:
+            if self.myFrame.winfo_ismapped()==1:
+                w = event.widget
+                x = w.canvasx(event.x)
+                y = w.canvasy(event.y)
+                item = w.find_closest(x, y)
+                for y2,i in enumerate(self.Meshs):
+                    for x2,o in enumerate(i):
+                        if item[0]==o:
+                            (self.DataTilemap[y2])[x2] = self.PaintPen
+                            self.LoadMap()
+                            return
 
-    def ReloadImg(self):
-        try:
-            self.repImg = self.texture.path.replace(self.Particule.FolderProject,"")
-            self.Img = ImageTk.Image.open(self.Particule.FolderProject+"/"+self.repImg)
-            self.width = self.Img.width
-            self.height = self.Img.height
-            self.Img = self.Img.resize((int(self.Img.width*self._lastZoom), int(self.Img.height*self._lastZoom)),resample=Image.NEAREST)
-            self.Img = ImageTk.PhotoImage(self.Img)
-        except:
-            self.Img = Image.open("lib/vide.png")
-            self.Img = ImageTk.PhotoImage(self.Img)
-            self.width = self.Img.width()
-            self.height = self.Img.height()
-        self.Particule.Scene.surface.itemconfig(self.Mesh,image = self.Img)
-
+    def LoadMap(self):
+        self.Imgs = []
+        for i in self.Meshs:
+            for o in i:
+                self.canvas.delete(o)
+        for i in self.grille:
+            self.canvas.delete(i)
+        self.Meshs=[]
+        for y,i in enumerate(self.DataTilemap):
+            tempM=[]
+            for x, o in enumerate(i):
+                if not o<len(self.Textures):
+                    o=0
+                if o==0:
+                    img = Image.new('RGB', [self.SizeCase.x,self.SizeCase.y], (255,255,255))
+                    color = "black"
+                    # top, right, bottom, left
+                    border = (1, 1, 1, 1)
+                    img = ImageOps.expand(img, border=border, fill=color)
+                else:
+                    img = self.Textures[o].ImgStd
+                img = img.resize(
+                    (int(img.width * self._lastZoom), int(img.height * self._lastZoom)),
+                    resample=Image.NEAREST)
+                img = ImageTk.PhotoImage(img)
+                self.Imgs.append(img)
+                ImgCan = self.canvas.create_image(x*self.SizeCase.x, y*self.SizeCase.y, anchor=tkinter.NW, image=self.Imgs[-1])
+                self.canvas.tag_bind(ImgCan, '<Button-1>', self.Clic)
+                for i in range(100):
+                    self.canvas.tag_lower(ImgCan)
+                #gr = self.canvas.create_rectangle(x*self.SizeCase.x, y*self.SizeCase.y, self.SizeCase.x, self.SizeCase.y, fill="")
+                #self.grille.append(gr)
+                tempM.append(ImgCan)
+            self.Meshs.append(tempM)
     def UpdateLst(self):
         self.SizeTilemap.y = abs(self.SizeTilemap.y)
         self.SizeTilemap.x = abs(self.SizeTilemap.x)
+        modif = False
         if len(self.DataTilemap)>self.SizeTilemap.y:
             for i in range(len(self.DataTilemap)-self.SizeTilemap.y):
                 del self.DataTilemap[-1]
+            modif = True
         elif len(self.DataTilemap)<self.SizeTilemap.y:
             for i in range(len(self.DataTilemap),self.SizeTilemap.y):
                 self.DataTilemap.append([0 for i in range(self.SizeTilemap.x)])
+            modif = True
         if len(self.DataTilemap)>0:
             if len(self.DataTilemap[0]) > self.SizeTilemap.x:
                 for o in range(len(self.DataTilemap)):
                     for i in range(len(self.DataTilemap[o]) - self.SizeTilemap.x):
                         del (self.DataTilemap[o])[-1]
+                modif = True
             elif len(self.DataTilemap[0]) < self.SizeTilemap.x:
                 for o in range(len(self.DataTilemap)):
                     for i in range(len(self.DataTilemap[o]), self.SizeTilemap.x):
                         self.DataTilemap[o].append(0)
+                modif = True
+        return modif
 
 
     def AddScriptAfterInitCasio(self):
@@ -121,39 +168,67 @@ class Tilemap(Component):
         code += str(self.ID)+"->Datas = "+str(self.ID)+"_TilemapDatas;\n"
         code += str(self.ID) + "->images = new Texture * ["+str(len(self.Textures))+"];\n"
         for ind,i in enumerate(self.Textures):
-            code += str(self.ID) + "->images["+str(ind)+"] = !!!;\n"
-            raise Exception("à coder")
+            path = os.path.basename(i.path)
+            path = os.path.splitext(path)[0]
+            if (i.path == "Library/lib/vide.png"):
+                valT = "new Texture()"
+            else:
+                valT = "Texture_" + path
+            code += str(self.ID) + "->images["+str(ind)+"] = "+valT+";\n"
         return code
 
     def UpdateOnGUI(self):
-        self.UpdateLst()
-        if self._lastRepImg != self.texture.path or self._lastZoom != self.Particule.Scene.zoom:
-            self._lastRepImg = self.texture.path
+        if len(self.Textures)==0:
+            self.Textures=[self.Particule.FolderWindow.TextureVide]
+        else:
+            self.Textures[0]=self.Particule.FolderWindow.TextureVide
+        modif = self.UpdateLst()
+        pathT=str([o.path for o in self.Textures])
+        if self._lastRepImgs != pathT or self._lastZoom != self.Particule.Scene.zoom or modif:
+            self._lastRepImgs = pathT
             self._lastZoom = self.Particule.Scene.zoom
-            self.ReloadImg()
+            self.LoadMap()
         z = self.Particule.Scene.zoom
         x,y = self.gameObject.transform.position.get()
-        self.Particule.Scene.surface.coords(self.Mesh,(x-self.Particule.Scene.x)*z,(y+self.Particule.Scene.y)*z)
+        index = 0
+        for y2,i in enumerate(self.Meshs):
+            for x2,o in enumerate(i):
+                self.canvas.coords(o,((x+x2*self.SizeCase.x)-self.Particule.Scene.x)*z,((y+y2*self.SizeCase.y)+self.Particule.Scene.y)*z)
+                #self.canvas.coords(self.grille[index], int(((x+x2*self.SizeCase.x)-self.Particule.Scene.x)*z),int(((y+y2*self.SizeCase.y)+self.Particule.Scene.y)*z),
+                #                int(((x+(x2+1)*self.SizeCase.x)-self.Particule.Scene.x)*z),int(((y+(y2+1)*self.SizeCase.y)+self.Particule.Scene.y)*z)*z)
+
+                index+=1
+        if self.myFrame!=None:
+            if self.myFrame.winfo_ismapped()==1:
+                self.WhenComponentIsShow()
+    def WhenComponentIsShow(self):
+        pass#raise Exception("A finir")
 
 
     def Destroy(self):
-        self.Particule.Scene.surface.delete(self.Mesh)
+        for i in self.Meshs:
+            for o in i:
+                self.canvas.delete(o)
+        for i in self.grille:
+            self.canvas.delete(i)
         Component.Destroy(self)
 
     def SaveDataDict(self):
         data = Component.SaveDataDict(self)
         data.update({
-            #"repImg":self.texture.path,
             "SizeTilemap":self.SizeTilemap.get(),
             "SizeCase": self.SizeCase.get(),
-            "DataTilemap":self.DataTilemap
+            "DataTilemap":self.DataTilemap,
+            "Textures":[i.ID for i in self.Textures]
         })
         return data
 
     def LoadDataDict(self,data,component,dataCompo,dicoGameObject,dicoComponent):
         Component.LoadDataDict(self,data,component,dataCompo,dicoGameObject,dicoComponent)
         #self.texture = Texture(self.Particule,Path=dataCompo["repImg"],name=os.path.basename(dataCompo["repImg"]))
-        self.ReloadImg()
+        self.Textures = [self.Particule.GetTextureUUID(o) for o in dataCompo["Textures"]]
         self.SizeTilemap = Vector2.set(Vector2(), dataCompo["SizeTilemap"])
         self.SizeCase = Vector2.set(Vector2(), dataCompo["SizeCase"])
         self.DataTilemap = dataCompo["DataTilemap"]
+        self.LoadMap()
+

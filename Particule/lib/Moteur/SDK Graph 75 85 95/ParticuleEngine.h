@@ -235,7 +235,7 @@ class Transform : public Component {
 private:
     Vector2* lastPosition;
 public:
-    List<Transform*> childs;
+    List<Transform*> children;
     int childCount;
     //Vector2* eulerAngles;
     //Vector2* forward;
@@ -270,7 +270,7 @@ public:
         //localToWorldMatrix = NULL;
         lossyScale = new Vector2(1,1);
         parent = NULL;
-        //childs = []
+        //children = []
         position = new Vector2();
         //self.right = None
         root = NULL;
@@ -291,9 +291,9 @@ public:
 
     void SetParent(Transform* transform) {
         if (parent != NULL) {
-            parent->childs.Remove(this);
+            parent->children.Remove(this);
         }
-        transform->childs.Add(this);
+        transform->children.Add(this);
         parent = transform;
     }
 
@@ -303,7 +303,7 @@ public:
     }
 
     void Update() {
-        childCount = childs.Count;
+        childCount = children.Count;
 
         if (parent == NULL) {
 
@@ -391,8 +391,7 @@ class Texture : public Object {
     //https://docs.unity3d.com/ScriptReference/Texture.html
 public:
     Texture() : Object("None", NULL) {
-        const unsigned char None[] = { 0x0 };
-        textureData = (unsigned char*)None;
+        textureData = NULL;
         this->width = 0;
         this->height = 0;
     };
@@ -669,6 +668,10 @@ public:
 
     };
 
+    ~Rigidbody() {
+        delete velocity;
+    }
+
     void Start() {
         this->velocity->Set(0,0);
     }
@@ -722,6 +725,11 @@ public:
         this->sizeTilemap = sizeTilemap;
         this->sizeCase = sizeCase;
     };
+
+    ~Tilemap() {
+        delete[] images;
+        delete[] Datas;
+    }
 
     void Start() {
 

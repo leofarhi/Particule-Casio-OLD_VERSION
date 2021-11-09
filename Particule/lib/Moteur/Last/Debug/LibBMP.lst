@@ -1,0 +1,1655 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: C:\Users\leofa\OneDrive\Documents\CASIO\fx-9860G SDK\Tutoriel\LibBMP.c
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        LibBMP.c     1    #include "fxlib.h"
+        LibBMP.c     2    #include "LibBMP.h"
+        LibBMP.c     3    #include <stdio.h>
+        LibBMP.c     4    
+        LibBMP.c     5    Bitmap *BMP_Load(const char *adresse, int *err)
+P   00000000              _BMP_Load:                       ; function: BMP_Load
+                                                           ; frame size=56
+    00000000 2FE6                   MOV.L       R14,@-R15
+    00000002 2FD6                   MOV.L       R13,@-R15
+    00000004 2FC6                   MOV.L       R12,@-R15
+    00000006 6C43                   MOV         R4,R12
+    00000008 2FB6                   MOV.L       R11,@-R15
+    0000000A 2FA6                   MOV.L       R10,@-R15
+    0000000C 2F96                   MOV.L       R9,@-R15
+    0000000E 2F86                   MOV.L       R8,@-R15
+    00000010 4F22                   STS.L       PR,@-R15
+    00000012 7FE8                   ADD         #-24,R15
+        LibBMP.c     6    {
+        LibBMP.c     7      unsigned char header[18];
+        LibBMP.c     8      unsigned char *imgh;
+        LibBMP.c     9      FONTCHARACTER *adr;
+        LibBMP.c    10      Bitmap *b;
+        LibBMP.c    11      int handle;
+        LibBMP.c    12      int x;
+        LibBMP.c    13    
+        LibBMP.c    14      adr = calloc((strlen(adresse)+1),sizeof(FONTCHARACTER));
+    00000014 DB9A                   MOV.L       L639,R11   ; _strlen
+    00000016 4B0B                   JSR         @R11
+    00000018 6D53                   MOV         R5,R13
+    0000001A 6403                   MOV         R0,R4
+    0000001C D399                   MOV.L       L639+4,R3  ; _calloc
+    0000001E 7401                   ADD         #1,R4
+    00000020 430B                   JSR         @R3
+    00000022 E502                   MOV         #2,R5
+    00000024 6903                   MOV         R0,R9
+        LibBMP.c    15      for(x=0;x<strlen(adresse);x++) *(adr+x) = *(adresse+x);
+    00000026 A007                   BRA         L556
+    00000028 EE00                   MOV         #0,R14
+    0000002A              L557:                             
+    0000002A 63E3                   MOV         R14,R3
+    0000002C 4300                   SHLL        R3
+    0000002E 339C                   ADD         R9,R3
+    00000030 60E3                   MOV         R14,R0
+    00000032 7E01                   ADD         #1,R14
+    00000034 02CC                   MOV.B       @(R0,R12),R2
+    00000036 2321                   MOV.W       R2,@R3
+    00000038              L556:                             
+    00000038 4B0B                   JSR         @R11
+    0000003A 64C3                   MOV         R12,R4
+    0000003C 3E03                   CMP/GE      R0,R14
+    0000003E 8BF4                   BF          L557
+        LibBMP.c    16    
+        LibBMP.c    17      if((handle=Bfile_OpenFile(adr,_OPENMODE_READ))<0) { if(err) *err=handle; return NULL; }
+    00000040 D291                   MOV.L       L639+8,R2  ; _Bfile_OpenFile
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000042 E501                   MOV         #1,R5
+    00000044 420B                   JSR         @R2
+    00000046 6493                   MOV         R9,R4
+    00000048 4011                   CMP/PZ      R0
+    0000004A 8D06                   BT/S        L558
+    0000004C 6A03                   MOV         R0,R10
+    0000004E 2DD8                   TST         R13,R13
+    00000050 8B01                   BF          L640
+    00000052 A0E4                   BRA         L638
+    00000054 0009                   NOP
+    00000056              L640:                             
+    00000056 A0E2                   BRA         L638
+    00000058 2DA2                   MOV.L       R10,@R13
+    0000005A              L558:                             
+        LibBMP.c    18      if(!(b=malloc(sizeof(Bitmap)))) { if(err) *err=1; Bfile_CloseFile(handle); return NULL; }
+    0000005A D98C                   MOV.L       L639+12,R9 ; _malloc
+    0000005C 490B                   JSR         @R9
+    0000005E E410                   MOV         #16,R4
+    00000060 2008                   TST         R0,R0
+    00000062 8D26                   BT/S        L457
+    00000064 6B03                   MOV         R0,R11
+        LibBMP.c    19      if((x=Bfile_ReadFile(handle,header,18,0))<0) { if(err) *err=x; Bfile_CloseFile(handle); return NULL; }
+    00000066 6CF3                   MOV         R15,R12
+    00000068 D889                   MOV.L       L639+16,R8 ; _Bfile_ReadFile
+    0000006A E700                   MOV         #0,R7
+    0000006C 7C04                   ADD         #4,R12
+    0000006E E612                   MOV         #18,R6
+    00000070 65C3                   MOV         R12,R5
+    00000072 480B                   JSR         @R8
+    00000074 64A3                   MOV         R10,R4
+    00000076 4011                   CMP/PZ      R0
+    00000078 8D04                   BT/S        L563
+    0000007A 6403                   MOV         R0,R4
+    0000007C 2DD8                   TST         R13,R13
+    0000007E 8974                   BT          L463
+    00000080 A073                   BRA         L463
+    00000082 2D42                   MOV.L       R4,@R13
+    00000084              L563:                             
+        LibBMP.c    20    
+        LibBMP.c    21      x = (header[17]<<24)+(header[16]<<16)+(header[15]<<8)+header[14];
+    00000084 E011                   MOV         #17,R0
+    00000086 03CC                   MOV.B       @(R0,R12),R3
+    00000088 633C                   EXTU.B      R3,R3
+    0000008A 4328                   SHLL16      R3
+    0000008C 4318                   SHLL8       R3
+    0000008E E010                   MOV         #16,R0
+    00000090 02CC                   MOV.B       @(R0,R12),R2
+    00000092 622C                   EXTU.B      R2,R2
+    00000094 84CF                   MOV.B       @(15,R12),R0
+    00000096 4228                   SHLL16      R2
+    00000098 332C                   ADD         R2,R3
+    0000009A 600C                   EXTU.B      R0,R0
+    0000009C 4018                   SHLL8       R0
+    0000009E 330C                   ADD         R0,R3
+    000000A0 84CE                   MOV.B       @(14,R12),R0
+    000000A2 600C                   EXTU.B      R0,R0
+    000000A4 330C                   ADD         R0,R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000000A6 2F32                   MOV.L       R3,@R15
+        LibBMP.c    22      if(!(imgh=malloc(x))) { if(err) *err=1; Bfile_CloseFile(handle); return NULL; }
+    000000A8 490B                   JSR         @R9
+    000000AA 6433                   MOV         R3,R4
+    000000AC 2008                   TST         R0,R0
+    000000AE 8F05                   BF/S        L565
+    000000B0 6E03                   MOV         R0,R14
+    000000B2              L457:
+    000000B2 2DD8                   TST         R13,R13
+    000000B4 8959                   BT          L463
+    000000B6 E301                   MOV         #1,R3
+    000000B8 A057                   BRA         L463
+    000000BA 2D32                   MOV.L       R3,@R13
+    000000BC              L565:                             
+        LibBMP.c    23      if((x=Bfile_ReadFile(handle,imgh,x,18))<0) { if(err) *err=x; free(imgh); Bfile_CloseFile(handle); return
+                         + NULL; }
+    000000BC 66F2                   MOV.L       @R15,R6
+    000000BE 65E3                   MOV         R14,R5
+    000000C0 E712                   MOV         #18,R7
+    000000C2 480B                   JSR         @R8
+    000000C4 64A3                   MOV         R10,R4
+    000000C6 4011                   CMP/PZ      R0
+    000000C8 8D06                   BT/S        L567
+    000000CA 6403                   MOV         R0,R4
+    000000CC 2DD8                   TST         R13,R13
+    000000CE 8B01                   BF          L641
+    000000D0 A084                   BRA         L487
+    000000D2 0009                   NOP
+    000000D4              L641:                             
+    000000D4 A082                   BRA         L487
+    000000D6 2D42                   MOV.L       R4,@R13
+    000000D8              L567:                             
+        LibBMP.c    24    
+        LibBMP.c    25      b->width  = (imgh[3]<<24)+(imgh[2]<<16)+(imgh[1]<<8)+imgh[0];
+    000000D8 84E3                   MOV.B       @(3,R14),R0
+    000000DA 600C                   EXTU.B      R0,R0
+    000000DC 62E0                   MOV.B       @R14,R2
+    000000DE 4028                   SHLL16      R0
+    000000E0 4018                   SHLL8       R0
+    000000E2 6303                   MOV         R0,R3
+    000000E4 84E2                   MOV.B       @(2,R14),R0
+    000000E6 622C                   EXTU.B      R2,R2
+    000000E8 600C                   EXTU.B      R0,R0
+    000000EA 4028                   SHLL16      R0
+    000000EC 330C                   ADD         R0,R3
+    000000EE 84E1                   MOV.B       @(1,R14),R0
+    000000F0 600C                   EXTU.B      R0,R0
+    000000F2 4018                   SHLL8       R0
+    000000F4 330C                   ADD         R0,R3
+    000000F6 332C                   ADD         R2,R3
+    000000F8 2B32                   MOV.L       R3,@R11
+        LibBMP.c    26      b->height = (imgh[7]<<24)+(imgh[6]<<16)+(imgh[5]<<8)+imgh[4];
+    000000FA 84E7                   MOV.B       @(7,R14),R0
+    000000FC 600C                   EXTU.B      R0,R0
+    000000FE 4028                   SHLL16      R0
+    00000100 4018                   SHLL8       R0
+    00000102 6303                   MOV         R0,R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE    4
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000104 84E6                   MOV.B       @(6,R14),R0
+    00000106 600C                   EXTU.B      R0,R0
+    00000108 4028                   SHLL16      R0
+    0000010A 330C                   ADD         R0,R3
+    0000010C 84E5                   MOV.B       @(5,R14),R0
+    0000010E 600C                   EXTU.B      R0,R0
+    00000110 4018                   SHLL8       R0
+    00000112 330C                   ADD         R0,R3
+    00000114 84E4                   MOV.B       @(4,R14),R0
+    00000116 600C                   EXTU.B      R0,R0
+    00000118 330C                   ADD         R0,R3
+    0000011A 1B31                   MOV.L       R3,@(4,R11)
+        LibBMP.c    27      b->depth  = (imgh[11]<<8)+imgh[10];
+    0000011C 84EB                   MOV.B       @(11,R14),R0
+    0000011E 600C                   EXTU.B      R0,R0
+    00000120 4018                   SHLL8       R0
+    00000122 6303                   MOV         R0,R3
+    00000124 84EA                   MOV.B       @(10,R14),R0
+    00000126 600C                   EXTU.B      R0,R0
+    00000128 303C                   ADD         R3,R0
+    0000012A 81B4                   MOV.W       R0,@(8,R11)
+        LibBMP.c    28    
+        LibBMP.c    29      if(b->depth!=1) { if(err)*err=2; free(imgh); Bfile_CloseFile(handle); return NULL; }
+    0000012C 85B4                   MOV.W       @(8,R11),R0
+    0000012E 600D                   EXTU.W      R0,R0
+    00000130 8801                   CMP/EQ      #1,R0
+    00000132 8B15                   BF          L455
+        LibBMP.c    30      x = (header[5]<<24)+(header[4]<<16)+(header[3]<<8)+header[2];
+    00000134 84C5                   MOV.B       @(5,R12),R0
+    00000136 600C                   EXTU.B      R0,R0
+    00000138 4028                   SHLL16      R0
+    0000013A 4018                   SHLL8       R0
+    0000013C 6303                   MOV         R0,R3
+    0000013E 84C4                   MOV.B       @(4,R12),R0
+    00000140 600C                   EXTU.B      R0,R0
+    00000142 4028                   SHLL16      R0
+    00000144 330C                   ADD         R0,R3
+    00000146 84C3                   MOV.B       @(3,R12),R0
+    00000148 600C                   EXTU.B      R0,R0
+    0000014A 4018                   SHLL8       R0
+    0000014C 330C                   ADD         R0,R3
+    0000014E 84C2                   MOV.B       @(2,R12),R0
+    00000150 600C                   EXTU.B      R0,R0
+    00000152 330C                   ADD         R0,R3
+    00000154 2F32                   MOV.L       R3,@R15
+        LibBMP.c    31      if(!(b->data=malloc(x))) { if(err) *err=2; free(imgh); Bfile_CloseFile(handle); return NULL; }
+    00000156 490B                   JSR         @R9
+    00000158 6433                   MOV         R3,R4
+    0000015A 2008                   TST         R0,R0
+    0000015C 8F0A                   BF/S        L571
+    0000015E 1B03                   MOV.L       R0,@(12,R11)
+    00000160              L455:
+    00000160 2DD8                   TST         R13,R13
+    00000162 893B                   BT          L487
+    00000164 E302                   MOV         #2,R3
+    00000166 A039                   BRA         L487
+    00000168 2D32                   MOV.L       R3,@R13
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000016A              L463:
+    0000016A D34A                   MOV.L       L639+20,R3 ; _Bfile_CloseFile
+    0000016C 430B                   JSR         @R3
+    0000016E 64A3                   MOV         R10,R4
+    00000170 A055                   BRA         L638
+    00000172 0009                   NOP
+    00000174              L571:                             
+        LibBMP.c    32    
+        LibBMP.c    33      x = (imgh[15]<<24)+(imgh[14]<<16)+(imgh[13]<<8)+imgh[12];
+    00000174 84EF                   MOV.B       @(15,R14),R0
+    00000176 600C                   EXTU.B      R0,R0
+    00000178 4028                   SHLL16      R0
+    0000017A 4018                   SHLL8       R0
+    0000017C 6403                   MOV         R0,R4
+    0000017E 84EE                   MOV.B       @(14,R14),R0
+    00000180 600C                   EXTU.B      R0,R0
+    00000182 4028                   SHLL16      R0
+    00000184 340C                   ADD         R0,R4
+    00000186 84ED                   MOV.B       @(13,R14),R0
+    00000188 600C                   EXTU.B      R0,R0
+    0000018A 4018                   SHLL8       R0
+    0000018C 340C                   ADD         R0,R4
+    0000018E 84EC                   MOV.B       @(12,R14),R0
+    00000190 600C                   EXTU.B      R0,R0
+    00000192 340C                   ADD         R0,R4
+        LibBMP.c    34      if(x) { if(err) *err=3; free(imgh); Bfile_CloseFile(handle); return NULL; }
+    00000194 2448                   TST         R4,R4
+    00000196 8904                   BT          L573
+    00000198 2DD8                   TST         R13,R13
+    0000019A 891F                   BT          L487
+    0000019C E303                   MOV         #3,R3
+    0000019E A01D                   BRA         L487
+    000001A0 2D32                   MOV.L       R3,@R13
+    000001A2              L573:                             
+        LibBMP.c    35    
+        LibBMP.c    36      x = (imgh[19]<<24)+(imgh[18]<<16)+(imgh[17]<<8)+imgh[16];
+    000001A2 E013                   MOV         #19,R0
+    000001A4 03EC                   MOV.B       @(R0,R14),R3
+    000001A6 E012                   MOV         #18,R0
+    000001A8 02EC                   MOV.B       @(R0,R14),R2
+    000001AA 633C                   EXTU.B      R3,R3
+    000001AC 4328                   SHLL16      R3
+    000001AE 4318                   SHLL8       R3
+    000001B0 622C                   EXTU.B      R2,R2
+    000001B2 4228                   SHLL16      R2
+    000001B4 332C                   ADD         R2,R3
+    000001B6 E011                   MOV         #17,R0
+    000001B8 01EC                   MOV.B       @(R0,R14),R1
+    000001BA E010                   MOV         #16,R0
+    000001BC 02EC                   MOV.B       @(R0,R14),R2
+    000001BE 611C                   EXTU.B      R1,R1
+    000001C0 4118                   SHLL8       R1
+    000001C2 331C                   ADD         R1,R3
+    000001C4 622C                   EXTU.B      R2,R2
+    000001C6 332C                   ADD         R2,R3
+    000001C8 2F32                   MOV.L       R3,@R15
+        LibBMP.c    37      if(!(b->data=malloc(x))) { if(err) *err=1; free(imgh); Bfile_CloseFile(handle); return NULL; }
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE    6
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000001CA 490B                   JSR         @R9
+    000001CC 6433                   MOV         R3,R4
+    000001CE 2008                   TST         R0,R0
+    000001D0 8F0C                   BF/S        L575
+    000001D2 1B03                   MOV.L       R0,@(12,R11)
+    000001D4 2DD8                   TST         R13,R13
+    000001D6 8901                   BT          L487
+    000001D8 E301                   MOV         #1,R3
+    000001DA 2D32                   MOV.L       R3,@R13
+    000001DC              L487:
+    000001DC D22E                   MOV.L       L639+24,R2 ; _free
+    000001DE 420B                   JSR         @R2
+    000001E0 64E3                   MOV         R14,R4
+    000001E2 D32C                   MOV.L       L639+20,R3 ; _Bfile_CloseFile
+    000001E4 430B                   JSR         @R3
+    000001E6 64A3                   MOV         R10,R4
+    000001E8 A019                   BRA         L638
+    000001EA 0009                   NOP
+    000001EC              L575:                             
+        LibBMP.c    38    
+        LibBMP.c    39      if((x=Bfile_ReadFile(handle,b->data,x,header[10]))<0) { if(err) *err=x; }
+    000001EC 84CA                   MOV.B       @(10,R12),R0
+    000001EE 670C                   EXTU.B      R0,R7
+    000001F0 66F2                   MOV.L       @R15,R6
+    000001F2 55B3                   MOV.L       @(12,R11),R5
+    000001F4 480B                   JSR         @R8
+    000001F6 64A3                   MOV         R10,R4
+    000001F8 4011                   CMP/PZ      R0
+    000001FA 8D04                   BT/S        L577
+    000001FC 6903                   MOV         R0,R9
+    000001FE 2DD8                   TST         R13,R13
+    00000200 8905                   BT          L579
+    00000202 A004                   BRA         L579
+    00000204 2D92                   MOV.L       R9,@R13
+    00000206              L577:                             
+        LibBMP.c    40      else if(err) *err=0;
+    00000206 2DD8                   TST         R13,R13
+    00000208 8901                   BT          L579
+    0000020A E300                   MOV         #0,R3
+    0000020C 2D32                   MOV.L       R3,@R13
+    0000020E              L579:                             
+        LibBMP.c    41    
+        LibBMP.c    42      free(imgh);
+    0000020E D222                   MOV.L       L639+24,R2 ; _free
+    00000210 420B                   JSR         @R2
+    00000212 64E3                   MOV         R14,R4
+        LibBMP.c    43      Bfile_CloseFile(handle);
+    00000214 D31F                   MOV.L       L639+20,R3 ; _Bfile_CloseFile
+    00000216 430B                   JSR         @R3
+    00000218 64A3                   MOV         R10,R4
+        LibBMP.c    44      return x<0?NULL:b;
+    0000021A 4911                   CMP/PZ      R9
+    0000021C 8901                   BT          L581
+    0000021E              L638:                             
+    0000021E A001                   BRA         L560
+    00000220 E000                   MOV         #0,R0
+    00000222              L581:                             
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE    7
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000222 60B3                   MOV         R11,R0
+        LibBMP.c    45    }
+    00000224              L560:                             
+    00000224 7F18                   ADD         #24,R15
+    00000226 4F26                   LDS.L       @R15+,PR
+    00000228 68F6                   MOV.L       @R15+,R8
+    0000022A 69F6                   MOV.L       @R15+,R9
+    0000022C 6AF6                   MOV.L       @R15+,R10
+    0000022E 6BF6                   MOV.L       @R15+,R11
+    00000230 6CF6                   MOV.L       @R15+,R12
+    00000232 6DF6                   MOV.L       @R15+,R13
+    00000234 000B                   RTS
+    00000236 6EF6                   MOV.L       @R15+,R14
+        LibBMP.c    46    
+        LibBMP.c    47    void BMP_Draw(Bitmap *bmp, int xb, int yb, int m)
+    00000238              _BMP_Draw:                       ; function: BMP_Draw
+                                                           ; frame size=80
+    00000238 2FE6                   MOV.L       R14,@-R15
+    0000023A 2FD6                   MOV.L       R13,@-R15
+    0000023C 2FC6                   MOV.L       R12,@-R15
+    0000023E 2FB6                   MOV.L       R11,@-R15
+    00000240 2FA6                   MOV.L       R10,@-R15
+    00000242 2F96                   MOV.L       R9,@-R15
+    00000244 2F86                   MOV.L       R8,@-R15
+        LibBMP.c    48    {
+        LibBMP.c    49      int ox = ((bmp->width-1)>>3)+1;
+        LibBMP.c    50      unsigned char v;
+        LibBMP.c    51      int i,x,y, a,b,c;
+        LibBMP.c    52    
+        LibBMP.c    53      for(y=0;y<bmp->height;y++) for(i=0;i<ox;i++)
+    00000246 E900                   MOV         #0,R9
+    00000248 DA14                   MOV.L       L639+28,R10; _Bdisp_SetPoint_VRAM
+    0000024A 6843                   MOV         R4,R8
+    0000024C 4F22                   STS.L       PR,@-R15
+    0000024E 4F12                   STS.L       MACL,@-R15
+    00000250 7FD4                   ADD         #-44,R15
+    00000252 1F5A                   MOV.L       R5,@(40,R15)
+    00000254 1F69                   MOV.L       R6,@(36,R15)
+    00000256 1F78                   MOV.L       R7,@(32,R15)
+    00000258 6382                   MOV.L       @R8,R3
+    0000025A 73FF                   ADD         #-1,R3
+    0000025C 4309                   SHLR2       R3
+    0000025E 4301                   SHLR        R3
+    00000260 7301                   ADD         #1,R3
+    00000262 1F37                   MOV.L       R3,@(28,R15)
+    00000264 A075                   BRA         L583
+    00000266 2F92                   MOV.L       R9,@R15
+    00000268              L584:                             
+    00000268 1F93                   MOV.L       R9,@(12,R15)
+    0000026A 1F96                   MOV.L       R9,@(24,R15)
+    0000026C 53FA                   MOV.L       @(40,R15),R3
+    0000026E 1F35                   MOV.L       R3,@(20,R15)
+    00000270 63F2                   MOV.L       @R15,R3
+    00000272 52F7                   MOV.L       @(28,R15),R2
+    00000274 5083                   MOV.L       @(12,R8),R0
+    00000276 0237                   MUL.L       R3,R2
+    00000278 011A                   STS         MACL,R1
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE    8
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000027A 310C                   ADD         R0,R1
+    0000027C A062                   BRA         L585
+    0000027E 1F14                   MOV.L       R1,@(16,R15)
+    00000280              L639:                             
+    00000280 <00000000>             .DATA.L     _strlen
+    00000284 <00000000>             .DATA.L     _calloc
+    00000288 <00000000>             .DATA.L     _Bfile_OpenFile
+    0000028C <00000000>             .DATA.L     _malloc
+    00000290 <00000000>             .DATA.L     _Bfile_ReadFile
+    00000294 <00000000>             .DATA.L     _Bfile_CloseFile
+    00000298 <00000000>             .DATA.L     _free
+    0000029C <00000000>             .DATA.L     _Bdisp_SetPoint_VRAM
+    000002A0              L586:                             
+        LibBMP.c    54      {
+        LibBMP.c    55        v = bmp->data[ox*y+i];
+    000002A0 50F4                   MOV.L       @(16,R15),R0
+    000002A2 6000                   MOV.B       @R0,R0
+    000002A4 80F4                   MOV.B       R0,@(4,R15)
+        LibBMP.c    56        for(x=0;x<8;x++) {
+    000002A6 1F92                   MOV.L       R9,@(8,R15)
+    000002A8 5BF5                   MOV.L       @(20,R15),R11
+    000002AA 7B07                   ADD         #7,R11
+    000002AC 5CF6                   MOV.L       @(24,R15),R12
+    000002AE 7C07                   ADD         #7,R12
+    000002B0              L588:                             
+        LibBMP.c    57    
+        LibBMP.c    58          if((i<<3)+7-x<bmp->width)
+    000002B0 6382                   MOV.L       @R8,R3
+    000002B2 3C32                   CMP/HS      R3,R12
+    000002B4 892E                   BT          L589
+        LibBMP.c    59          {
+        LibBMP.c    60            a = xb+(i<<3)+7-x;
+    000002B6 6EB3                   MOV         R11,R14
+        LibBMP.c    61            b = yb+bmp->height-y-1;
+    000002B8 5381                   MOV.L       @(4,R8),R3
+        LibBMP.c    62            c = v&1;
+    000002BA E401                   MOV         #1,R4
+    000002BC 5DF9                   MOV.L       @(36,R15),R13
+    000002BE 3D3C                   ADD         R3,R13
+    000002C0 62F2                   MOV.L       @R15,R2
+    000002C2 3D28                   SUB         R2,R13
+    000002C4 84F4                   MOV.B       @(4,R15),R0
+    000002C6 600C                   EXTU.B      R0,R0
+    000002C8 2409                   AND         R0,R4
+        LibBMP.c    63    
+        LibBMP.c    64            switch(m) {
+    000002CA 50F8                   MOV.L       @(32,R15),R0
+    000002CC 8801                   CMP/EQ      #1,R0
+    000002CE 8D06                   BT/S        L502
+    000002D0 7DFF                   ADD         #-1,R13
+    000002D2 8802                   CMP/EQ      #2,R0
+    000002D4 890B                   BT          L503
+    000002D6 8804                   CMP/EQ      #4,R0
+    000002D8 8911                   BT          L504
+    000002DA A01B                   BRA         L589
+    000002DC 0009                   NOP
+    000002DE              L502:                            ; case label 
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE    9
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        LibBMP.c    65              case BMP_AND: if(c)  Bdisp_SetPoint_VRAM(a,b,0); break;
+    000002DE 2448                   TST         R4,R4
+    000002E0 8918                   BT          L589
+    000002E2 E600                   MOV         #0,R6
+    000002E4 65D3                   MOV         R13,R5
+    000002E6 4A0B                   JSR         @R10
+    000002E8 64E3                   MOV         R14,R4
+    000002EA A013                   BRA         L589
+    000002EC 0009                   NOP
+    000002EE              L503:                            ; case label 
+        LibBMP.c    66              case BMP_OR:  if(!c) Bdisp_SetPoint_VRAM(a,b,1); break; 
+    000002EE 2448                   TST         R4,R4
+    000002F0 8B10                   BF          L589
+    000002F2 E601                   MOV         #1,R6
+    000002F4 65D3                   MOV         R13,R5
+    000002F6 4A0B                   JSR         @R10
+    000002F8 64E3                   MOV         R14,R4
+    000002FA A00B                   BRA         L589
+    000002FC 0009                   NOP
+    000002FE              L504:                            ; case label 
+        LibBMP.c    67              case BMP_XOR: if(!c) Bdisp_SetPoint_VRAM(a,b,!Bdisp_GetPoint_VRAM(a,b)); break; }
+    000002FE 2448                   TST         R4,R4
+    00000300 8B08                   BF          L589
+    00000302 65D3                   MOV         R13,R5
+    00000304 D28F                   MOV.L       L642,R2    ; _Bdisp_GetPoint_VRAM
+    00000306 420B                   JSR         @R2
+    00000308 64E3                   MOV         R14,R4
+    0000030A 2008                   TST         R0,R0
+    0000030C 0629                   MOVT        R6
+    0000030E 65D3                   MOV         R13,R5
+    00000310 4A0B                   JSR         @R10
+    00000312 64E3                   MOV         R14,R4
+    00000314              L589:                             
+        LibBMP.c    68          }
+        LibBMP.c    69          v >>= 1; }
+    00000314 84F4                   MOV.B       @(4,R15),R0
+    00000316 7BFF                   ADD         #-1,R11
+    00000318 600C                   EXTU.B      R0,R0
+    0000031A 4001                   SHLR        R0
+    0000031C 80F4                   MOV.B       R0,@(4,R15)
+    0000031E E308                   MOV         #8,R3
+    00000320 52F2                   MOV.L       @(8,R15),R2
+    00000322 7201                   ADD         #1,R2
+    00000324 1F22                   MOV.L       R2,@(8,R15)
+    00000326 3233                   CMP/GE      R3,R2
+    00000328 8FC2                   BF/S        L588
+    0000032A 7CFF                   ADD         #-1,R12
+    0000032C 52F3                   MOV.L       @(12,R15),R2
+    0000032E 7201                   ADD         #1,R2
+    00000330 1F23                   MOV.L       R2,@(12,R15)
+    00000332 53F6                   MOV.L       @(24,R15),R3
+    00000334 7308                   ADD         #8,R3
+    00000336 1F36                   MOV.L       R3,@(24,R15)
+    00000338 51F5                   MOV.L       @(20,R15),R1
+    0000033A 7108                   ADD         #8,R1
+    0000033C 1F15                   MOV.L       R1,@(20,R15)
+    0000033E 53F4                   MOV.L       @(16,R15),R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   10
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000340 7301                   ADD         #1,R3
+    00000342 1F34                   MOV.L       R3,@(16,R15)
+    00000344              L585:                             
+    00000344 52F7                   MOV.L       @(28,R15),R2
+    00000346 51F3                   MOV.L       @(12,R15),R1
+    00000348 3123                   CMP/GE      R2,R1
+    0000034A 8BA9                   BF          L586
+    0000034C 63F2                   MOV.L       @R15,R3
+    0000034E 7301                   ADD         #1,R3
+    00000350 2F32                   MOV.L       R3,@R15
+    00000352              L583:                             
+    00000352 5281                   MOV.L       @(4,R8),R2
+    00000354 61F2                   MOV.L       @R15,R1
+    00000356 3122                   CMP/HS      R2,R1
+    00000358 8B86                   BF          L584
+        LibBMP.c    70      }
+        LibBMP.c    71    }
+    0000035A 7F2C                   ADD         #44,R15
+    0000035C 4F16                   LDS.L       @R15+,MACL
+    0000035E 4F26                   LDS.L       @R15+,PR
+    00000360 68F6                   MOV.L       @R15+,R8
+    00000362 69F6                   MOV.L       @R15+,R9
+    00000364 6AF6                   MOV.L       @R15+,R10
+    00000366 6BF6                   MOV.L       @R15+,R11
+    00000368 6CF6                   MOV.L       @R15+,R12
+    0000036A 6DF6                   MOV.L       @R15+,R13
+    0000036C 000B                   RTS
+    0000036E 6EF6                   MOV.L       @R15+,R14
+        LibBMP.c    72    
+        LibBMP.c    73    int BMP_GetPixel(Bitmap *b, int x, int y)
+    00000370              _BMP_GetPixel:                   ; function: BMP_GetPixel
+                                                           ; frame size=12
+    00000370 4F12                   STS.L       MACL,@-R15
+        LibBMP.c    74    {
+        LibBMP.c    75      int px;
+        LibBMP.c    76      x = ((x>>3)<<3)+(7-x&7);
+    00000372 E707                   MOV         #7,R7
+    00000374 7FF8                   ADD         #-8,R15
+    00000376 6353                   MOV         R5,R3
+    00000378 4321                   SHAR        R3
+    0000037A 4321                   SHAR        R3
+    0000037C 4321                   SHAR        R3
+    0000037E 4308                   SHLL2       R3
+    00000380 4300                   SHLL        R3
+    00000382 6173                   MOV         R7,R1
+    00000384 3158                   SUB         R5,R1
+    00000386 2179                   AND         R7,R1
+    00000388 6533                   MOV         R3,R5
+    0000038A 351C                   ADD         R1,R5
+        LibBMP.c    77      px = ((b->width-1)>>3)+1;
+    0000038C 6342                   MOV.L       @R4,R3
+        LibBMP.c    78      return !((*(b->data+(b->height-1-y)*px+((x-(x&7))>>3))>>(x&7))&1);
+    0000038E 2759                   AND         R5,R7
+    00000390 73FF                   ADD         #-1,R3
+    00000392 4309                   SHLR2       R3
+    00000394 4301                   SHLR        R3
+    00000396 7301                   ADD         #1,R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   11
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000398 1F31                   MOV.L       R3,@(4,R15)
+    0000039A 5041                   MOV.L       @(4,R4),R0
+    0000039C 5243                   MOV.L       @(12,R4),R2
+    0000039E 3068                   SUB         R6,R0
+    000003A0 2F72                   MOV.L       R7,@R15
+    000003A2 70FF                   ADD         #-1,R0
+    000003A4 0037                   MUL.L       R3,R0
+    000003A6 6353                   MOV         R5,R3
+    000003A8 001A                   STS         MACL,R0
+    000003AA 302C                   ADD         R2,R0
+    000003AC 3378                   SUB         R7,R3
+    000003AE 4321                   SHAR        R3
+    000003B0 4321                   SHAR        R3
+    000003B2 4321                   SHAR        R3
+    000003B4 003C                   MOV.B       @(R0,R3),R0
+    000003B6 637B                   NEG         R7,R3
+    000003B8 600C                   EXTU.B      R0,R0
+    000003BA 403D                   SHLD        R3,R0
+    000003BC C801                   TST         #1,R0
+    000003BE 0029                   MOVT        R0
+        LibBMP.c    79    }
+    000003C0 7F08                   ADD         #8,R15
+    000003C2 000B                   RTS
+    000003C4 4F16                   LDS.L       @R15+,MACL
+        LibBMP.c    80    
+        LibBMP.c    81    void BMP_SetPixel(Bitmap *b, int x, int y, int v)
+    000003C6              _BMP_SetPixel:                   ; function: BMP_SetPixel
+                                                           ; frame size=16
+        LibBMP.c    82    {
+        LibBMP.c    83      unsigned char byte;
+        LibBMP.c    84      int px;
+        LibBMP.c    85      x = ((x>>3)<<3)+(7-x&7);
+    000003C6 6353                   MOV         R5,R3
+    000003C8 2FE6                   MOV.L       R14,@-R15
+    000003CA 4321                   SHAR        R3
+    000003CC 2FD6                   MOV.L       R13,@-R15
+    000003CE 4321                   SHAR        R3
+    000003D0 2FC6                   MOV.L       R12,@-R15
+    000003D2 ED07                   MOV         #7,R13
+    000003D4 4F12                   STS.L       MACL,@-R15
+    000003D6 4321                   SHAR        R3
+        LibBMP.c    86      px = ((b->width-1)>>3)+1;
+    000003D8 6C42                   MOV.L       @R4,R12
+    000003DA 61D3                   MOV         R13,R1
+        LibBMP.c    87      byte = *(b->data+(b->height-1-y)*px+((x-(x&7))>>3));
+    000003DC 5041                   MOV.L       @(4,R4),R0
+    000003DE 4308                   SHLL2       R3
+    000003E0 4300                   SHLL        R3
+    000003E2 3158                   SUB         R5,R1
+    000003E4 21D9                   AND         R13,R1
+    000003E6 6533                   MOV         R3,R5
+    000003E8 5343                   MOV.L       @(12,R4),R3
+    000003EA 351C                   ADD         R1,R5
+    000003EC 7CFF                   ADD         #-1,R12
+    000003EE 4C09                   SHLR2       R12
+    000003F0 4C01                   SHLR        R12
+    000003F2 7C01                   ADD         #1,R12
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   12
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000003F4 3068                   SUB         R6,R0
+    000003F6 70FF                   ADD         #-1,R0
+    000003F8 00C7                   MUL.L       R12,R0
+    000003FA 6253                   MOV         R5,R2
+    000003FC 001A                   STS         MACL,R0
+    000003FE 303C                   ADD         R3,R0
+    00000400 22D9                   AND         R13,R2
+    00000402 6E53                   MOV         R5,R14
+    00000404 3E28                   SUB         R2,R14
+    00000406 4E21                   SHAR        R14
+    00000408 4E21                   SHAR        R14
+    0000040A 4E21                   SHAR        R14
+    0000040C 0EEC                   MOV.B       @(R0,R14),R14
+    0000040E 6053                   MOV         R5,R0
+    00000410 4011                   CMP/PZ      R0
+    00000412 8F02                   BF/S        L598
+    00000414 E101                   MOV         #1,R1
+    00000416 A005                   BRA         L599
+    00000418 C907                   AND         #7,R0
+    0000041A              L598:                             
+    0000041A 6007                   NOT         R0,R0
+    0000041C 7001                   ADD         #1,R0
+    0000041E C907                   AND         #7,R0
+    00000420 6007                   NOT         R0,R0
+    00000422 7001                   ADD         #1,R0
+    00000424              L599:                             
+    00000424 2778                   TST         R7,R7
+    00000426 8D03                   BT/S        L597
+    00000428 410C                   SHAD        R0,R1
+        LibBMP.c    88    
+        LibBMP.c    89      if(v) byte &= ~(1<<x%8);
+    0000042A 6117                   NOT         R1,R1
+    0000042C A001                   BRA         L600
+    0000042E 2E19                   AND         R1,R14
+    00000430              L597:                             
+        LibBMP.c    90      else byte |= (1<<x%8);
+    00000430 2E1B                   OR          R1,R14
+    00000432              L600:                             
+        LibBMP.c    91      *(b->data+(b->height-1-y)*px+((x-(x&7))>>3)) = byte;
+    00000432 2D59                   AND         R5,R13
+    00000434 5041                   MOV.L       @(4,R4),R0
+    00000436 6253                   MOV         R5,R2
+    00000438 5343                   MOV.L       @(12,R4),R3
+    0000043A 3068                   SUB         R6,R0
+    0000043C 70FF                   ADD         #-1,R0
+    0000043E 32D8                   SUB         R13,R2
+    00000440 00C7                   MUL.L       R12,R0
+    00000442 4221                   SHAR        R2
+    00000444 001A                   STS         MACL,R0
+    00000446 303C                   ADD         R3,R0
+    00000448 4221                   SHAR        R2
+    0000044A 4221                   SHAR        R2
+    0000044C 02E4                   MOV.B       R14,@(R0,R2)
+        LibBMP.c    92    }
+    0000044E 4F16                   LDS.L       @R15+,MACL
+    00000450 6CF6                   MOV.L       @R15+,R12
+    00000452 6DF6                   MOV.L       @R15+,R13
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   13
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000454 000B                   RTS
+    00000456 6EF6                   MOV.L       @R15+,R14
+        LibBMP.c    93    
+        LibBMP.c    94    void *BMP_GetData(Bitmap *bmp, int *err)
+    00000458              _BMP_GetData:                    ; function: BMP_GetData
+                                                           ; frame size=24
+    00000458 2FE6                   MOV.L       R14,@-R15
+    0000045A 2FD6                   MOV.L       R13,@-R15
+    0000045C 2FC6                   MOV.L       R12,@-R15
+    0000045E 6D43                   MOV         R4,R13
+        LibBMP.c    95    {
+        LibBMP.c    96      int px = ((bmp->width-1)>>3)+1;
+        LibBMP.c    97      unsigned char *data = malloc(px*bmp->height);
+    00000460 D239                   MOV.L       L642+4,R2  ; _malloc
+    00000462 2FB6                   MOV.L       R11,@-R15
+    00000464 4F22                   STS.L       PR,@-R15
+    00000466 6B53                   MOV         R5,R11
+    00000468 4F12                   STS.L       MACL,@-R15
+    0000046A 6ED2                   MOV.L       @R13,R14
+    0000046C 54D1                   MOV.L       @(4,R13),R4
+    0000046E 7EFF                   ADD         #-1,R14
+    00000470 4E09                   SHLR2       R14
+    00000472 4E01                   SHLR        R14
+    00000474 7E01                   ADD         #1,R14
+    00000476 0E47                   MUL.L       R4,R14
+    00000478 420B                   JSR         @R2
+    0000047A 041A                   STS         MACL,R4
+    0000047C 6703                   MOV         R0,R7
+        LibBMP.c    98      int x,y;
+        LibBMP.c    99    
+        LibBMP.c   100      if(!data) { if(err) *err=1; return NULL; }
+    0000047E 2778                   TST         R7,R7
+    00000480 8B06                   BF          L601
+    00000482 2BB8                   TST         R11,R11
+    00000484 8D02                   BT/S        L602
+    00000486 E000                   MOV         #0,R0
+    00000488 E301                   MOV         #1,R3
+    0000048A 2B32                   MOV.L       R3,@R11
+    0000048C              L602:                             
+    0000048C A020                   BRA         L603
+    0000048E 0009                   NOP
+    00000490              L601:                             
+        LibBMP.c   101    
+        LibBMP.c   102      for(y=0;y<bmp->height;y++) for(x=0;x<px;x++)
+    00000490 E600                   MOV         #0,R6
+    00000492 A016                   BRA         L604
+    00000494 6563                   MOV         R6,R5
+    00000496              L605:                             
+    00000496 6463                   MOV         R6,R4
+    00000498 0E57                   MUL.L       R5,R14
+    0000049A 4E15                   CMP/PL      R14
+    0000049C 8F10                   BF/S        L606
+    0000049E 0C1A                   STS         MACL,R12
+    000004A0              L607:                             
+        LibBMP.c   103        *(data+y*px+x) = ~*(bmp->data+(bmp->height-y-1)*px+x);
+    000004A0 53D1                   MOV.L       @(4,R13),R3
+    000004A2 6043                   MOV         R4,R0
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   14
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000004A4 52D3                   MOV.L       @(12,R13),R2
+    000004A6 3358                   SUB         R5,R3
+    000004A8 30CC                   ADD         R12,R0
+    000004AA 73FF                   ADD         #-1,R3
+    000004AC 03E7                   MUL.L       R14,R3
+    000004AE 031A                   STS         MACL,R3
+    000004B0 332C                   ADD         R2,R3
+    000004B2 334C                   ADD         R4,R3
+    000004B4 6130                   MOV.B       @R3,R1
+    000004B6 7401                   ADD         #1,R4
+    000004B8 6117                   NOT         R1,R1
+    000004BA 34E3                   CMP/GE      R14,R4
+    000004BC 8FF0                   BF/S        L607
+    000004BE 0714                   MOV.B       R1,@(R0,R7)
+    000004C0              L606:                             
+    000004C0 7501                   ADD         #1,R5
+    000004C2              L604:                             
+    000004C2 52D1                   MOV.L       @(4,R13),R2
+    000004C4 3522                   CMP/HS      R2,R5
+    000004C6 8BE6                   BF          L605
+        LibBMP.c   104    
+        LibBMP.c   105      if(err) *err = 0;
+    000004C8 2BB8                   TST         R11,R11
+    000004CA 8D01                   BT/S        L608
+        LibBMP.c   106      return data;
+    000004CC 6073                   MOV         R7,R0
+    000004CE 2B62                   MOV.L       R6,@R11
+    000004D0              L608:                             
+        LibBMP.c   107    }
+    000004D0              L603:                             
+    000004D0 4F16                   LDS.L       @R15+,MACL
+    000004D2 4F26                   LDS.L       @R15+,PR
+    000004D4 6BF6                   MOV.L       @R15+,R11
+    000004D6 6CF6                   MOV.L       @R15+,R12
+    000004D8 6DF6                   MOV.L       @R15+,R13
+    000004DA 000B                   RTS
+    000004DC 6EF6                   MOV.L       @R15+,R14
+        LibBMP.c   108    
+        LibBMP.c   109    Bitmap *BMP_Create(void *d, int w, int h, int *err)
+    000004DE              _BMP_Create:                     ; function: BMP_Create
+                                                           ; frame size=40
+    000004DE 2FE6                   MOV.L       R14,@-R15
+    000004E0 2FD6                   MOV.L       R13,@-R15
+    000004E2 2FB6                   MOV.L       R11,@-R15
+    000004E4 2FA6                   MOV.L       R10,@-R15
+    000004E6 6B63                   MOV         R6,R11
+        LibBMP.c   110    {
+        LibBMP.c   111      Bitmap *bmp = (Bitmap *)malloc(sizeof(Bitmap));
+    000004E8 D317                   MOV.L       L642+4,R3  ; _malloc
+    000004EA 2F96                   MOV.L       R9,@-R15
+    000004EC 2F86                   MOV.L       R8,@-R15
+    000004EE 6873                   MOV         R7,R8
+    000004F0 4F22                   STS.L       PR,@-R15
+    000004F2 4F12                   STS.L       MACL,@-R15
+    000004F4 7FF8                   ADD         #-8,R15
+    000004F6 2F42                   MOV.L       R4,@R15
+    000004F8 1F51                   MOV.L       R5,@(4,R15)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   15
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000004FA 430B                   JSR         @R3
+    000004FC E410                   MOV         #16,R4
+    000004FE 6D03                   MOV         R0,R13
+        LibBMP.c   112      unsigned char *data = (unsigned char *)d;
+        LibBMP.c   113      int px = ((w-1)>>3)+1; 
+    00000500 5EF1                   MOV.L       @(4,R15),R14
+    00000502 7EFF                   ADD         #-1,R14
+    00000504 4E21                   SHAR        R14
+    00000506 4E21                   SHAR        R14
+    00000508 4E21                   SHAR        R14
+        LibBMP.c   114      int x,y;
+        LibBMP.c   115    
+        LibBMP.c   116      if(!bmp) { if(err) *err=1; return NULL; }
+    0000050A 2DD8                   TST         R13,R13
+    0000050C 8D08                   BT/S        L495
+    0000050E 7E01                   ADD         #1,R14
+        LibBMP.c   117      bmp->data = malloc(h*px);
+    00000510 0BE7                   MUL.L       R14,R11
+    00000512 D30D                   MOV.L       L642+4,R3  ; _malloc
+    00000514 430B                   JSR         @R3
+    00000516 041A                   STS         MACL,R4
+        LibBMP.c   118      if(!bmp->data) { if(err) *err=1; return NULL; }
+    00000518 6203                   MOV         R0,R2
+    0000051A 2228                   TST         R2,R2
+    0000051C 8F07                   BF/S        L612
+    0000051E 1D03                   MOV.L       R0,@(12,R13)
+    00000520              L495:
+    00000520 2888                   TST         R8,R8
+    00000522 8D02                   BT/S        L496
+    00000524 E000                   MOV         #0,R0
+    00000526 E201                   MOV         #1,R2
+    00000528 2822                   MOV.L       R2,@R8
+    0000052A              L496:
+    0000052A A02A                   BRA         L611
+    0000052C 0009                   NOP
+    0000052E              L612:                             
+        LibBMP.c   119    
+        LibBMP.c   120      for(y=0;y<h;y++) for(x=0;x<px;x++)
+    0000052E EA00                   MOV         #0,R10
+    00000530 53D3                   MOV.L       @(12,R13),R3
+    00000532 61B3                   MOV         R11,R1
+    00000534 69A3                   MOV         R10,R9
+    00000536 71FF                   ADD         #-1,R1
+    00000538 0E97                   MUL.L       R9,R14
+    0000053A 071A                   STS         MACL,R7
+    0000053C 01E7                   MUL.L       R14,R1
+    0000053E 373C                   ADD         R3,R7
+    00000540 A016                   BRA         L614
+    00000542 011A                   STS         MACL,R1
+    00000544              L642:                             
+    00000544 <00000000>             .DATA.L     _Bdisp_GetPoint_VRAM
+    00000548 <00000000>             .DATA.L     _malloc
+    0000054C              L615:                             
+    0000054C 63F2                   MOV.L       @R15,R3
+    0000054E E500                   MOV         #0,R5
+    00000550 66A3                   MOV         R10,R6
+    00000552 6413                   MOV         R1,R4
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   16
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000554 343C                   ADD         R3,R4
+    00000556 4E15                   CMP/PL      R14
+    00000558 8F07                   BF/S        L616
+    0000055A 357C                   ADD         R7,R5
+    0000055C              L617:                             
+        LibBMP.c   121        *(bmp->data+y*px+x) = ~*(data+(h-y-1)*px+x);
+    0000055C 6344                   MOV.B       @R4+,R3
+    0000055E 7601                   ADD         #1,R6
+    00000560 6337                   NOT         R3,R3
+    00000562 36E3                   CMP/GE      R14,R6
+    00000564 2530                   MOV.B       R3,@R5
+    00000566 8FF9                   BF/S        L617
+    00000568 7501                   ADD         #1,R5
+    0000056A              L616:                             
+    0000056A 7901                   ADD         #1,R9
+    0000056C 37EC                   ADD         R14,R7
+    0000056E 31E8                   SUB         R14,R1
+    00000570              L614:                             
+    00000570 39B3                   CMP/GE      R11,R9
+    00000572 8BEB                   BF          L615
+        LibBMP.c   122      bmp->width = w;
+    00000574 52F1                   MOV.L       @(4,R15),R2
+        LibBMP.c   123      bmp->height = h;
+        LibBMP.c   124    
+        LibBMP.c   125      if(err) *err=0;
+    00000576 2888                   TST         R8,R8
+    00000578 2D22                   MOV.L       R2,@R13
+    0000057A 8D01                   BT/S        L618
+    0000057C 1DB1                   MOV.L       R11,@(4,R13)
+    0000057E 28A2                   MOV.L       R10,@R8
+    00000580              L618:                             
+        LibBMP.c   126      return bmp;
+    00000580 60D3                   MOV         R13,R0
+        LibBMP.c   127    }
+    00000582              L611:                             
+    00000582 7F08                   ADD         #8,R15
+    00000584 4F16                   LDS.L       @R15+,MACL
+    00000586 4F26                   LDS.L       @R15+,PR
+    00000588 68F6                   MOV.L       @R15+,R8
+    0000058A 69F6                   MOV.L       @R15+,R9
+    0000058C 6AF6                   MOV.L       @R15+,R10
+    0000058E 6BF6                   MOV.L       @R15+,R11
+    00000590 6DF6                   MOV.L       @R15+,R13
+    00000592 000B                   RTS
+    00000594 6EF6                   MOV.L       @R15+,R14
+        LibBMP.c   128    
+        LibBMP.c   129    void BMP_Save(const char *adresse, Bitmap *bmp, int *err)
+    00000596              _BMP_Save:                       ; function: BMP_Save
+                                                           ; frame size=112
+                                                           ; used runtime library name:
+                                                           ; __slow_mvn
+    00000596 2FE6                   MOV.L       R14,@-R15
+    00000598 2FD6                   MOV.L       R13,@-R15
+    0000059A 2FC6                   MOV.L       R12,@-R15
+    0000059C 2FB6                   MOV.L       R11,@-R15
+    0000059E 6B53                   MOV         R5,R11
+        LibBMP.c   130    {
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   17
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        LibBMP.c   131      unsigned char filh[14] = {0};
+    000005A0 D25E                   MOV.L       L643+4,R2  ; L437
+    000005A2 2FA6                   MOV.L       R10,@-R15
+    000005A4 2F96                   MOV.L       R9,@-R15
+    000005A6 2F86                   MOV.L       R8,@-R15
+    000005A8 4F22                   STS.L       PR,@-R15
+    000005AA 6843                   MOV         R4,R8
+    000005AC D35C                   MOV.L       L643+8,R3  ; __slow_mvn
+    000005AE 4F12                   STS.L       MACL,@-R15
+    000005B0 7FB4                   ADD         #-76,R15
+    000005B2 6CF3                   MOV         R15,R12
+    000005B4 1F61                   MOV.L       R6,@(4,R15)
+    000005B6 61F3                   MOV         R15,R1
+    000005B8 7C3C                   ADD         #60,R12
+    000005BA 713C                   ADD         #60,R1
+    000005BC 430B                   JSR         @R3
+    000005BE E00E                   MOV         #14,R0
+        LibBMP.c   132      unsigned char imgh[40] = {0};
+    000005C0 D258                   MOV.L       L643+12,R2 ; L439
+    000005C2 6EF3                   MOV         R15,R14
+    000005C4 D356                   MOV.L       L643+8,R3  ; __slow_mvn
+    000005C6 61F3                   MOV         R15,R1
+    000005C8 7E14                   ADD         #20,R14
+    000005CA 7114                   ADD         #20,R1
+    000005CC 430B                   JSR         @R3
+    000005CE E028                   MOV         #40,R0
+        LibBMP.c   133      unsigned char palh[8]  = {0};
+    000005D0 D255                   MOV.L       L643+16,R2 ; L441
+    000005D2 6AF3                   MOV         R15,R10
+    000005D4 D352                   MOV.L       L643+8,R3  ; __slow_mvn
+    000005D6 61F3                   MOV         R15,R1
+    000005D8 7A0C                   ADD         #12,R10
+    000005DA 710C                   ADD         #12,R1
+    000005DC 430B                   JSR         @R3
+    000005DE E008                   MOV         #8,R0
+        LibBMP.c   134      FONTCHARACTER *adr;
+        LibBMP.c   135      int i, handle;
+        LibBMP.c   136    
+        LibBMP.c   137      int imagesize = bmp->height*(((bmp->width-1)>>3)+1);
+    000005E0 69B2                   MOV.L       @R11,R9
+        LibBMP.c   138      int filesize  = imagesize + 14 + 40 + 8;
+        LibBMP.c   139      int offset    = 62;
+        LibBMP.c   140      int imghsize  = 40;
+        LibBMP.c   141    
+        LibBMP.c   142      filh[0x00] = 0x42;
+        LibBMP.c   143      filh[0x01] = 0x4D;
+    000005E2 E04D                   MOV         #77,R0
+        LibBMP.c   144      filh[0x02] = (filesize&0x000000FF);
+        LibBMP.c   145      filh[0x03] = (filesize&0x0000FF00)>>8;
+    000005E4 D451                   MOV.L       L643+20,R4 ; H'0000FF00
+    000005E6 79FF                   ADD         #-1,R9
+    000005E8 51B1                   MOV.L       @(4,R11),R1
+    000005EA 4909                   SHLR2       R9
+        LibBMP.c   146      filh[0x04] = (filesize&0x00FF0000)>>16;
+    000005EC D550                   MOV.L       L643+24,R5 ; H'00FF0000
+    000005EE 4901                   SHLR        R9
+        LibBMP.c   147      filh[0x05] = (filesize&0xFF000000)>>24;
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   18
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000005F0 D650                   MOV.L       L643+28,R6 ; H'FF000000
+    000005F2 7901                   ADD         #1,R9
+    000005F4 0197                   MUL.L       R9,R1
+    000005F6 E142                   MOV         #66,R1
+    000005F8 091A                   STS         MACL,R9
+    000005FA 6393                   MOV         R9,R3
+    000005FC 733E                   ADD         #62,R3
+    000005FE 1F32                   MOV.L       R3,@(8,R15)
+    00000600 2C10                   MOV.B       R1,@R12
+    00000602 E3F8                   MOV         #-8,R3
+    00000604 80C1                   MOV.B       R0,@(1,R12)
+    00000606 57F2                   MOV.L       @(8,R15),R7
+    00000608 6073                   MOV         R7,R0
+    0000060A 80C2                   MOV.B       R0,@(2,R12)
+    0000060C 2049                   AND         R4,R0
+    0000060E 403C                   SHAD        R3,R0
+    00000610 80C3                   MOV.B       R0,@(3,R12)
+    00000612 6073                   MOV         R7,R0
+    00000614 2059                   AND         R5,R0
+    00000616 4029                   SHLR16      R0
+    00000618 600F                   EXTS.W      R0,R0
+    0000061A 80C4                   MOV.B       R0,@(4,R12)
+    0000061C 6073                   MOV         R7,R0
+    0000061E 2069                   AND         R6,R0
+    00000620 4029                   SHLR16      R0
+    00000622 4019                   SHLR8       R0
+    00000624 80C5                   MOV.B       R0,@(5,R12)
+        LibBMP.c   148      // 0x????????
+        LibBMP.c   149      filh[0x0A] = (offset&0x000000FF);
+        LibBMP.c   150      filh[0x0B] = (offset&0x0000FF00)>>8;
+    00000626 ED00                   MOV         #0,R13
+    00000628 E03E                   MOV         #62,R0
+        LibBMP.c   151      filh[0x0C] = (offset&0x00FF0000)>>16;
+        LibBMP.c   152      filh[0x0D] = (offset&0xFF000000)>>24;
+        LibBMP.c   153    
+        LibBMP.c   154      imgh[0x00] = (imghsize&0x000000FF);
+    0000062A E328                   MOV         #40,R3
+    0000062C 80CA                   MOV.B       R0,@(10,R12)
+    0000062E 60D3                   MOV         R13,R0
+    00000630 80CB                   MOV.B       R0,@(11,R12)
+    00000632 80CC                   MOV.B       R0,@(12,R12)
+    00000634 80CD                   MOV.B       R0,@(13,R12)
+    00000636 2E30                   MOV.B       R3,@R14
+        LibBMP.c   155      imgh[0x01] = (imghsize&0x0000FF00)>>8;
+    00000638 80E1                   MOV.B       R0,@(1,R14)
+        LibBMP.c   156      imgh[0x02] = (imghsize&0x00FF0000)>>16;
+    0000063A 80E2                   MOV.B       R0,@(2,R14)
+        LibBMP.c   157      imgh[0x03] = (imghsize&0xFF000000)>>24;
+    0000063C 80E3                   MOV.B       R0,@(3,R14)
+        LibBMP.c   158      imgh[0x04] = (bmp->width&0x000000FF);
+    0000063E 84B3                   MOV.B       @(3,R11),R0
+    00000640 80E4                   MOV.B       R0,@(4,R14)
+        LibBMP.c   159      imgh[0x05] = (bmp->width&0x0000FF00)>>8;
+    00000642 60B2                   MOV.L       @R11,R0
+    00000644 2049                   AND         R4,R0
+    00000646 4019                   SHLR8       R0
+    00000648 80E5                   MOV.B       R0,@(5,R14)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   19
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        LibBMP.c   160      imgh[0x06] = (bmp->width&0x00FF0000)>>16;
+    0000064A 60B2                   MOV.L       @R11,R0
+    0000064C 2059                   AND         R5,R0
+    0000064E 4029                   SHLR16      R0
+    00000650 80E6                   MOV.B       R0,@(6,R14)
+        LibBMP.c   161      imgh[0x07] = (bmp->width&0xFF000000)>>24;
+    00000652 60B2                   MOV.L       @R11,R0
+    00000654 2069                   AND         R6,R0
+    00000656 4029                   SHLR16      R0
+    00000658 4019                   SHLR8       R0
+    0000065A 80E7                   MOV.B       R0,@(7,R14)
+        LibBMP.c   162      imgh[0x08] = (bmp->height&0x000000FF);
+    0000065C 84B7                   MOV.B       @(7,R11),R0
+    0000065E 80E8                   MOV.B       R0,@(8,R14)
+        LibBMP.c   163      imgh[0x09] = (bmp->height&0x0000FF00)>>8;
+    00000660 50B1                   MOV.L       @(4,R11),R0
+    00000662 2049                   AND         R4,R0
+    00000664 4019                   SHLR8       R0
+    00000666 80E9                   MOV.B       R0,@(9,R14)
+        LibBMP.c   164      imgh[0x0A] = (bmp->height&0x00FF0000)>>16;
+    00000668 50B1                   MOV.L       @(4,R11),R0
+    0000066A 2059                   AND         R5,R0
+    0000066C 4029                   SHLR16      R0
+    0000066E 80EA                   MOV.B       R0,@(10,R14)
+        LibBMP.c   165      imgh[0x0B] = (bmp->height&0xFF000000)>>24;
+    00000670 50B1                   MOV.L       @(4,R11),R0
+    00000672 2069                   AND         R6,R0
+    00000674 4029                   SHLR16      R0
+    00000676 4019                   SHLR8       R0
+    00000678 80EB                   MOV.B       R0,@(11,R14)
+        LibBMP.c   166      imgh[0x0C] = 0x01;
+    0000067A E001                   MOV         #1,R0
+    0000067C 80EC                   MOV.B       R0,@(12,R14)
+        LibBMP.c   167      imgh[0x0D] = 0x00;
+    0000067E 60D3                   MOV         R13,R0
+    00000680 80ED                   MOV.B       R0,@(13,R14)
+        LibBMP.c   168      imgh[0x0E] = 0x01;
+    00000682 E001                   MOV         #1,R0
+    00000684 80EE                   MOV.B       R0,@(14,R14)
+        LibBMP.c   169      imgh[0x0F] = 0x00;
+    00000686 60D3                   MOV         R13,R0
+    00000688 80EF                   MOV.B       R0,@(15,R14)
+        LibBMP.c   170      imgh[0x10] = 0x00;
+    0000068A E010                   MOV         #16,R0
+    0000068C 0ED4                   MOV.B       R13,@(R0,R14)
+        LibBMP.c   171      imgh[0x11] = 0x00;
+    0000068E E011                   MOV         #17,R0
+    00000690 0ED4                   MOV.B       R13,@(R0,R14)
+        LibBMP.c   172      imgh[0x12] = 0x00;
+    00000692 E012                   MOV         #18,R0
+    00000694 0ED4                   MOV.B       R13,@(R0,R14)
+        LibBMP.c   173      imgh[0x13] = 0x00;
+    00000696 E013                   MOV         #19,R0
+    00000698 0ED4                   MOV.B       R13,@(R0,R14)
+        LibBMP.c   174      imgh[0x14] = (imagesize&0x000000FF);
+    0000069A E014                   MOV         #20,R0
+    0000069C 0E94                   MOV.B       R9,@(R0,R14)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   20
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        LibBMP.c   175      imgh[0x15] = (imagesize&0x0000FF00)>>8;
+    0000069E E015                   MOV         #21,R0
+    000006A0 2499                   AND         R9,R4
+    000006A2 E3F8                   MOV         #-8,R3
+    000006A4 443C                   SHAD        R3,R4
+        LibBMP.c   176      imgh[0x16] = (imagesize&0x00FF0000)>>16;
+    000006A6 2599                   AND         R9,R5
+    000006A8 0E44                   MOV.B       R4,@(R0,R14)
+        LibBMP.c   177      imgh[0x17] = (imagesize&0xFF000000)>>24;
+    000006AA 2699                   AND         R9,R6
+        LibBMP.c   178      imgh[0x18] = 0x88;
+    000006AC 9434                   MOV.W       L643,R4    ; H'0088
+    000006AE E016                   MOV         #22,R0
+    000006B0 4529                   SHLR16      R5
+    000006B2 655F                   EXTS.W      R5,R5
+    000006B4 0E54                   MOV.B       R5,@(R0,R14)
+    000006B6 4629                   SHLR16      R6
+    000006B8 E017                   MOV         #23,R0
+    000006BA 4619                   SHLR8       R6
+    000006BC 0E64                   MOV.B       R6,@(R0,R14)
+        LibBMP.c   179      imgh[0x19] = 0x13;
+    000006BE E513                   MOV         #19,R5
+    000006C0 E018                   MOV         #24,R0
+    000006C2 0E44                   MOV.B       R4,@(R0,R14)
+    000006C4 E019                   MOV         #25,R0
+    000006C6 0E54                   MOV.B       R5,@(R0,R14)
+        LibBMP.c   180      imgh[0x1A] = 0x00;
+    000006C8 E01A                   MOV         #26,R0
+    000006CA 0ED4                   MOV.B       R13,@(R0,R14)
+        LibBMP.c   181      imgh[0x1B] = 0x00;
+    000006CC E01B                   MOV         #27,R0
+    000006CE 0ED4                   MOV.B       R13,@(R0,R14)
+        LibBMP.c   182      imgh[0x1C] = 0x88;
+    000006D0 E01C                   MOV         #28,R0
+    000006D2 0E44                   MOV.B       R4,@(R0,R14)
+        LibBMP.c   183      imgh[0x1D] = 0x13;
+    000006D4 E01D                   MOV         #29,R0
+    000006D6 0E54                   MOV.B       R5,@(R0,R14)
+        LibBMP.c   184      imgh[0x1E] = 0x00;
+    000006D8 E01E                   MOV         #30,R0
+    000006DA 0ED4                   MOV.B       R13,@(R0,R14)
+        LibBMP.c   185      imgh[0x1F] = 0x00;
+    000006DC E01F                   MOV         #31,R0
+    000006DE 0ED4                   MOV.B       R13,@(R0,R14)
+        LibBMP.c   186      imgh[0x20] = 0x02;
+    000006E0 E402                   MOV         #2,R4
+    000006E2 E020                   MOV         #32,R0
+    000006E4 0E44                   MOV.B       R4,@(R0,R14)
+        LibBMP.c   187      imgh[0x21] = 0x00;
+    000006E6 E021                   MOV         #33,R0
+    000006E8 0ED4                   MOV.B       R13,@(R0,R14)
+        LibBMP.c   188      imgh[0x22] = 0x00;
+    000006EA E022                   MOV         #34,R0
+    000006EC 0ED4                   MOV.B       R13,@(R0,R14)
+        LibBMP.c   189      imgh[0x23] = 0x00;
+    000006EE E023                   MOV         #35,R0
+    000006F0 0ED4                   MOV.B       R13,@(R0,R14)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   21
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        LibBMP.c   190      imgh[0x24] = 0x02;
+    000006F2 E024                   MOV         #36,R0
+    000006F4 0E44                   MOV.B       R4,@(R0,R14)
+        LibBMP.c   191      imgh[0x25] = 0x00;
+    000006F6 E025                   MOV         #37,R0
+        LibBMP.c   192      imgh[0x26] = 0x00;
+        LibBMP.c   193      imgh[0x27] = 0x00;
+        LibBMP.c   194    
+        LibBMP.c   195      palh[0x00] = 0x00;
+        LibBMP.c   196      palh[0x01] = 0x00;
+        LibBMP.c   197      palh[0x02] = 0x00;
+        LibBMP.c   198      // 0x??
+        LibBMP.c   199      palh[0x04] = 0xFF;
+    000006F8 940F                   MOV.W       L643+2,R4  ; H'00FF
+    000006FA 0ED4                   MOV.B       R13,@(R0,R14)
+    000006FC E026                   MOV         #38,R0
+    000006FE 0ED4                   MOV.B       R13,@(R0,R14)
+    00000700 E027                   MOV         #39,R0
+    00000702 0ED4                   MOV.B       R13,@(R0,R14)
+    00000704 2AD0                   MOV.B       R13,@R10
+    00000706 60D3                   MOV         R13,R0
+    00000708 80A1                   MOV.B       R0,@(1,R10)
+    0000070A 80A2                   MOV.B       R0,@(2,R10)
+    0000070C 6043                   MOV         R4,R0
+    0000070E 80A4                   MOV.B       R0,@(4,R10)
+        LibBMP.c   200      palh[0x05] = 0xFF;
+    00000710 80A5                   MOV.B       R0,@(5,R10)
+        LibBMP.c   201      palh[0x06] = 0xFF;
+    00000712 80A6                   MOV.B       R0,@(6,R10)
+        LibBMP.c   202      // 0x??
+        LibBMP.c   203    
+        LibBMP.c   204      for(i=0;*(adresse+i);i++);
+    00000714 A013                   BRA         L619
+    00000716 2FD2                   MOV.L       R13,@R15
+    00000718              L643:                             
+    00000718 0088                   .DATA.W     H'0088
+    0000071A 00FF                   .DATA.W     H'00FF
+    0000071C <00000000>             .DATA.L     L437
+    00000720 <00000000>             .DATA.L     __slow_mvn
+    00000724 <00000000>             .DATA.L     L439
+    00000728 <00000000>             .DATA.L     L441
+    0000072C 0000FF00               .DATA.L     H'0000FF00
+    00000730 00FF0000               .DATA.L     H'00FF0000
+    00000734 FF000000               .DATA.L     H'FF000000
+    00000738              L620:                             
+    00000738 62F2                   MOV.L       @R15,R2
+    0000073A 7201                   ADD         #1,R2
+    0000073C 2F22                   MOV.L       R2,@R15
+    0000073E              L619:                             
+    0000073E 60F2                   MOV.L       @R15,R0
+    00000740 038C                   MOV.B       @(R0,R8),R3
+    00000742 2338                   TST         R3,R3
+    00000744 8BF8                   BF          L620
+        LibBMP.c   205      adr = calloc(i,sizeof(FONTCHARACTER));
+    00000746 E502                   MOV         #2,R5
+    00000748 D333                   MOV.L       L644+2,R3  ; _calloc
+    0000074A 430B                   JSR         @R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   22
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000074C 64F2                   MOV.L       @R15,R4
+        LibBMP.c   206      if(!adr) { if(err) *err=1; return; }
+    0000074E 2008                   TST         R0,R0
+    00000750 8F07                   BF/S        L621
+    00000752 2F02                   MOV.L       R0,@R15
+    00000754 52F1                   MOV.L       @(4,R15),R2
+    00000756 2228                   TST         R2,R2
+    00000758 8948                   BT          L623
+    0000075A E201                   MOV         #1,R2
+    0000075C 53F1                   MOV.L       @(4,R15),R3
+    0000075E A045                   BRA         L623
+    00000760 2322                   MOV.L       R2,@R3
+    00000762              L621:                             
+        LibBMP.c   207      for(i=0;*(adresse+i);i++) *(adr+i) = *(adresse+i);
+    00000762 A008                   BRA         L624
+    00000764 64D3                   MOV         R13,R4
+    00000766              L625:                             
+    00000766 6343                   MOV         R4,R3
+    00000768 60F2                   MOV.L       @R15,R0
+    0000076A 4300                   SHLL        R3
+    0000076C 330C                   ADD         R0,R3
+    0000076E 6043                   MOV         R4,R0
+    00000770 028C                   MOV.B       @(R0,R8),R2
+    00000772 7401                   ADD         #1,R4
+    00000774 2321                   MOV.W       R2,@R3
+    00000776              L624:                             
+    00000776 6043                   MOV         R4,R0
+    00000778 038C                   MOV.B       @(R0,R8),R3
+    0000077A 2338                   TST         R3,R3
+    0000077C 8BF3                   BF          L625
+        LibBMP.c   208    
+        LibBMP.c   209      Bfile_DeleteFile(adr);
+    0000077E D327                   MOV.L       L644+6,R3  ; _Bfile_DeleteFile
+    00000780 430B                   JSR         @R3
+    00000782 64F2                   MOV.L       @R15,R4
+        LibBMP.c   210      if((handle=Bfile_CreateFile(adr,filesize))<0) { if(err) *err=handle; free(adr); return; }
+    00000784 55F2                   MOV.L       @(8,R15),R5
+    00000786 D326                   MOV.L       L644+10,R3 ; _Bfile_CreateFile
+    00000788 430B                   JSR         @R3
+    0000078A 64F2                   MOV.L       @R15,R4
+    0000078C 4011                   CMP/PZ      R0
+    0000078E 8F07                   BF/S        L498
+    00000790 6803                   MOV         R0,R8
+        LibBMP.c   211      if((handle=Bfile_OpenFile(adr,_OPENMODE_WRITE))<0) { if(err) *err=handle; free(adr); return; }
+    00000792 E502                   MOV         #2,R5
+    00000794 D323                   MOV.L       L644+14,R3 ; _Bfile_OpenFile
+    00000796 430B                   JSR         @R3
+    00000798 64F2                   MOV.L       @R15,R4
+    0000079A 4011                   CMP/PZ      R0
+    0000079C 8D07                   BT/S        L628
+    0000079E 6803                   MOV         R0,R8
+    000007A0              L498:
+    000007A0 53F1                   MOV.L       @(4,R15),R3
+    000007A2 2338                   TST         R3,R3
+    000007A4 891F                   BT          L501
+    000007A6 53F1                   MOV.L       @(4,R15),R3
+    000007A8 2382                   MOV.L       R8,@R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   23
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000007AA A01C                   BRA         L501
+    000007AC 0009                   NOP
+    000007AE              L628:                             
+        LibBMP.c   212      Bfile_WriteFile(handle,filh,14);
+    000007AE E60E                   MOV         #14,R6
+    000007B0 D21D                   MOV.L       L644+18,R2 ; _Bfile_WriteFile
+    000007B2 65C3                   MOV         R12,R5
+    000007B4 420B                   JSR         @R2
+    000007B6 6483                   MOV         R8,R4
+        LibBMP.c   213      Bfile_WriteFile(handle,imgh,40);
+    000007B8 D31B                   MOV.L       L644+18,R3 ; _Bfile_WriteFile
+    000007BA E628                   MOV         #40,R6
+    000007BC 65E3                   MOV         R14,R5
+    000007BE 430B                   JSR         @R3
+    000007C0 6483                   MOV         R8,R4
+        LibBMP.c   214      Bfile_WriteFile(handle,palh,8);
+    000007C2 E608                   MOV         #8,R6
+    000007C4 D218                   MOV.L       L644+18,R2 ; _Bfile_WriteFile
+    000007C6 65A3                   MOV         R10,R5
+    000007C8 420B                   JSR         @R2
+    000007CA 6483                   MOV         R8,R4
+        LibBMP.c   215      Bfile_WriteFile(handle,bmp->data,imagesize);
+    000007CC 55B3                   MOV.L       @(12,R11),R5
+    000007CE 6693                   MOV         R9,R6
+    000007D0 D315                   MOV.L       L644+18,R3 ; _Bfile_WriteFile
+    000007D2 430B                   JSR         @R3
+    000007D4 6483                   MOV         R8,R4
+        LibBMP.c   216      Bfile_CloseFile(handle);
+    000007D6 D215                   MOV.L       L644+22,R2 ; _Bfile_CloseFile
+    000007D8 420B                   JSR         @R2
+    000007DA 6483                   MOV         R8,R4
+        LibBMP.c   217    
+        LibBMP.c   218      if(err) *err=0;
+    000007DC 53F1                   MOV.L       @(4,R15),R3
+    000007DE 2338                   TST         R3,R3
+    000007E0 8901                   BT          L501
+    000007E2 53F1                   MOV.L       @(4,R15),R3
+    000007E4 23D2                   MOV.L       R13,@R3
+    000007E6              L501:
+        LibBMP.c   219      free(adr);
+    000007E6 D312                   MOV.L       L644+26,R3 ; _free
+    000007E8 430B                   JSR         @R3
+    000007EA 64F2                   MOV.L       @R15,R4
+        LibBMP.c   220    }
+    000007EC              L623:                             
+    000007EC 7F4C                   ADD         #76,R15
+    000007EE 4F16                   LDS.L       @R15+,MACL
+    000007F0 4F26                   LDS.L       @R15+,PR
+    000007F2 68F6                   MOV.L       @R15+,R8
+    000007F4 69F6                   MOV.L       @R15+,R9
+    000007F6 6AF6                   MOV.L       @R15+,R10
+    000007F8 6BF6                   MOV.L       @R15+,R11
+    000007FA 6CF6                   MOV.L       @R15+,R12
+    000007FC 6DF6                   MOV.L       @R15+,R13
+    000007FE 000B                   RTS
+    00000800 6EF6                   MOV.L       @R15+,R14
+        LibBMP.c   221    
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE   24
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        LibBMP.c   222    void BMP_Free(Bitmap *bmp)
+    00000802              _BMP_Free:                       ; function: BMP_Free
+                                                           ; frame size=8
+    00000802 4F22                   STS.L       PR,@-R15
+    00000804 2F46                   MOV.L       R4,@-R15
+        LibBMP.c   223    {
+        LibBMP.c   224      free(bmp->data);
+    00000806 D30A                   MOV.L       L644+26,R3 ; _free
+    00000808 430B                   JSR         @R3
+    0000080A 5443                   MOV.L       @(12,R4),R4
+        LibBMP.c   225      free(bmp);
+    0000080C 64F2                   MOV.L       @R15,R4
+    0000080E 7F04                   ADD         #4,R15
+    00000810 D307                   MOV.L       L644+26,R3 ; _free
+    00000812 432B                   JMP         @R3
+    00000814 4F26                   LDS.L       @R15+,PR
+    00000816              L644:                             
+    00000816 0000                   .DATA.W     0
+    00000818 <00000000>             .DATA.L     _calloc
+    0000081C <00000000>             .DATA.L     _Bfile_DeleteFile
+    00000820 <00000000>             .DATA.L     _Bfile_CreateFile
+    00000824 <00000000>             .DATA.L     _Bfile_OpenFile
+    00000828 <00000000>             .DATA.L     _Bfile_WriteFile
+    0000082C <00000000>             .DATA.L     _Bfile_CloseFile
+    00000830 <00000000>             .DATA.L     _free
+        LibBMP.c   226    }
+        LibBMP.c   227    
+C   00000000              L437:
+    00000000 00                     .DATA.B     H'00
+    00000001 0000000D01             .DATAB.B    13,0
+             00           
+    0000000E              L439:
+    0000000E 00                     .DATA.B     H'00
+    0000000F 0000002701             .DATAB.B    39,0
+             00           
+    00000036              L441:
+    00000036 00                     .DATA.B     H'00
+    00000037 0000000701             .DATAB.B    7,0
+             00           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 01-Nov-2020 18:53:46  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:         0
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:      227
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               00000834 Byte(s)
+CONSTANT SECTION (C):                               0000003E Byte(s)
+DATA     SECTION (D):                               00000000 Byte(s)
+BSS      SECTION (B):                               00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 00000872 Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:           13
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:           8
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            87
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmkD15C.tmp 
+

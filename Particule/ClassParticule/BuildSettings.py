@@ -153,11 +153,11 @@ class BuildSettings(EditorWindow):
         with open(desti+"/Ressources.h","w") as fic:
             fic.write(txt)
 
-        with open(desti+"/ParticuleEngine.h","r") as fic:
+        with open(desti+"/ParticuleEngine.hpp","r") as fic:
             txt=fic.read()
         txt = txt.replace("//AddScenes",CodeOfScenes)
         txt = txt.replace("//Components", CasioCode)
-        with open(desti+"/ParticuleEngine.h","w") as fic:
+        with open(desti+"/ParticuleEngine.hpp","w") as fic:
             fic.write(txt)
 
         with open(desti+"/Announcement.h","r") as fic:

@@ -1,0 +1,1061 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\Tutoriel.cpp
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+      Tutoriel.c     1    /*****************************************************************/
+      Tutoriel.c     2    /*                                                               */
+      Tutoriel.c     3    /*   CASIO fx-9860G SDK Library                                  */
+      Tutoriel.c     4    /*                                                               */
+      Tutoriel.c     5    /*   File name : [ProjectName].c                                 */
+      Tutoriel.c     6    /*                                                               */
+      Tutoriel.c     7    /*   Copyright (c) 2006 CASIO COMPUTER CO., LTD.                 */
+      Tutoriel.c     8    /*                                                               */
+      Tutoriel.c     9    /*****************************************************************/
+      Tutoriel.c    10    
+      Tutoriel.c    11    extern "C"
+      Tutoriel.c    12    {
+      Tutoriel.c    13    #include "keybios.h"
+      Tutoriel.c    14    #include "fxlib.h"
+      Tutoriel.c    15    #include <stdio.h>
+      Tutoriel.c    16    #include "stdio.h"
+      Tutoriel.c    17    #include "stdlib.h"
+      Tutoriel.c    18    
+      Tutoriel.c    19    #include "string.h"
+      Tutoriel.c    20    #include "time.h"
+      Tutoriel.c    21    
+      Tutoriel.c    22    
+      Tutoriel.c    23    
+      Tutoriel.c    24    
+      Tutoriel.c    25    }
+      Tutoriel.c    26    #include "usefull.h"
+      Tutoriel.c    27    
+      Tutoriel.c    28    //****************************************************************************
+      Tutoriel.c    29    //  AddIn_main (Sample program main function)
+      Tutoriel.c    30    //
+      Tutoriel.c    31    //  param   :   isAppli   : 1 = This application is launched by MAIN MENU.
+      Tutoriel.c    32    //                        : 0 = This application is launched by a strip in eACT application.
+      Tutoriel.c    33    //
+      Tutoriel.c    34    //              OptionNum : Strip number (0~3)
+      Tutoriel.c    35    //                         (This parameter is only used when isAppli parameter is 0.)
+      Tutoriel.c    36    //
+      Tutoriel.c    37    //  retval  :   1 = No error / 0 = Error
+      Tutoriel.c    38    //
+      Tutoriel.c    39    //****************************************************************************
+      Tutoriel.c    40    #include "Announcement.h"
+      Tutoriel.c    41    #include "ParticuleEngine.h"
+P   00000000              _LenChar__FPc:                   ; function: LenChar(char *)
+                                                           ; frame size=4
+    00000000 4F22                   STS.L       PR,@-R15
+    00000002 D366                   MOV.L       L538+2,R3  ; _strlen
+    00000004 430B                   JSR         @R3
+    00000006 0009                   NOP
+    00000008 4F26                   LDS.L       @R15+,PR
+    0000000A 000B                   RTS
+    0000000C 0009                   NOP
+    0000000E              _mod__FiT1:                      ; function: mod(int, int)
+                                                           ; frame size=4
+                                                           ; used runtime library name:
+                                                           ; __modls
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000000E 6143                   MOV         R4,R1
+    00000010 D363                   MOV.L       L538+6,R3  ; __modls
+    00000012 4F22                   STS.L       PR,@-R15
+    00000014 430B                   JSR         @R3
+    00000016 6053                   MOV         R5,R0
+    00000018 D361                   MOV.L       L538+6,R3  ; __modls
+    0000001A 6103                   MOV         R0,R1
+    0000001C 315C                   ADD         R5,R1
+    0000001E 430B                   JSR         @R3
+    00000020 6053                   MOV         R5,R0
+    00000022 4F26                   LDS.L       @R15+,PR
+    00000024 000B                   RTS
+    00000026 0009                   NOP
+    00000028              _LoadScene__FP5Scenei:           ; function: LoadScene(Scene *, int)
+                                                           ; frame size=20
+    00000028 2FE6                   MOV.L       R14,@-R15
+    0000002A 6E43                   MOV         R4,R14
+    0000002C 2FD6                   MOV.L       R13,@-R15
+    0000002E 4F22                   STS.L       PR,@-R15
+    00000030 7FF8                   ADD         #-8,R15
+    00000032 2F42                   MOV.L       R4,@R15
+    00000034 5EE3                   MOV.L       @(12,R14),R14
+    00000036 A010                   BRA         L453
+    00000038 E400                   MOV         #0,R4
+    0000003A              L454:                             
+    0000003A 56E2                   MOV.L       @(8,R14),R6
+    0000003C 53E1                   MOV.L       @(4,R14),R3
+    0000003E 6262                   MOV.L       @R6,R2
+    00000040 3360                   CMP/EQ      R6,R3
+    00000042 8B02                   BF          L455
+    00000044 1E41                   MOV.L       R4,@(4,R14)
+    00000046 A005                   BRA         L456
+    00000048 1E42                   MOV.L       R4,@(8,R14)
+    0000004A              L455:                             
+    0000004A 52E2                   MOV.L       @(8,R14),R2
+    0000004C 5322                   MOV.L       @(8,R2),R3
+    0000004E 1E32                   MOV.L       R3,@(8,R14)
+    00000050 6233                   MOV         R3,R2
+    00000052 1241                   MOV.L       R4,@(4,R2)
+    00000054              L456:                             
+    00000054 53E3                   MOV.L       @(12,R14),R3
+    00000056 73FF                   ADD         #-1,R3
+    00000058 1E33                   MOV.L       R3,@(12,R14)
+    0000005A              L453:                             
+    0000005A 52E3                   MOV.L       @(12,R14),R2
+    0000005C 4215                   CMP/PL      R2
+    0000005E 89EC                   BT          L454
+    00000060 B1E8                   BSR         __$GetSceneInBuild__12SceneManagerFi
+    00000062 64E3                   MOV         R14,R4
+    00000064 1F01                   MOV.L       R0,@(4,R15)
+    00000066 D34F                   MOV.L       L538+10,R3 ; ___nw__FUl
+    00000068 430B                   JSR         @R3
+    0000006A E40C                   MOV         #12,R4
+    0000006C 2008                   TST         R0,R0
+    0000006E 8D06                   BT/S        L457
+    00000070 6D03                   MOV         R0,R13
+    00000072 E50C                   MOV         #12,R5
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000074 D34C                   MOV.L       L538+14,R3 ; ___memzero
+    00000076 430B                   JSR         @R3
+    00000078 64D3                   MOV         R13,R4
+    0000007A A001                   BRA         L458
+    0000007C 64D3                   MOV         R13,R4
+    0000007E              L457:                             
+    0000007E E400                   MOV         #0,R4
+    00000080              L458:                             
+    00000080 53F1                   MOV.L       @(4,R15),R3
+    00000082 2432                   MOV.L       R3,@R4
+    00000084 52E3                   MOV.L       @(12,R14),R2
+    00000086 7201                   ADD         #1,R2
+    00000088 1E23                   MOV.L       R2,@(12,R14)
+    0000008A 53E1                   MOV.L       @(4,R14),R3
+    0000008C 2338                   TST         R3,R3
+    0000008E 8B01                   BF          L459
+    00000090 A004                   BRA         L422
+    00000092 1E41                   MOV.L       R4,@(4,R14)
+    00000094              L459:                             
+    00000094 53E2                   MOV.L       @(8,R14),R3
+    00000096 1432                   MOV.L       R3,@(8,R4)
+    00000098 52E2                   MOV.L       @(8,R14),R2
+    0000009A 1241                   MOV.L       R4,@(4,R2)
+    0000009C              L422:
+    0000009C 1E42                   MOV.L       R4,@(8,R14)
+    0000009E 64F2                   MOV.L       @R15,R4
+    000000A0 5443                   MOV.L       @(12,R4),R4
+    000000A2 7F08                   ADD         #8,R15
+    000000A4 4F26                   LDS.L       @R15+,PR
+    000000A6 6DF6                   MOV.L       @R15+,R13
+    000000A8 A1B0                   BRA         __$StartScene__12SceneManagerFv
+    000000AA 6EF6                   MOV.L       @R15+,R14
+    000000AC              _FindWithName__FPUcP10GameObject:
+                                                           ; function: FindWithName(unsigned char *, GameObject *)
+                                                           ; frame size=8
+    000000AC 7FF8                   ADD         #-8,R15
+    000000AE 1F41                   MOV.L       R4,@(4,R15)
+    000000B0 2F52                   MOV.L       R5,@R15
+    000000B2 55F1                   MOV.L       @(4,R15),R5
+    000000B4 64F2                   MOV.L       @R15,R4
+    000000B6 544A                   MOV.L       @(40,R4),R4
+    000000B8 5443                   MOV.L       @(12,R4),R4
+    000000BA A159                   BRA         __$FindWithName__12SceneManagerFPUc
+    000000BC 7F08                   ADD         #8,R15
+      Tutoriel.c    42    #include "List.h"
+      Tutoriel.c    43    //#include "ClassParticule.h"
+      Tutoriel.c    44    //#include "string.h"
+      Tutoriel.c    45    #include "MonochromeLib.h"
+      Tutoriel.c    46    #include "Ressources.h"
+      Tutoriel.c    47    
+      Tutoriel.c    48    
+      Tutoriel.c    49    
+      Tutoriel.c    50    int main() {
+    000000BE              _main:                           ; function: main
+                                                           ; frame size=8
+    000000BE 7FF8                   ADD         #-8,R15
+    000000C0 DE3A                   MOV.L       L538+18,R14; __$__2983_26_sceneManager$292
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE    4
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000000C2 D43B                   MOV.L       L538+22,R4 ; __$__T30113100$291
+    000000C4 6342                   MOV.L       @R4,R3
+    000000C6 2338                   TST         R3,R3
+    000000C8 8F2D                   BF/S        L467
+    000000CA ED00                   MOV         #0,R13
+    000000CC E301                   MOV         #1,R3
+    000000CE 2432                   MOV.L       R3,@R4
+      Tutoriel.c    51        static SceneManager* sceneManager = new SceneManager();
+    000000D0 63D3                   MOV         R13,R3
+    000000D2 2338                   TST         R3,R3
+    000000D4 8F06                   BF/S        L465
+    000000D6 2FD2                   MOV.L       R13,@R15
+    000000D8 D332                   MOV.L       L538+10,R3 ; ___nw__FUl
+    000000DA 430B                   JSR         @R3
+    000000DC E410                   MOV         #16,R4
+    000000DE 2008                   TST         R0,R0
+    000000E0 8D07                   BT/S        L466
+    000000E2 2F02                   MOV.L       R0,@R15
+    000000E4              L465:                             
+    000000E4 62F2                   MOV.L       @R15,R2
+    000000E6 E300                   MOV         #0,R3
+    000000E8 1233                   MOV.L       R3,@(12,R2)
+    000000EA 62F2                   MOV.L       @R15,R2
+    000000EC 12D1                   MOV.L       R13,@(4,R2)
+    000000EE 63F2                   MOV.L       @R15,R3
+    000000F0 13D2                   MOV.L       R13,@(8,R3)
+    000000F2              L466:                             
+    000000F2 62F2                   MOV.L       @R15,R2
+      Tutoriel.c    52        //reference croise
+      Tutoriel.c    53        sceneManager->LoadScene(0);
+    000000F4 A017                   BRA         L467
+    000000F6 2E22                   MOV.L       R2,@R14
+    000000F8              L468:                             
+    000000F8 64E2                   MOV.L       @R14,R4
+    000000FA 5442                   MOV.L       @(8,R4),R4
+    000000FC 62E2                   MOV.L       @R14,R2
+    000000FE 5321                   MOV.L       @(4,R2),R3
+    00000100 3340                   CMP/EQ      R4,R3
+    00000102 8B04                   BF          L469
+    00000104 61E2                   MOV.L       @R14,R1
+    00000106 11D1                   MOV.L       R13,@(4,R1)
+    00000108 63E2                   MOV.L       @R14,R3
+    0000010A A008                   BRA         L470
+    0000010C 13D2                   MOV.L       R13,@(8,R3)
+    0000010E              L469:                             
+    0000010E 63E2                   MOV.L       @R14,R3
+    00000110 6233                   MOV         R3,R2
+    00000112 5122                   MOV.L       @(8,R2),R1
+    00000114 5012                   MOV.L       @(8,R1),R0
+    00000116 1302                   MOV.L       R0,@(8,R3)
+    00000118 63E2                   MOV.L       @R14,R3
+    0000011A 5232                   MOV.L       @(8,R3),R2
+    0000011C 12D1                   MOV.L       R13,@(4,R2)
+    0000011E              L470:                             
+    0000011E 63E2                   MOV.L       @R14,R3
+    00000120 5233                   MOV.L       @(12,R3),R2
+    00000122 72FF                   ADD         #-1,R2
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000124 1323                   MOV.L       R2,@(12,R3)
+    00000126              L467:                             
+    00000126 63E2                   MOV.L       @R14,R3
+    00000128 5233                   MOV.L       @(12,R3),R2
+    0000012A 4215                   CMP/PL      R2
+    0000012C 89E4                   BT          L468
+    0000012E E500                   MOV         #0,R5
+    00000130 B180                   BSR         __$GetSceneInBuild__12SceneManagerFi
+    00000132 64E2                   MOV.L       @R14,R4
+    00000134 1F01                   MOV.L       R0,@(4,R15)
+    00000136 D31B                   MOV.L       L538+10,R3 ; ___nw__FUl
+    00000138 430B                   JSR         @R3
+    0000013A E40C                   MOV         #12,R4
+    0000013C 2008                   TST         R0,R0
+    0000013E 8D06                   BT/S        L471
+    00000140 6D03                   MOV         R0,R13
+    00000142 E50C                   MOV         #12,R5
+    00000144 D318                   MOV.L       L538+14,R3 ; ___memzero
+    00000146 430B                   JSR         @R3
+    00000148 64D3                   MOV         R13,R4
+    0000014A A001                   BRA         L472
+    0000014C 64D3                   MOV         R13,R4
+    0000014E              L471:                             
+    0000014E E400                   MOV         #0,R4
+    00000150              L472:                             
+    00000150 53F1                   MOV.L       @(4,R15),R3
+    00000152 2432                   MOV.L       R3,@R4
+    00000154 62E2                   MOV.L       @R14,R2
+    00000156 5323                   MOV.L       @(12,R2),R3
+    00000158 7301                   ADD         #1,R3
+    0000015A 1233                   MOV.L       R3,@(12,R2)
+    0000015C 62E2                   MOV.L       @R14,R2
+    0000015E 5321                   MOV.L       @(4,R2),R3
+    00000160 2338                   TST         R3,R3
+    00000162 8B01                   BF          L473
+    00000164 A005                   BRA         L536
+    00000166 63E2                   MOV.L       @R14,R3
+    00000168              L473:                             
+    00000168 62E2                   MOV.L       @R14,R2
+    0000016A 5322                   MOV.L       @(8,R2),R3
+    0000016C 1432                   MOV.L       R3,@(8,R4)
+    0000016E 62E2                   MOV.L       @R14,R2
+    00000170 5322                   MOV.L       @(8,R2),R3
+    00000172              L536:                             
+    00000172 1341                   MOV.L       R4,@(4,R3)
+    00000174 62E2                   MOV.L       @R14,R2
+    00000176 1242                   MOV.L       R4,@(8,R2)
+      Tutoriel.c    54        sceneManager->StartScene();
+    00000178 B148                   BSR         __$StartScene__12SceneManagerFv
+    0000017A 64E2                   MOV.L       @R14,R4
+    0000017C DB0D                   MOV.L       L538+26,R11; _ML_clear_vram
+    0000017E DC0E                   MOV.L       L538+30,R12; _ML_display_vram
+    00000180 DD0E                   MOV.L       L538+34,R13; _Sleep
+      Tutoriel.c    55        while (true)
+    00000182              L476:                             
+      Tutoriel.c    56        {
+      Tutoriel.c    57            ML_clear_vram();
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE    6
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000182 4B0B                   JSR         @R11
+    00000184 0009                   NOP
+      Tutoriel.c    58            sceneManager->UpdateScene();
+    00000186 B12D                   BSR         __$UpdateScene__12SceneManagerFv
+    00000188 64E2                   MOV.L       @R14,R4
+      Tutoriel.c    59    
+      Tutoriel.c    60            Sleep(100);
+    0000018A 4D0B                   JSR         @R13
+    0000018C E464                   MOV         #100,R4
+      Tutoriel.c    61            ML_display_vram();
+    0000018E 4C0B                   JSR         @R12
+    00000190 0009                   NOP
+    00000192 AFF6                   BRA         L476
+    00000194 0009                   NOP
+      Tutoriel.c    62        }
+      Tutoriel.c    63        return 1;
+      Tutoriel.c    64    }
+      Tutoriel.c    65    
+      Tutoriel.c    66    extern "C"
+      Tutoriel.c    67    {
+      Tutoriel.c    68    int AddIn_main(int isAppli, unsigned short OptionNum)
+    00000196              _AddIn_main:                     ; function: AddIn_main
+                                                           ; frame size=0
+      Tutoriel.c    69    {
+      Tutoriel.c    70        return main();
+    00000196 AF92                   BRA         _main
+    00000198 0009                   NOP
+    0000019A              L538:                             
+    0000019A 0000                   .DATA.W     0
+    0000019C <00000000>             .DATA.L     _strlen
+    000001A0 <00000000>             .DATA.L     __modls
+    000001A4 <00000000>             .DATA.L     ___nw__FUl
+    000001A8 <00000000>             .DATA.L     ___memzero
+    000001AC <00000000>             .DATA.L     __$__2983_26_sceneManager$292
+    000001B0 <00000000>             .DATA.L     __$__T30113100$291
+    000001B4 <00000000>             .DATA.L     _ML_clear_vram
+    000001B8 <00000000>             .DATA.L     _ML_display_vram
+    000001BC <00000000>             .DATA.L     _Sleep
+      Tutoriel.c    71    }
+      Tutoriel.c    72    
+      Tutoriel.c    73    
+      Tutoriel.c    74    
+      Tutoriel.c    75    
+      Tutoriel.c    76    //****************************************************************************
+      Tutoriel.c    77    //**************                                              ****************
+      Tutoriel.c    78    //**************                 Notice!                      ****************
+      Tutoriel.c    79    //**************                                              ****************
+      Tutoriel.c    80    //**************  Please do not change the following source.  ****************
+      Tutoriel.c    81    //**************                                              ****************
+      Tutoriel.c    82    //****************************************************************************
+      Tutoriel.c    83    
+      Tutoriel.c    84    
+      Tutoriel.c    85    #pragma section _BR_Size
+      Tutoriel.c    86    unsigned long BR_Size;
+      Tutoriel.c    87    #pragma section
+      Tutoriel.c    88    
+      Tutoriel.c    89    
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE    7
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+      Tutoriel.c    90    #pragma section _TOP
+      Tutoriel.c    91    
+      Tutoriel.c    92    //****************************************************************************
+      Tutoriel.c    93    //  InitializeSystem
+      Tutoriel.c    94    //
+      Tutoriel.c    95    //  param   :   isAppli   : 1 = Application / 0 = eActivity
+      Tutoriel.c    96    //              OptionNum : Option Number (only eActivity)
+      Tutoriel.c    97    //
+      Tutoriel.c    98    //  retval  :   1 = No error / 0 = Error
+      Tutoriel.c    99    //
+      Tutoriel.c   100    //****************************************************************************
+      Tutoriel.c   101    int InitializeSystem(int isAppli, unsigned short OptionNum)
+P_T 00000000              _InitializeSystem:               ; function: InitializeSystem
+                                                           ; frame size=0
+      Tutoriel.c   102    {
+      Tutoriel.c   103        return INIT_ADDIN_APPLICATION(isAppli, OptionNum);
+    00000000 D301                   MOV.L       L539+2,R3  ; _INIT_ADDIN_APPLICATION
+    00000002 432B                   JMP         @R3
+    00000004 0009                   NOP
+    00000006              L539:                             
+    00000006 0000                   .DATA.W     0
+    00000008 <00000000>             .DATA.L     _INIT_ADDIN_APPLICATION
+      Tutoriel.c   104    }
+      Tutoriel.c   105    
+      Tutoriel.c   106    #pragma section
+      Tutoriel.c   107    }
+P   000001C0              __$IsActive__10GameObjectFv:     ; function: GameObject::IsActive()
+                                                           ; frame size=8
+    000001C0 7FF8                   ADD         #-8,R15
+    000001C2 5347                   MOV.L       @(28,R4),R3
+    000001C4 2338                   TST         R3,R3
+    000001C6 8910                   BT          L424
+    000001C8 524D                   MOV.L       @(52,R4),R2
+    000001CA E044                   MOV         #68,R0
+    000001CC 032E                   MOV.L       @(R0,R2),R3
+    000001CE 2338                   TST         R3,R3
+    000001D0 890D                   BT          L482
+    000001D2 E044                   MOV         #68,R0
+    000001D4 554D                   MOV.L       @(52,R4),R5
+    000001D6 2F52                   MOV.L       R5,@R15
+    000001D8 055E                   MOV.L       @(R0,R5),R5
+    000001DA 1F51                   MOV.L       R5,@(4,R15)
+    000001DC 5554                   MOV.L       @(16,R5),R5
+    000001DE 5356                   MOV.L       @(24,R5),R3
+    000001E0 2338                   TST         R3,R3
+    000001E2 8902                   BT          L424
+    000001E4 5357                   MOV.L       @(28,R5),R3
+    000001E6 2338                   TST         R3,R3
+    000001E8 8B01                   BF          L482
+    000001EA              L424:
+    000001EA A001                   BRA         L537
+    000001EC E500                   MOV         #0,R5
+    000001EE              L482:                             
+    000001EE E501                   MOV         #1,R5
+    000001F0              L537:                             
+    000001F0 1456                   MOV.L       R5,@(24,R4)
+    000001F2 6053                   MOV         R5,R0
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE    8
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000001F4 000B                   RTS
+    000001F6 7F08                   ADD         #8,R15
+    000001F8              __$Update__10GameObjectFv:       ; function: GameObject::Update()
+                                                           ; frame size=28
+    000001F8 2FE6                   MOV.L       R14,@-R15
+    000001FA 6E43                   MOV         R4,R14
+    000001FC 2FD6                   MOV.L       R13,@-R15
+    000001FE 2FC6                   MOV.L       R12,@-R15
+    00000200 2FB6                   MOV.L       R11,@-R15
+    00000202 2FA6                   MOV.L       R10,@-R15
+    00000204 4F22                   STS.L       PR,@-R15
+    00000206 7FFC                   ADD         #-4,R15
+    00000208 9B5F                   MOV.W       L540,R11   ; H'0354
+    0000020A 5DED                   MOV.L       @(52,R14),R13
+    0000020C 2FD2                   MOV.L       R13,@R15
+    0000020E 5DD2                   MOV.L       @(8,R13),R13
+    00000210 64F2                   MOV.L       @R15,R4
+    00000212 3DBC                   ADD         R11,R13
+    00000214 53D2                   MOV.L       @(8,R13),R3
+    00000216 62D2                   MOV.L       @R13,R2
+    00000218 430B                   JSR         @R3
+    0000021A 342C                   ADD         R2,R4
+    0000021C BFD0                   BSR         __$IsActive__10GameObjectFv
+    0000021E 64E3                   MOV         R14,R4
+    00000220 2008                   TST         R0,R0
+    00000222 8910                   BT          L486
+    00000224 A00C                   BRA         L487
+    00000226 ED00                   MOV         #0,R13
+    00000228              L488:                             
+    00000228 65D3                   MOV         R13,R5
+    0000022A 64E3                   MOV         R14,R4
+    0000022C B04F                   BSR         __$get__24List__tm__12_P9ComponentFi_Z1Z
+    0000022E 740C                   ADD         #12,R4
+    00000230 5C02                   MOV.L       @(8,R0),R12
+    00000232 6A03                   MOV         R0,R10
+    00000234 3CBC                   ADD         R11,R12
+    00000236 53C2                   MOV.L       @(8,R12),R3
+    00000238 64C2                   MOV.L       @R12,R4
+    0000023A 430B                   JSR         @R3
+    0000023C 34AC                   ADD         R10,R4
+    0000023E 7D01                   ADD         #1,R13
+    00000240              L487:                             
+    00000240 52E5                   MOV.L       @(20,R14),R2
+    00000242 3D23                   CMP/GE      R2,R13
+    00000244 8BF0                   BF          L488
+    00000246              L486:                             
+    00000246 7F04                   ADD         #4,R15
+    00000248 4F26                   LDS.L       @R15+,PR
+    0000024A 6AF6                   MOV.L       @R15+,R10
+    0000024C 6BF6                   MOV.L       @R15+,R11
+    0000024E 6CF6                   MOV.L       @R15+,R12
+    00000250 6DF6                   MOV.L       @R15+,R13
+    00000252 000B                   RTS
+    00000254 6EF6                   MOV.L       @R15+,R14
+    00000256              __$Start__10GameObjectFv:        ; function: GameObject::Start()
+                                                           ; frame size=28
+    00000256 2FE6                   MOV.L       R14,@-R15
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE    9
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000258 2FD6                   MOV.L       R13,@-R15
+    0000025A 6E43                   MOV         R4,R14
+    0000025C 2FC6                   MOV.L       R12,@-R15
+    0000025E 2FB6                   MOV.L       R11,@-R15
+    00000260 2FA6                   MOV.L       R10,@-R15
+    00000262 4F22                   STS.L       PR,@-R15
+    00000264 9B32                   MOV.W       L540+2,R11 ; H'0348
+    00000266 7FFC                   ADD         #-4,R15
+    00000268 5DED                   MOV.L       @(52,R14),R13
+    0000026A 2FD2                   MOV.L       R13,@R15
+    0000026C 5DD2                   MOV.L       @(8,R13),R13
+    0000026E 3DBC                   ADD         R11,R13
+    00000270 53D2                   MOV.L       @(8,R13),R3
+    00000272 62D2                   MOV.L       @R13,R2
+    00000274 64F2                   MOV.L       @R15,R4
+    00000276 430B                   JSR         @R3
+    00000278 342C                   ADD         R2,R4
+    0000027A BFA1                   BSR         __$IsActive__10GameObjectFv
+    0000027C 64E3                   MOV         R14,R4
+    0000027E 2008                   TST         R0,R0
+    00000280 8910                   BT          L490
+    00000282 A00C                   BRA         L491
+    00000284 ED00                   MOV         #0,R13
+    00000286              L492:                             
+    00000286 65D3                   MOV         R13,R5
+    00000288 64E3                   MOV         R14,R4
+    0000028A B020                   BSR         __$get__24List__tm__12_P9ComponentFi_Z1Z
+    0000028C 740C                   ADD         #12,R4
+    0000028E 6A03                   MOV         R0,R10
+    00000290 5C02                   MOV.L       @(8,R0),R12
+    00000292 3CBC                   ADD         R11,R12
+    00000294 53C2                   MOV.L       @(8,R12),R3
+    00000296 64C2                   MOV.L       @R12,R4
+    00000298 430B                   JSR         @R3
+    0000029A 34AC                   ADD         R10,R4
+    0000029C 7D01                   ADD         #1,R13
+    0000029E              L491:                             
+    0000029E 52E5                   MOV.L       @(20,R14),R2
+    000002A0 3D23                   CMP/GE      R2,R13
+    000002A2 8BF0                   BF          L492
+    000002A4              L490:                             
+    000002A4 7F04                   ADD         #4,R15
+    000002A6 4F26                   LDS.L       @R15+,PR
+    000002A8 6AF6                   MOV.L       @R15+,R10
+    000002AA 6BF6                   MOV.L       @R15+,R11
+    000002AC 6CF6                   MOV.L       @R15+,R12
+    000002AE 6DF6                   MOV.L       @R15+,R13
+    000002B0 000B                   RTS
+    000002B2 6EF6                   MOV.L       @R15+,R14
+    000002B4              __$get_node__24List__tm__12_P9ComponentFi_P15Node__tm__4_Z1Z:
+                                                           ; function: Node<T1> *List<T1>::get_node(int) [with T1=Component *]
+                                                           ; frame size=0
+    000002B4 E700                   MOV         #0,R7
+    000002B6 A002                   BRA         L493
+    000002B8 6642                   MOV.L       @R4,R6
+    000002BA              L494:                             
+    000002BA 7701                   ADD         #1,R7
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE   10
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000002BC 5661                   MOV.L       @(4,R6),R6
+    000002BE              L493:                             
+    000002BE 2668                   TST         R6,R6
+    000002C0 8901                   BT          L495
+    000002C2 3750                   CMP/EQ      R5,R7
+    000002C4 8BF9                   BF          L494
+    000002C6              L495:                             
+    000002C6 000B                   RTS
+    000002C8 6063                   MOV         R6,R0
+    000002CA              L540:                             
+    000002CA 0354                   .DATA.W     H'0354
+    000002CC 0348                   .DATA.W     H'0348
+    000002CE              __$get__24List__tm__12_P9ComponentFi_Z1Z:
+                                                           ; function: T1 List<T1>::get(int) [with T1=Component *]
+                                                           ; frame size=4
+    000002CE E3FF                   MOV         #-1,R3
+    000002D0 4F22                   STS.L       PR,@-R15
+    000002D2 3533                   CMP/GE      R3,R5
+    000002D4 8B04                   BF          L425
+    000002D6 BFED                   BSR         __$get_node__24List__tm__12_P9ComponentFi_P15Node__tm__4_Z1Z
+    000002D8 0009                   NOP
+    000002DA 6403                   MOV         R0,R4
+    000002DC 2448                   TST         R4,R4
+    000002DE 8B02                   BF          L499
+    000002E0              L425:
+    000002E0 4F26                   LDS.L       @R15+,PR
+    000002E2 000B                   RTS
+    000002E4 E000                   MOV         #0,R0
+    000002E6              L499:                             
+    000002E6 6042                   MOV.L       @R4,R0
+    000002E8              L498:                             
+    000002E8 4F26                   LDS.L       @R15+,PR
+    000002EA 000B                   RTS
+    000002EC 0009                   NOP
+    000002EE              __$Update__5SceneFv:             ; function: Scene::Update()
+                                                           ; frame size=12
+    000002EE 2FE6                   MOV.L       R14,@-R15
+    000002F0 2FD6                   MOV.L       R13,@-R15
+    000002F2 6D43                   MOV         R4,R13
+    000002F4 4F22                   STS.L       PR,@-R15
+    000002F6 A006                   BRA         L500
+    000002F8 EE00                   MOV         #0,R14
+    000002FA              L501:                             
+    000002FA 65E3                   MOV         R14,R5
+    000002FC B028                   BSR         __$get__26List__tm__14_P10GameObjectFi_Z1Z
+    000002FE 64D3                   MOV         R13,R4
+    00000300 BF7A                   BSR         __$Update__10GameObjectFv
+    00000302 6403                   MOV         R0,R4
+    00000304 7E01                   ADD         #1,R14
+    00000306              L500:                             
+    00000306 52D2                   MOV.L       @(8,R13),R2
+    00000308 3E23                   CMP/GE      R2,R14
+    0000030A 8BF6                   BF          L501
+    0000030C 4F26                   LDS.L       @R15+,PR
+    0000030E 6DF6                   MOV.L       @R15+,R13
+    00000310 000B                   RTS
+    00000312 6EF6                   MOV.L       @R15+,R14
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE   11
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000314              __$Start__5SceneFv:              ; function: Scene::Start()
+                                                           ; frame size=12
+    00000314 2FE6                   MOV.L       R14,@-R15
+    00000316 2FD6                   MOV.L       R13,@-R15
+    00000318 4F22                   STS.L       PR,@-R15
+    0000031A 6D43                   MOV         R4,R13
+    0000031C A006                   BRA         L503
+    0000031E EE00                   MOV         #0,R14
+    00000320              L504:                             
+    00000320 65E3                   MOV         R14,R5
+    00000322 B015                   BSR         __$get__26List__tm__14_P10GameObjectFi_Z1Z
+    00000324 64D3                   MOV         R13,R4
+    00000326 BF96                   BSR         __$Start__10GameObjectFv
+    00000328 6403                   MOV         R0,R4
+    0000032A 7E01                   ADD         #1,R14
+    0000032C              L503:                             
+    0000032C 52D2                   MOV.L       @(8,R13),R2
+    0000032E 3E23                   CMP/GE      R2,R14
+    00000330 8BF6                   BF          L504
+    00000332 4F26                   LDS.L       @R15+,PR
+    00000334 6DF6                   MOV.L       @R15+,R13
+    00000336 000B                   RTS
+    00000338 6EF6                   MOV.L       @R15+,R14
+    0000033A              __$get_node__26List__tm__14_P10GameObjectFi_P15Node__tm__4_Z1Z:
+                                                           ; function: Node<T1> *List<T1>::get_node(int) [with T1=GameObject *]
+                                                           ; frame size=0
+    0000033A E700                   MOV         #0,R7
+    0000033C A002                   BRA         L506
+    0000033E 6642                   MOV.L       @R4,R6
+    00000340              L507:                             
+    00000340 5661                   MOV.L       @(4,R6),R6
+    00000342 7701                   ADD         #1,R7
+    00000344              L506:                             
+    00000344 2668                   TST         R6,R6
+    00000346 8901                   BT          L508
+    00000348 3750                   CMP/EQ      R5,R7
+    0000034A 8BF9                   BF          L507
+    0000034C              L508:                             
+    0000034C 000B                   RTS
+    0000034E 6063                   MOV         R6,R0
+    00000350              __$get__26List__tm__14_P10GameObjectFi_Z1Z:
+                                                           ; function: T1 List<T1>::get(int) [with T1=GameObject *]
+                                                           ; frame size=4
+    00000350 4F22                   STS.L       PR,@-R15
+    00000352 E3FF                   MOV         #-1,R3
+    00000354 3533                   CMP/GE      R3,R5
+    00000356 8B04                   BF          L426
+    00000358 BFEF                   BSR         __$get_node__26List__tm__14_P10GameObjectFi_P15Node__tm__4_Z1Z
+    0000035A 0009                   NOP
+    0000035C 6403                   MOV         R0,R4
+    0000035E 2448                   TST         R4,R4
+    00000360 8B02                   BF          L512
+    00000362              L426:
+    00000362 4F26                   LDS.L       @R15+,PR
+    00000364 000B                   RTS
+    00000366 E000                   MOV         #0,R0
+    00000368              L512:                             
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE   12
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000368 6042                   MOV.L       @R4,R0
+    0000036A              L511:                             
+    0000036A 4F26                   LDS.L       @R15+,PR
+    0000036C 000B                   RTS
+    0000036E 0009                   NOP
+    00000370              __$FindWithName__12SceneManagerFPUc:
+                                                           ; function: SceneManager::FindWithName(unsigned char *)
+                                                           ; frame size=32
+    00000370 2FE6                   MOV.L       R14,@-R15
+    00000372 2FD6                   MOV.L       R13,@-R15
+    00000374 2FC6                   MOV.L       R12,@-R15
+    00000376 6C43                   MOV         R4,R12
+    00000378 2FB6                   MOV.L       R11,@-R15
+    0000037A 2FA6                   MOV.L       R10,@-R15
+    0000037C 2F96                   MOV.L       R9,@-R15
+    0000037E E900                   MOV         #0,R9
+    00000380 2F86                   MOV.L       R8,@-R15
+    00000382 6853                   MOV         R5,R8
+    00000384 4F22                   STS.L       PR,@-R15
+    00000386 A020                   BRA         L513
+    00000388 6E93                   MOV         R9,R14
+    0000038A              L514:                             
+    0000038A A016                   BRA         L515
+    0000038C 6D93                   MOV         R9,R13
+    0000038E              L516:                             
+    0000038E 65E3                   MOV         R14,R5
+    00000390 64C3                   MOV         R12,R4
+    00000392 B07F                   BSR         __$get__19List__tm__8_P5SceneFi_Z1Z
+    00000394 7404                   ADD         #4,R4
+    00000396 6A03                   MOV         R0,R10
+    00000398 6BD3                   MOV         R13,R11
+    0000039A 65D3                   MOV         R13,R5
+    0000039C BFD8                   BSR         __$get__26List__tm__14_P10GameObjectFi_Z1Z
+    0000039E 6403                   MOV         R0,R4
+    000003A0 6302                   MOV.L       @R0,R3
+    000003A2 3380                   CMP/EQ      R8,R3
+    000003A4 8B08                   BF          L517
+    000003A6 65E3                   MOV         R14,R5
+    000003A8 64C3                   MOV         R12,R4
+    000003AA B073                   BSR         __$get__19List__tm__8_P5SceneFi_Z1Z
+    000003AC 7404                   ADD         #4,R4
+    000003AE 6403                   MOV         R0,R4
+    000003B0 BFCE                   BSR         __$get__26List__tm__14_P10GameObjectFi_Z1Z
+    000003B2 65D3                   MOV         R13,R5
+    000003B4 A00D                   BRA         L518
+    000003B6 0009                   NOP
+    000003B8              L517:                             
+    000003B8 7D01                   ADD         #1,R13
+    000003BA              L515:                             
+    000003BA 65E3                   MOV         R14,R5
+    000003BC 64C3                   MOV         R12,R4
+    000003BE B069                   BSR         __$get__19List__tm__8_P5SceneFi_Z1Z
+    000003C0 7404                   ADD         #4,R4
+    000003C2 5202                   MOV.L       @(8,R0),R2
+    000003C4 3D23                   CMP/GE      R2,R13
+    000003C6 8BE2                   BF          L516
+    000003C8 7E01                   ADD         #1,R14
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE   13
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000003CA              L513:                             
+    000003CA 52C3                   MOV.L       @(12,R12),R2
+    000003CC 3E23                   CMP/GE      R2,R14
+    000003CE 8BDC                   BF          L514
+    000003D0 E000                   MOV         #0,R0
+    000003D2              L518:                             
+    000003D2 4F26                   LDS.L       @R15+,PR
+    000003D4 68F6                   MOV.L       @R15+,R8
+    000003D6 69F6                   MOV.L       @R15+,R9
+    000003D8 6AF6                   MOV.L       @R15+,R10
+    000003DA 6BF6                   MOV.L       @R15+,R11
+    000003DC 6CF6                   MOV.L       @R15+,R12
+    000003DE 6DF6                   MOV.L       @R15+,R13
+    000003E0 000B                   RTS
+    000003E2 6EF6                   MOV.L       @R15+,R14
+    000003E4              __$UpdateScene__12SceneManagerFv:
+                                                           ; function: SceneManager::UpdateScene()
+                                                           ; frame size=12
+    000003E4 2FE6                   MOV.L       R14,@-R15
+    000003E6 2FD6                   MOV.L       R13,@-R15
+    000003E8 4F22                   STS.L       PR,@-R15
+    000003EA 6D43                   MOV         R4,R13
+    000003EC A007                   BRA         L519
+    000003EE EE00                   MOV         #0,R14
+    000003F0              L520:                             
+    000003F0 65E3                   MOV         R14,R5
+    000003F2 64D3                   MOV         R13,R4
+    000003F4 B04E                   BSR         __$get__19List__tm__8_P5SceneFi_Z1Z
+    000003F6 7404                   ADD         #4,R4
+    000003F8 BF79                   BSR         __$Update__5SceneFv
+    000003FA 6403                   MOV         R0,R4
+    000003FC 7E01                   ADD         #1,R14
+    000003FE              L519:                             
+    000003FE 52D3                   MOV.L       @(12,R13),R2
+    00000400 3E23                   CMP/GE      R2,R14
+    00000402 8BF5                   BF          L520
+    00000404 4F26                   LDS.L       @R15+,PR
+    00000406 6DF6                   MOV.L       @R15+,R13
+    00000408 000B                   RTS
+    0000040A 6EF6                   MOV.L       @R15+,R14
+    0000040C              __$StartScene__12SceneManagerFv: ; function: SceneManager::StartScene()
+                                                           ; frame size=12
+    0000040C 2FE6                   MOV.L       R14,@-R15
+    0000040E 2FD6                   MOV.L       R13,@-R15
+    00000410 4F22                   STS.L       PR,@-R15
+    00000412 6D43                   MOV         R4,R13
+    00000414 A007                   BRA         L522
+    00000416 EE00                   MOV         #0,R14
+    00000418              L523:                             
+    00000418 65E3                   MOV         R14,R5
+    0000041A 64D3                   MOV         R13,R4
+    0000041C B03A                   BSR         __$get__19List__tm__8_P5SceneFi_Z1Z
+    0000041E 7404                   ADD         #4,R4
+    00000420 BF78                   BSR         __$Start__5SceneFv
+    00000422 6403                   MOV         R0,R4
+    00000424 7E01                   ADD         #1,R14
+    00000426              L522:                             
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE   14
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000426 52D3                   MOV.L       @(12,R13),R2
+    00000428 3E23                   CMP/GE      R2,R14
+    0000042A 8BF5                   BF          L523
+    0000042C 4F26                   LDS.L       @R15+,PR
+    0000042E 6DF6                   MOV.L       @R15+,R13
+    00000430 000B                   RTS
+    00000432 6EF6                   MOV.L       @R15+,R14
+    00000434              __$GetSceneInBuild__12SceneManagerFi:
+                                                           ; function: SceneManager::GetSceneInBuild(int)
+                                                           ; frame size=16
+    00000434 2FE6                   MOV.L       R14,@-R15
+    00000436 EE00                   MOV         #0,R14
+    00000438 4F22                   STS.L       PR,@-R15
+    0000043A 63E3                   MOV         R14,R3
+    0000043C 7FF8                   ADD         #-8,R15
+    0000043E 2338                   TST         R3,R3
+    00000440 1F41                   MOV.L       R4,@(4,R15)
+    00000442 8F06                   BF/S        L526
+    00000444 2FE2                   MOV.L       R14,@R15
+    00000446 D31B                   MOV.L       L541,R3    ; ___nw__FUl
+    00000448 430B                   JSR         @R3
+    0000044A E430                   MOV         #48,R4
+    0000044C 2008                   TST         R0,R0
+    0000044E 8D0E                   BT/S        L527
+    00000450 2F02                   MOV.L       R0,@R15
+    00000452              L526:                             
+    00000452 E300                   MOV         #0,R3
+    00000454 62F2                   MOV.L       @R15,R2
+    00000456 1232                   MOV.L       R3,@(8,R2)
+    00000458 62F2                   MOV.L       @R15,R2
+    0000045A 22E2                   MOV.L       R14,@R2
+    0000045C 63F2                   MOV.L       @R15,R3
+    0000045E E200                   MOV         #0,R2
+    00000460 13E1                   MOV.L       R14,@(4,R3)
+    00000462 63F2                   MOV.L       @R15,R3
+    00000464 132B                   MOV.L       R2,@(44,R3)
+    00000466 63F2                   MOV.L       @R15,R3
+    00000468 13E9                   MOV.L       R14,@(36,R3)
+    0000046A 63F2                   MOV.L       @R15,R3
+    0000046C 13EA                   MOV.L       R14,@(40,R3)
+    0000046E              L527:                             
+    0000046E 64F2                   MOV.L       @R15,R4
+    00000470 53F1                   MOV.L       @(4,R15),R3
+    00000472 6043                   MOV         R4,R0
+    00000474 1433                   MOV.L       R3,@(12,R4)
+    00000476 7F08                   ADD         #8,R15
+    00000478 4F26                   LDS.L       @R15+,PR
+    0000047A 000B                   RTS
+    0000047C 6EF6                   MOV.L       @R15+,R14
+    0000047E              __$get_node__19List__tm__8_P5SceneFi_P15Node__tm__4_Z1Z:
+                                                           ; function: Node<T1> *List<T1>::get_node(int) [with T1=Scene *]
+                                                           ; frame size=0
+    0000047E E700                   MOV         #0,R7
+    00000480 A002                   BRA         L529
+    00000482 6642                   MOV.L       @R4,R6
+    00000484              L530:                             
+    00000484 5661                   MOV.L       @(4,R6),R6
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE   15
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000486 7701                   ADD         #1,R7
+    00000488              L529:                             
+    00000488 2668                   TST         R6,R6
+    0000048A 8901                   BT          L531
+    0000048C 3750                   CMP/EQ      R5,R7
+    0000048E 8BF9                   BF          L530
+    00000490              L531:                             
+    00000490 000B                   RTS
+    00000492 6063                   MOV         R6,R0
+    00000494              __$get__19List__tm__8_P5SceneFi_Z1Z:
+                                                           ; function: T1 List<T1>::get(int) [with T1=Scene *]
+                                                           ; frame size=4
+    00000494 4F22                   STS.L       PR,@-R15
+    00000496 E3FF                   MOV         #-1,R3
+    00000498 3533                   CMP/GE      R3,R5
+    0000049A 8B04                   BF          L427
+    0000049C BFEF                   BSR         __$get_node__19List__tm__8_P5SceneFi_P15Node__tm__4_Z1Z
+    0000049E 0009                   NOP
+    000004A0 6403                   MOV         R0,R4
+    000004A2 2448                   TST         R4,R4
+    000004A4 8B02                   BF          L535
+    000004A6              L427:
+    000004A6 4F26                   LDS.L       @R15+,PR
+    000004A8 000B                   RTS
+    000004AA E000                   MOV         #0,R0
+    000004AC              L535:                             
+    000004AC 6042                   MOV.L       @R4,R0
+    000004AE              L534:                             
+    000004AE 4F26                   LDS.L       @R15+,PR
+    000004B0 000B                   RTS
+    000004B2 0009                   NOP
+    000004B4              L541:                             
+    000004B4 <00000000>             .DATA.L     ___nw__FUl
+B_B 00000000              _BR_Size:                        ; static: BR_Size
+    00000000 00000004               .RES.L      1
+B   00000000              __$__T30113100$291:              ; static: __T30113100
+    00000000 00000004               .RES.L      1
+    00000004              __$__2983_26_sceneManager$292:   ; static: sceneManager
+    00000004 00000004               .RES.L      1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 12:12:30  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:        49
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:      107
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               000004B8 Byte(s)
+PROGRAM  SECTION (P_BR_Size):                       00000000 Byte(s)
+PROGRAM  SECTION (P_TOP):                           0000000C Byte(s)
+CONSTANT SECTION (C):                               00000000 Byte(s)
+CONSTANT SECTION (C_BR_Size):                       00000000 Byte(s)
+CONSTANT SECTION (C_TOP):                           00000000 Byte(s)
+DATA     SECTION (D):                               00000000 Byte(s)
+DATA     SECTION (D_BR_Size):                       00000000 Byte(s)
+DATA     SECTION (D_TOP):                           00000000 Byte(s)
+BSS      SECTION (B):                               00000008 Byte(s)
+BSS      SECTION (B_BR_Size):                       00000004 Byte(s)
+BSS      SECTION (B_TOP):                           00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 000004D0 Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:            8
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:           8
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            82
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmk190A.tmp 
+
