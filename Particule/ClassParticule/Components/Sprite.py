@@ -68,11 +68,12 @@ class Sprite(Component):
     def SaveDataDict(self):
         data = Component.SaveDataDict(self)
         data.update({
-            "repImg":self.texture.path,
+            "repImg":self.texture.ID,
         })
         return data
 
     def LoadDataDict(self,data,component,dataCompo,dicoGameObject,dicoComponent):
         Component.LoadDataDict(self,data,component,dataCompo,dicoGameObject,dicoComponent)
-        self.texture = Texture(self.Particule,Path=dataCompo["repImg"],name=os.path.basename(dataCompo["repImg"]))
+        self.texture = self.Particule.GetTextureUUID(dataCompo["repImg"])
+        #Texture(self.Particule,Path=dataCompo["repImg"],name=os.path.basename(dataCompo["repImg"]))
         self.ReloadImg()

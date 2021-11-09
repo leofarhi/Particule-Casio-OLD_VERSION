@@ -329,6 +329,12 @@ class Particule:
         else:
             return None
 
+    def GetTextureUUID(self, UUID):
+        txt = self.GetObjectWithUUID(UUID)
+        if txt == None:
+            txt = self.GetObjectWithUUID("TextureVide")
+        return txt
+
     def VerifFocusSet(self):
         self.Scene.surface.focus_set()
 

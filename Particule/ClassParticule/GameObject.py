@@ -18,7 +18,7 @@ class GameObject(Object):
         self.transform = Transform(self)
         self.ListOfComponent=[self.transform]
 
-        if self.scene!="":
+        if self.scene!="" and self.scene in self.Particule.Scene.scenes:
             indexScene = self.Particule.Scene.scenes.index(self.scene)
             if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
                 self.Particule.Scene.UUID_Objects[indexScene].update({self.ID:self})
@@ -50,7 +50,7 @@ class GameObject(Object):
         return Data
 
     def UpdateOnGUI(self):
-        if self.scene!="":
+        if self.scene!="" and self.scene in self.Particule.Scene.scenes:
             indexScene = self.Particule.Scene.scenes.index(self.scene)
             if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
                 self.Particule.Scene.UUID_Objects[indexScene].update({self.ID:self})
@@ -83,7 +83,7 @@ class GameObject(Object):
 
     def Destroy(self):
         Object.Destroy(self)
-        if self.scene != "":
+        if self.scene != "" and self.scene in self.Particule.Scene.scenes:
             indexScene = self.Particule.Scene.scenes.index(self.scene)
             if self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
                 del (self.Particule.Scene.UUID_Objects[indexScene])[self.ID]

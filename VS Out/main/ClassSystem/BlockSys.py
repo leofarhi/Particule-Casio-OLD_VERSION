@@ -90,7 +90,7 @@ class BlockSys:
         elif Type == "Vector2":
             return "Vector2()"
         elif Type == "Texture":
-            return 'Texture(self.Particule,name="None")'
+            return 'self.texture = self.Particule.FolderWindow.TextureVide'
     def GetSaveValueAttributPython(self,Type,name):
         if Type in ["int","float","string","bool"]:
             return '"'+name+'":self.'+name
@@ -112,9 +112,9 @@ class BlockSys:
         elif Type == "Texture":
             return '{"Type":Texture}'
         elif Type == "list(int)":
-            return '{"Type":list,"LstValueType":int,"LstType":"List"}'
+            return '{"Type":list,"LstValueType":{"Type":int},"LstType":"List"}'
         elif Type == "array(int)":
-            return '{"Type":list,"LstValueType":int,"LstType":"Array"}'
+            return '{"Type":list,"LstValueType":{"Type":int},"LstType":"Array"}'
     def GetLoadValueAttributPython(self,Type,name):
         if Type in ["int","float","string","bool"]:
             return 'self.'+name+'= dataCompo["'+name+'"]'

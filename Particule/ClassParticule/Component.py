@@ -17,7 +17,7 @@ class Component(Object):
         self.TypeVariables = {"name":{"Type":str},
                               "gameObject":{"Type":ClassParticule.GameObject.GameObject}
                               }
-        if self.gameObject.scene!="":
+        if self.gameObject.scene!="" and self.gameObject.scene in self.Particule.Scene.scenes:
             indexScene = self.Particule.Scene.scenes.index(self.gameObject.scene)
             if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
                 self.Particule.Scene.UUID_Objects[indexScene].update({self.ID:self})
@@ -48,7 +48,7 @@ class Component(Object):
         return lst
 
     def RefreshGUI(self):
-        if self.gameObject.scene!="":
+        if self.gameObject.scene!="" and self.gameObject.scene in self.Particule.Scene.scenes:
             indexScene = self.Particule.Scene.scenes.index(self.gameObject.scene)
             if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
                 self.Particule.Scene.UUID_Objects[indexScene].update({self.ID:self})
@@ -90,7 +90,7 @@ class Component(Object):
         self.contextMenu.post(event.x_root, event.y_root)
     def Destroy(self,*args):
         Object.Destroy(self)
-        if self.gameObject.scene != "":
+        if self.gameObject.scene != "" and self.gameObject.scene in self.Particule.Scene.scenes:
             indexScene = self.Particule.Scene.scenes.index(self.gameObject.scene)
             if self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
                 del (self.Particule.Scene.UUID_Objects[indexScene])[self.ID]

@@ -36,8 +36,12 @@ class SearchWindow(EditorWindow):
         scrollbarFolder.pack(side=RIGHT, fill=Y)
 
         self.mylistFolder = Listbox(self.FolderFrame, yscrollcommand=scrollbarFolder.set)
+        self.mylistFolder.bind('<<ListboxSelect>>', self.Selected)
+
+        self.LstObjFound=[]
         for UUID,Obj in list(self.Particule.All_UUID.items()):
             if type(Obj)==TypeSearch:
+                self.LstObjFound.append((UUID,Obj))
                 self.mylistFolder.insert(END, Obj.name)
 
 
@@ -58,6 +62,12 @@ class SearchWindow(EditorWindow):
         self.mylistScene.pack(side=LEFT, fill=BOTH, expand=True)
         scrollbarScene.config(command=self.mylistScene.yview)
         """
+
+    def Selected(self,event):
+        w = event.widget
+        index = int(w.curselection()[0])
+        self.Object.Data = (self.LstObjFound[index])[1]
+        self.Object.changeOther()
 
     def ClearListe(self):
         self.mylistFolder.delete(0, END)

@@ -121,7 +121,7 @@ class BlockSys:
         elif Type == "Vector2":
             return 'self.'+name+'= Vector2.set(Vector2(),dataCompo["'+name+'"])'
         elif Type == "Texture":
-            return 'self.'+name+'= Texture(self.Particule,Path=dataCompo["'+name+'"],name=os.path.basename(dataCompo["'+name+'"]))'
+            return 'self.'+name+'= self.Particule.GetTextureUUID(dataCompo["'+name+'"])'
     def GetInitValueAttributCasio(self,Type):
         if Type == "int":
             return "0"

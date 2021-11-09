@@ -24,7 +24,8 @@ class FolderWindow(EditorWindow):
     def __init__(self,RootWindow):
         EditorWindow.__init__(self, RootWindow, Resize=True, ScrollbarShow=False)
 
-        self.TextureVide = Texture(self.Particule,name="None")
+        self.TextureVide = Texture(self.Particule,name="None",UUID = "TextureVide")
+        self.TextureVide.name = "TextureVide"
 
         # Cell width of each cell
         self.cell_width = 190
@@ -278,8 +279,8 @@ class FolderWindow(EditorWindow):
                     try:
                         path = self.detailed_file_list[list(self.selected_file_indices)[0]]
                         guid = rf.found(path + ".meta", "guid")
-                        texture = Texture(self.Particule, Path=self.Particule.FolderProject + "/Library/ImagesBmpCache/" +guid+'.bmp',
-                                          name=os.path.basename(self.detailed_file_list[list(self.selected_file_indices)[0]]))
+                        #texture = Texture(self.Particule, Path=self.Particule.FolderProject + "/Library/ImagesBmpCache/" +guid+'.bmp',
+                        #                  name=os.path.basename(self.detailed_file_list[list(self.selected_file_indices)[0]]))
                     except:pass
         #print(str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)) )
         #print(self.selected_file_indices)
@@ -295,7 +296,9 @@ class FolderWindow(EditorWindow):
                 if TempID in list(self.Particule.All_UUID.keys()):
                     UUID = TempID
                 else:
-                    UUID = self.Particule.CreateUUID(FileVariable(self.Particule,rep + "/" + i,TempID),TempID)
+                    fv = FileVariable(self.Particule, rep + "/" + i, TempID)
+                    UUID = self.Particule.CreateUUID(fv,TempID)
+                    fv.UpdateCheck()
                 rf.save(rep + "/" + i, "guid", UUID)
                 org = os.path.splitext(i)[0]
                 if os.path.splitext(org)[1] == ".particule":

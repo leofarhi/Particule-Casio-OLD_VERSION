@@ -20,7 +20,7 @@ class Tilemap(Component):
 
         self.SizeTilemap=Vector2(10,10)
         self.SizeCase = Vector2(16, 16)
-        self.Textures = [Texture(self.Particule,name="None")]
+        self.Textures = [self.Particule.FolderWindow.TextureVide]
         self.DataTilemap=[]
         self.TypeVariables.update({"texture": {"Type": Texture},
                                    "SizeTilemap": {"Type": Vector2},
@@ -143,7 +143,7 @@ class Tilemap(Component):
     def SaveDataDict(self):
         data = Component.SaveDataDict(self)
         data.update({
-            "repImg":self.texture.path,
+            #"repImg":self.texture.path,
             "SizeTilemap":self.SizeTilemap.get(),
             "SizeCase": self.SizeCase.get(),
             "DataTilemap":self.DataTilemap
@@ -152,7 +152,7 @@ class Tilemap(Component):
 
     def LoadDataDict(self,data,component,dataCompo,dicoGameObject,dicoComponent):
         Component.LoadDataDict(self,data,component,dataCompo,dicoGameObject,dicoComponent)
-        self.texture = Texture(self.Particule,Path=dataCompo["repImg"],name=os.path.basename(dataCompo["repImg"]))
+        #self.texture = Texture(self.Particule,Path=dataCompo["repImg"],name=os.path.basename(dataCompo["repImg"]))
         self.ReloadImg()
         self.SizeTilemap = Vector2.set(Vector2(), dataCompo["SizeTilemap"])
         self.SizeCase = Vector2.set(Vector2(), dataCompo["SizeCase"])
