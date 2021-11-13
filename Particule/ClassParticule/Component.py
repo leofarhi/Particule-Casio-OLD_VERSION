@@ -110,12 +110,14 @@ class Component(Object):
             var = getattr(self,i)
             #print(var, i,eval("self."+i))
             dicoVar= self.TypeVariables[i]
-            if dicoVar["Type"] in [int,float,str,bool]:
+            if dicoVar["Type"] in [int,float,str]:
                 if dicoVar["Type"] is str:
                     parametres +='(unsigned char*)"'
                 parametres+= str(var)
                 if dicoVar["Type"] is str:
                     parametres+='"'
+            elif dicoVar["Type"] is bool:
+                parametres += str(var).lower()
             else:
                 if dicoVar["Type"] is Vector2:
                     parametres+="new Vector2("+str(var.x)+","+str(var.y)+")"

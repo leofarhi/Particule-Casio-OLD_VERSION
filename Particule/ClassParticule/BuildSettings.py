@@ -83,6 +83,8 @@ class BuildSettings(EditorWindow):
         self.Particule.SaveData.SaveScene()
         AllImages=""
         CodeOfScenes = ""
+        CreateTexturesCode = ""
+        TexturesID = ""
 
         path = self.Particule.FolderProject + "/Library/ImagesBmpCache"
         for i in os.listdir(path):
@@ -95,7 +97,8 @@ class BuildSettings(EditorWindow):
             Img = ImageTk.Image.open(path+"/"+i)
             width = Img.width
             height = Img.height
-            CodeOfScenes += "Texture* Texture_"+name+'= new Texture("Texture",' + str(width) + "," + str(height) + "," + name+');\n'
+            TexturesID+="Texture* Texture_"+name+";\n"
+            CreateTexturesCode += "Texture_"+name+'= new Texture("Texture",' + str(width) + "," + str(height) + "," + name+');\n'
 
         #print(AllImages)
         scenes = rf.GetList(self.Particule.FolderProject + "/ProjectSettings/BuildSettings.txt", "ScenesInBuild")
@@ -115,6 +118,7 @@ class BuildSettings(EditorWindow):
                     code += i[0] + "->isStatic = " + str(i[1].isStatic).lower() + ";\n"
                     code += i[0]+'->transform->position->Set('+str(i[1].transform.position.x)+','+str(i[1].transform.position.y)+');\n'
                     code += i[0] + '->transform->localPosition->Set(' + str(i[1].transform.localPosition.x) + ',' + str(i[1].transform.localPosition.y) + ');\n'
+
                     if i[1].transform.parent!=None:
                         code+=i[0]+"->transform->SetParent("+i[1].transform.parent.gameObject.ID+"->transform);"
                     for compo in i[1].ListOfComponent:
@@ -132,7 +136,7 @@ class BuildSettings(EditorWindow):
                 CodeOfScenes +="\n}"
 
         Announcement,CasioCode = self.GetCodeCasioFromVisualScratch()
-
+        CasioCode,Cpp=CasioCode
 
         desti = self.Particule.FolderProject + "/Temp/Compile"
         M.create_rep(desti)
@@ -157,7 +161,19 @@ class BuildSettings(EditorWindow):
             txt=fic.read()
         txt = txt.replace("//AddScenes",CodeOfScenes)
         txt = txt.replace("//Components", CasioCode)
+
+        txt = txt.replace("//CreateTextures", CreateTexturesCode)
+        txt = txt.replace("//TexturesID", TexturesID)
+
         with open(desti+"/ParticuleEngine.hpp","w") as fic:
+            fic.write(txt)
+
+        with open(desti+"/ParticuleEngine.cpp","r") as fic:
+            txt=fic.read()
+
+        txt+=Cpp
+
+        with open(desti+"/ParticuleEngine.cpp","w") as fic:
             fic.write(txt)
 
         with open(desti+"/Announcement.h","r") as fic:
@@ -177,14 +193,16 @@ class BuildSettings(EditorWindow):
                 os.remove(self.Particule.FolderProject+ "/Library/ScriptEditor/"+i)
         process = subprocess.Popen([self.Particule.VisualScratchPath,self.Particule.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
         #print(eval(process.stdout.readlines()[-1]))
-        code=eval(process.stdout.readlines()[-1])
+        code=eval(process.stdout.readlines()[-1].decode('latin-1'))
         CasioCodeLst=code[1]
-        CasioCode=""
+        Hpp=""
+        Cpp=""
         for i in CasioCodeLst:
-            CasioCode+=i[1]+"\n"
+            Hpp+=(i[1])[0]+"\n"
+            Cpp += (i[1])[1] + "\n"
         Announcement="\n"
         for i in CasioCodeLst:
             name = os.path.basename(i[0])
             name = os.path.splitext(name)[0]
             Announcement+="class "+name+";\n"
-        return (Announcement,CasioCode)
+        return (Announcement,Hpp,Cpp)

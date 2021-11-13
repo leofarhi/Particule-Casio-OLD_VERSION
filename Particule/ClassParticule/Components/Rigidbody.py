@@ -6,7 +6,7 @@ from ClassParticule.Vector2 import Vector2
 class Rigidbody(Component):
     def __init__(self, gameObject, **kwargs):
         Component.__init__(self, gameObject, __name__.split(".")[-1], **kwargs)
-        self.Mass = 0
+        self.Mass = 1
         self.UseGravity = False
         self.IsKinematic = False
 

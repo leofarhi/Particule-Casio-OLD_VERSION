@@ -7,6 +7,8 @@ class Sprite(Component):
         Component.__init__(self,gameObject,__name__.split(".")[-1],**kwargs)
         #Repertoir de l'image
         #repImg = "C:/Users/leofa/OneDrive/Documents/PycharmProjects/Particule/lib/logo.png"
+        self.width = 0
+        self.height = 0
         if texture==None:
             self.texture = self.Particule.FolderWindow.TextureVide
         else:

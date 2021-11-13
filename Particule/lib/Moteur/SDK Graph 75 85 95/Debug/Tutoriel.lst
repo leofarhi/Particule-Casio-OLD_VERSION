@@ -1,4 +1,4 @@
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 18:28:35  PAGE    1
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 13-Nov-2021 16:46:02  PAGE    1
 
 ************ OBJECT LISTING ************
 
@@ -57,172 +57,244 @@ SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
       Tutoriel.c    49    
       Tutoriel.c    50    int main() {
 P   00000000              _main:                           ; function: main
-                                                           ; frame size=4
-    00000000 D419                   MOV.L       L268+2,R4  ; __$__T29653968$246
-    00000002 7FFC                   ADD         #-4,R15
+                                                           ; frame size=32
+    00000000 2FE6                   MOV.L       R14,@-R15
+    00000002 2FD6                   MOV.L       R13,@-R15
 
 
 
 
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 18:28:35  PAGE    2
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 13-Nov-2021 16:46:02  PAGE    2
 
 
 SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
 
-    00000004 DE19                   MOV.L       L268+6,R14 ; __$__2659_26_sceneManager$247
-    00000006 6342                   MOV.L       @R4,R3
-    00000008 2338                   TST         R3,R3
-    0000000A 8B15                   BF          L259
-    0000000C E301                   MOV         #1,R3
+    00000004 2FC6                   MOV.L       R12,@-R15
+    00000006 2FB6                   MOV.L       R11,@-R15
+    00000008 2FA6                   MOV.L       R10,@-R15
+    0000000A 2F96                   MOV.L       R9,@-R15
+    0000000C 4F22                   STS.L       PR,@-R15
+    0000000E 7FFC                   ADD         #-4,R15
+    00000010 D42E                   MOV.L       L278,R4    ; __$__T30533080$250
+    00000012 DE2F                   MOV.L       L278+4,R14 ; __$__2766_26_sceneManager$251
+    00000014 6342                   MOV.L       @R4,R3
+    00000016 2338                   TST         R3,R3
+    00000018 8B20                   BF          L267
+    0000001A E301                   MOV         #1,R3
+    0000001C 2432                   MOV.L       R3,@R4
       Tutoriel.c    51        static SceneManager* sceneManager = new SceneManager();
-    0000000E ED00                   MOV         #0,R13
-    00000010 2432                   MOV.L       R3,@R4
-    00000012 63D3                   MOV         R13,R3
-    00000014 2338                   TST         R3,R3
-    00000016 8F06                   BF/S        L261
-    00000018 2FD2                   MOV.L       R13,@R15
-    0000001A D315                   MOV.L       L268+10,R3 ; ___nw__FUl
-    0000001C 430B                   JSR         @R3
-    0000001E E410                   MOV         #16,R4
-    00000020 2008                   TST         R0,R0
-    00000022 8D07                   BT/S        L262
-    00000024 2F02                   MOV.L       R0,@R15
-    00000026              L261:                             
-    00000026 E300                   MOV         #0,R3
-    00000028 62F2                   MOV.L       @R15,R2
-    0000002A 1233                   MOV.L       R3,@(12,R2)
-    0000002C 62F2                   MOV.L       @R15,R2
-    0000002E 12D1                   MOV.L       R13,@(4,R2)
-    00000030 63F2                   MOV.L       @R15,R3
-    00000032 13D2                   MOV.L       R13,@(8,R3)
-    00000034              L262:                             
+    0000001E ED00                   MOV         #0,R13
+    00000020 63D3                   MOV         R13,R3
+    00000022 2338                   TST         R3,R3
+    00000024 8F06                   BF/S        L269
+    00000026 2FD2                   MOV.L       R13,@R15
+    00000028 D32A                   MOV.L       L278+8,R3  ; ___nw__FUl
+    0000002A 430B                   JSR         @R3
+    0000002C E41C                   MOV         #28,R4
+    0000002E 2008                   TST         R0,R0
+    00000030 8D12                   BT/S        L270
+    00000032 2F02                   MOV.L       R0,@R15
+    00000034              L269:                             
     00000034 62F2                   MOV.L       @R15,R2
-    00000036 2E22                   MOV.L       R2,@R14
-    00000038              L259:                             
+    00000036 E301                   MOV         #1,R3
+    00000038 1235                   MOV.L       R3,@(20,R2)
+    0000003A E300                   MOV         #0,R3
+    0000003C 62F2                   MOV.L       @R15,R2
+    0000003E 1236                   MOV.L       R3,@(24,R2)
+    00000040 62F2                   MOV.L       @R15,R2
+    00000042 12D3                   MOV.L       R13,@(12,R2)
+    00000044 63F2                   MOV.L       @R15,R3
+    00000046 E2FF                   MOV         #-1,R2
+    00000048 13D4                   MOV.L       R13,@(16,R3)
+    0000004A 63F2                   MOV.L       @R15,R3
+    0000004C 1321                   MOV.L       R2,@(4,R3)
+    0000004E E200                   MOV         #0,R2
+    00000050 63F2                   MOV.L       @R15,R3
+    00000052 1322                   MOV.L       R2,@(8,R3)
+    00000054 B052                   BSR         __$LoadTextures__12SceneManagerFv
+    00000056 64F2                   MOV.L       @R15,R4
+    00000058              L270:                             
+    00000058 63F2                   MOV.L       @R15,R3
+    0000005A 2E32                   MOV.L       R3,@R14
+    0000005C              L267:                             
       Tutoriel.c    52        //reference croise
       Tutoriel.c    53        sceneManager->LoadScene(0);
-    00000038 D30E                   MOV.L       L268+14,R3 ; _LoadScene__12SceneManagerFi
-    0000003A E500                   MOV         #0,R5
-    0000003C 430B                   JSR         @R3
-    0000003E 64E2                   MOV.L       @R14,R4
+    0000005C D31E                   MOV.L       L278+12,R3 ; _LoadScene__12SceneManagerFi
+    0000005E E500                   MOV         #0,R5
+    00000060 430B                   JSR         @R3
+    00000062 64E2                   MOV.L       @R14,R4
       Tutoriel.c    54        sceneManager->StartScene();
-    00000040 D20D                   MOV.L       L268+18,R2 ; _StartScene__12SceneManagerFv
-    00000042 420B                   JSR         @R2
-    00000044 64E2                   MOV.L       @R14,R4
-    00000046 DA0D                   MOV.L       L268+22,R10; _UpdateScene__12SceneManagerFv
-    00000048 DB0D                   MOV.L       L268+26,R11; _ML_clear_vram
-    0000004A DC0E                   MOV.L       L268+30,R12; _ML_display_vram
-    0000004C DD0E                   MOV.L       L268+34,R13; _Sleep
-      Tutoriel.c    55        while (true)
-    0000004E              L264:                             
+    00000064 D21D                   MOV.L       L278+16,R2 ; _StartScene__12SceneManagerFv
+    00000066 420B                   JSR         @R2
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 13-Nov-2021 16:46:02  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000068 64E2                   MOV.L       @R14,R4
+    0000006A D91D                   MOV.L       L278+20,R9 ; _UpdateScene__12SceneManagerFv
+    0000006C DA1D                   MOV.L       L278+24,R10; _ML_clear_vram
+    0000006E DB1E                   MOV.L       L278+28,R11; _KeyDown
+    00000070 DC1E                   MOV.L       L278+32,R12; _ML_display_vram
+    00000072 DD1F                   MOV.L       L278+36,R13; _Sleep
+      Tutoriel.c    55        while (!IsKeyDown(KEY_CTRL_MENU) && (!sceneManager->_quit))
+    00000074 A008                   BRA         L271
+    00000076 0009                   NOP
+    00000078              L272:                             
       Tutoriel.c    56        {
       Tutoriel.c    57            ML_clear_vram();
-    0000004E 4B0B                   JSR         @R11
-    00000050 0009                   NOP
+    00000078 4A0B                   JSR         @R10
+    0000007A 0009                   NOP
       Tutoriel.c    58            sceneManager->UpdateScene();
-    00000052 4A0B                   JSR         @R10
-    00000054 64E2                   MOV.L       @R14,R4
+    0000007C 490B                   JSR         @R9
+    0000007E 64E2                   MOV.L       @R14,R4
       Tutoriel.c    59    
       Tutoriel.c    60            Sleep(100);
-    00000056 4D0B                   JSR         @R13
-    00000058 E464                   MOV         #100,R4
-
-
-
-
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 18:28:35  PAGE    3
-
-
-SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
-
+    00000080 4D0B                   JSR         @R13
+    00000082 E464                   MOV         #100,R4
       Tutoriel.c    61            ML_display_vram();
-    0000005A 4C0B                   JSR         @R12
-    0000005C 0009                   NOP
-    0000005E AFF6                   BRA         L264
-    00000060 0009                   NOP
+    00000084 4C0B                   JSR         @R12
+    00000086 0009                   NOP
+    00000088              L271:                             
+    00000088 4B0B                   JSR         @R11
+    0000008A E430                   MOV         #48,R4
+    0000008C 600C                   EXTU.B      R0,R0
+    0000008E 2008                   TST         R0,R0
+    00000090 8B04                   BF          L273
+    00000092 D20F                   MOV.L       L278+4,R2  ; __$__2766_26_sceneManager$251
+    00000094 6322                   MOV.L       @R2,R3
+    00000096 5132                   MOV.L       @(8,R3),R1
+    00000098 2118                   TST         R1,R1
+    0000009A 89ED                   BT          L272
+    0000009C              L273:                             
       Tutoriel.c    62        }
-      Tutoriel.c    63        return 1;
-      Tutoriel.c    64    }
-      Tutoriel.c    65    
-      Tutoriel.c    66    extern "C"
-      Tutoriel.c    67    {
-      Tutoriel.c    68    int AddIn_main(int isAppli, unsigned short OptionNum)
-    00000062              _AddIn_main:                     ; function: AddIn_main
-                                                           ; frame size=0
-      Tutoriel.c    69    {
-      Tutoriel.c    70        return main();
-    00000062 AFCD                   BRA         _main
-    00000064 0009                   NOP
-    00000066              L268:                             
-    00000066 0000                   .DATA.W     0
-    00000068 <00000000>             .DATA.L     __$__T29653968$246
-    0000006C <00000000>             .DATA.L     __$__2659_26_sceneManager$247
-    00000070 <00000000>             .DATA.L     ___nw__FUl
-    00000074 <00000000>             .DATA.L     _LoadScene__12SceneManagerFi
-    00000078 <00000000>             .DATA.L     _StartScene__12SceneManagerFv
-    0000007C <00000000>             .DATA.L     _UpdateScene__12SceneManagerFv
-    00000080 <00000000>             .DATA.L     _ML_clear_vram
-    00000084 <00000000>             .DATA.L     _ML_display_vram
-    00000088 <00000000>             .DATA.L     _Sleep
-      Tutoriel.c    71    }
-      Tutoriel.c    72    
-      Tutoriel.c    73    
-      Tutoriel.c    74    
-      Tutoriel.c    75    
-      Tutoriel.c    76    //****************************************************************************
-      Tutoriel.c    77    //**************                                              ****************
-      Tutoriel.c    78    //**************                 Notice!                      ****************
-      Tutoriel.c    79    //**************                                              ****************
-      Tutoriel.c    80    //**************  Please do not change the following source.  ****************
-      Tutoriel.c    81    //**************                                              ****************
-      Tutoriel.c    82    //****************************************************************************
-      Tutoriel.c    83    
-      Tutoriel.c    84    
-      Tutoriel.c    85    #pragma section _BR_Size
-      Tutoriel.c    86    unsigned long BR_Size;
-      Tutoriel.c    87    #pragma section
-      Tutoriel.c    88    
-      Tutoriel.c    89    
-      Tutoriel.c    90    #pragma section _TOP
-      Tutoriel.c    91    
-      Tutoriel.c    92    //****************************************************************************
-      Tutoriel.c    93    //  InitializeSystem
-      Tutoriel.c    94    //
-      Tutoriel.c    95    //  param   :   isAppli   : 1 = Application / 0 = eActivity
-      Tutoriel.c    96    //              OptionNum : Option Number (only eActivity)
-      Tutoriel.c    97    //
-      Tutoriel.c    98    //  retval  :   1 = No error / 0 = Error
+      Tutoriel.c    63        delete sceneManager;
+    0000009C D315                   MOV.L       L278+40,R3 ; ___dl__FPv
+    0000009E 430B                   JSR         @R3
+    000000A0 64E2                   MOV.L       @R14,R4
+      Tutoriel.c    64        return 1;
+    000000A2 E001                   MOV         #1,R0
+      Tutoriel.c    65    }
+    000000A4 7F04                   ADD         #4,R15
+    000000A6 4F26                   LDS.L       @R15+,PR
+    000000A8 69F6                   MOV.L       @R15+,R9
+    000000AA 6AF6                   MOV.L       @R15+,R10
+    000000AC 6BF6                   MOV.L       @R15+,R11
+    000000AE 6CF6                   MOV.L       @R15+,R12
+    000000B0 6DF6                   MOV.L       @R15+,R13
+    000000B2 000B                   RTS
+    000000B4 6EF6                   MOV.L       @R15+,R14
+      Tutoriel.c    66    
+      Tutoriel.c    67    extern "C"
+      Tutoriel.c    68    {
+      Tutoriel.c    69    int AddIn_main(int isAppli, unsigned short OptionNum)
 
 
 
 
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 18:28:35  PAGE    4
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 13-Nov-2021 16:46:02  PAGE    4
 
 
 SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
 
-      Tutoriel.c    99    //
-      Tutoriel.c   100    //****************************************************************************
-      Tutoriel.c   101    int InitializeSystem(int isAppli, unsigned short OptionNum)
+    000000B6              _AddIn_main:                     ; function: AddIn_main
+                                                           ; frame size=8
+    000000B6 4F22                   STS.L       PR,@-R15
+    000000B8 7FFC                   ADD         #-4,R15
+      Tutoriel.c    70    {
+      Tutoriel.c    71        main();
+    000000BA BFA1                   BSR         _main
+    000000BC 0009                   NOP
+      Tutoriel.c    72        unsigned int key;
+      Tutoriel.c    73        return GetKey(&key);
+    000000BE D20E                   MOV.L       L278+44,R2 ; _GetKey
+    000000C0 420B                   JSR         @R2
+    000000C2 64F3                   MOV         R15,R4
+      Tutoriel.c    74    }
+    000000C4 7F04                   ADD         #4,R15
+    000000C6 4F26                   LDS.L       @R15+,PR
+    000000C8 000B                   RTS
+    000000CA 0009                   NOP
+    000000CC              L278:                             
+    000000CC <00000000>             .DATA.L     __$__T30533080$250
+    000000D0 <00000000>             .DATA.L     __$__2766_26_sceneManager$251
+    000000D4 <00000000>             .DATA.L     ___nw__FUl
+    000000D8 <00000000>             .DATA.L     _LoadScene__12SceneManagerFi
+    000000DC <00000000>             .DATA.L     _StartScene__12SceneManagerFv
+    000000E0 <00000000>             .DATA.L     _UpdateScene__12SceneManagerFv
+    000000E4 <00000000>             .DATA.L     _ML_clear_vram
+    000000E8 <00000000>             .DATA.L     _KeyDown
+    000000EC <00000000>             .DATA.L     _ML_display_vram
+    000000F0 <00000000>             .DATA.L     _Sleep
+    000000F4 <00000000>             .DATA.L     ___dl__FPv
+    000000F8 <00000000>             .DATA.L     _GetKey
+      Tutoriel.c    75    
+      Tutoriel.c    76    
+      Tutoriel.c    77    
+      Tutoriel.c    78    
+      Tutoriel.c    79    //****************************************************************************
+      Tutoriel.c    80    //**************                                              ****************
+      Tutoriel.c    81    //**************                 Notice!                      ****************
+      Tutoriel.c    82    //**************                                              ****************
+      Tutoriel.c    83    //**************  Please do not change the following source.  ****************
+      Tutoriel.c    84    //**************                                              ****************
+      Tutoriel.c    85    //****************************************************************************
+      Tutoriel.c    86    
+      Tutoriel.c    87    
+      Tutoriel.c    88    #pragma section _BR_Size
+      Tutoriel.c    89    unsigned long BR_Size;
+      Tutoriel.c    90    #pragma section
+      Tutoriel.c    91    
+      Tutoriel.c    92    
+      Tutoriel.c    93    #pragma section _TOP
+      Tutoriel.c    94    
+      Tutoriel.c    95    //****************************************************************************
+      Tutoriel.c    96    //  InitializeSystem
+      Tutoriel.c    97    //
+      Tutoriel.c    98    //  param   :   isAppli   : 1 = Application / 0 = eActivity
+      Tutoriel.c    99    //              OptionNum : Option Number (only eActivity)
+      Tutoriel.c   100    //
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 13-Nov-2021 16:46:02  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+      Tutoriel.c   101    //  retval  :   1 = No error / 0 = Error
+      Tutoriel.c   102    //
+      Tutoriel.c   103    //****************************************************************************
+      Tutoriel.c   104    int InitializeSystem(int isAppli, unsigned short OptionNum)
 P_T 00000000              _InitializeSystem:               ; function: InitializeSystem
                                                            ; frame size=0
-      Tutoriel.c   102    {
-      Tutoriel.c   103        return INIT_ADDIN_APPLICATION(isAppli, OptionNum);
-    00000000 D301                   MOV.L       L269+2,R3  ; _INIT_ADDIN_APPLICATION
+      Tutoriel.c   105    {
+      Tutoriel.c   106        return INIT_ADDIN_APPLICATION(isAppli, OptionNum);
+    00000000 D301                   MOV.L       L279+2,R3  ; _INIT_ADDIN_APPLICATION
     00000002 432B                   JMP         @R3
     00000004 0009                   NOP
-    00000006              L269:                             
+    00000006              L279:                             
     00000006 0000                   .DATA.W     0
     00000008 <00000000>             .DATA.L     _INIT_ADDIN_APPLICATION
-      Tutoriel.c   104    }
-      Tutoriel.c   105    
-      Tutoriel.c   106    #pragma section
       Tutoriel.c   107    }
+      Tutoriel.c   108    
+      Tutoriel.c   109    #pragma section
+      Tutoriel.c   110    }
+P   000000FC              __$LoadTextures__12SceneManagerFv:
+                                                           ; function: SceneManager::LoadTextures()
+                                                           ; frame size=0
+    000000FC 000B                   RTS
+    000000FE 0009                   NOP
 B_B 00000000              _BR_Size:                        ; static: BR_Size
     00000000 00000004               .RES.L      1
-B   00000000              __$__T29653968$246:              ; static: __T29653968
+B   00000000              __$__T30533080$250:              ; static: __T30533080
     00000000 00000004               .RES.L      1
-    00000004              __$__2659_26_sceneManager$247:   ; static: sceneManager
+    00000004              __$__2766_26_sceneManager$251:   ; static: sceneManager
     00000004 00000004               .RES.L      1
 
 
@@ -256,13 +328,7 @@ B   00000000              __$__T29653968$246:              ; static: __T29653968
 
 
 
-
-
-
-
-
-
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 09-Nov-2021 18:28:35  PAGE    1
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 13-Nov-2021 16:46:02  PAGE    1
 
 
 ******** STATISTICS INFORMATION ********
@@ -278,13 +344,13 @@ NUMBER OF WARNINGS:        49
 
 ******* SOURCE LINE INFORMATION ********
 
-COMPILED SOURCE LINE:      107
+COMPILED SOURCE LINE:      110
 
 
 
 ******* SECTION SIZE INFORMATION *******
 
-PROGRAM  SECTION (P):                               0000008C Byte(s)
+PROGRAM  SECTION (P):                               00000100 Byte(s)
 PROGRAM  SECTION (P_BR_Size):                       00000000 Byte(s)
 PROGRAM  SECTION (P_TOP):                           0000000C Byte(s)
 CONSTANT SECTION (C):                               00000000 Byte(s)
@@ -297,15 +363,15 @@ BSS      SECTION (B):                               00000008 Byte(s)
 BSS      SECTION (B_BR_Size):                       00000004 Byte(s)
 BSS      SECTION (B_TOP):                           00000000 Byte(s)
 
- TOTAL PROGRAM SIZE: 000000A4 Byte(s)
+ TOTAL PROGRAM SIZE: 00000118 Byte(s)
 
 
 
 ********** LABEL INFORMATION ***********
 
-NUMBER OF EXTERNAL REFERENCE SYMBOLS:            8
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:           11
 NUMBER OF EXTERNAL DEFINITION SYMBOLS:           4
-NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            18
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            23
 
 
 
@@ -331,5 +397,5 @@ NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            18
 *** COMMAND PARAMETER ***
 
 
-  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmk7327.tmp 
+  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmk6E5.tmp 
 

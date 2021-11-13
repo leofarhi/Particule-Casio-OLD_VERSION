@@ -8,7 +8,7 @@ class ScriptBlockPython(ScriptBlock):
         self.Onglet="Mes Blocs"
         self.TypeForme="Vague"
         self.Texte="Ma Fonction"
-        self.Parametres=[["Label","void"],['TexteEtNombre', ''],["Label","("],['TexteEtNombre', ''],["Label",")"]]
+        self.Parametres=[["Label","Ma fonction :"],['TexteEtNombre', ''],["Label","("],['TexteEtNombre', ''],["Label",")"]]
         self.Color=Couleurs.jaune
         self.Compile="MyCMDFunction"
         self.Options = []
@@ -18,6 +18,6 @@ class ScriptBlockPython(ScriptBlock):
 
 
     def WhenCompileForCasio(self,lst):
-        code = "void "+str(self.BlockSys.GetVariable(lst,0)[1])+"("+str(self.BlockSys.GetVariable(lst,1)[1])+"){\n" + self.BlockSys.GetSuite(lst,0) + "\n}"
+        code = str(self.BlockSys.GetVariable(lst,0)[1])+"("+str(self.BlockSys.GetVariable(lst,1)[1])+"){\n" + self.BlockSys.GetSuite(lst,0) + "\n}"
         return code
     

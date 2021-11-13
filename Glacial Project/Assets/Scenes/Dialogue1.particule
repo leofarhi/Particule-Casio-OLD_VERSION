@@ -1,0 +1,87 @@
+{
+    "NameScene": "/Assets/Scenes/Dialogue1.particule",
+    "GameObjects": {
+        "UUID_f80b4179_fbef_458a_b43f_598db402e7ce": {
+            "name": "Camera",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "/Assets/Scenes/Dialogue1.particule",
+            "sceneCullingMask": "",
+            "tag": 0,
+            "transform": "UUID_a4e65e63_542f_4c19_8a60_d81c2bdfff83",
+            "ListOfComponent": [
+                "UUID_a4e65e63_542f_4c19_8a60_d81c2bdfff83",
+                "UUID_7908b6b6_b109_4959_a413_ff7389cf7754"
+            ]
+        },
+        "UUID_6bd7b986_677e_438c_a97a_b4c44365eaa5": {
+            "name": "SpriteGm",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "/Assets/Scenes/Dialogue1.particule",
+            "sceneCullingMask": "",
+            "tag": 0,
+            "transform": "UUID_5404ceff_7efe_4497_a85d_7ff320924b34",
+            "ListOfComponent": [
+                "UUID_5404ceff_7efe_4497_a85d_7ff320924b34",
+                "UUID_34059c05_df3e_45ff_8922_858b23748cb3",
+                "UUID_327a64ae_21d5_4290_819b_4fbd87aa9f15"
+            ]
+        }
+    },
+    "Components": {
+        "UUID_a4e65e63_542f_4c19_8a60_d81c2bdfff83": {
+            "name": "Transform",
+            "gameObject": "UUID_f80b4179_fbef_458a_b43f_598db402e7ce",
+            "childCount": 0,
+            "localPosition": [
+                0,
+                0
+            ],
+            "position": [
+                0,
+                0
+            ],
+            "parent": null,
+            "childs": []
+        },
+        "UUID_7908b6b6_b109_4959_a413_ff7389cf7754": {
+            "name": "Camera",
+            "gameObject": "UUID_f80b4179_fbef_458a_b43f_598db402e7ce"
+        },
+        "UUID_5404ceff_7efe_4497_a85d_7ff320924b34": {
+            "name": "Transform",
+            "gameObject": "UUID_6bd7b986_677e_438c_a97a_b4c44365eaa5",
+            "childCount": 0,
+            "localPosition": [
+                93.0,
+                3.0
+            ],
+            "position": [
+                93.0,
+                3.0
+            ],
+            "parent": null,
+            "childs": []
+        },
+        "UUID_34059c05_df3e_45ff_8922_858b23748cb3": {
+            "name": "Dialogue1",
+            "gameObject": "UUID_6bd7b986_677e_438c_a97a_b4c44365eaa5",
+            "loadD": 0,
+            "NextScene": 1,
+            "TextureV": "TextureVide",
+            "Snowman": "UUID_8734bc71_577b_472b_899d_e21633878622",
+            "Jessy": "UUID_1059e7a7_eaec_4dae_a748_a3571d381473",
+            "Petra": "UUID_340fa7d9_e8b7_4176_b4cb_24381233f5bd"
+        },
+        "UUID_327a64ae_21d5_4290_819b_4fbd87aa9f15": {
+            "name": "Sprite",
+            "gameObject": "UUID_6bd7b986_677e_438c_a97a_b4c44365eaa5",
+            "repImg": "UUID_8734bc71_577b_472b_899d_e21633878622"
+        }
+    }
+}

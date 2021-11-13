@@ -62,8 +62,10 @@ private:
 
     
 public:
+    int DeleteAct;
     int Count;
     List() {
+        DeleteAct = true;
         Count = 0;
         head = NULL;
         tail = NULL;
@@ -132,8 +134,8 @@ public:
         T value = it->data;
         it->next->prev = it->prev;
         it->prev->next = it->next;
-
-        delete it;
+        if (DeleteAct)
+            delete it;
         Count--;
         return value;
     }
@@ -157,7 +159,8 @@ public:
         it->next->prev = it->prev;
         it->prev->next = it->next;
 
-        delete it;
+        if (DeleteAct)
+            delete it;
         Count--;
         return value;
     }
@@ -177,7 +180,8 @@ public:
             else temp = temp->next;
             i++;
         }
-        delete temp;
+        if (DeleteAct)
+            delete temp;
         return -1;
     }
 
@@ -187,7 +191,8 @@ public:
             if (temp->data == val) return true;
             else temp = temp->next;
         }
-        delete temp;
+        if (DeleteAct)
+            delete temp;
         return false;
     }
 };

@@ -1,0 +1,276 @@
+{
+    "NameScene": "/Assets/Scenes/FightGolem.particule",
+    "GameObjects": {
+        "UUID_3abca82c_b048_4ceb_a0d3_b7e98628211b": {
+            "name": "camera",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "/Assets/Scenes/FightGolem.particule",
+            "sceneCullingMask": "",
+            "tag": 0,
+            "transform": "UUID_abe83186_6eaf_4954_84ee_55ff038ca23d",
+            "ListOfComponent": [
+                "UUID_abe83186_6eaf_4954_84ee_55ff038ca23d",
+                "UUID_504247a3_6927_462b_bdd2_3630d13c1e81"
+            ]
+        },
+        "UUID_40d9429b_9220_42df_b285_874fccdd63a6": {
+            "name": "Golem",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "/Assets/Scenes/FightGolem.particule",
+            "sceneCullingMask": "",
+            "tag": 0,
+            "transform": "UUID_c5ed224b_d3d0_4bdb_98b5_06e502b1a3b7",
+            "ListOfComponent": [
+                "UUID_c5ed224b_d3d0_4bdb_98b5_06e502b1a3b7",
+                "UUID_e8cb015e_35d1_4a40_9388_7d34342acd53",
+                "UUID_a4655fa1_983f_47ed_ad3a_4cb73e58af58"
+            ]
+        },
+        "UUID_d00131d5_cf74_4b20_82bd_b6a0de9f3eb1": {
+            "name": "Player",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "/Assets/Scenes/FightGolem.particule",
+            "sceneCullingMask": "",
+            "tag": 0,
+            "transform": "UUID_20e5ea4b_58a5_4ed8_bb51_f95e36cafdce",
+            "ListOfComponent": [
+                "UUID_20e5ea4b_58a5_4ed8_bb51_f95e36cafdce",
+                "UUID_3f3461f1_60d2_4c6c_9213_c282d3f210e3",
+                "UUID_1cc627cb_5e5a_44f1_866b_94184411f939"
+            ]
+        },
+        "UUID_427099bd_199b_476d_b893_82d0671fea9a": {
+            "name": "Epee",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "/Assets/Scenes/FightGolem.particule",
+            "sceneCullingMask": "",
+            "tag": 0,
+            "transform": "UUID_63b7756c_c919_4172_b597_859ab1a3e65f",
+            "ListOfComponent": [
+                "UUID_63b7756c_c919_4172_b597_859ab1a3e65f",
+                "UUID_c55c6630_d679_49a4_8725_e9a94f86b7b1",
+                "UUID_2a8e3ac8_cfeb_4ac5_9109_117c6d6c0741"
+            ]
+        },
+        "UUID_851cd880_a470_4162_9198_68fbfce3a525": {
+            "name": "GameManager",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "/Assets/Scenes/FightGolem.particule",
+            "sceneCullingMask": "",
+            "tag": 0,
+            "transform": "UUID_f0fdd139_66bf_4694_9ab9_5d3a6b911264",
+            "ListOfComponent": [
+                "UUID_f0fdd139_66bf_4694_9ab9_5d3a6b911264",
+                "UUID_a9ee3bb1_8cb2_4b52_90f4_70416aca5b06"
+            ]
+        },
+        "UUID_e8e2b44a_dcf9_40ce_b3ba_52250f401abf": {
+            "name": "Ball1",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "/Assets/Scenes/FightGolem.particule",
+            "sceneCullingMask": "",
+            "tag": 0,
+            "transform": "UUID_5b7128a7_910b_4f4e_b13b_4e5fc3ddc8c9",
+            "ListOfComponent": [
+                "UUID_5b7128a7_910b_4f4e_b13b_4e5fc3ddc8c9",
+                "UUID_cf8e88cc_12c9_4dda_b1c4_7d5855f57f39",
+                "UUID_92116f57_17fd_42cc_9eee_5a453a199970"
+            ]
+        }
+    },
+    "Components": {
+        "UUID_abe83186_6eaf_4954_84ee_55ff038ca23d": {
+            "name": "Transform",
+            "gameObject": "UUID_3abca82c_b048_4ceb_a0d3_b7e98628211b",
+            "childCount": 0,
+            "localPosition": [
+                0,
+                0
+            ],
+            "position": [
+                0,
+                0
+            ],
+            "parent": null,
+            "childs": []
+        },
+        "UUID_504247a3_6927_462b_bdd2_3630d13c1e81": {
+            "name": "Camera",
+            "gameObject": "UUID_3abca82c_b048_4ceb_a0d3_b7e98628211b"
+        },
+        "UUID_c5ed224b_d3d0_4bdb_98b5_06e502b1a3b7": {
+            "name": "Transform",
+            "gameObject": "UUID_40d9429b_9220_42df_b285_874fccdd63a6",
+            "childCount": 0,
+            "localPosition": [
+                55.0,
+                0.0
+            ],
+            "position": [
+                55.0,
+                0.0
+            ],
+            "parent": null,
+            "childs": []
+        },
+        "UUID_e8cb015e_35d1_4a40_9388_7d34342acd53": {
+            "name": "Sprite",
+            "gameObject": "UUID_40d9429b_9220_42df_b285_874fccdd63a6",
+            "repImg": "UUID_b7967937_bc58_4961_9b42_0e9daadebee9"
+        },
+        "UUID_a4655fa1_983f_47ed_ad3a_4cb73e58af58": {
+            "name": "BoxCollider2D",
+            "gameObject": "UUID_40d9429b_9220_42df_b285_874fccdd63a6",
+            "IsTrigger": false,
+            "Center": [
+                40,
+                30
+            ],
+            "Size": [
+                30,
+                80
+            ]
+        },
+        "UUID_20e5ea4b_58a5_4ed8_bb51_f95e36cafdce": {
+            "name": "Transform",
+            "gameObject": "UUID_d00131d5_cf74_4b20_82bd_b6a0de9f3eb1",
+            "childCount": 1,
+            "localPosition": [
+                -2.0,
+                1.0
+            ],
+            "position": [
+                -2.0,
+                1.0
+            ],
+            "parent": null,
+            "childs": [
+                "UUID_63b7756c_c919_4172_b597_859ab1a3e65f"
+            ]
+        },
+        "UUID_3f3461f1_60d2_4c6c_9213_c282d3f210e3": {
+            "name": "Sprite",
+            "gameObject": "UUID_d00131d5_cf74_4b20_82bd_b6a0de9f3eb1",
+            "repImg": "UUID_6286f278_d092_4bcd_812c_50424609e334"
+        },
+        "UUID_1cc627cb_5e5a_44f1_866b_94184411f939": {
+            "name": "BoxCollider2D",
+            "gameObject": "UUID_d00131d5_cf74_4b20_82bd_b6a0de9f3eb1",
+            "IsTrigger": false,
+            "Center": [
+                7,
+                10
+            ],
+            "Size": [
+                8,
+                20
+            ]
+        },
+        "UUID_63b7756c_c919_4172_b597_859ab1a3e65f": {
+            "name": "Transform",
+            "gameObject": "UUID_427099bd_199b_476d_b893_82d0671fea9a",
+            "childCount": 0,
+            "localPosition": [
+                11.0,
+                7.0
+            ],
+            "position": [
+                9.0,
+                8.0
+            ],
+            "parent": "UUID_20e5ea4b_58a5_4ed8_bb51_f95e36cafdce",
+            "childs": []
+        },
+        "UUID_c55c6630_d679_49a4_8725_e9a94f86b7b1": {
+            "name": "Sprite",
+            "gameObject": "UUID_427099bd_199b_476d_b893_82d0671fea9a",
+            "repImg": "UUID_96ceb3ba_9a74_451a_9ab9_155630d324c0"
+        },
+        "UUID_2a8e3ac8_cfeb_4ac5_9109_117c6d6c0741": {
+            "name": "BoxCollider2D",
+            "gameObject": "UUID_427099bd_199b_476d_b893_82d0671fea9a",
+            "IsTrigger": false,
+            "Center": [
+                7,
+                3
+            ],
+            "Size": [
+                14,
+                7
+            ]
+        },
+        "UUID_f0fdd139_66bf_4694_9ab9_5d3a6b911264": {
+            "name": "Transform",
+            "gameObject": "UUID_851cd880_a470_4162_9198_68fbfce3a525",
+            "childCount": 0,
+            "localPosition": [
+                0,
+                0
+            ],
+            "position": [
+                0,
+                0
+            ],
+            "parent": null,
+            "childs": []
+        },
+        "UUID_a9ee3bb1_8cb2_4b52_90f4_70416aca5b06": {
+            "name": "AllFightGolem",
+            "gameObject": "UUID_851cd880_a470_4162_9198_68fbfce3a525",
+            "PVplayer": 3,
+            "PVGolem": 10
+        },
+        "UUID_5b7128a7_910b_4f4e_b13b_4e5fc3ddc8c9": {
+            "name": "Transform",
+            "gameObject": "UUID_e8e2b44a_dcf9_40ce_b3ba_52250f401abf",
+            "childCount": 0,
+            "localPosition": [
+                -23.0,
+                9.0
+            ],
+            "position": [
+                -23.0,
+                9.0
+            ],
+            "parent": null,
+            "childs": []
+        },
+        "UUID_cf8e88cc_12c9_4dda_b1c4_7d5855f57f39": {
+            "name": "BallGolem",
+            "gameObject": "UUID_e8e2b44a_dcf9_40ce_b3ba_52250f401abf",
+            "vitesse": 3,
+            "Xrestart": 67
+        },
+        "UUID_92116f57_17fd_42cc_9eee_5a453a199970": {
+            "name": "BoxCollider2D",
+            "gameObject": "UUID_e8e2b44a_dcf9_40ce_b3ba_52250f401abf",
+            "IsTrigger": true,
+            "Center": [
+                0,
+                0
+            ],
+            "Size": [
+                8,
+                8
+            ]
+        }
+    }
+}

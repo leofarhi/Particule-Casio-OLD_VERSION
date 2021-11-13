@@ -1,4 +1,15 @@
 #pragma once
+extern "C"
+{
+#include "keybios.h"
+#include "fxlib.h"
+#include <stdio.h>
+#include "stdio.h"
+#include "stdlib.h"
+
+#include "string.h"
+#include "time.h"
+}
 #ifndef ClassParticuleEngine
 #define ClassParticuleEngine
 #include "Announcement.h"
@@ -8,6 +19,8 @@
 #include <math.h>
 #include "usefull.h"
 #include "Ressources.h"
+
+int Random(int start, int end);
 
 int LenChar(char* txt);
 
@@ -39,7 +52,7 @@ public:
 
     Vector2 operator/(const Vector2& other);
 };
-
+/*
 class Quaternion {
     //https://docs.unity3d.com/ScriptReference/Quaternion.html
 public:
@@ -50,7 +63,7 @@ class Matrix4x4 {
     //https://docs.unity3d.com/ScriptReference/Matrix4x4.html
 public:
 
-};
+};*/
 
 class Object {
     //https://docs.unity3d.com/ScriptReference/Object.html
@@ -64,11 +77,11 @@ public:
     unsigned char* ToString();
 
     virtual void Destroy() {}
-    virtual void DestroyImmediate() {}
+    /*virtual void DestroyImmediate() {}
     virtual void DontDestroyOnLoad() {}
     virtual void FindObjectOfType() {}
     virtual void FindObjectsOfType() {}
-    virtual void Instantiate() {}
+    virtual void Instantiate() {}*/
 
     // Overload operator
     bool operator==(const Object& obj);
@@ -81,15 +94,15 @@ private:
 class Component : public Object {
     //https://docs.unity3d.com/ScriptReference/Component.html
 public:
-    char* tag;
+    //char* tag;
     GameObject* gameObject;
-    Transform* transform;
+    //Transform* transform;
 
     Component(const char* name, GameObject* gameObject, const char* UUID = NULL);
 
-    ~Component();
+    virtual ~Component() {};
 
-    void BroadcastMessage();
+    /*void BroadcastMessage();
     void CompareTag();
     void GetComponent();
     void GetComponentInChildren();
@@ -99,37 +112,41 @@ public:
     void GetComponentsInParent();
     void SendMessage();
     void SendMessageUpwards();
-    void TryGetComponent();
+    void TryGetComponent();*/
+
+    ///
+    virtual void PhysicsCalculator() {};
+    ///
 
     virtual void Awake() {}
     virtual void FixedUpdate() {}
     virtual void LateUpdate() {}
-    virtual void OnAnimatorIK() {}
+    /*virtual void OnAnimatorIK() {}
     virtual void OnAnimatorMove() {}
     virtual void OnApplicationFocus() {}
     virtual void OnApplicationPause() {}
     virtual void OnApplicationQuit() {}
     virtual void OnAudioFilterRead() {}
     virtual void OnBecameInvisible() {}
-    virtual void OnBecameVisible() {}
-    virtual void OnCollisionEnter() {}
-    virtual void OnCollisionEnter2D() {}
-    virtual void OnCollisionExit() {}
-    virtual void OnCollisionExit2D() {}
-    virtual void OnCollisionStay() {}
-    virtual void OnCollisionStay2D() {}
-    virtual void OnConnectedToServer() {}
-    virtual void OnControllerColliderHit() {}
-    virtual void OnDestroy() {}
-    virtual void OnDisable() {}
-    virtual void OnDisconnectedFromServer() {}
+    virtual void OnBecameVisible() {}*/
+    //virtual void OnCollisionEnter() {}
+    virtual void OnCollisionEnter2D(BoxCollider2D* boxCollider2D) {}/////
+    //virtual void OnCollisionExit() {}
+    virtual void OnCollisionExit2D(BoxCollider2D* boxCollider2D) {}//////
+    //virtual void OnCollisionStay() {}
+    virtual void OnCollisionStay2D(BoxCollider2D* boxCollider2D) {}//////
+    //virtual void OnConnectedToServer() {}
+    virtual void OnControllerColliderHit() {}//////
+    virtual void OnDestroy() {}//////
+    virtual void OnDisable() {}//////
+    /*virtual void OnDisconnectedFromServer() {}
     virtual void OnDrawGizmos() {}
-    virtual void OnDrawGizmosSelected() {}
-    virtual void OnEnable() {}
-    virtual void OnFailedToConnect() {}
-    virtual void OnFailedToConnectToMasterServer() {}
-    virtual void OnGUI() {}
-    virtual void OnJointBreak() {}
+    virtual void OnDrawGizmosSelected() {}*/
+    virtual void OnEnable() {}//////
+    //virtual void OnFailedToConnect() {}
+    //virtual void OnFailedToConnectToMasterServer() {}
+    virtual void OnGUI() {}///////
+    /*virtual void OnJointBreak() {}
     virtual void OnJointBreak2D() {}
     virtual void OnMasterServerEvent() {}
     virtual void OnMouseDown() {}
@@ -149,21 +166,21 @@ public:
     virtual void OnPostRender() {}
     virtual void OnPreCull() {}
     virtual void OnPreRender() {}
-    virtual void OnRenderImage() {}
+    virtual void OnRenderImage() {}*/
     virtual void OnRenderObject() {}
-    virtual void OnSerializeNetworkView() {}
+    /*virtual void OnSerializeNetworkView() {}
     virtual void OnServerInitialized() {}
     virtual void OnTransformChildrenChanged() {}
-    virtual void OnTransformParentChanged() {}
-    virtual void OnTriggerEnter() {}
-    virtual void OnTriggerEnter2D() {}
-    virtual void OnTriggerExit() {}
-    virtual void OnTriggerExit2D() {}
-    virtual void OnTriggerStay() {}
-    virtual void OnTriggerStay2D() {}
-    virtual void OnValidate() {}
-    virtual void OnWillRenderObject() {}
-    virtual void Reset() {}
+    virtual void OnTransformParentChanged() {}*/
+    //virtual void OnTriggerEnter() {}
+    virtual void OnTriggerEnter2D(BoxCollider2D* boxCollider2D) {}
+    //virtual void OnTriggerExit() {}
+    virtual void OnTriggerExit2D(BoxCollider2D* boxCollider2D) {}
+    //virtual void OnTriggerStay() {}
+    virtual void OnTriggerStay2D(BoxCollider2D* boxCollider2D) {}
+    virtual void OnValidate() {}//////
+    //virtual void OnWillRenderObject() {}
+    virtual void Reset() {}/////
     virtual void Start() {}
     virtual void Update() {}
 };
@@ -182,20 +199,25 @@ public:
     //Vector2* localEulerAngles;
     Vector2* localPosition;
     //Quaternion* localRotation;
-    Vector2* localScale;
+    //Vector2* localScale;
     //Matrix4x4* localToWorldMatrix;
     Vector2* lossyScale;
     Transform* parent;
     Vector2* position;
     //Vector2* right;
-    Transform* root;
+    //Transform* root;
     //Quaternion* rotation;
     //Vector2* up;
     //Matrix4x4* worldToLocalMatrix;
 
     Transform(GameObject* gameObject, const char* UUID = NULL, const char* name = "Transform");
 
-    ~Transform();
+    ~Transform() {
+        delete lastPosition;
+        delete localPosition;
+        //delete localScale;
+        delete position;
+    };
 
     void SetParent(Transform* transform);
 
@@ -212,6 +234,8 @@ public:
     bool enabled;
     bool isActiveAndEnabled;
     Behaviour(const char* name, GameObject* gameObject, const char* UUID = NULL);
+
+    virtual ~Behaviour() {};
 };
 
 /*
@@ -295,22 +319,23 @@ public:
 
     MonoBehaviour(const char* name, GameObject* gameObject, const char* UUID = NULL);
 
-    void CancelInvoke();
+    virtual ~MonoBehaviour() {};
+
+    /*void CancelInvoke();
     void Invoke();
     void InvokeRepeating();
     void IsInvoking();
     void StartCoroutine();
     void StopAllCoroutines();
-    void StopCoroutine();
+    void StopCoroutine();*/
     //print c'est pour l'éditeur donc il n'est pas présent
 };
 
 
 class GameObject : public Object {
     //https://docs.unity3d.com/ScriptReference/GameObject.html
-private:
-    List<Component*> ListOfComponent;
 public:
+    List<Component*> ListOfComponent;
     bool activeInHierarchy;
     bool activeSelf;
     bool isStatic;
@@ -322,19 +347,20 @@ public:
 
     GameObject(Scene* scene, const char* name, const char* UUID = NULL);
 
-    ~GameObject();
+    ~GameObject() {
+        for (int i = 0; i < ListOfComponent.Count; i++) {
+            delete ListOfComponent.Pop();
+        }
+        ListOfComponent.Clear();
+    };
 
     bool IsActive();
 
-    void Update();
-
-    void Start();
-
     void AddComponent(Component* component);
-    void BroadcastMessage();
-    void CompareTag();
+    //void BroadcastMessage();
+    //void CompareTag();
     Component* GetComponent(const char* name);
-    void GetComponentInChildren();
+    /*void GetComponentInChildren();
     void GetComponentInParent();
     void GetComponents();
     void GetComponentsInChildren();
@@ -342,12 +368,12 @@ public:
     void SendMessage();
     void SendMessageUpwards();
     void SetActive();
-    void TryGetComponent();
+    void TryGetComponent();*/
 
-    static void CreatePrimitive();
+    //static void CreatePrimitive();
     GameObject* Find(unsigned char* name);
-    static void FindGameObjectsWithTag();
-    static void FindWithTag();
+    //static void FindGameObjectsWithTag();
+    //static void FindWithTag();
 };
 
 
@@ -356,8 +382,17 @@ class Scene {
 public:
     List<GameObject*> AllGameObject;
     SceneManager* sceneManager;
-    void GetRootGameObjects();
-    bool IsValid();
+    List<Camera*> AllCameras;
+    List<BoxCollider2D*> LstColliders;
+    //void GetRootGameObjects();
+    //bool IsValid();
+
+    ~Scene() {
+        for (int i = 0; i < AllGameObject.Count; i++) {
+            delete AllGameObject.Pop();
+        }
+        AllGameObject.Clear();
+    }
 
     void AddGameObject(GameObject* gObj);
 
@@ -366,13 +401,13 @@ public:
     void Start();
 
     int buildIndex;
-    bool isDirty;
-    bool isLoaded;
+    //bool isDirty;
+    //bool isLoaded;
     char* name;
     //char* path;
-    int rootCount;
+    //int rootCount;
 
-    List<Camera*> AllCameras;
+    
 };
 
 class Camera : public Behaviour {
@@ -394,7 +429,7 @@ public:
 
     Image(GameObject* gameObject, Texture* image, const char* UUID = NULL);
 
-    void Update();
+    void OnRenderObject();
 };
 
 class Sprite : MonoBehaviour { //: public VisualElement {
@@ -406,13 +441,14 @@ public:
 
     Sprite(GameObject* gameObject, Texture* image, const char* UUID = NULL);
 
-    void Update();
+    void OnRenderObject();
 };
 
 
 class Rigidbody : MonoBehaviour {
 private:
-    
+    Vector2* lastPosition;
+    BoxCollider2D* MyBoxCollider;
 public:
     float Mass;
     bool UseGravity;
@@ -421,23 +457,54 @@ public:
 
     Rigidbody(GameObject* gameObject, float Mass, bool UseGravity, bool IsKinematic, const char* UUID = NULL);
 
-    ~Rigidbody();
+    void PhysicsCalculator();
+    void OnCollisionEnter2D(BoxCollider2D* boxCollider2D);
+    void OnCollisionStay2D(BoxCollider2D* boxCollider2D);
+    void LateUpdate();
+
+    ~Rigidbody() {
+        delete velocity;
+        delete lastPosition;
+    };
 
     void Start();
     
 };
 
 
-class Collider2D : MonoBehaviour {
+/*class Collider2D : MonoBehaviour {
     //https://docs.unity3d.com/ScriptReference/Collider2D.html
 public:
     
-};
+};*/
 
-class BoxCollider2D : Collider2D {
+class BoxCollider2D : MonoBehaviour {//Collider2D {
     //https://docs.unity3d.com/ScriptReference/BoxCollider2D.html
+
+private:
+    List<BoxCollider2D*> LstColliders;
 public:
-    
+    bool IsTrigger;
+    Vector2* center;
+    Vector2* size;
+
+    BoxCollider2D(GameObject* gameObject,bool IsTrigger,Vector2* center,Vector2* size, const char* UUID = NULL);
+
+    void Update() ;
+
+    bool Contains(BoxCollider2D* boxCollider) {
+        for (int o = 0; o < LstColliders.Count; o++) {
+            if (boxCollider == LstColliders[o])
+                return true;
+                
+        }
+        return false;
+    };
+
+    ~BoxCollider2D() {
+        delete center;
+        delete size;
+    };
 };
 
 class Text : MonoBehaviour {
@@ -447,7 +514,7 @@ public:
 
     Text(GameObject* gameObject, unsigned char* text, const char* UUID = NULL);
 
-    void Update();
+    void OnRenderObject();
 
 
 };
@@ -463,9 +530,12 @@ public:
 
     Tilemap(GameObject* gameObject, Vector2* sizeTilemap, Vector2* sizeCase, const char* UUID = NULL);
 
-    ~Tilemap();
+    ~Tilemap() {
+        delete[] images;
+        delete[] Datas;
+    };
 
-    void Update();
+    void OnRenderObject();
 };
 
 
@@ -476,34 +546,49 @@ class SceneManager {
 public:
     int sceneCount;
     static int sceneCountInBuildSettings;
+    int LoadSceneAfter;
+    bool _quit;
+    
+    SceneManager() {
+        LoadSceneAfter = -1;
+        _quit = false;
+        LoadTextures();
+    }
 
     //Static Methods
-    static void CreateScene();
+    /*static void CreateScene();
     static void GetActiveScene();
     static void GetSceneAt();
     static void GetSceneByBuildIndex();
     static void GetSceneByName();
-    static void GetSceneByPath();
+    static void GetSceneByPath();*/
     void LoadScene(int index);
     void LoadScene(unsigned char* name);
-    static void LoadSceneAsync();
+    /*static void LoadSceneAsync();
     static void MergeScenes();
     static void MoveGameObjectToScene();
     static void SetActiveScene();
-    static void UnloadSceneAsync();
+    static void UnloadSceneAsync();*/
 
     GameObject* FindWithName(unsigned char* name);
 
     //Events
-    static void activeSceneChanged();
+    /*static void activeSceneChanged();
     static void sceneLoaded();
-    static void sceneUnloaded();
+    static void sceneUnloaded();*/
 
     void UpdateScene();
 
     void StartScene();
+
+    //TexturesID
+
 private:
     List<Scene*> AllSceneLoaded;
+
+    void LoadTextures() {
+        //CreateTextures
+    };
 
 
     Scene* GetSceneInBuild(int index) {
@@ -516,7 +601,17 @@ private:
 
     }
 
-    Scene* GetSceneInBuild(unsigned char* name);
+    Scene* GetSceneInBuild(unsigned char* name) {
+        unsigned char* AllName[] = { "Main" };
+        int count = 0;
+        for (int i = 0; i < count; i++)
+        {
+            if (name == AllName[i]) {
+                return GetSceneInBuild(i);
+            }
+        }
+        return NULL;
+    }
 };
 
 

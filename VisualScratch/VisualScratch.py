@@ -149,8 +149,9 @@ class VisualScratch:
         code = self.Scratch.GetCodeLst()
         PythonCode = self.GeneratePythonCode(code)
         self.TextZonePython.setTextInput(PythonCode)
-        CasioCode = self.GenerateCasioCode(code)
-        self.TextZone.setTextInput(CasioCode)
+        Hpp,Cpp = self.GenerateCasioCode(code)
+        self.TextZone.setTextInput(Hpp)
+        self.TextZoneCpp.setTextInput(Cpp)
 
 
     def GenerateCasioCode(self, code):
@@ -158,16 +159,26 @@ class VisualScratch:
         while (len(code)>index and (code[index])[0]!="InEditor"):
             index+=1
         if (len(code)>index):
-            a=self.BlockSys.GetCode(code[index])
+            a,name=self.BlockSys.GetCode(code[index])
         else:
-            return ""
+            return "",""
         del code[index]
-        Text=""
+        Cpp=""
+        Hpp=""
         for i in code:
             txt = self.BlockSys.GetCode(i)
-            Text+=txt+"\n"
-        a = a.replace("//&&Fonction",Text)
-        return a
+            if (" " in txt.split(")",1)[0]):
+                Hpp += txt.split(")", 1)[0]
+                Hpp += ");\n"
+
+                temp=txt.split(" ",1)
+                Cpp+=temp[0]+" "+name+"::"+temp[1]
+            else:
+                Hpp+=txt
+            Hpp+="\n"
+            Cpp += "\n"
+        a = a.replace("//&&Fonction",Hpp)
+        return a,Cpp
     def GeneratePythonCode(self,code):
         with open("lib/ComponentBase.py","r") as fic:
             base = fic.read()

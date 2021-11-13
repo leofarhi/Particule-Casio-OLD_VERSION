@@ -93,8 +93,11 @@ class GameObject(Object):
         pass
     def CompareTag(self):
         pass
-    def GetComponent(self):
-        pass
+    def GetComponent(self,TYPE):
+        for i in self.ListOfComponent:
+            if type(i)==TYPE:
+                return i
+        return None
     def GetComponentInChildren(self):
         pass
     def GetComponentInParent(self):

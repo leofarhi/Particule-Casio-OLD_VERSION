@@ -13,5 +13,6 @@ class Texture;
 class Camera;
 class Image;
 class Text;
+class BoxCollider2D;
 void LoadScene(Scene* scene, int nb);
 GameObject* FindWithName(unsigned char* name,GameObject* gameObject);

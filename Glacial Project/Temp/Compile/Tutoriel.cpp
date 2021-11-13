@@ -52,7 +52,7 @@ int main() {
     //reference croise
     sceneManager->LoadScene(0);
     sceneManager->StartScene();
-    while (true)
+    while (!IsKeyDown(KEY_CTRL_MENU) && (!sceneManager->_quit))
     {
         ML_clear_vram();
         sceneManager->UpdateScene();
@@ -60,6 +60,7 @@ int main() {
         Sleep(100);
         ML_display_vram();
     }
+    delete sceneManager;
     return 1;
 }
 
@@ -67,7 +68,9 @@ extern "C"
 {
 int AddIn_main(int isAppli, unsigned short OptionNum)
 {
-    return main();
+    main();
+    unsigned int key;
+    return GetKey(&key);
 }
 
 

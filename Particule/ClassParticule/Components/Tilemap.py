@@ -119,7 +119,11 @@ class Tilemap(Component):
                     border = (1, 1, 1, 1)
                     img = ImageOps.expand(img, border=border, fill=color)
                 else:
-                    img = self.Textures[o].ImgStd
+                    try:
+                        img = self.Textures[o].ImgStd
+                    except:
+                        self.Textures[o] = self.Particule.FolderWindow.TextureVide
+                        img = self.Textures[o].ImgStd
                 img = img.resize(
                     (int(img.width * self._lastZoom), int(img.height * self._lastZoom)),
                     resample=Image.NEAREST)

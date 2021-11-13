@@ -143,6 +143,9 @@ void ML_bmp_16_or_cl(const unsigned short *bmp, int x, int y);
 void ML_bmp_16_and_cl(const unsigned short *bmp, int x, int y);
 void ML_bmp_16_xor_cl(const unsigned short *bmp, int x, int y);
 
+void ML_bmp_zoom(const unsigned char* bmp, int x, int y, int width, int height, float zoom_w, float zoom_h, ML_Color color);
+void ML_bmp_rotate(const unsigned char* bmp, int x, int y, int width, int height, int angle, ML_Color color);
+
 #ifdef __cplusplus
 }
 #endif

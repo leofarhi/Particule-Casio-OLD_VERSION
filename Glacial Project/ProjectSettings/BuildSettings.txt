@@ -1,1 +1,1 @@
-ScenesInBuild::[['Assets/Scenes/Sample Scene.particule', True]]
+ScenesInBuild::[['/Assets/Scenes/Main Menu.particule', True], ['/Assets/Scenes/Sample Scene.particule', True], ['/Assets/Scenes/FightGolem.particule', True], ['/Assets/Scenes/Cible.particule', True], ['/Assets/Scenes/Dialogue1.particule', True], ['/Assets/Scenes/Dialg2.particule', True]]

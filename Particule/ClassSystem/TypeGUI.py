@@ -57,8 +57,8 @@ class TypeGUI(PFrame):
             self.entry.bind('<KeyRelease>', self.changeIntFloatStrBool)
             self.entry.grid(row=0, column=1, sticky='EWNS')#.pack(fill=tkinter.BOTH, expand=True)
         elif TypeVariables["Type"]==bool:
-            self.var = IntVar()
-            self.var.set(0)
+            self.var = tk.BooleanVar()
+            self.var.set(variable)
             self.check = Checkbutton(self, variable=self.var, text=self.VarName, offvalue=0, onvalue=1,command=self.changeIntFloatStrBool)
             self.check.bind('<KeyRelease>', self.changeIntFloatStrBool)
             self.check.grid(row=0, column=1, sticky='EWNS')#.pack(fill=tkinter.BOTH, expand=True)
@@ -176,11 +176,14 @@ class TypeGUI(PFrame):
             except:
                 self.var.set(str(variable))
 
-    def changeIntFloatStrBool(self,event):
+    def changeIntFloatStrBool(self,*args):
         if type(self.Objet)==ListVar:
             self.Objet.Val[self.VarName] = self.var.get()
         else:
-            setattr(self.Objet, self.VarName, self.var.get())
+            if self.TypeVariables["Type"] == bool:
+                setattr(self.Objet, self.VarName, self.var.get()==1)
+            else:
+                setattr(self.Objet, self.VarName, self.var.get())
 
 
     def changeVector2(self,event):

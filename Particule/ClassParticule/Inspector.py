@@ -84,13 +84,15 @@ class Inspector(EditorWindow):
         FrameTemp2 = Frame(self.ZoneComponentCanvas)
         self.ZoneComponentCanvas.create_window((0,0),window=FrameTemp2,anchor='n')
 
-
+        self.Bouton_AddComponent = Button(FrameTemp2, text="Add Component",
+                                          command=partial(AddComponentFrame, self.Particule.Mafenetre))
+        self.Bouton_AddComponent.pack(fill=tkinter.X, expand=True, anchor=N, padx=10,
+                                      pady=10)  # .pack(padx=10,pady=10,fill=tkinter.X, expand=True)#,side=tkinter.TOP, anchor=N)
 
         self.mainComponentsFrame = LabelFrame(FrameTemp2)
         self.mainComponentsFrame.pack(fill=tkinter.BOTH,expand=True, anchor=N)
 
-        self.Bouton_AddComponent = Button(FrameTemp2, text="Add Component",command=partial(AddComponentFrame,self.Particule.Mafenetre))
-        self.Bouton_AddComponent.pack(fill=tkinter.X,expand=True, anchor=N,padx=10,pady=10)#.pack(padx=10,pady=10,fill=tkinter.X, expand=True)#,side=tkinter.TOP, anchor=N)
+
     def updateDataGameObj(self,*args):
         ItemSelected = self.Particule.Hierarchy.ItemSelected
         if ItemSelected==None:

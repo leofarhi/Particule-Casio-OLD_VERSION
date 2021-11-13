@@ -240,7 +240,7 @@ class Particule:
 
         process = subprocess.Popen([self.VisualScratchPath,self.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
         #print(eval(process.stdout.readlines()[-1]))
-        code=eval(process.stdout.readlines()[-1])
+        code=eval(process.stdout.readlines()[-1].decode('latin-1'))
         PythonCode=code[0]
         try:
             for i in os.listdir(self.FolderProject + "/Library/ScriptEditor/"):
@@ -320,8 +320,8 @@ class Particule:
                 UUID = "UUID_"+(str(uuid.uuid4()).replace("-","_"))
             self.All_UUID.update({UUID:TypeObject})
         else:
-            if UUID not in [i[0] for i in self.All_UUID]:
-                self.All_UUID.update({UUID:TypeObject})
+            #if not UUID in [i[0] for i in self.All_UUID]:
+            self.All_UUID.update({UUID:TypeObject})
         return UUID
     def GetObjectWithUUID(self,UUID):
         if UUID in self.All_UUID:

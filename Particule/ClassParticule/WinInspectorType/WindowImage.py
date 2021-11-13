@@ -33,4 +33,10 @@ class WindowImage(EditorWindow):
                 path = self.Particule.FolderWindow.detailed_file_list[list(self.Particule.FolderWindow.selected_file_indices)[0]]
                 print(path)
                 guid = rf.found(path+".meta","guid")
-                TransformImage.ImportImage(path,self.Particule.FolderProject + "/Library/ImagesBmpCache/" +guid+'.bmp')
+                if (str(guid)!=str(False)):
+                    TransformImage.ImportImage(path,self.Particule.FolderProject + "/Library/ImagesBmpCache/" +guid+'.bmp')
+                    #self.Particule.UpdateOnFocus()
+                    self.Particule.FolderWindow.CreateMetaFile()
+                    self.Particule.FolderWindow.GetAll_UUID()
+                    self.Particule.SLN_System.UpdateSLN()
+                    self.Particule.FolderWindow.update_search_files()

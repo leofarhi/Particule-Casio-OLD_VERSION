@@ -18,6 +18,10 @@ extern "C"
 #include "Ressources.h"
 #include "ParticuleEngine.hpp"
 
+int Random(int start, int end) {
+    return (getTicks() % (end - start)) + start;
+}
+
 int LenChar(char* txt) {
     return strlen(txt);
 }
@@ -117,9 +121,6 @@ Component::Component(const char* name, GameObject* gameObject, const char* UUID)
     this->gameObject = gameObject;
 };
 
-Component::~Component() {
-    delete tag;
-}
 
 
 Transform::Transform(GameObject* gameObject, const char* UUID, const char* name) : Component(name, gameObject, UUID) {
@@ -132,28 +133,20 @@ Transform::Transform(GameObject* gameObject, const char* UUID, const char* name)
     //localEulerAngles = new Vector2();
     localPosition = new Vector2();
     //localRotation = NULL;
-    localScale = new Vector2(1, 1);
+    //localScale = new Vector2(1, 1);
     //localToWorldMatrix = NULL;
     lossyScale = new Vector2(1, 1);
     parent = NULL;
     //children = []
     position = new Vector2();
     //self.right = None
-    root = NULL;
+    //root = NULL;
     //rotation = NULL;
     //self.up = None
     //worldToLocalMatrix = NULL;
     lastPosition = new Vector2();
 };
 
-Transform::~Transform() {
-    //delete localRotation;
-    //delete localToWorldMatrix;
-    delete parent;
-    delete root;
-    //delete rotation;
-    //delete worldToLocalMatrix;
-}
 
 void Transform::SetParent(Transform* transform) {
     if (parent != NULL) {
@@ -271,12 +264,8 @@ GameObject::GameObject(Scene* scene, const char* name, const char* UUID) : Objec
     layer = Default;
     sceneCullingMask = NULL;
     tag = Untagged;
-    //ListOfComponent.Add(transform);
+    ListOfComponent.Add(transform);
 };
-
-GameObject::~GameObject() {
-    delete transform;
-}
 
 bool GameObject::IsActive() {
     if (!activeSelf) {
@@ -293,27 +282,6 @@ bool GameObject::IsActive() {
     return true;
 }
 
-void GameObject::Update() {
-    this->transform->Update();
-    if (!IsActive()) {
-        return;
-    }
-    for (int i = 0; i < ListOfComponent.Count; i++)
-    {
-        ListOfComponent[i]->Update();
-    }
-};
-
-void GameObject::Start() {
-    this->transform->Start();
-    if (!IsActive()) {
-        return;
-    }
-    for (int i = 0; i < ListOfComponent.Count; i++)
-    {
-        ListOfComponent[i]->Start();
-    }
-};
 
 void GameObject::AddComponent(Component* component) {
     ListOfComponent.Add(component);
@@ -340,14 +308,75 @@ void Scene::AddGameObject(GameObject* gObj) {
 void Scene::Update() {
     for (int i = 0; i < AllGameObject.Count; i++)
     {
-        AllGameObject[i]->Update();
+        if (AllGameObject[i]->IsActive()) {
+            for (int o = 0; o < AllGameObject[i]->ListOfComponent.Count; o++)
+            {
+                AllGameObject[i]->ListOfComponent[o]->PhysicsCalculator();
+            }
+        }
+    }
+    for (int i = 0; i < AllGameObject.Count; i++)
+    {
+        if (AllGameObject[i]->IsActive()) {
+            for (int o = 0; o < AllGameObject[i]->ListOfComponent.Count; o++)
+            {
+                AllGameObject[i]->ListOfComponent[o]->FixedUpdate();
+            }
+        }
+    }
+    for (int i = 0; i < AllGameObject.Count; i++)
+    {
+        if (AllGameObject[i]->IsActive()) {
+            for (int o = 0; o < AllGameObject[i]->ListOfComponent.Count; o++)
+            {
+                AllGameObject[i]->ListOfComponent[o]->Update();
+            }
+        }
+    }
+    for (int i = 0; i < AllGameObject.Count; i++)
+    {
+        if (AllGameObject[i]->IsActive()) {
+            for (int o = 0; o < AllGameObject[i]->ListOfComponent.Count; o++)
+            {
+                AllGameObject[i]->ListOfComponent[o]->LateUpdate();
+            }
+        }
+    }
+    for (int i = 0; i < AllGameObject.Count; i++)
+    {
+        if (AllGameObject[i]->IsActive()) {
+            AllGameObject[i]->transform->Update();
+        }
+    }
+    for (int i = 0; i < AllGameObject.Count; i++)
+    {
+        if (AllGameObject[i]->IsActive()) {
+            for (int o = 0; o < AllGameObject[i]->ListOfComponent.Count; o++)
+            {
+                AllGameObject[i]->ListOfComponent[o]->OnRenderObject();
+            }
+        }
     }
 };
 
 void Scene::Start() {
     for (int i = 0; i < AllGameObject.Count; i++)
     {
-        AllGameObject[i]->Start();
+        if (AllGameObject[i]->IsActive()) {
+            for (int o = 0; o < AllGameObject[i]->ListOfComponent.Count; o++)
+            {
+                AllGameObject[i]->ListOfComponent[o]->Start();
+            }
+        }
+    }
+    for (int i = 0; i < AllGameObject.Count; i++)
+    {
+        if (AllGameObject[i]->IsActive()) {
+            for (int o = 0; o < AllGameObject[i]->ListOfComponent.Count; o++)
+            {
+                AllGameObject[i]->ListOfComponent[o]->Awake();
+            }
+        }
     }
 };
 
@@ -359,7 +388,7 @@ Image::Image(GameObject* gameObject, Texture* image, const char* UUID) : MonoBeh
     this->image = image;
 };
 
-void Image::Update() {
+void Image::OnRenderObject() {
     float posX = gameObject->transform->position->x;
     float posY = gameObject->transform->position->y;
     float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
@@ -372,7 +401,7 @@ Sprite::Sprite(GameObject* gameObject, Texture* image, const char* UUID) : MonoB
     this->image = image;
 };
 
-void Sprite::Update() {
+void Sprite::OnRenderObject() {
     float posX = gameObject->transform->position->x;
     float posY = gameObject->transform->position->y;
     float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
@@ -382,21 +411,115 @@ void Sprite::Update() {
 };
 
 
+
 Rigidbody::Rigidbody(GameObject* gameObject, float Mass, bool UseGravity, bool IsKinematic, const char* UUID) : MonoBehaviour("Rigidbody", gameObject, UUID) {
     this->Mass = Mass;
     this->UseGravity = UseGravity;
     this->IsKinematic = IsKinematic;
     this->velocity = new Vector2();
+    this->lastPosition = new Vector2();
 
 };
 
-Rigidbody::~Rigidbody() {
-    delete velocity;
-}
-
 void Rigidbody::Start() {
     this->velocity->Set(0, 0);
+    this->lastPosition->Set(gameObject->transform->position->x, gameObject->transform->position->y);
+    this->MyBoxCollider = ((BoxCollider2D*)this->gameObject->GetComponent("BoxCollider2D"));
 }
+
+void Rigidbody::PhysicsCalculator() {
+    //calcule de physique (gravite)
+    //a faire
+    this->velocity->Set(0, 0);///////////
+    this->lastPosition->Set(gameObject->transform->position->x, gameObject->transform->position->y);
+};
+
+void Rigidbody::OnCollisionEnter2D(BoxCollider2D* boxCollider2D) {
+
+    if (!(boxCollider2D->IsTrigger || (MyBoxCollider != NULL && MyBoxCollider->IsTrigger)))
+        this->velocity->Set(lastPosition->x - gameObject->transform->position->x, lastPosition->y - gameObject->transform->position->y);
+}
+void Rigidbody::OnCollisionStay2D(BoxCollider2D* boxCollider2D) {
+
+    if (!(boxCollider2D->IsTrigger || (MyBoxCollider != NULL && MyBoxCollider->IsTrigger)))
+        this->velocity->Set(lastPosition->x - gameObject->transform->position->x, lastPosition->y - gameObject->transform->position->y);
+}
+
+void Rigidbody::LateUpdate() {
+    gameObject->transform->position->Set(gameObject->transform->position->x + this->velocity->x, gameObject->transform->position->y + this->velocity->y);
+}
+
+
+BoxCollider2D::BoxCollider2D(GameObject* gameObject, bool IsTrigger, Vector2* center, Vector2* size, const char* UUID) : MonoBehaviour("BoxCollider2D", gameObject, UUID) {
+    this->IsTrigger = IsTrigger;
+    this->center = center;
+    this->size = size;
+    //LstColliders.DeleteAct = false;
+    gameObject->scene->LstColliders.Add(this);
+};
+
+void BoxCollider2D::Update() {
+    if (gameObject->isStatic && !IsTrigger)
+        return;
+    for (int i = 0; i < gameObject->scene->LstColliders.Count; i++) {
+        if (this != gameObject->scene->LstColliders[i] && gameObject->scene->LstColliders[i]->gameObject->IsActive()) {
+            int x1 = gameObject->scene->LstColliders[i]->gameObject->transform->position->x +
+                gameObject->scene->LstColliders[i]->center->x - (gameObject->scene->LstColliders[i]->size->x / 2);
+            int x2 = gameObject->scene->LstColliders[i]->gameObject->transform->position->x +
+                gameObject->scene->LstColliders[i]->center->x + (gameObject->scene->LstColliders[i]->size->x / 2);
+            int y1 = gameObject->scene->LstColliders[i]->gameObject->transform->position->y +
+                gameObject->scene->LstColliders[i]->center->y - (gameObject->scene->LstColliders[i]->size->y / 2);
+            int y2 = gameObject->scene->LstColliders[i]->gameObject->transform->position->y +
+                gameObject->scene->LstColliders[i]->center->y + (gameObject->scene->LstColliders[i]->size->y / 2);
+
+            int MyX1 = gameObject->transform->position->x + center->x - (size->x / 2);
+            int MyX2 = gameObject->transform->position->x + center->x + (size->x / 2);
+            int MyY1 = gameObject->transform->position->y + center->y - (size->y / 2);
+            int MyY2 = gameObject->transform->position->y + center->y + (size->y / 2);
+
+            if (x1 < MyX2 &&
+                x2 > MyX1 &&
+                y1 < MyY2 &&
+                y2 > MyY1) {
+                // collision détectée !
+                if (Contains(gameObject->scene->LstColliders[i])) {
+                    for (int o = 0; o < gameObject->ListOfComponent.Count; o++) {
+                        if (gameObject->scene->LstColliders[i]->IsTrigger || IsTrigger)
+                            gameObject->ListOfComponent[o]->OnTriggerStay2D(gameObject->scene->LstColliders[i]);
+                        gameObject->ListOfComponent[o]->OnCollisionStay2D(gameObject->scene->LstColliders[i]);
+                    }
+                }
+                else
+                {
+                    LstColliders.Add(gameObject->scene->LstColliders[i]);
+                    for (int o = 0; o < gameObject->ListOfComponent.Count; o++) {
+                        if (gameObject->scene->LstColliders[i]->IsTrigger || IsTrigger)
+                            gameObject->ListOfComponent[o]->OnTriggerEnter2D(gameObject->scene->LstColliders[i]);
+                        gameObject->ListOfComponent[o]->OnCollisionEnter2D(gameObject->scene->LstColliders[i]);
+                    }
+                }
+
+            }
+            else
+            {
+                if (Contains(gameObject->scene->LstColliders[i])) {
+                    for (int o = 0; o < gameObject->ListOfComponent.Count; o++) {
+                        if (gameObject->scene->LstColliders[i]->IsTrigger || IsTrigger)
+                            gameObject->ListOfComponent[o]->OnTriggerExit2D(gameObject->scene->LstColliders[i]);
+                        gameObject->ListOfComponent[o]->OnCollisionExit2D(gameObject->scene->LstColliders[i]);
+                    }
+                    for (int o = 0; o < LstColliders.Count; o++) {
+                        if (LstColliders[o] == gameObject->scene->LstColliders[i]) {
+                            LstColliders.RemoveAt(o);
+                        }
+                    }
+
+                    //LstColliders.Remove(gameObject->scene->LstColliders[i]);
+                }
+            }
+        }
+    }
+};
 
 
 Text::Text(GameObject* gameObject, unsigned char* text, const char* UUID) : MonoBehaviour("Text", gameObject, UUID) {
@@ -404,7 +527,7 @@ Text::Text(GameObject* gameObject, unsigned char* text, const char* UUID) : Mono
 
 };
 
-void Text::Update() {
+void Text::OnRenderObject() {
     float posX = gameObject->transform->position->x;
     float posY = gameObject->transform->position->y;
     float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
@@ -417,12 +540,8 @@ Tilemap::Tilemap(GameObject* gameObject, Vector2* sizeTilemap, Vector2* sizeCase
     this->sizeCase = sizeCase;
 };
 
-Tilemap::~Tilemap() {
-    delete[] images;
-    delete[] Datas;
-}
 
-void Tilemap::Update() {
+void Tilemap::OnRenderObject() {
     float posX = gameObject->transform->position->x;
     float posY = gameObject->transform->position->y;
     float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
@@ -444,6 +563,9 @@ void Tilemap::Update() {
 
 
 void SceneManager::LoadScene(int index) {
+    for (int i = 0; i < AllSceneLoaded.Count; i++) {
+        delete AllSceneLoaded.Pop();
+    }
     AllSceneLoaded.Clear();
     AllSceneLoaded.Add(GetSceneInBuild(index));
 };
@@ -466,6 +588,12 @@ GameObject* SceneManager::FindWithName(unsigned char* name) {
 
 
 void SceneManager::UpdateScene() {
+    if (LoadSceneAfter > -1) {
+        this->LoadScene(LoadSceneAfter);
+        this->StartScene();
+        LoadSceneAfter = -1;
+        return;
+    }
     for (int i = 0; i < AllSceneLoaded.Count; i++)
     {
         AllSceneLoaded[i]->Update();
@@ -479,24 +607,27 @@ void SceneManager::StartScene() {
     }
 }
 
-Scene* SceneManager::GetSceneInBuild(unsigned char* name) {
-    unsigned char* AllName[] = { "Main" };
-    int count = 0;
-    for (int i = 0; i < count; i++)
-    {
-        if (name == AllName[i]) {
-            return GetSceneInBuild(i);
-        }
-    }
-    return NULL;
-}
-
 
 void LoadScene(Scene* scene, int nb) {
-    scene->sceneManager->LoadScene(nb);
-    scene->sceneManager->StartScene();
+    scene->sceneManager->LoadSceneAfter = nb;
+    //scene->sceneManager->LoadScene(nb);
+    //scene->sceneManager->StartScene();
 };
 
 GameObject* FindWithName(unsigned char* name, GameObject* gameObject) {
     return gameObject->scene->sceneManager->FindWithName(name);
 };
+
+void AllFightGolem::Victory() {
+    PrintMini(40, 30, "Victoire !", 0);
+    PrintMini(25, 55, "Exe pour continuer", 0);
+    ML_display_vram();
+    while (IsKeyDown(KEY_CTRL_EXE)) {
+
+    }
+    while (!(IsKeyDown(KEY_CTRL_EXE))) {
+
+    }
+    this->gameObject->scene->sceneManager->_quit = true;
+
+}

@@ -36,6 +36,8 @@ class PlayerController(Component):
         self.TypeVariables["Frame"] = {"Type":int}
         self.Vitesse= 0
         self.TypeVariables["Vitesse"] = {"Type":int}
+        self.MySprite= None
+        self.TypeVariables["MySprite"] = {"Type":Sprite}
         
 
         self.AttributVisible=["Bas1","Bas2","Bas3","Haut1","Haut2","Haut3","Droite1","Droite2","Droite3","Gauche1","Gauche2","Gauche3","Vitesse",]
