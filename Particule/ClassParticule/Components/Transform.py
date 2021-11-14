@@ -1,5 +1,9 @@
 from ClassParticule.Component import Component
 from ClassParticule.Vector2 import Vector2
+from ClassParticule.Scene import Arrow
+
+from ClassParticule.Object import Object
+import math
 class Transform(Component):
     def __init__(self,gameObject,**kwargs):
         Component.__init__(self,gameObject,__name__.split(".")[-1],**kwargs)
@@ -52,6 +56,11 @@ class Transform(Component):
 
         self.AttributVisible=["position","localPosition"]
 
+        self.arrowX = Arrow(self.Particule.Scene.surface, 0, "blue")
+        self.arrowY = Arrow(self.Particule.Scene.surface, math.pi / 2, "green")
+        self.arrowX.Hide()
+        self.arrowY.Hide()
+
         #print(self.GetAttribut())
     def UpdateOnGUI(self):
         self.childCount = len(self.childs)
@@ -96,6 +105,26 @@ class Transform(Component):
             parent = dicoComponent[parent]
         self.parent = parent
         self.childs = [dicoComponent[o] for o in dataCompo["childs"]]
+
+    def WhenComponentIsShow(self):
+        z = self.Particule.Scene.zoom
+        x, y = self.gameObject.transform.position.get()
+        coords = ((x - self.Particule.Scene.x) * z,(y + self.Particule.Scene.y) * z)
+        self.arrowX.Move(*coords)
+        self.arrowY.Move(*coords)
+        self.arrowX.Show()
+        self.arrowY.Show()
+
+
+    def WhenComponentIsHide(self):
+        self.arrowX.Hide()
+        self.arrowY.Hide()
+
+    def Destroy(self):
+        self.arrowX.Delete()
+        self.arrowY.Delete()
+        Component.Destroy(self)
+
     def DetachChildren(self):
         pass
     def Find(self):

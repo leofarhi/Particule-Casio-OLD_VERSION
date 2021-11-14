@@ -397,8 +397,9 @@ void Image::OnRenderObject() {
         ML_bmp_or_cl((const unsigned char*)image->textureData, (int)(posX - camX), (int)(posY - camY), image->width, image->height);
 };
 
-Sprite::Sprite(GameObject* gameObject, Texture* image, const char* UUID) : MonoBehaviour("Sprite", gameObject, UUID) {
+Sprite::Sprite(GameObject* gameObject, Texture* image,bool HaveBackground, const char* UUID) : MonoBehaviour("Sprite", gameObject, UUID) {
     this->image = image;
+    this->HaveBackground = HaveBackground;
 };
 
 void Sprite::OnRenderObject() {
@@ -407,6 +408,8 @@ void Sprite::OnRenderObject() {
     float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
     float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
     if (posX - camX + image->height > 0 && posX - camX < 128 && posY - camY + image->height>0 && posY - camY < 64)
+        if (HaveBackground)
+            ML_rectangle((int)(posX - camX), (int)(posY - camY), (int)(posX - camX)+image->width, (int)(posY - camY)+image->height, 0, ML_WHITE, ML_WHITE);
         ML_bmp_or_cl((const unsigned char*)image->textureData, (int)(posX - camX), (int)(posY - camY), image->width, image->height);
 };
 

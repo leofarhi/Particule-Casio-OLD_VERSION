@@ -4,8 +4,11 @@ from ClassParticule.Vector2 import Vector2
 from ClassParticule.Texture import Texture
 from ClassSystem.TypeGUI import TypeGUI
 import ClassParticule
+from ClassParticule.Scene import Arrow
 
 from ClassParticule.Object import Object
+import math
+
 class Component(Object):
     name=""
     def __init__(self,gameObject,name,**kwargs):
@@ -21,6 +24,7 @@ class Component(Object):
             indexScene = self.Particule.Scene.scenes.index(self.gameObject.scene)
             if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
                 self.Particule.Scene.UUID_Objects[indexScene].update({self.ID:self})
+
 
     def SaveDataDict(self):
         return {"name":self.name,
@@ -85,6 +89,12 @@ class Component(Object):
         self.myFrame.pack(fill=tkinter.BOTH, expand=True)
         for i in self._valueGUI:
             i.Update()
+
+    def WhenComponentIsShow(self):
+        pass
+
+    def WhenComponentIsHide(self):
+        pass
 
     def popup(self, event):
         self.contextMenu.post(event.x_root, event.y_root)

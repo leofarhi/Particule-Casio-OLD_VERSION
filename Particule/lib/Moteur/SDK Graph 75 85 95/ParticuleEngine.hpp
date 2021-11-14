@@ -437,9 +437,10 @@ class Sprite : MonoBehaviour { //: public VisualElement {
 public:
 
     Texture* image;
+    bool HaveBackground;
 
 
-    Sprite(GameObject* gameObject, Texture* image, const char* UUID = NULL);
+    Sprite(GameObject* gameObject, Texture* image,bool HaveBackground, const char* UUID = NULL);
 
     void OnRenderObject();
 };
@@ -540,7 +541,18 @@ public:
 
 
 //Components
+class ProjectSettings {
+public:
+    Vector2* Gravity;
 
+    
+    ProjectSettings() {
+        //<ProjectSettings>
+        Gravity = new Vector2();
+        //<\ProjectSettings>
+    };
+
+};
 class SceneManager {
     //https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager.html
 public:
@@ -548,10 +560,12 @@ public:
     static int sceneCountInBuildSettings;
     int LoadSceneAfter;
     bool _quit;
+    ProjectSettings* projectSettings;
     
     SceneManager() {
         LoadSceneAfter = -1;
         _quit = false;
+        projectSettings = new ProjectSettings();
         LoadTextures();
     }
 

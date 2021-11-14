@@ -51,7 +51,11 @@ class ScreenOrganization:
 
         self.Sys.TextZone = ZoneText(self.GridCenter)
         self.Sys.TextZone.pack(side="left", fill=BOTH, expand=True)
-        self.GridCenter.add(self.Sys.TextZone, text='Casio')
+        self.GridCenter.add(self.Sys.TextZone, text='Casio.hpp')
+
+        self.Sys.TextZoneCpp = ZoneText(self.GridCenter)
+        self.Sys.TextZoneCpp.pack(side="left", fill=BOTH, expand=True)
+        self.GridCenter.add(self.Sys.TextZoneCpp, text='Casio.cpp')
 
         self.Sys.BlocksWindow = BlocksWindow(self.Sys,self.GridCenterRight)
         self.Sys.BlocksWindow.pack(fill=BOTH, expand=True)

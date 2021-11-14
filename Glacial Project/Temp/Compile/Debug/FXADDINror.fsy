@@ -1,4 +1,4 @@
-;HITACHI OPTIMIZING LINKAGE EDITOR GENERATED FILE 2021.11.13
+;HITACHI OPTIMIZING LINKAGE EDITOR GENERATED FILE 2021.11.14
 ;fsymbol = P
 
 ;SECTION NAME = P
@@ -87,329 +87,387 @@ _getTicks: .equ h'00302d28
  .export _main
 _main: .equ h'00302d48
  .export _AddIn_main
-_AddIn_main: .equ h'00302e08
+_AddIn_main: .equ h'00302e38
  .export _OSVersionAsInt
-_OSVersionAsInt: .equ h'00303348
+_OSVersionAsInt: .equ h'00303384
  .export _GetKeyMod
-_GetKeyMod: .equ h'00303382
+_GetKeyMod: .equ h'003033be
  .export _delay
-_delay: .equ h'003033c0
+_delay: .equ h'003033fc
  .export _CheckKeyRow
-_CheckKeyRow: .equ h'003033d0
+_CheckKeyRow: .equ h'0030340c
  .export _KeyDown
-_KeyDown: .equ h'003034c0
+_KeyDown: .equ h'003034fc
  .export _Random__FiT1
-_Random__FiT1: .equ h'00303574
+_Random__FiT1: .equ h'003035b0
  .export _LenChar__FPc
-_LenChar__FPc: .equ h'00303598
+_LenChar__FPc: .equ h'003035d4
  .export _mod__FiT1
-_mod__FiT1: .equ h'003035a6
+_mod__FiT1: .equ h'003035e2
  .export _LoadScene__FP5Scenei
-_LoadScene__FP5Scenei: .equ h'003035c0
+_LoadScene__FP5Scenei: .equ h'003035fc
  .export _FindWithName__FPUcP10GameObject
-_FindWithName__FPUcP10GameObject: .equ h'003035c6
+_FindWithName__FPUcP10GameObject: .equ h'00303602
  .export ___ct__7Vector2Fv
-___ct__7Vector2Fv: .equ h'003035da
+___ct__7Vector2Fv: .equ h'00303616
  .export ___ct__7Vector2FfT1
-___ct__7Vector2FfT1: .equ h'00303606
+___ct__7Vector2FfT1: .equ h'00303642
  .export _Set__7Vector2FfT1
-_Set__7Vector2FfT1: .equ h'00303638
+_Set__7Vector2FfT1: .equ h'00303674
  .export _Set__7Vector2F7Vector2
-_Set__7Vector2F7Vector2: .equ h'0030363e
+_Set__7Vector2F7Vector2: .equ h'0030367a
  .export ___eq__7Vector2FRC7Vector2
-___eq__7Vector2FRC7Vector2: .equ h'0030364a
+___eq__7Vector2FRC7Vector2: .equ h'00303686
  .export ___ne__7Vector2FRC7Vector2
-___ne__7Vector2FRC7Vector2: .equ h'00303672
+___ne__7Vector2FRC7Vector2: .equ h'003036ae
  .export ___pl__7Vector2FRC7Vector2
-___pl__7Vector2FRC7Vector2: .equ h'0030369a
+___pl__7Vector2FRC7Vector2: .equ h'003036d6
  .export ___mi__7Vector2FRC7Vector2
-___mi__7Vector2FRC7Vector2: .equ h'003036d8
+___mi__7Vector2FRC7Vector2: .equ h'00303714
  .export ___ml__7Vector2FRC7Vector2
-___ml__7Vector2FRC7Vector2: .equ h'00303716
+___ml__7Vector2FRC7Vector2: .equ h'00303752
  .export ___dv__7Vector2FRC7Vector2
-___dv__7Vector2FRC7Vector2: .equ h'00303754
+___dv__7Vector2FRC7Vector2: .equ h'00303790
  .export ___ct__6ObjectFPCcT1
-___ct__6ObjectFPCcT1: .equ h'00303792
+___ct__6ObjectFPCcT1: .equ h'003037ce
  .export _GetInstanceID__6ObjectFv
-_GetInstanceID__6ObjectFv: .equ h'003037e8
+_GetInstanceID__6ObjectFv: .equ h'00303824
  .export _ToString__6ObjectFv
-_ToString__6ObjectFv: .equ h'003037ec
+_ToString__6ObjectFv: .equ h'00303828
  .export ___eq__6ObjectFRC6Object
-___eq__6ObjectFRC6Object: .equ h'003037f4
+___eq__6ObjectFRC6Object: .equ h'00303830
  .export ___ne__6ObjectFRC6Object
-___ne__6ObjectFRC6Object: .equ h'003037fe
+___ne__6ObjectFRC6Object: .equ h'0030383a
  .export ___ct__9ComponentFPCcP10GameObjectT1
-___ct__9ComponentFPCcP10GameObjectT1: .equ h'00303840
+___ct__9ComponentFPCcP10GameObjectT1: .equ h'0030387c
  .export ___ct__9TransformFP10GameObjectPCcT2
-___ct__9TransformFP10GameObjectPCcT2: .equ h'003038ec
+___ct__9TransformFP10GameObjectPCcT2: .equ h'00303928
  .export _SetParent__9TransformFP9Transform
-_SetParent__9TransformFP9Transform: .equ h'003039bc
+_SetParent__9TransformFP9Transform: .equ h'003039f8
  .export _Start__9TransformFv
-_Start__9TransformFv: .equ h'00303a18
+_Start__9TransformFv: .equ h'00303a54
  .export _Update__9TransformFv
-_Update__9TransformFv: .equ h'00303a2c
+_Update__9TransformFv: .equ h'00303a68
  .export ___ct__9BehaviourFPCcP10GameObjectT1
-___ct__9BehaviourFPCcP10GameObjectT1: .equ h'00303c28
+___ct__9BehaviourFPCcP10GameObjectT1: .equ h'00303c64
  .export ___ct__7TextureFv
-___ct__7TextureFv: .equ h'00303c8c
+___ct__7TextureFv: .equ h'00303cc8
  .export ___ct__7TextureFPCciT2PCUcT1
-___ct__7TextureFPCciT2PCUcT1: .equ h'00303cec
+___ct__7TextureFPCciT2PCUcT1: .equ h'00303d28
  .export ___ct__13MonoBehaviourFPCcP10GameObjectT1
-___ct__13MonoBehaviourFPCcP10GameObjectT1: .equ h'00303d54
+___ct__13MonoBehaviourFPCcP10GameObjectT1: .equ h'00303d90
  .export ___ct__10GameObjectFP5ScenePCcT2
-___ct__10GameObjectFP5ScenePCcT2: .equ h'00303db6
+___ct__10GameObjectFP5ScenePCcT2: .equ h'00303df2
  .export _IsActive__10GameObjectFv
-_IsActive__10GameObjectFv: .equ h'00303f6c
+_IsActive__10GameObjectFv: .equ h'00303fa8
  .export _AddComponent__10GameObjectFP9Component
-_AddComponent__10GameObjectFP9Component: .equ h'00303fa0
+_AddComponent__10GameObjectFP9Component: .equ h'00303fdc
  .export _GetComponent__10GameObjectFPCc
-_GetComponent__10GameObjectFPCc: .equ h'00303fee
+_GetComponent__10GameObjectFPCc: .equ h'0030402a
  .export _Find__10GameObjectFPUc
-_Find__10GameObjectFPUc: .equ h'00304032
+_Find__10GameObjectFPUc: .equ h'0030406e
  .export _AddGameObject__5SceneFP10GameObject
-_AddGameObject__5SceneFP10GameObject: .equ h'00304130
+_AddGameObject__5SceneFP10GameObject: .equ h'0030416c
  .export _Update__5SceneFv
-_Update__5SceneFv: .equ h'0030417e
+_Update__5SceneFv: .equ h'003041ba
  .export _Start__5SceneFv
-_Start__5SceneFv: .equ h'00304372
+_Start__5SceneFv: .equ h'003043ae
  .export ___ct__6CameraFP10GameObjectPCc
-___ct__6CameraFP10GameObjectPCc: .equ h'0030459e
+___ct__6CameraFP10GameObjectPCc: .equ h'003045da
  .export ___ct__5ImageFP10GameObjectP7TexturePCc
-___ct__5ImageFP10GameObjectP7TexturePCc: .equ h'0030463c
+___ct__5ImageFP10GameObjectP7TexturePCc: .equ h'00304678
  .export _OnRenderObject__5ImageFv
-_OnRenderObject__5ImageFv: .equ h'003046a4
- .export ___ct__6SpriteFP10GameObjectP7TexturePCc
-___ct__6SpriteFP10GameObjectP7TexturePCc: .equ h'003047b4
+_OnRenderObject__5ImageFv: .equ h'003046e0
+ .export ___ct__6SpriteFP10GameObjectP7TexturebPCc
+___ct__6SpriteFP10GameObjectP7TexturebPCc: .equ h'003047f0
  .export _OnRenderObject__6SpriteFv
-_OnRenderObject__6SpriteFv: .equ h'003047f2
+_OnRenderObject__6SpriteFv: .equ h'00304834
  .export ___ct__9RigidbodyFP10GameObjectfbT3PCc
-___ct__9RigidbodyFP10GameObjectfbT3PCc: .equ h'0030494c
+___ct__9RigidbodyFP10GameObjectfbT3PCc: .equ h'003049bc
  .export _PhysicsCalculator__9RigidbodyFv
-_PhysicsCalculator__9RigidbodyFv: .equ h'003049b0
+_PhysicsCalculator__9RigidbodyFv: .equ h'00304a20
  .export _OnCollisionEnter2D__9RigidbodyFP13BoxCollider2D
-_OnCollisionEnter2D__9RigidbodyFP13BoxCollider2D: .equ h'003049e2
+_OnCollisionEnter2D__9RigidbodyFP13BoxCollider2D: .equ h'00304a52
  .export _OnCollisionStay2D__9RigidbodyFP13BoxCollider2D
-_OnCollisionStay2D__9RigidbodyFP13BoxCollider2D: .equ h'00304a3c
+_OnCollisionStay2D__9RigidbodyFP13BoxCollider2D: .equ h'00304aac
  .export _LateUpdate__9RigidbodyFv
-_LateUpdate__9RigidbodyFv: .equ h'00304a96
+_LateUpdate__9RigidbodyFv: .equ h'00304b06
  .export _Start__9RigidbodyFv
-_Start__9RigidbodyFv: .equ h'00304b10
+_Start__9RigidbodyFv: .equ h'00304b80
  .export ___ct__13BoxCollider2DFP10GameObjectbP7Vector2T3PCc
-___ct__13BoxCollider2DFP10GameObjectbP7Vector2T3PCc: .equ h'00304b4c
+___ct__13BoxCollider2DFP10GameObjectbP7Vector2T3PCc: .equ h'00304bbc
  .export _Update__13BoxCollider2DFv
-_Update__13BoxCollider2DFv: .equ h'00304c30
+_Update__13BoxCollider2DFv: .equ h'00304ca0
  .export ___ct__4TextFP10GameObjectPUcPCc
-___ct__4TextFP10GameObjectPUcPCc: .equ h'0030516a
+___ct__4TextFP10GameObjectPUcPCc: .equ h'003051de
  .export _OnRenderObject__4TextFv
-_OnRenderObject__4TextFv: .equ h'003051aa
+_OnRenderObject__4TextFv: .equ h'0030521e
  .export ___ct__7TilemapFP10GameObjectP7Vector2T2PCc
-___ct__7TilemapFP10GameObjectP7Vector2T2PCc: .equ h'0030524e
+___ct__7TilemapFP10GameObjectP7Vector2T2PCc: .equ h'003052c2
  .export _OnRenderObject__7TilemapFv
-_OnRenderObject__7TilemapFv: .equ h'0030530c
+_OnRenderObject__7TilemapFv: .equ h'00305380
+ .export _Update__13AllFightGolemFv
+_Update__13AllFightGolemFv: .equ h'0030551c
+ .export _Start__13AllFightGolemFv
+_Start__13AllFightGolemFv: .equ h'003055a4
+ .export _OnRenderObject__13AllFightGolemFv
+_OnRenderObject__13AllFightGolemFv: .equ h'003055c8
+ .export _GameOver__13AllFightGolemFv
+_GameOver__13AllFightGolemFv: .equ h'0030562a
  .export _Victory__13AllFightGolemFv
-_Victory__13AllFightGolemFv: .equ h'00305620
+_Victory__13AllFightGolemFv: .equ h'00305690
+ .export _Update__9BallGolemFv
+_Update__9BallGolemFv: .equ h'00305706
+ .export _OnRenderObject__9BallGolemFv
+_OnRenderObject__9BallGolemFv: .equ h'003057ec
+ .export _OnTriggerEnter2D__9BallGolemFP13BoxCollider2D
+_OnTriggerEnter2D__9BallGolemFP13BoxCollider2D: .equ h'00305820
+ .export _Start__9BallGolemFv
+_Start__9BallGolemFv: .equ h'0030586e
+ .export _Start__18ChangeSceneTriggerFv
+_Start__18ChangeSceneTriggerFv: .equ h'003058d4
+ .export _OnTriggerEnter2D__18ChangeSceneTriggerFP13BoxCollider2D
+_OnTriggerEnter2D__18ChangeSceneTriggerFP13BoxCollider2D: .equ h'003058f2
+ .export _Update__7CurseurFv
+_Update__7CurseurFv: .equ h'00305934
+ .export _Start__9Dialogue1Fv
+_Start__9Dialogue1Fv: .equ h'00305ac6
+ .export _WaitExe__9Dialogue1Fv
+_WaitExe__9Dialogue1Fv: .equ h'00305ae0
+ .export _StartDialogue__9Dialogue1Fv
+_StartDialogue__9Dialogue1Fv: .equ h'00305b00
+ .export _ChangeSprite__9Dialogue1Fi
+_ChangeSprite__9Dialogue1Fi: .equ h'00305c52
+ .export _Update__9Dialogue1Fv
+_Update__9Dialogue1Fv: .equ h'00305c84
+ .export _Update__16GameManagerCibleFv
+_Update__16GameManagerCibleFv: .equ h'00305cec
+ .export _Start__16GameManagerCibleFv
+_Start__16GameManagerCibleFv: .equ h'00305d3e
+ .export _Update__8MainMenuFv
+_Update__8MainMenuFv: .equ h'00305d6a
+ .export _Start__8MainMenuFv
+_Start__8MainMenuFv: .equ h'00305de6
+ .export _OnRenderObject__8MainMenuFv
+_OnRenderObject__8MainMenuFv: .equ h'00305e16
+ .export _Update__16PlayerControllerFv
+_Update__16PlayerControllerFv: .equ h'00305ed8
+ .export _Start__16PlayerControllerFv
+_Start__16PlayerControllerFv: .equ h'003060b4
+ .export _LateUpdate__16PlayerControllerFv
+_LateUpdate__16PlayerControllerFv: .equ h'003060ce
+ .export _OnRenderObject__16PlayerControllerFv
+_OnRenderObject__16PlayerControllerFv: .equ h'0030614a
+ .export _OnCollisionStay2D__9RoomCibleFP13BoxCollider2D
+_OnCollisionStay2D__9RoomCibleFP13BoxCollider2D: .equ h'00306190
+ .export _Start__9RoomCibleFv
+_Start__9RoomCibleFv: .equ h'00306218
+ .export _Update__9RoomCibleFv
+_Update__9RoomCibleFv: .equ h'00306284
+ .export _Show__9RoomCibleFv
+_Show__9RoomCibleFv: .equ h'003062e2
  .export _LoadScene__12SceneManagerFi
-_LoadScene__12SceneManagerFi: .equ h'00306308
+_LoadScene__12SceneManagerFi: .equ h'0030637a
  .export _LoadScene__12SceneManagerFPUc
-_LoadScene__12SceneManagerFPUc: .equ h'00306434
+_LoadScene__12SceneManagerFPUc: .equ h'003064ac
  .export _FindWithName__12SceneManagerFPUc
-_FindWithName__12SceneManagerFPUc: .equ h'003064dc
+_FindWithName__12SceneManagerFPUc: .equ h'00306554
  .export _UpdateScene__12SceneManagerFv
-_UpdateScene__12SceneManagerFv: .equ h'0030655c
+_UpdateScene__12SceneManagerFv: .equ h'003065d4
  .export _StartScene__12SceneManagerFv
-_StartScene__12SceneManagerFv: .equ h'003065c2
+_StartScene__12SceneManagerFv: .equ h'0030663a
  .export ___LINK_PROTECT
-___LINK_PROTECT: .equ h'0030a360
+___LINK_PROTECT: .equ h'0030a438
  .export _SetQuitHandler
-_SetQuitHandler: .equ h'0030a364
+_SetQuitHandler: .equ h'0030a43c
  .export _OnAppCloseDefault
-_OnAppCloseDefault: .equ h'0030a36a
+_OnAppCloseDefault: .equ h'0030a442
  .export __INITSCT_ADDIN
-__INITSCT_ADDIN: .equ h'0030a3be
+__INITSCT_ADDIN: .equ h'0030a496
  .export _INIT_ADDIN_APPLICATION
-_INIT_ADDIN_APPLICATION: .equ h'0030a406
+_INIT_ADDIN_APPLICATION: .equ h'0030a4de
  .export __addd
-__addd: .equ h'0030a54c
+__addd: .equ h'0030a624
  .export __subdr
-__subdr: .equ h'0030a494
+__subdr: .equ h'0030a56c
  .export __subd
-__subd: .equ h'0030a47c
+__subd: .equ h'0030a554
  .export __adds
-__adds: .equ h'0030a812
+__adds: .equ h'0030a8ea
  .export __subs
-__subs: .equ h'0030a80c
+__subs: .equ h'0030a8e4
  .export __divs
-__divs: .equ h'0030aad0
+__divs: .equ h'0030aba8
  .export __dtoi
-__dtoi: .equ h'0030ac10
+__dtoi: .equ h'0030ace8
  .export __dtou
-__dtou: .equ h'0030ac10
+__dtou: .equ h'0030ace8
  .export __dtos
-__dtos: .equ h'0030ac9c
+__dtos: .equ h'0030ad74
  .export __gtd
-__gtd: .equ h'0030ad78
+__gtd: .equ h'0030ae50
  .export __gts
-__gts: .equ h'0030ae20
+__gts: .equ h'0030aef8
  .export __itod
-__itod: .equ h'0030ae98
+__itod: .equ h'0030af70
  .export __itos
-__itos: .equ h'0030aeec
+__itos: .equ h'0030afc4
  .export __lts
-__lts: .equ h'0030af44
+__lts: .equ h'0030b01c
  .export __muld
-__muld: .equ h'0030b060
+__muld: .equ h'0030b138
  .export __muls
-__muls: .equ h'0030b1d0
+__muls: .equ h'0030b2a8
  .export __nes
-__nes: .equ h'0030b310
+__nes: .equ h'0030b3e8
  .export __stou
-__stou: .equ h'0030b378
+__stou: .equ h'0030b450
  .export __stoi
-__stoi: .equ h'0030b378
+__stoi: .equ h'0030b450
  .export __divls
-__divls: .equ h'0030b3d0
+__divls: .equ h'0030b4a8
  .export __modls
-__modls: .equ h'0030b484
+__modls: .equ h'0030b55c
  .export __quick_mvn
-__quick_mvn: .equ h'0030b54c
+__quick_mvn: .equ h'0030b624
  .export __quick_odd_mvn
-__quick_odd_mvn: .equ h'0030b618
+__quick_odd_mvn: .equ h'0030b6f0
  .export __quick_evn_mvn
-__quick_evn_mvn: .equ h'0030b60c
+__quick_evn_mvn: .equ h'0030b6e4
  .export _abs
-_abs: .equ h'0030b6b0
+_abs: .equ h'0030b788
  .export ___dl__FPv
-___dl__FPv: .equ h'0030b6c0
+___dl__FPv: .equ h'0030b798
  .export _memcpy
-_memcpy: .equ h'0030b6d4
+_memcpy: .equ h'0030b7ac
  .export ___memzero
-___memzero: .equ h'0030b794
+___memzero: .equ h'0030b86c
  .export ___nw__FUl
-___nw__FUl: .equ h'0030b7a8
+___nw__FUl: .equ h'0030b880
  .export _sprintf
-_sprintf: .equ h'0030b81c
+_sprintf: .equ h'0030b8f4
  .export _strlen
-_strlen: .equ h'0030b858
+_strlen: .equ h'0030b930
  .export ___dt__Q2_3std9type_infoFv
-___dt__Q2_3std9type_infoFv: .equ h'0030b868
+___dt__Q2_3std9type_infoFv: .equ h'0030b940
  .export ___eq__Q2_3std9type_infoCFRCQ2_3std9type_info
-___eq__Q2_3std9type_infoCFRCQ2_3std9type_info: .equ h'0030b886
+___eq__Q2_3std9type_infoCFRCQ2_3std9type_info: .equ h'0030b95e
  .export ___ne__Q2_3std9type_infoCFRCQ2_3std9type_info
-___ne__Q2_3std9type_infoCFRCQ2_3std9type_info: .equ h'0030b8a2
+___ne__Q2_3std9type_infoCFRCQ2_3std9type_info: .equ h'0030b97a
  .export _before__Q2_3std9type_infoCFRCQ2_3std9type_info
-_before__Q2_3std9type_infoCFRCQ2_3std9type_info: .equ h'0030b8be
+_before__Q2_3std9type_infoCFRCQ2_3std9type_info: .equ h'0030b996
  .export _name__Q2_3std9type_infoCFv
-_name__Q2_3std9type_infoCFv: .equ h'0030b8d6
+_name__Q2_3std9type_infoCFv: .equ h'0030b9ae
  .export _Bdel_cychdr
-_Bdel_cychdr: .equ h'0030b8e4
+_Bdel_cychdr: .equ h'0030b9bc
  .export _BfileFLS_CloseFile
-_BfileFLS_CloseFile: .equ h'0030b8f4
+_BfileFLS_CloseFile: .equ h'0030b9cc
  .export _Bkey_Set_RepeatTime_Default
-_Bkey_Set_RepeatTime_Default: .equ h'0030b904
+_Bkey_Set_RepeatTime_Default: .equ h'0030b9dc
  .export _CallbackAtQuitMainFunction
-_CallbackAtQuitMainFunction: .equ h'0030b914
+_CallbackAtQuitMainFunction: .equ h'0030b9ec
  .export _flsFindClose
-_flsFindClose: .equ h'0030b924
+_flsFindClose: .equ h'0030b9fc
  .export _free
-_free: .equ h'0030b934
+_free: .equ h'0030ba0c
  .export _GetKey
-_GetKey: .equ h'0030b944
+_GetKey: .equ h'0030ba1c
  .export _GLibAddinAplExecutionCheck
-_GLibAddinAplExecutionCheck: .equ h'0030b954
+_GLibAddinAplExecutionCheck: .equ h'0030ba2c
  .export _Hmem_SetMMU
-_Hmem_SetMMU: .equ h'0030b964
+_Hmem_SetMMU: .equ h'0030ba3c
  .export _malloc
-_malloc: .equ h'0030b974
+_malloc: .equ h'0030ba4c
  .export _PrintMini
-_PrintMini: .equ h'0030b984
+_PrintMini: .equ h'0030ba5c
  .export _locate
-_locate: .equ h'0030b9a0
+_locate: .equ h'0030ba78
  .export _Bdisp_ReadArea_DD
-_Bdisp_ReadArea_DD: .equ h'0030b9c8
+_Bdisp_ReadArea_DD: .equ h'0030baa0
  .export _GetSDKLibraryVersion
-_GetSDKLibraryVersion: .equ h'0030bafc
+_GetSDKLibraryVersion: .equ h'0030bbd4
  .export _SetTimer
-_SetTimer: .equ h'0030bb02
+_SetTimer: .equ h'0030bbda
  .export _KillTimer
-_KillTimer: .equ h'0030bb56
+_KillTimer: .equ h'0030bc2e
  .export _Sleep
-_Sleep: .equ h'0030bb9a
+_Sleep: .equ h'0030bc72
  .export __fmtout
-__fmtout: .equ h'0030bbfc
+__fmtout: .equ h'0030bcd4
  .export _memset
-_memset: .equ h'0030cce8
+_memset: .equ h'0030cdc0
  .export ___default_new_handler__Fv
-___default_new_handler__Fv: .equ h'0030cd00
+___default_new_handler__Fv: .equ h'0030cdd8
  .export _Bcre_cychdr
-_Bcre_cychdr: .equ h'0030cd04
+_Bcre_cychdr: .equ h'0030cddc
  .export _BSrl_DummyWAIT
-_BSrl_DummyWAIT: .equ h'0030cd14
+_BSrl_DummyWAIT: .equ h'0030cdec
  .export _Bsta_cychdr
-_Bsta_cychdr: .equ h'0030cd24
+_Bsta_cychdr: .equ h'0030cdfc
  .export _Bstp_cychdr
-_Bstp_cychdr: .equ h'0030cd34
+_Bstp_cychdr: .equ h'0030ce0c
  .export _DD_GET
-_DD_GET: .equ h'0030cd44
+_DD_GET: .equ h'0030ce1c
  .export _locate_OS
-_locate_OS: .equ h'0030cd54
+_locate_OS: .equ h'0030ce2c
  .export _PrintMiniSd
-_PrintMiniSd: .equ h'0030cd64
+_PrintMiniSd: .equ h'0030ce3c
  .export __eqd
-__eqd: .equ h'0030cd74
+__eqd: .equ h'0030ce4c
  .export __divlu
-__divlu: .equ h'0030ce08
+__divlu: .equ h'0030cee0
  .export __modlu
-__modlu: .equ h'0030ceb0
+__modlu: .equ h'0030cf88
  .export __its
-__its: .equ h'0030cf68
+__its: .equ h'0030d040
  .export __xti
-__xti: .equ h'0030d098
+__xti: .equ h'0030d170
  .export __allzero
-__allzero: .equ h'0030d328
+__allzero: .equ h'0030d400
  .export __calcnpw
-__calcnpw: .equ h'0030d348
+__calcnpw: .equ h'0030d420
  .export __log10
-__log10: .equ h'0030d448
+__log10: .equ h'0030d520
  .export __lsfts
-__lsfts: .equ h'0030d710
+__lsfts: .equ h'0030d7e8
  .export __pow5
-__pow5: .equ h'0030d75c
+__pow5: .equ h'0030d834
  .export __rsfts
-__rsfts: .equ h'0030d780
+__rsfts: .equ h'0030d858
  .export __sub
-__sub: .equ h'0030d7d8
+__sub: .equ h'0030d8b0
  .export __umemcmp
-__umemcmp: .equ h'0030d86c
+__umemcmp: .equ h'0030d944
  .export __unpack
-__unpack: .equ h'0030d8a0
+__unpack: .equ h'0030d978
  .export _memcmp
-_memcmp: .equ h'0030d93c
+_memcmp: .equ h'0030da14
  .export __ltd
-__ltd: .equ h'0030d970
+__ltd: .equ h'0030da48
  .export __ned
-__ned: .equ h'0030da18
+__ned: .equ h'0030daf0
  .export __divws
-__divws: .equ h'0030daac
+__divws: .equ h'0030db84
  .export __div64
-__div64: .equ h'0030dafc
+__div64: .equ h'0030dbd4
  .export __duchek
-__duchek: .equ h'0030dc90
+__duchek: .equ h'0030dd68
  .export __lsft
-__lsft: .equ h'0030dcc0
+__lsft: .equ h'0030dd98
  .export __mult64
-__mult64: .equ h'0030dd08
+__mult64: .equ h'0030dde0
  .export __power
-__power: .equ h'0030dd78
+__power: .equ h'0030de50
  .export __rnd
-__rnd: .equ h'0030decc
+__rnd: .equ h'0030dfa4
  .export __setsbit
-__setsbit: .equ h'0030dfb8
+__setsbit: .equ h'0030e090
  .export __add
-__add: .equ h'0030e03c
+__add: .equ h'0030e114
  .export __mult
-__mult: .equ h'0030e098
+__mult: .equ h'0030e170
  .export __pow10
-__pow10: .equ h'0030e174
+__pow10: .equ h'0030e24c
  .export __rsft
-__rsft: .equ h'0030e20c
+__rsft: .equ h'0030e2e4
  .end

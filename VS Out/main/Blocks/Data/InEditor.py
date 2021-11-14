@@ -97,6 +97,6 @@ public:
     
     //&&Fonction
 };'''
-        return code
+        return (code,name)
 
     

@@ -69,6 +69,11 @@ class GameObject(Object):
                 pass
         for component in self.ListOfComponent:
             component.UpdateOnGUI()
+            if component.myFrame != None:
+                if component.myFrame.winfo_ismapped() == 1:
+                    component.WhenComponentIsShow()
+                else:
+                    component.WhenComponentIsHide()
     def AddComponent(self,ClassComponent):
         temp = ClassComponent(self)#getattr(sys.modules['Particule'], ClassComponent.__name__)(self)
         self.ListOfComponent.append(temp)

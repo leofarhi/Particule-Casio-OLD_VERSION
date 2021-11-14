@@ -47,6 +47,10 @@ class Arrow:
         self.canvas.itemconfig(self.line2, state='normal')
         self.canvas.itemconfig(self.line3, state='normal')
         self.Update()
+    def Delete(self):
+        self.canvas.delete(self.line)
+        self.canvas.delete(self.line2)
+        self.canvas.delete(self.line3)
 class Scene(EditorWindow):
     def __init__(self,RootWindow):
         EditorWindow.__init__(self,RootWindow,Resize=True,ScrollbarShow=False)

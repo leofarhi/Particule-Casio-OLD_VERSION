@@ -4,6 +4,7 @@ from ClassParticule.Texture import Texture
 from ClassParticule.Vector2 import Vector2
 import numpy
 import PIL
+import SystemExt.ImageFunctions as ImageFunctions
 from PIL import ImageFilter, ImageOps
 class Tilemap(Component):
     def __init__(self,gameObject,**kwargs):
@@ -127,6 +128,7 @@ class Tilemap(Component):
                 img = img.resize(
                     (int(img.width * self._lastZoom), int(img.height * self._lastZoom)),
                     resample=Image.NEAREST)
+                img = ImageFunctions.WhiteToTransparent(img)
                 img = ImageTk.PhotoImage(img)
                 self.Imgs.append(img)
                 ImgCan = self.canvas.create_image(x*self.SizeCase.x, y*self.SizeCase.y, anchor=tkinter.NW, image=self.Imgs[-1])
@@ -202,11 +204,6 @@ class Tilemap(Component):
                 #                int(((x+(x2+1)*self.SizeCase.x)-self.Particule.Scene.x)*z),int(((y+(y2+1)*self.SizeCase.y)+self.Particule.Scene.y)*z)*z)
 
                 index+=1
-        if self.myFrame!=None:
-            if self.myFrame.winfo_ismapped()==1:
-                self.WhenComponentIsShow()
-    def WhenComponentIsShow(self):
-        pass#raise Exception("A finir")
 
 
     def Destroy(self):

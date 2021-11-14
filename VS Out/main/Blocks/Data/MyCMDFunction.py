@@ -18,6 +18,6 @@ class ScriptBlockPython(ScriptBlock):
 
 
     def WhenCompileForCasio(self,lst):
-        code = str(self.BlockSys.GetVariable(lst,0)[1])+"("+str(self.BlockSys.GetVariable(lst,1)[1])+"){\n" + self.BlockSys.GetSuite(lst,0) + "\n}"
+        code = str(self.BlockSys.GetVariable(lst,0)[1])+"("+str(self.BlockSys.GetVariable(lst,1)[1])+") {\n" + self.BlockSys.GetSuite(lst,0) + "\n}"
         return code
     

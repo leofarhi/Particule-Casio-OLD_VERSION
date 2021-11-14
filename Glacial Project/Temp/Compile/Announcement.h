@@ -14,6 +14,7 @@ class Camera;
 class Image;
 class Text;
 class BoxCollider2D;
+class ProjectSettings;
 void LoadScene(Scene* scene, int nb);
 GameObject* FindWithName(unsigned char* name,GameObject* gameObject);
 class AllFightGolem;

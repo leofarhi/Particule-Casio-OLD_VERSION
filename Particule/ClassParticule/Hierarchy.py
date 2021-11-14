@@ -67,6 +67,10 @@ class Hierarchy(EditorWindow):
         self.contextMenu.add_command(label="Copy",command =self.CopyObject)
         self.contextMenu.add_command(label="Past",command =self.PastObject)
         self.contextMenu.add_separator()
+        self.contextMenu.add_command(label="Move Up", command=self.moveUp)
+        self.contextMenu.add_command(label="Move Down", command=self.moveDown)
+        self.contextMenu.add_command(label="Go to", command=self.RecentrerCamera)
+        self.contextMenu.add_separator()
         self.contextMenu.add_command(label="Rename")
         self.contextMenu.add_command(label="Duplicate",command =self.DuplicateObject)
         self.contextMenu.add_command(label="Delete",command = self.deleteObject)
@@ -82,6 +86,13 @@ class Hierarchy(EditorWindow):
         self.contextMenu.add_command(label="UI")
         self.contextMenu.add_command(label="Camera")
 
+    def RecentrerCamera(self,*args):
+        temp = self.t.focus()
+        if self.t.parent(temp) == "":
+            return
+        gameObj = self.allGameObjectOnScene[temp]
+        self.Particule.Scene.x = gameObj.transform.position.x
+        self.Particule.Scene.y = -gameObj.transform.position.y
     def popup(self, event):
         """action in event of button 3 on tree view"""
         # select row under mouse
@@ -95,13 +106,21 @@ class Hierarchy(EditorWindow):
             # occurs when items do not fill frame
             # no action required
             pass
+
+    def moveDown(self,*args):
+        leaves = self.t.selection()
+        for i in reversed(leaves):
+            self.t.move(i, self.t.parent(i), self.t.index(i) + 1)
+
+    def moveUp(self,*args):
+        leaves = self.t.selection()
+        for i in leaves:
+            self.t.move(i, self.t.parent(i), self.t.index(i) - 1)
     def CreatePrefabInFolder(self):
-        print("ok")
         temp = self.t.focus()
         if self.t.parent(temp) == "":
             return
         gameObj=self.allGameObjectOnScene[temp]
-        print("ok2")
         lstTemp=os.listdir(self.Particule.FolderWindow.repertoirSlc)
         if gameObj.name+".prefab" in lstTemp:
             nb = 0

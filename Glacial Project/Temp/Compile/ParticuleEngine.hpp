@@ -437,9 +437,10 @@ class Sprite : MonoBehaviour { //: public VisualElement {
 public:
 
     Texture* image;
+    bool HaveBackground;
 
 
-    Sprite(GameObject* gameObject, Texture* image, const char* UUID = NULL);
+    Sprite(GameObject* gameObject, Texture* image,bool HaveBackground, const char* UUID = NULL);
 
     void OnRenderObject();
 };
@@ -562,73 +563,16 @@ this->StrPVGolem="";
 
     };
     
-    void Update(){
-if (((this->PVplayer)<=(0))){
-GameOver();
+    void Update();
 
-}
-if (((this->PVGolem)<=(0))){
-Victory();
+void Start();
 
-}
-if (((this->Yplayer)<(0))){
-this->Yplayer=0;
+void OnRenderObject();
 
-}
-if (((this->Yplayer)>(50))){
-this->Yplayer=50;
+void GameOver();
 
-}
-if (IsKeyDown(KEY_CTRL_UP)){
-this->Yplayer+=-5;
-
-}
-if (IsKeyDown(KEY_CTRL_DOWN)){
-this->Yplayer+=5;
-
-}
-PlayerGm->transform->position->y = this->Yplayer;
-if (IsKeyDown(KEY_CTRL_EXE)){
-EpeeGm->activeSelf=true;
-
-}else {
-EpeeGm->activeSelf=false;
-
-}
-
-}
-void Start(){
-this->TypeAttaque=-1;
-PlayerGm = gameObject->Find("Player");
-EpeeGm = gameObject->Find("Epee");
-
-}
-void OnRenderObject(){
-StrPVplayer = new unsigned char[20];
-sprintf((char*)StrPVplayer, "%d", this->PVplayer);
-StrPVGolem = new unsigned char[20];
-sprintf((char*)StrPVGolem, "%d", this->PVGolem);
-PrintMini(20, 0, (unsigned char*)StrPVplayer, MINI_OVER);
-PrintMini(100, 55, (unsigned char*)StrPVGolem, MINI_OVER);
-PrintMini(0, 55, "EXE pour utiliser l'Epee", MINI_OVER);
-
-}
-void GameOver(){
-ML_rectangle(0, 0, 127, 63, 0, ML_BLACK, ML_BLACK);
-PrintMini(40, 30, "Game Over", 2);
-PrintMini(25, 55, "Exe pour continuer", 2);
-ML_display_vram();
-while (IsKeyDown(KEY_CTRL_EXE)){
-
-}
-while (!(IsKeyDown(KEY_CTRL_EXE))){
-
-}
-LoadScene(this->gameObject->scene,2);
-return;
-
-}
 void Victory();
+
 
 };
 class BallGolem : MonoBehaviour {
@@ -650,47 +594,14 @@ this->Direction=0;
 
     };
     
-    void Update(){
-if (((this->gameObject->transform->position->x)<(-10))){
-this->gameObject->transform->position->x = this->Xrestart;
-this->gameObject->transform->position->y =Random(4, 59);
-this->Direction=-1;
+    void Update();
 
-}else {
-this->gameObject->transform->position->x += ((this->vitesse)*(this->Direction));
+void OnRenderObject();
 
-}
+void OnTriggerEnter2D(BoxCollider2D* boxCollider2D);
 
-}
-void OnRenderObject(){
-ML_filled_circle(this->gameObject->transform->position->x, this->gameObject->transform->position->y, 4,ML_BLACK);
+void Start();
 
-}
-void OnTriggerEnter2D(BoxCollider2D* boxCollider2D){
-if ((((Component*)boxCollider2D)->gameObject==PlayerGm)){
-GameMg->PVplayer--;
-this->gameObject->transform->position->x = -300;
-
-}
-if ((((Component*)boxCollider2D)->gameObject==EpeeGm)){
-this->Direction=2;
-this->vitesse+=1;
-
-}
-if ((((Component*)boxCollider2D)->gameObject==GolemGm)){
-GameMg->PVGolem--;
-this->gameObject->transform->position->x = -300;
-
-}
-
-}
-void Start(){
-PlayerGm=gameObject->Find("Player");
-EpeeGm=gameObject->Find("Epee");
-GolemGm=gameObject->Find("Golem");
-GameMg=((AllFightGolem *)gameObject->Find("GameManager")->GetComponent("AllFightGolem"));
-
-}
 
 };
 class ChangeSceneTrigger : MonoBehaviour {
@@ -705,18 +616,10 @@ public:
 
     };
     
-    void Start(){
-MainPlayer = gameObject->Find("Player");
+    void Start();
 
-}
-void OnTriggerEnter2D(BoxCollider2D* boxCollider2D){
-if ((((Component*)boxCollider2D)->gameObject==MainPlayer)){
-LoadScene(this->gameObject->scene,this->SceneNb);
-return;
+void OnTriggerEnter2D(BoxCollider2D* boxCollider2D);
 
-}
-
-}
 
 };
 class Curseur : MonoBehaviour {
@@ -728,41 +631,8 @@ public:
         
     };
     
-    void Update(){
-if (IsKeyDown(KEY_CTRL_UP)){
-this->gameObject->transform->position->y += -5;
+    void Update();
 
-}
-if (IsKeyDown(KEY_CTRL_DOWN)){
-this->gameObject->transform->position->y += 5;
-
-}
-if (IsKeyDown(KEY_CTRL_LEFT)){
-this->gameObject->transform->position->x += -5;
-
-}
-if (IsKeyDown(KEY_CTRL_RIGHT)){
-this->gameObject->transform->position->x += 5;
-
-}
-if (((this->gameObject->transform->position->x)>(127))){
-this->gameObject->transform->position->x = 127;
-
-}
-if (((this->gameObject->transform->position->x)<(0))){
-this->gameObject->transform->position->x = 0;
-
-}
-if (((this->gameObject->transform->position->y)>(63))){
-this->gameObject->transform->position->y = 63;
-
-}
-if (((this->gameObject->transform->position->y)<(0))){
-this->gameObject->transform->position->y = 0;
-
-}
-
-}
 
 };
 class Dialogue1 : MonoBehaviour {
@@ -789,250 +659,16 @@ this->longueur=0;
 
     };
     
-    void Start(){
-this->MySprite=((Sprite *)this->gameObject->GetComponent("Sprite"));
-StartDialogue();
+    void Start();
 
-}
-void WaitExe(){
-while (IsKeyDown(KEY_CTRL_EXE)){
+void WaitExe();
 
-}
-while (!(IsKeyDown(KEY_CTRL_EXE))){
+void StartDialogue();
 
-}
+void ChangeSprite(int nb);
 
-}
-void StartDialogue(){
-const char** dialogues;
-int* spImg;
-if (((this->loadD)==(0))){
-const char* dialoguesT[] ={
-"Jessy",
-"","",
-"L'Admin !",
-"","",
+void Update();
 
-"Admin",
-"Le seul et l'unique!",
-"Je me suis tellement",
-"amuse pendant notre",
-"dernier combat que",
-"je n'ai pas pu",
-
-"Admin",
-"m'empecher de revenir.",
-"","",
-"","",
-
-"Petra",
-"","",
-"Attends c'est vraiment",
-"toi l'Admin ?",
-"",
-
-"Admin",
-"Cet enorme colosse de",
-"Prisme marine, ce n'etait",
-"qu'une bricole.",
-"Je l'ai sorti pour" ,
-"l'occasion, amusant non ?",
-
-"Admin",
-"J'ai pense que ce serait",
-"plus simple de discuter",
-"comme ca, oui hein !",
-"c'est une grosse peluche.",
-"",
-
-"Jessy",
-"Minute, c'est comme ca",
-"que vous vous amusez ?",
-"","",
-"",
-
-"Admin",
-"Heuu Ouais !",
-"Je veux dire toute cette",
-"action fracassante et",
-"votre tentative desesperee",
-"pour secourir les gens,",
-
-"Admin",
-"c'etait incroyable, tous",
-"les quatre vous avez",
-"penetre dans mon temple",
-"et vous en etes sortis",
-"vivants !",
-
-"Admin",
-"Des Heros !",
-"vous etes parfaits",
-"pour ma creation !",
-"","",
-
-"Jessy",
-"Ou vous voulez en venir ?",
-"","",
-"","",
-
-"Admin",
-"J'ai un nouveau defi",
-"pour vous, crois moi",
-"tu vas l'adorer !",
-"","",
-
-"Petra",
-"Pas encore !",
-"","",
-"","",
-
-"Admin",
-"Tu entends ca ?",
-"C'est une vague de",
-"destruction fatale",
-"categorie diamant qui",
-"fonce droit vers la ville.",
-
-"Admin",
-"C'est pas mal hien !",
-"je l'ai beaucoup",
-"peaufinee !",
-"","",
-
-"Jessy",
-"Je sais que vous avez",
-"des plans ou je ne sais",
-"quoi mais laissez mes",
-"habitants tranquilles",
-"ils sont innocents !",
-
-"Admin",
-"On dirait que tu tiens",
-"beaucoup a eux,",
-"ta ville restera enfermee",
-"dans la nuit eternelle,",
-"tourmentee par des",
-
-"Admin",
-"vagues mortelles de",
-"monstres jusqu'a ce que",
-"tu reprennes cette montre.",
-"","",
-
-"Jack",
-"Qui se trouve ou ?",
-"","",
-"","",
-
-"Admin",
-"Merci de me le demander",
-"","",
-"","",
-
-"Admin",
-"Elle se trouve tout en",
-"haut de mon merveilleux,",
-"fantastique et super",
-"dangereux palais de glace.",
-"",
-
-"Admin",
-"C'est simple, il suffit",
-"de suivre le chemin,",
-"vous ne pouvez pas",
-"le manquer.",
-"",
-
-"Jessy",
-"Vous mettez des",
-"innocents en danger",
-"pour jouer a vos petits",
-"jeux.",
-"",
-
-"Admin",
-"Et bien techniquement",
-"c'est toi qui les mets",
-"en danger si tu ne pars",
-"pas recuperer la montre.",
-"",
-
-"Jessy",
-"Qu'est ce que vous",
-"attendez de nous ?",
-"Pourquoi vous faites",
-"tout ca ?",
-"",
-
-"Admin",
-"Parce que je trouve ca",
-"drole bien sur, je sens",
-"que ca va etre epique !",
-"Je suis sur que vous",
-"comprenez...",
-
-"Admin",
-"N'oubliez pas, vous",
-"trouvez la montre",
-"vous sauvez la ville,",
-"ciao ciao.",
-""}
-;
-int spImgT[] = {2,1,1,3,1,1,2,1,1,1,2,1,3,1,1,2,1,1,0,1,1,1,2,1,2,1,1};
-this->longueur=162;
-dialogues=dialoguesT;
-spImg=spImgT;
-
-}
-if (((this->loadD)==(1))){
-const char* dialoguesT[] ={ "Admin", "Bonjour !", "Bonjour tout le monde !", "HA HA !", "Approchez ! Approchez !", "Ne soyez pas timides !", "Jessy", "C'est reparti pour un tour", "","", "","", "Admin", "Hoo ! mais vous etes", "venus en nombre...", "charmant...", "charmant...", "", "Admin", "tes frequentations...", "je ne sais pas trop,", "cet endroit est pour le", "haut du panier,", "", "Admin", "pas pour les...", "comment dire...", "loosers.", "","", "Admin", "Cette structure devant", "vous, sert a designer", "les personnes dignes", "de cette grandeur.", "", "Admin", "A trier les forts et", "les faibles...", "","", "", "Admin", "Alors, voyons ce que", "valent tes petits", "camarades ok ?", "","", "Jessy", "Je ne m'en ferais pas", "trop a ta place parce", "que mes amis sont loin", "d'etre faibles.", "", "Admin", "Super ! Si tu le dis...", "","","","", "Admin", "Allons Jessy ne le", "prends pas mal,", "tout ca c'est pour toi !", "","", "Admin", "Fais attention ou", "tu marches,", "cet endroit fourmille", "de nouvelles creatures.", "", "Admin", "C'est limpide,", "vous voulez tous", "atteindre la montre", "mais seule la creme de", "la creme aura le droit", "Admin", "de faire equipe avec moi a", "l'avenir,", "ca pourrait peut-etre toi.", "","", "Admin", "Bon et si on passait aux", "choses serieuses...", "","","", "", "", "*L'admin ouvre une trappe", "qui fait tomber nos", "personnages*", "", "Tous", "Haaaaaaaaaaaaaaaaa!" "","","","","", };
-int spImgT[] ={1,2,1,1,1,1,1,1,2,1,1,1,1,1,1,0,0};
-this->longueur=102;
-dialogues=dialoguesT;
-spImg=spImgT;
-
-}
-for (int o =0;o<longueur;o+=6){
-ML_clear_vram();
-ChangeSprite(spImg[(int)(o/6)]);
-MySprite->OnRenderObject();
-PrintMini(0, 0, (unsigned char*)dialogues[o], MINI_OVER);
-PrintMini(0, 20, (unsigned char*)dialogues[o+1], MINI_OVER);
-PrintMini(0, 28, (unsigned char*)dialogues[o+2], MINI_OVER);
-PrintMini(0, 36, (unsigned char*)dialogues[o+3], MINI_OVER);
-PrintMini(0, 44, (unsigned char*)dialogues[o+4], MINI_OVER);
-PrintMini(0, 52, (unsigned char*)dialogues[o+5], MINI_OVER);
-ML_display_vram();
-WaitExe();
-
-}
-
-}
-void ChangeSprite(int nb){
-if ((nb==0)){
-MySprite->image = TextureV;
-
-}
-if ((nb==1)){
-MySprite->image =Snowman ;
-
-}
-if ((nb==2)){
-MySprite->image = Jessy;
-
-}
-if ((nb==3)){
-MySprite->image =Petra ;
-
-}
-
-}
-void Update(){
-LoadScene(this->gameObject->scene,this->NextScene);
-return;
-
-}
 
 };
 class GameManagerCible : MonoBehaviour {
@@ -1056,25 +692,10 @@ this->StrPoints="";
 
     };
     
-    void Update(){
-if (((this->points)<(0))){
-this->points=0;
+    void Update();
 
-}
-StrPoints = new unsigned char[20];
-sprintf((char*)StrPoints, "%d", this->points);
-PrintMini(0, 0, (unsigned char*)StrPoints, MINI_OVER);
-if (((this->points)>(24))){
-LoadScene(this->gameObject->scene,2);
-return;
+void Start();
 
-}
-
-}
-void Start(){
-this->points=0;
-
-}
 
 };
 class MainMenu : MonoBehaviour {
@@ -1089,58 +710,12 @@ public:
 
     };
     
-    void Update(){
-if (((this->frame)<(15))){
-this->frame+=1;
-return;
+    void Update();
 
-}
-if (IsKeyDown(KEY_CTRL_EXE)){
-this->gameObject->transform->position->x = 200;
-this->gameObject->transform->position->y = 200;
+void Start();
 
-}
-if (((this->gameObject->transform->position->y)<(100))){
-this->gameObject->transform->position->y += 1;
+void OnRenderObject();
 
-}else {
-if (((this->frame)<(30))){
-this->frame+=1;
-return;
-
-}
-continueTxt->activeSelf=true;
-
-}
-
-}
-void Start(){
-this->gameObject->transform->position->x = 0;
-this->gameObject->transform->position->y = 0;
-this->frame=0;
-continueTxt = gameObject->Find("Continue");
-
-}
-void OnRenderObject(){
-if (((((this->gameObject->transform->position->x)==(200)))&&(((this->gameObject->transform->position->y)==(200))))){
-ML_rectangle(0, 0, 127, 63, 0, ML_BLACK, ML_BLACK);
-PrintMini(15, 20, "Le jeu s'adapte aux choix", 2);
-PrintMini(30, 28, "que vous faites.", 2);
-PrintMini(15, 36, "L'histoire est determinee", 2);
-PrintMini(15, 44, "par votre facon de jouer", 2);
-if (((this->frame)<(75))){
-this->frame+=1;
-return;
-
-}else {
-LoadScene(this->gameObject->scene,4);
-return;
-
-}
-
-}
-
-}
 
 };
 class PlayerController : MonoBehaviour {
@@ -1181,100 +756,14 @@ this->Frame=0;
 
     };
     
-    void Update(){
-if (IsKeyDown(KEY_CTRL_UP)){
-this->gameObject->transform->position->y += ((0)-(this->Vitesse));
-if (((((this->Frame)==(0)))||(((this->Frame)==(2))))){
-MySprite->image = Haut1;
+    void Update();
 
-}else {
-if (((this->Frame)==(1))){
-MySprite->image = Haut2;
+void Start();
 
-}else {
-MySprite->image = Haut3;
+void LateUpdate();
 
-}
+void OnRenderObject();
 
-}
-
-}else {
-if (IsKeyDown(KEY_CTRL_DOWN)){
-this->gameObject->transform->position->y += this->Vitesse;
-if (((((this->Frame)==(0)))||(((this->Frame)==(2))))){
-MySprite->image = Bas1;
-
-}else {
-if (((this->Frame)==(1))){
-MySprite->image = Bas2;
-
-}else {
-MySprite->image = Bas3;
-
-}
-
-}
-
-}else {
-if (IsKeyDown(KEY_CTRL_RIGHT)){
-this->gameObject->transform->position->x += this->Vitesse;
-if (((((this->Frame)==(0)))||(((this->Frame)==(2))))){
-MySprite->image = Droite1;
-
-}else {
-if (((this->Frame)==(1))){
-MySprite->image = Droite2;
-
-}else {
-MySprite->image = Droite3;
-
-}
-
-}
-
-}else {
-if (IsKeyDown(KEY_CTRL_LEFT)){
-this->gameObject->transform->position->x += ((0)-(this->Vitesse));
-if (((((this->Frame)==(0)))||(((this->Frame)==(2))))){
-MySprite->image = Gauche1;
-
-}else {
-if (((this->Frame)==(1))){
-MySprite->image = Gauche2;
-
-}else {
-MySprite->image = Gauche3;
-
-}
-
-}
-
-}else {
-this->Frame=0;
-
-}
-
-}
-
-}
-
-}
-this->Frame=mod((int)((this->Frame)+(1)),(int)4);
-
-}
-void Start(){
-this->Frame=0;
-this->MySprite=((Sprite *)this->gameObject->GetComponent("Sprite"));
-
-}
-void LateUpdate(){
-gameObject->scene->AllCameras[0]->gameObject->transform->position->Set(gameObject->transform->position->x - ((127 / 2) - (MySprite->image->width / 2)), gameObject->transform->position->y - ((63 / 2) - (MySprite->image->height / 2)));
-
-}
-void OnRenderObject(){
-ML_rectangle((127 / 2) - (12 / 2), (63 / 2) - (20 / 2), (127 / 2) + (12 / 2), (63 / 2) - (20 / 2) +20, 0, ML_WHITE, ML_WHITE);
-
-}
 
 };
 class RoomCible : MonoBehaviour {
@@ -1294,92 +783,29 @@ this->NextSprite=0;
 
     };
     
-    void OnCollisionStay2D(BoxCollider2D* boxCollider2D){
-if (IsKeyDown(KEY_CTRL_EXE)){
-if ((IsMonster)){
-GameMg->points+=1;
+    void OnCollisionStay2D(BoxCollider2D* boxCollider2D);
 
-}else {
-GameMg->points-=1;
+void Start();
 
-}
-this->WaitTime=0;
-WaitTime-=Random(0,2);
+void Update();
 
-}
+void Show();
 
-}
-void Start(){
-GameMg=((GameManagerCible *)gameObject->Find("GameManager")->GetComponent("GameManagerCible"));
-this->MySprite=((Sprite *)this->gameObject->GetComponent("Sprite"));
-if (((((this->WaitTime)>(0)))&&(((this->WaitTime)<(21))))){
-this->gameObject->transform->position->x += 130;
-
-}
-if (((this->WaitTime)<(0))){
-this->gameObject->transform->position->x += -130;
-
-}
-this->NextSprite=mod((int)this->WaitTime,(int)2);
-
-}
-void Update(){
-if (((this->WaitTime)>(60))){
-this->WaitTime=0;
-WaitTime-=Random(0,2);
-if ((IsMonster)){
-GameMg->points-=1;
-
-}
-
-}
-if (((this->WaitTime)==(0))){
-this->gameObject->transform->position->x += 130;
-
-}
-if (((this->WaitTime)==(20))){
-Show();
-
-}
-this->WaitTime+=1;
-
-}
-void Show(){
-if (((this->NextSprite)==(0))){
-this->NextSprite=1;
-
-}else {
-this->NextSprite=0;
-
-}
-this->gameObject->transform->position->x += -130;
-if ((Random(0,2)==0)){
-if (((this->NextSprite)==(0))){
-MySprite->image = GameMg->M1;
-
-}else {
-MySprite->image = GameMg->M2;
-
-}
-IsMonster = true;
-
-}else {
-if (((this->NextSprite)==(0))){
-MySprite->image = GameMg->V1;
-
-}else {
-MySprite->image = GameMg->V2;
-
-}
-IsMonster = false;
-
-}
-
-}
 
 };
 
+class ProjectSettings {
+public:
+    Vector2* Gravity;
 
+    
+    ProjectSettings() {
+        //<ProjectSettings>
+        Gravity = new Vector2();
+        //<\ProjectSettings>
+    };
+
+};
 class SceneManager {
     //https://docs.unity3d.com/ScriptReference/SceneManagement.SceneManager.html
 public:
@@ -1387,10 +813,12 @@ public:
     static int sceneCountInBuildSettings;
     int LoadSceneAfter;
     bool _quit;
+    ProjectSettings* projectSettings;
     
     SceneManager() {
         LoadSceneAfter = -1;
         _quit = false;
+        projectSettings = new ProjectSettings();
         LoadTextures();
     }
 
@@ -1625,14 +1053,14 @@ UUID_872fa383_05d0_4ad6_9dd2_bd255eb2f289->AddComponent((Component*)UUID_e2ec503
 
 
 
-UUID_c5bcbb4d_c3aa_48d8_afc1_7bbfa0cfcb08 = new Sprite(UUID_da1bf091_94e7_431c_96f9_2c51ee9c7df0,Texture_UUID_a2f91cb9_ab69_4a03_8aec_ff6494992895,"UUID_c5bcbb4d_c3aa_48d8_afc1_7bbfa0cfcb08");
+UUID_c5bcbb4d_c3aa_48d8_afc1_7bbfa0cfcb08 = new Sprite(UUID_da1bf091_94e7_431c_96f9_2c51ee9c7df0,Texture_UUID_a2f91cb9_ab69_4a03_8aec_ff6494992895,false,"UUID_c5bcbb4d_c3aa_48d8_afc1_7bbfa0cfcb08");
 UUID_da1bf091_94e7_431c_96f9_2c51ee9c7df0->AddComponent((Component*)UUID_c5bcbb4d_c3aa_48d8_afc1_7bbfa0cfcb08);
 
 
 
 
 
-UUID_59dc7ec2_cec9_48b7_8fc3_3db158673509 = new Sprite(UUID_e29a46c6_a420_4477_8c2e_c1c3689cf745,Texture_UUID_f5e72803_1505_43a9_9037_9b8670792cdc,"UUID_59dc7ec2_cec9_48b7_8fc3_3db158673509");
+UUID_59dc7ec2_cec9_48b7_8fc3_3db158673509 = new Sprite(UUID_e29a46c6_a420_4477_8c2e_c1c3689cf745,Texture_UUID_f5e72803_1505_43a9_9037_9b8670792cdc,false,"UUID_59dc7ec2_cec9_48b7_8fc3_3db158673509");
 UUID_e29a46c6_a420_4477_8c2e_c1c3689cf745->AddComponent((Component*)UUID_59dc7ec2_cec9_48b7_8fc3_3db158673509);
 
 
@@ -1700,12 +1128,12 @@ GameObject* UUID_2cea4c5c_162a_47b5_abf4_be0c98b86462;
 GameObject* UUID_be061a45_dcdd_4086_b720_b8ba4a887251;
 GameObject* UUID_d48b2bd1_4444_482e_b1e0_2828c233fdbc;
 GameObject* UUID_ff29f8b8_c43d_481d_88d0_ef6568d461a2;
-GameObject* UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016;
 GameObject* UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0;
+GameObject* UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016;
+Sprite* UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3;
+
 BoxCollider2D* UUID_cc4fe40e_05f8_4b07_b5b7_3f9e8ee50539;
 ChangeSceneTrigger* UUID_e7f93660_ce61_435e_a9e7_e1db28c5b0a1;
-
-Sprite* UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3;
 
 BoxCollider2D* UUID_cb3665a8_efe6_4080_8aa3_5742b537613c;
 
@@ -1962,13 +1390,6 @@ UUID_ff29f8b8_c43d_481d_88d0_ef6568d461a2->isStatic = true;
 UUID_ff29f8b8_c43d_481d_88d0_ef6568d461a2->transform->position->Set(226.0,-16.0);
 UUID_ff29f8b8_c43d_481d_88d0_ef6568d461a2->transform->localPosition->Set(226.0,-16.0);
 UUID_ff29f8b8_c43d_481d_88d0_ef6568d461a2->transform->SetParent(UUID_35c2dfb9_0da6_4d21_9460_66c3d2b39d6f->transform);newScene->AddGameObject(UUID_ff29f8b8_c43d_481d_88d0_ef6568d461a2);
-UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016= new GameObject(newScene, "portail","UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016");
-UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->activeSelf = true;
-UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->activeInHierarchy = true;
-UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->isStatic = true;
-UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->transform->position->Set(88.0,-80.0);
-UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->transform->localPosition->Set(88.0,-80.0);
-newScene->AddGameObject(UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016);
 UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0= new GameObject(newScene, "ChangeScene","UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0");
 UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0->activeSelf = true;
 UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0->activeInHierarchy = true;
@@ -1976,6 +1397,13 @@ UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0->isStatic = false;
 UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0->transform->position->Set(158.0,-53.0);
 UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0->transform->localPosition->Set(158.0,-53.0);
 newScene->AddGameObject(UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0);
+UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016= new GameObject(newScene, "portail","UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016");
+UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->activeSelf = true;
+UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->activeInHierarchy = true;
+UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->isStatic = true;
+UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->transform->position->Set(88.0,-80.0);
+UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->transform->localPosition->Set(88.0,-80.0);
+newScene->AddGameObject(UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016);
 
 
 
@@ -2010,7 +1438,7 @@ UUID_6640de22_b0db_4537_8522_f3a7a703d68f = new PlayerController(UUID_400c4826_d
 UUID_400c4826_db9d_4390_963a_d132c010b431->AddComponent((Component*)UUID_6640de22_b0db_4537_8522_f3a7a703d68f);
 
 
-UUID_43fd50a2_fd6b_402d_ab19_3ccb56f74fc3 = new Sprite(UUID_400c4826_db9d_4390_963a_d132c010b431,Texture_UUID_6432dbba_ba4c_4f25_a9d3_15cf97c6e1ea,"UUID_43fd50a2_fd6b_402d_ab19_3ccb56f74fc3");
+UUID_43fd50a2_fd6b_402d_ab19_3ccb56f74fc3 = new Sprite(UUID_400c4826_db9d_4390_963a_d132c010b431,Texture_UUID_6432dbba_ba4c_4f25_a9d3_15cf97c6e1ea,false,"UUID_43fd50a2_fd6b_402d_ab19_3ccb56f74fc3");
 UUID_400c4826_db9d_4390_963a_d132c010b431->AddComponent((Component*)UUID_43fd50a2_fd6b_402d_ab19_3ccb56f74fc3);
 
 
@@ -2032,7 +1460,7 @@ UUID_7f4f5e06_f8a9_41f1_b9f9_dae0dba98d46->AddComponent((Component*)UUID_73ea44a
 
 
 
-UUID_132d656c_da13_4f8f_985d_43d6509f26d4 = new Sprite(UUID_cfc7a355_f2c0_40d3_b0b9_55ea646c7ef4,Texture_UUID_116d1081_a2c0_43d1_b7bb_81643bad3f94,"UUID_132d656c_da13_4f8f_985d_43d6509f26d4");
+UUID_132d656c_da13_4f8f_985d_43d6509f26d4 = new Sprite(UUID_cfc7a355_f2c0_40d3_b0b9_55ea646c7ef4,Texture_UUID_116d1081_a2c0_43d1_b7bb_81643bad3f94,false,"UUID_132d656c_da13_4f8f_985d_43d6509f26d4");
 UUID_cfc7a355_f2c0_40d3_b0b9_55ea646c7ef4->AddComponent((Component*)UUID_132d656c_da13_4f8f_985d_43d6509f26d4);
 
 
@@ -2207,19 +1635,19 @@ UUID_ff29f8b8_c43d_481d_88d0_ef6568d461a2->AddComponent((Component*)UUID_cb3665a
 
 
 
-UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3 = new Sprite(UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016,Texture_UUID_e3fe3204_9c0c_4f64_9ccc_601f5a7d8e56,"UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3");
-UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->AddComponent((Component*)UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3);
-
-
-
-
-
 UUID_e7f93660_ce61_435e_a9e7_e1db28c5b0a1 = new ChangeSceneTrigger(UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0,5,"UUID_e7f93660_ce61_435e_a9e7_e1db28c5b0a1");
 UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0->AddComponent((Component*)UUID_e7f93660_ce61_435e_a9e7_e1db28c5b0a1);
 
 
 UUID_cc4fe40e_05f8_4b07_b5b7_3f9e8ee50539 = new BoxCollider2D(UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0,true,new Vector2(0,0),new Vector2(120,32),"UUID_cc4fe40e_05f8_4b07_b5b7_3f9e8ee50539");
 UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0->AddComponent((Component*)UUID_cc4fe40e_05f8_4b07_b5b7_3f9e8ee50539);
+
+
+
+
+
+UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3 = new Sprite(UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016,Texture_UUID_e3fe3204_9c0c_4f64_9ccc_601f5a7d8e56,false,"UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3");
+UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->AddComponent((Component*)UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3);
 
 
 }if (index == 2){
@@ -2298,7 +1726,7 @@ UUID_3abca82c_b048_4ceb_a0d3_b7e98628211b->AddComponent((Component*)UUID_504247a
 
 
 
-UUID_e8cb015e_35d1_4a40_9388_7d34342acd53 = new Sprite(UUID_40d9429b_9220_42df_b285_874fccdd63a6,Texture_UUID_f9063d80_029e_4d13_acab_2a1a33411d34,"UUID_e8cb015e_35d1_4a40_9388_7d34342acd53");
+UUID_e8cb015e_35d1_4a40_9388_7d34342acd53 = new Sprite(UUID_40d9429b_9220_42df_b285_874fccdd63a6,Texture_UUID_f9063d80_029e_4d13_acab_2a1a33411d34,false,"UUID_e8cb015e_35d1_4a40_9388_7d34342acd53");
 UUID_40d9429b_9220_42df_b285_874fccdd63a6->AddComponent((Component*)UUID_e8cb015e_35d1_4a40_9388_7d34342acd53);
 
 
@@ -2309,7 +1737,7 @@ UUID_40d9429b_9220_42df_b285_874fccdd63a6->AddComponent((Component*)UUID_a4655fa
 
 
 
-UUID_3f3461f1_60d2_4c6c_9213_c282d3f210e3 = new Sprite(UUID_d00131d5_cf74_4b20_82bd_b6a0de9f3eb1,Texture_UUID_600cd8e3_41c3_4a5e_8550_1ef2c44147af,"UUID_3f3461f1_60d2_4c6c_9213_c282d3f210e3");
+UUID_3f3461f1_60d2_4c6c_9213_c282d3f210e3 = new Sprite(UUID_d00131d5_cf74_4b20_82bd_b6a0de9f3eb1,Texture_UUID_600cd8e3_41c3_4a5e_8550_1ef2c44147af,false,"UUID_3f3461f1_60d2_4c6c_9213_c282d3f210e3");
 UUID_d00131d5_cf74_4b20_82bd_b6a0de9f3eb1->AddComponent((Component*)UUID_3f3461f1_60d2_4c6c_9213_c282d3f210e3);
 
 
@@ -2320,7 +1748,7 @@ UUID_d00131d5_cf74_4b20_82bd_b6a0de9f3eb1->AddComponent((Component*)UUID_1cc627c
 
 
 
-UUID_c55c6630_d679_49a4_8725_e9a94f86b7b1 = new Sprite(UUID_427099bd_199b_476d_b893_82d0671fea9a,Texture_UUID_fe0b8a80_7f4c_4f6a_ba1f_407a83ec431e,"UUID_c55c6630_d679_49a4_8725_e9a94f86b7b1");
+UUID_c55c6630_d679_49a4_8725_e9a94f86b7b1 = new Sprite(UUID_427099bd_199b_476d_b893_82d0671fea9a,Texture_UUID_fe0b8a80_7f4c_4f6a_ba1f_407a83ec431e,false,"UUID_c55c6630_d679_49a4_8725_e9a94f86b7b1");
 UUID_427099bd_199b_476d_b893_82d0671fea9a->AddComponent((Component*)UUID_c55c6630_d679_49a4_8725_e9a94f86b7b1);
 
 
@@ -2585,7 +2013,7 @@ UUID_310727cc_db94_47f2_ad70_f6b43c907836 = new Curseur(UUID_38af3510_d773_4e65_
 UUID_38af3510_d773_4e65_9ef4_080b4dcda1fd->AddComponent((Component*)UUID_310727cc_db94_47f2_ad70_f6b43c907836);
 
 
-UUID_e295595c_9540_4992_b334_c57b4e342609 = new Sprite(UUID_38af3510_d773_4e65_9ef4_080b4dcda1fd,Texture_UUID_fd6c944d_3613_486e_a2a8_b1240bc78c4a,"UUID_e295595c_9540_4992_b334_c57b4e342609");
+UUID_e295595c_9540_4992_b334_c57b4e342609 = new Sprite(UUID_38af3510_d773_4e65_9ef4_080b4dcda1fd,Texture_UUID_fd6c944d_3613_486e_a2a8_b1240bc78c4a,false,"UUID_e295595c_9540_4992_b334_c57b4e342609");
 UUID_38af3510_d773_4e65_9ef4_080b4dcda1fd->AddComponent((Component*)UUID_e295595c_9540_4992_b334_c57b4e342609);
 
 
@@ -2596,7 +2024,7 @@ UUID_38af3510_d773_4e65_9ef4_080b4dcda1fd->AddComponent((Component*)UUID_048936d
 
 
 
-UUID_904bdb55_d1cd_4b02_a0a3_ae2ce3f108dd = new Sprite(UUID_0cd33e37_7ec8_4e68_b477_f6f558d8c492,Texture_UUID_2816f7e2_9f79_4090_ac47_76c08e39325e,"UUID_904bdb55_d1cd_4b02_a0a3_ae2ce3f108dd");
+UUID_904bdb55_d1cd_4b02_a0a3_ae2ce3f108dd = new Sprite(UUID_0cd33e37_7ec8_4e68_b477_f6f558d8c492,Texture_UUID_2816f7e2_9f79_4090_ac47_76c08e39325e,false,"UUID_904bdb55_d1cd_4b02_a0a3_ae2ce3f108dd");
 UUID_0cd33e37_7ec8_4e68_b477_f6f558d8c492->AddComponent((Component*)UUID_904bdb55_d1cd_4b02_a0a3_ae2ce3f108dd);
 
 
@@ -2611,7 +2039,7 @@ UUID_0cd33e37_7ec8_4e68_b477_f6f558d8c492->AddComponent((Component*)UUID_68c6d78
 
 
 
-UUID_758240cb_d152_4062_80e2_71d157208fd3 = new Sprite(UUID_5e95388a_97a3_406e_9146_873a9532156c,Texture_UUID_2816f7e2_9f79_4090_ac47_76c08e39325e,"UUID_758240cb_d152_4062_80e2_71d157208fd3");
+UUID_758240cb_d152_4062_80e2_71d157208fd3 = new Sprite(UUID_5e95388a_97a3_406e_9146_873a9532156c,Texture_UUID_2816f7e2_9f79_4090_ac47_76c08e39325e,false,"UUID_758240cb_d152_4062_80e2_71d157208fd3");
 UUID_5e95388a_97a3_406e_9146_873a9532156c->AddComponent((Component*)UUID_758240cb_d152_4062_80e2_71d157208fd3);
 
 
@@ -2626,7 +2054,7 @@ UUID_5e95388a_97a3_406e_9146_873a9532156c->AddComponent((Component*)UUID_214033f
 
 
 
-UUID_611bea51_5d8d_43fa_9495_9274f23b5a9a = new Sprite(UUID_657194be_07dd_4fc8_916a_003372261788,Texture_UUID_fcb28c94_39e2_4fa0_94cb_d86a2a8f9ccf,"UUID_611bea51_5d8d_43fa_9495_9274f23b5a9a");
+UUID_611bea51_5d8d_43fa_9495_9274f23b5a9a = new Sprite(UUID_657194be_07dd_4fc8_916a_003372261788,Texture_UUID_fcb28c94_39e2_4fa0_94cb_d86a2a8f9ccf,false,"UUID_611bea51_5d8d_43fa_9495_9274f23b5a9a");
 UUID_657194be_07dd_4fc8_916a_003372261788->AddComponent((Component*)UUID_611bea51_5d8d_43fa_9495_9274f23b5a9a);
 
 
@@ -2641,7 +2069,7 @@ UUID_657194be_07dd_4fc8_916a_003372261788->AddComponent((Component*)UUID_1547abf
 
 
 
-UUID_35f27c2d_8356_4eb8_9c24_420306107a7c = new Sprite(UUID_ac0cfd3a_9c37_4770_a4d0_31bab0f7ff22,Texture_UUID_1d46ef84_3ef2_4f07_9bb6_71ce133c4f77,"UUID_35f27c2d_8356_4eb8_9c24_420306107a7c");
+UUID_35f27c2d_8356_4eb8_9c24_420306107a7c = new Sprite(UUID_ac0cfd3a_9c37_4770_a4d0_31bab0f7ff22,Texture_UUID_1d46ef84_3ef2_4f07_9bb6_71ce133c4f77,false,"UUID_35f27c2d_8356_4eb8_9c24_420306107a7c");
 UUID_ac0cfd3a_9c37_4770_a4d0_31bab0f7ff22->AddComponent((Component*)UUID_35f27c2d_8356_4eb8_9c24_420306107a7c);
 
 
@@ -2656,7 +2084,7 @@ UUID_ac0cfd3a_9c37_4770_a4d0_31bab0f7ff22->AddComponent((Component*)UUID_c94951f
 
 
 
-UUID_c0612cea_f654_4834_9bdd_3c773cbe3c5d = new Sprite(UUID_5146af40_db37_4ba2_9de3_fe9d38383e45,Texture_UUID_99fdda9e_5f7e_47df_a856_d46d34dafdc8,"UUID_c0612cea_f654_4834_9bdd_3c773cbe3c5d");
+UUID_c0612cea_f654_4834_9bdd_3c773cbe3c5d = new Sprite(UUID_5146af40_db37_4ba2_9de3_fe9d38383e45,Texture_UUID_99fdda9e_5f7e_47df_a856_d46d34dafdc8,false,"UUID_c0612cea_f654_4834_9bdd_3c773cbe3c5d");
 UUID_5146af40_db37_4ba2_9de3_fe9d38383e45->AddComponent((Component*)UUID_c0612cea_f654_4834_9bdd_3c773cbe3c5d);
 
 
@@ -2671,7 +2099,7 @@ UUID_5146af40_db37_4ba2_9de3_fe9d38383e45->AddComponent((Component*)UUID_d365de6
 
 
 
-UUID_17eae3f2_96ec_4571_ab83_c045725f6c2a = new Sprite(UUID_2aae61f8_d811_4a4d_874d_d4ddf3148afe,Texture_UUID_99fdda9e_5f7e_47df_a856_d46d34dafdc8,"UUID_17eae3f2_96ec_4571_ab83_c045725f6c2a");
+UUID_17eae3f2_96ec_4571_ab83_c045725f6c2a = new Sprite(UUID_2aae61f8_d811_4a4d_874d_d4ddf3148afe,Texture_UUID_99fdda9e_5f7e_47df_a856_d46d34dafdc8,false,"UUID_17eae3f2_96ec_4571_ab83_c045725f6c2a");
 UUID_2aae61f8_d811_4a4d_874d_d4ddf3148afe->AddComponent((Component*)UUID_17eae3f2_96ec_4571_ab83_c045725f6c2a);
 
 
@@ -2689,77 +2117,77 @@ UUID_2aae61f8_d811_4a4d_874d_d4ddf3148afe->AddComponent((Component*)UUID_bf3db7b
 
 
 
-UUID_843368b8_a736_4d15_a899_3bd86bc57cf2 = new Sprite(UUID_09dcdff2_9283_4c24_bfd1_248a2b085e2d,Texture_UUID_8168c15e_9504_4f14_8a4b_8dbd3406ed5a,"UUID_843368b8_a736_4d15_a899_3bd86bc57cf2");
+UUID_843368b8_a736_4d15_a899_3bd86bc57cf2 = new Sprite(UUID_09dcdff2_9283_4c24_bfd1_248a2b085e2d,Texture_UUID_8168c15e_9504_4f14_8a4b_8dbd3406ed5a,false,"UUID_843368b8_a736_4d15_a899_3bd86bc57cf2");
 UUID_09dcdff2_9283_4c24_bfd1_248a2b085e2d->AddComponent((Component*)UUID_843368b8_a736_4d15_a899_3bd86bc57cf2);
 
 
 
 
 
-UUID_9dda8ddb_c219_459f_8d89_9472af518241 = new Sprite(UUID_a274cdc6_9816_4994_bbf6_5d987cf08030,Texture_UUID_8168c15e_9504_4f14_8a4b_8dbd3406ed5a,"UUID_9dda8ddb_c219_459f_8d89_9472af518241");
+UUID_9dda8ddb_c219_459f_8d89_9472af518241 = new Sprite(UUID_a274cdc6_9816_4994_bbf6_5d987cf08030,Texture_UUID_8168c15e_9504_4f14_8a4b_8dbd3406ed5a,false,"UUID_9dda8ddb_c219_459f_8d89_9472af518241");
 UUID_a274cdc6_9816_4994_bbf6_5d987cf08030->AddComponent((Component*)UUID_9dda8ddb_c219_459f_8d89_9472af518241);
 
 
 
 
 
-UUID_819ea20a_0c72_410e_8abc_3f0de0d2902c = new Sprite(UUID_76ec1d5c_9e91_4e0c_818a_2b09197f4832,Texture_UUID_147e8f31_a962_42f2_8f91_944a89516c5d,"UUID_819ea20a_0c72_410e_8abc_3f0de0d2902c");
+UUID_819ea20a_0c72_410e_8abc_3f0de0d2902c = new Sprite(UUID_76ec1d5c_9e91_4e0c_818a_2b09197f4832,Texture_UUID_147e8f31_a962_42f2_8f91_944a89516c5d,false,"UUID_819ea20a_0c72_410e_8abc_3f0de0d2902c");
 UUID_76ec1d5c_9e91_4e0c_818a_2b09197f4832->AddComponent((Component*)UUID_819ea20a_0c72_410e_8abc_3f0de0d2902c);
 
 
 
 
 
-UUID_51826a79_03f5_477e_aaa7_593d754db99a = new Sprite(UUID_aa358dc1_7b99_4619_88d0_5c9dd23b5924,Texture_UUID_147e8f31_a962_42f2_8f91_944a89516c5d,"UUID_51826a79_03f5_477e_aaa7_593d754db99a");
+UUID_51826a79_03f5_477e_aaa7_593d754db99a = new Sprite(UUID_aa358dc1_7b99_4619_88d0_5c9dd23b5924,Texture_UUID_147e8f31_a962_42f2_8f91_944a89516c5d,false,"UUID_51826a79_03f5_477e_aaa7_593d754db99a");
 UUID_aa358dc1_7b99_4619_88d0_5c9dd23b5924->AddComponent((Component*)UUID_51826a79_03f5_477e_aaa7_593d754db99a);
 
 
 
 
 
-UUID_373ccf3f_5117_4ca6_b931_7b0441f55ed1 = new Sprite(UUID_c764e89c_d49c_421f_ac37_13893fea9c68,Texture_UUID_940f3b9d_a1fe_4c88_842e_6d318b779fee,"UUID_373ccf3f_5117_4ca6_b931_7b0441f55ed1");
+UUID_373ccf3f_5117_4ca6_b931_7b0441f55ed1 = new Sprite(UUID_c764e89c_d49c_421f_ac37_13893fea9c68,Texture_UUID_940f3b9d_a1fe_4c88_842e_6d318b779fee,false,"UUID_373ccf3f_5117_4ca6_b931_7b0441f55ed1");
 UUID_c764e89c_d49c_421f_ac37_13893fea9c68->AddComponent((Component*)UUID_373ccf3f_5117_4ca6_b931_7b0441f55ed1);
 
 
 
 
 
-UUID_97d24a99_3217_406c_9a06_d9aaf282c711 = new Sprite(UUID_8468a707_e08d_4550_91e1_daf63430bf51,Texture_UUID_940f3b9d_a1fe_4c88_842e_6d318b779fee,"UUID_97d24a99_3217_406c_9a06_d9aaf282c711");
+UUID_97d24a99_3217_406c_9a06_d9aaf282c711 = new Sprite(UUID_8468a707_e08d_4550_91e1_daf63430bf51,Texture_UUID_940f3b9d_a1fe_4c88_842e_6d318b779fee,false,"UUID_97d24a99_3217_406c_9a06_d9aaf282c711");
 UUID_8468a707_e08d_4550_91e1_daf63430bf51->AddComponent((Component*)UUID_97d24a99_3217_406c_9a06_d9aaf282c711);
 
 
 
 
 
-UUID_69c40174_595a_4002_8b68_39d9dabd1762 = new Sprite(UUID_15d3b7cf_c215_4b68_88f8_2d9a9acb308a,Texture_UUID_147e8f31_a962_42f2_8f91_944a89516c5d,"UUID_69c40174_595a_4002_8b68_39d9dabd1762");
+UUID_69c40174_595a_4002_8b68_39d9dabd1762 = new Sprite(UUID_15d3b7cf_c215_4b68_88f8_2d9a9acb308a,Texture_UUID_147e8f31_a962_42f2_8f91_944a89516c5d,false,"UUID_69c40174_595a_4002_8b68_39d9dabd1762");
 UUID_15d3b7cf_c215_4b68_88f8_2d9a9acb308a->AddComponent((Component*)UUID_69c40174_595a_4002_8b68_39d9dabd1762);
 
 
 
 
 
-UUID_5a8c2977_590a_43a5_9a02_68fb4985333d = new Sprite(UUID_4d3dee37_3f34_4933_a377_4c223b149cf8,Texture_UUID_76f99faa_8951_464d_9d90_1ea7c1613a87,"UUID_5a8c2977_590a_43a5_9a02_68fb4985333d");
+UUID_5a8c2977_590a_43a5_9a02_68fb4985333d = new Sprite(UUID_4d3dee37_3f34_4933_a377_4c223b149cf8,Texture_UUID_76f99faa_8951_464d_9d90_1ea7c1613a87,false,"UUID_5a8c2977_590a_43a5_9a02_68fb4985333d");
 UUID_4d3dee37_3f34_4933_a377_4c223b149cf8->AddComponent((Component*)UUID_5a8c2977_590a_43a5_9a02_68fb4985333d);
 
 
 
 
 
-UUID_636e142f_acbb_4b60_a628_62cb709cb630 = new Sprite(UUID_929b3f25_42c3_442d_a5ea_879cfb065f4f,Texture_UUID_76f99faa_8951_464d_9d90_1ea7c1613a87,"UUID_636e142f_acbb_4b60_a628_62cb709cb630");
+UUID_636e142f_acbb_4b60_a628_62cb709cb630 = new Sprite(UUID_929b3f25_42c3_442d_a5ea_879cfb065f4f,Texture_UUID_76f99faa_8951_464d_9d90_1ea7c1613a87,false,"UUID_636e142f_acbb_4b60_a628_62cb709cb630");
 UUID_929b3f25_42c3_442d_a5ea_879cfb065f4f->AddComponent((Component*)UUID_636e142f_acbb_4b60_a628_62cb709cb630);
 
 
 
 
 
-UUID_65a99471_7536_4214_b2f4_14a1b1f75b95 = new Sprite(UUID_09cb5e36_3dc9_40d6_8037_f435bab83c59,Texture_UUID_1859a511_f4d6_4999_9994_45e8d497d0df,"UUID_65a99471_7536_4214_b2f4_14a1b1f75b95");
+UUID_65a99471_7536_4214_b2f4_14a1b1f75b95 = new Sprite(UUID_09cb5e36_3dc9_40d6_8037_f435bab83c59,Texture_UUID_1859a511_f4d6_4999_9994_45e8d497d0df,false,"UUID_65a99471_7536_4214_b2f4_14a1b1f75b95");
 UUID_09cb5e36_3dc9_40d6_8037_f435bab83c59->AddComponent((Component*)UUID_65a99471_7536_4214_b2f4_14a1b1f75b95);
 
 
 
 
 
-UUID_5b970a50_55d2_48fb_9c21_66d9fe15025f = new Sprite(UUID_4c83ebc9_3f67_40c2_80cb_d8677df8d3e7,Texture_UUID_940f3b9d_a1fe_4c88_842e_6d318b779fee,"UUID_5b970a50_55d2_48fb_9c21_66d9fe15025f");
+UUID_5b970a50_55d2_48fb_9c21_66d9fe15025f = new Sprite(UUID_4c83ebc9_3f67_40c2_80cb_d8677df8d3e7,Texture_UUID_940f3b9d_a1fe_4c88_842e_6d318b779fee,false,"UUID_5b970a50_55d2_48fb_9c21_66d9fe15025f");
 UUID_4c83ebc9_3f67_40c2_80cb_d8677df8d3e7->AddComponent((Component*)UUID_5b970a50_55d2_48fb_9c21_66d9fe15025f);
 
 
@@ -2807,7 +2235,7 @@ UUID_34059c05_df3e_45ff_8922_858b23748cb3 = new Dialogue1(UUID_6bd7b986_677e_438
 UUID_6bd7b986_677e_438c_a97a_b4c44365eaa5->AddComponent((Component*)UUID_34059c05_df3e_45ff_8922_858b23748cb3);
 
 
-UUID_327a64ae_21d5_4290_819b_4fbd87aa9f15 = new Sprite(UUID_6bd7b986_677e_438c_a97a_b4c44365eaa5,Texture_UUID_bff3df74_a4e3_4eb5_8a30_abff758cf5e1,"UUID_327a64ae_21d5_4290_819b_4fbd87aa9f15");
+UUID_327a64ae_21d5_4290_819b_4fbd87aa9f15 = new Sprite(UUID_6bd7b986_677e_438c_a97a_b4c44365eaa5,Texture_UUID_bff3df74_a4e3_4eb5_8a30_abff758cf5e1,false,"UUID_327a64ae_21d5_4290_819b_4fbd87aa9f15");
 UUID_6bd7b986_677e_438c_a97a_b4c44365eaa5->AddComponent((Component*)UUID_327a64ae_21d5_4290_819b_4fbd87aa9f15);
 
 
@@ -2844,7 +2272,7 @@ UUID_4321ac20_5110_4607_a401_ff9ec21160f4->AddComponent((Component*)UUID_b1b1fa7
 
 
 
-UUID_6a8b88ad_7d82_444a_acd6_5bda54cd21ce = new Sprite(UUID_46d2d931_a923_4a86_b7dc_b8c4d180a91b,Texture_UUID_bff3df74_a4e3_4eb5_8a30_abff758cf5e1,"UUID_6a8b88ad_7d82_444a_acd6_5bda54cd21ce");
+UUID_6a8b88ad_7d82_444a_acd6_5bda54cd21ce = new Sprite(UUID_46d2d931_a923_4a86_b7dc_b8c4d180a91b,Texture_UUID_bff3df74_a4e3_4eb5_8a30_abff758cf5e1,false,"UUID_6a8b88ad_7d82_444a_acd6_5bda54cd21ce");
 UUID_46d2d931_a923_4a86_b7dc_b8c4d180a91b->AddComponent((Component*)UUID_6a8b88ad_7d82_444a_acd6_5bda54cd21ce);
 
 

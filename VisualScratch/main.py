@@ -20,7 +20,7 @@ if not BuildMode:
     loading = Loading()
 
 #######Debug Test
-PathSLN="C:\\Users\\leofa\\OneDrive\\Documents\\PycharmProjects\\NouveauProjet\\SLN\\Solution.sls"
+#PathSLN="C:\\Users\\leofa\\OneDrive\\Documents\\PycharmProjects\\NouveauProjet\\SLN\\Solution.sls"
 #################
 
 VisualScratch(PathSLN,BuildMode)

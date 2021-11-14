@@ -135,8 +135,7 @@ class BuildSettings(EditorWindow):
                 CodeOfScenes +=code
                 CodeOfScenes +="\n}"
 
-        Announcement,CasioCode = self.GetCodeCasioFromVisualScratch()
-        CasioCode,Cpp=CasioCode
+        Announcement,CasioCode,Cpp = self.GetCodeCasioFromVisualScratch()
 
         desti = self.Particule.FolderProject + "/Temp/Compile"
         M.create_rep(desti)
