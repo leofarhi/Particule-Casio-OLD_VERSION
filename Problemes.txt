@@ -1,0 +1,7 @@
+Ecrire et lire un fichier
+réglé l'ordre des Sprite (le joueur tout à la fin)
+Réglé la conversion int to str C++ (scratch block) char[20] memoire
+Cacher le component si l'object sur la scene est désactivé
+Faire la Docu
+Réduire l'initialisation des positions de transform C++
+Faire le Project Setttings (Gravité,Ico du jeu, nom, etc..)

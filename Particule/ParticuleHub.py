@@ -1,5 +1,8 @@
 from Particule import *
-
+from SystemExt.WebDownload import *
+import patoolib
+import subprocess
+import os
 class ParticuleHub:
     def __init__(self):
         self.Start = False
@@ -166,7 +169,7 @@ class ParticuleHub:
         self.AllWinProjetframe.bind("<Configure>", self.Compoframeconfig)
 
         LstProjects = rf.GetList("setup.txt", "AllProjects")
-
+        self.Download()
         if LstProjects == False:
             rf.save("setup.txt", "AllProjects", "[]")
             LstProjects = []
@@ -187,3 +190,14 @@ class ParticuleHub:
 
                 bouttonOuvrir = Button(FrameLstP, text=TradTxt("Ouvrir"), command=partial(self.BouttonOpen, i))
                 bouttonOuvrir.pack(side=RIGHT, padx=5, pady=5)
+
+    def Download(self):
+        return
+        url ="https://www.planet-casio.com/Fr/logiciels/dl_logiciel.php?id=76&file=1"
+        rep = os.getcwd()+"/lib/temp_lib/sdk85.rar"
+        repDir = os.getcwd() + "/lib/temp_lib/sdk85"
+        DownloadFile(url,rep)
+        print(rep)
+        patoolib.extract_archive(rep, outdir=repDir)
+        repDir+"/fx9860g_sdk/fx-9860G SDK setup.exe"
+        os.startfile(repDir+"/fx9860g_sdk/fx-9860G SDK setup.exe")

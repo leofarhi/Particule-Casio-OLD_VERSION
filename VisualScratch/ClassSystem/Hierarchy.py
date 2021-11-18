@@ -23,9 +23,11 @@ class Hierarchy(EditorWindow):
         self.ALLfiles = self.Sys.SLN["Files"]
         for i in self.ALLfiles:
             self.listBox.insert('end',i.split("/")[-1])
+        self.listBox.select_set(0)
+        self.callback()
 
-    def callback(self,event):
-        selection = event.widget.curselection()
+    def callback(self,*args):
+        selection = self.listBox.curselection()
         if (len(selection)>0):
             self.currentSelection = self.listBox.get(selection)
             self.Sys.Scratch.SaveAllWidget()

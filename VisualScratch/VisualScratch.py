@@ -68,6 +68,7 @@ from ClassSystem.ScreenOrganization import ScreenOrganization
 from ClassSystem.MoveObject import MoveObject
 from PIL import ImageTk,Image
 from ClassSystem.BlockSys import *
+import ClassSystem.File_Folder as File_Folder
 
 
 class Loading:
@@ -135,6 +136,11 @@ class VisualScratch:
         self.Mafenetre.mainloop()
 
     def OpenFile(self):
+        PathSLN = File_Folder.open_file()
+        with open(PathSLN, "r") as fic:
+            dataSLN = fic.read()
+        self.SLN = json.loads(dataSLN)
+        self.Hierarchy.reloadFiles()
         #self.TextZone.OpenFile()
         pass
 
@@ -143,7 +149,7 @@ class VisualScratch:
         self.Scratch.SaveAllWidget()
 
     def SaveAsFile(self):
-        self.TextZone.SaveAsFile()
+        #self.TextZone.SaveAsFile()
         self.Scratch.SaveAllWidget()
     def CompileScript(self,*args):
         code = self.Scratch.GetCodeLst()

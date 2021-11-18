@@ -1,4 +1,4 @@
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 14-Nov-2021 01:48:06  PAGE    1
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 18-Nov-2021 16:33:51  PAGE    1
 
 ************ OBJECT LISTING ************
 
@@ -64,7 +64,7 @@ P   00000000              _main:                           ; function: main
 
 
 
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 14-Nov-2021 01:48:06  PAGE    2
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 18-Nov-2021 16:33:51  PAGE    2
 
 
 SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
@@ -75,9 +75,9 @@ SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
     0000000A 2F96                   MOV.L       R9,@-R15
     0000000C 2F86                   MOV.L       R8,@-R15
     0000000E 4F22                   STS.L       PR,@-R15
-    00000010 D43A                   MOV.L       L283,R4    ; __$__T29815024$251
+    00000010 D43A                   MOV.L       L283,R4    ; __$__T29505008$251
     00000012 7FF8                   ADD         #-8,R15
-    00000014 DE3A                   MOV.L       L283+4,R14 ; __$__2783_26_sceneManager$252
+    00000014 DE3A                   MOV.L       L283+4,R14 ; __$__2805_26_sceneManager$252
     00000016 6342                   MOV.L       @R4,R3
     00000018 2338                   TST         R3,R3
     0000001A 8B36                   BF          L269
@@ -130,7 +130,7 @@ SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
 
 
 
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 14-Nov-2021 01:48:06  PAGE    3
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 18-Nov-2021 16:33:51  PAGE    3
 
 
 SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
@@ -190,13 +190,13 @@ SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
     000000BA 600C                   EXTU.B      R0,R0
     000000BC 2008                   TST         R0,R0
     000000BE 8B04                   BF          L278
-    000000C0 D20F                   MOV.L       L283+4,R2  ; __$__2783_26_sceneManager$252
+    000000C0 D20F                   MOV.L       L283+4,R2  ; __$__2805_26_sceneManager$252
     000000C2 6322                   MOV.L       @R2,R3
 
 
 
 
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 14-Nov-2021 01:48:06  PAGE    4
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 18-Nov-2021 16:33:51  PAGE    4
 
 
 SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
@@ -246,8 +246,8 @@ SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
     000000F8 000B                   RTS
     000000FA 0009                   NOP
     000000FC              L283:                             
-    000000FC <00000000>             .DATA.L     __$__T29815024$251
-    00000100 <00000000>             .DATA.L     __$__2783_26_sceneManager$252
+    000000FC <00000000>             .DATA.L     __$__T29505008$251
+    00000100 <00000000>             .DATA.L     __$__2805_26_sceneManager$252
     00000104 <00000000>             .DATA.L     ___nw__FUl
     00000108 <00000000>             .DATA.L     ___ct__7Vector2Fv
     0000010C <00000000>             .DATA.L     _LoadScene__12SceneManagerFi
@@ -262,7 +262,7 @@ SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
 
 
 
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 14-Nov-2021 01:48:06  PAGE    5
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 18-Nov-2021 16:33:51  PAGE    5
 
 
 SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
@@ -319,16 +319,16 @@ P   00000130              __$LoadTextures__12SceneManagerFv:
     00000132 0009                   NOP
 B_B 00000000              _BR_Size:                        ; static: BR_Size
     00000000 00000004               .RES.L      1
-B   00000000              __$__T29815024$251:              ; static: __T29815024
+B   00000000              __$__T29505008$251:              ; static: __T29505008
     00000000 00000004               .RES.L      1
-    00000004              __$__2783_26_sceneManager$252:   ; static: sceneManager
+    00000004              __$__2805_26_sceneManager$252:   ; static: sceneManager
     00000004 00000004               .RES.L      1
 
 
 
 
 
-SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 14-Nov-2021 01:48:06  PAGE    1
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 18-Nov-2021 16:33:51  PAGE    1
 
 
 ******** STATISTICS INFORMATION ********
@@ -337,7 +337,7 @@ SH SERIES C/C++ Compiler (Ver. 6.0C)                                            
 ********** ERROR INFORMATION ***********
 
 NUMBER OF ERRORS:           0
-NUMBER OF WARNINGS:        49
+NUMBER OF WARNINGS:        50
 
 
 
@@ -397,5 +397,5 @@ NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            26
 *** COMMAND PARAMETER ***
 
 
-  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmk5046.tmp 
+  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmkB9E4.tmp 
 

@@ -1285,7 +1285,7 @@ void ML_bmp_16_xor_cl(const unsigned short *bmp, int x, int y)
 	}
 }
 
-#ifdef ML_BMP_ZOOM
+
 void ML_bmp_zoom(const unsigned char* bmp, int x, int y, int width, int height, float zoom_w, float zoom_h, ML_Color color)
 {
 	int i, j, iz, jz, width_z, height_z, nb_width, i3, bit, x_screen, pixel;
@@ -1382,10 +1382,10 @@ void ML_bmp_zoom(const unsigned char* bmp, int x, int y, int width, int height, 
 		break;
 	}
 }
-#endif
 
 
-#ifdef ML_BMP_ROTATE
+
+
 void ML_bmp_rotate(const unsigned char* bmp, int x, int y, int width, int height, int angle, ML_Color color)
 {
 	int i, j, i3, dx, dy, ox, oy, xr, yr, nb_width, pixel, bit;
@@ -1487,6 +1487,6 @@ void ML_bmp_rotate(const unsigned char* bmp, int x, int y, int width, int height
 		break;
 	}
 }
-#endif
+
 #endif
 

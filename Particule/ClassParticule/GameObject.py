@@ -47,6 +47,8 @@ class GameObject(Object):
         DicoSave["TypeObject"]="GameObject"
         DicoSave["ListOfComponent"] = DicoCompo
         Data = {self.ID:DicoSave}
+        for Tchild in self.transform.childs:
+            Data.update(Tchild.gameObject.Copy())
         return Data
 
     def UpdateOnGUI(self):
@@ -79,6 +81,7 @@ class GameObject(Object):
         self.ListOfComponent.append(temp)
         self.Particule.Inspector.UpdateItemSelected()
         self.Particule.Inspector.focus_set()
+        return temp
 
     def AddComponentByName(self,name):
         for compo in self.Particule.AllComponent:

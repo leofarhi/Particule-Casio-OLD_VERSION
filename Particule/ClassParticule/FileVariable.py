@@ -11,7 +11,8 @@ class FileVariable(Object):
             Path = os.path.splitext(Path)[0]
         self.path = Path
         self.pathMeta = Path+".meta"
-        self.ID=UUID
+        if UUID!=False:
+            self.ID=UUID
 
     def UpdateCheck(self):
         ext = os.path.splitext(self.path)[1]

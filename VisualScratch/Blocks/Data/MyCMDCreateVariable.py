@@ -34,7 +34,7 @@ class ScriptBlockPython(ScriptBlock):
     #Pour Particule :
     def WhenCompileForPython(self,lst,base):
         TYPE=str(self.BlockSys.GetVariable(lst,1)[1])
-        VarSetType = 'self.TypeVariables["'+str(self.BlockSys.GetVariable(lst,0)[1])+'"] = '+'{"Type":'+TYPE+'}'
+        VarSetType = 'self.TypeVariables["'+str(self.BlockSys.GetVariable(lst,0)[1])+'"] = '+'{"Type":"'+TYPE+'"}'
         line = "self."+str(self.BlockSys.GetVariable(lst,0)[1])+"= None"+"""
         """+VarSetType+"""
         $$Attributs"""

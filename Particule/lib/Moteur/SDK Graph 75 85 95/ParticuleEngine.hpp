@@ -38,7 +38,10 @@ public:
     Vector2();
     Vector2(float x, float y);
     void Set(float x, float y);
+    void Set(Vector2* vect);
     void Set(Vector2 vect);
+    void Add(float x, float y);
+    void Add(Vector2* vect);
 
     bool operator==(const Vector2& other);
 
@@ -130,11 +133,11 @@ public:
     virtual void OnBecameInvisible() {}
     virtual void OnBecameVisible() {}*/
     //virtual void OnCollisionEnter() {}
-    virtual void OnCollisionEnter2D(BoxCollider2D* boxCollider2D) {}/////
+    virtual void OnCollisionEnter2D(Collider2D* collider2D) {}/////
     //virtual void OnCollisionExit() {}
-    virtual void OnCollisionExit2D(BoxCollider2D* boxCollider2D) {}//////
+    virtual void OnCollisionExit2D(Collider2D* collider2D) {}//////
     //virtual void OnCollisionStay() {}
-    virtual void OnCollisionStay2D(BoxCollider2D* boxCollider2D) {}//////
+    virtual void OnCollisionStay2D(Collider2D* collider2D) {}//////
     //virtual void OnConnectedToServer() {}
     virtual void OnControllerColliderHit() {}//////
     virtual void OnDestroy() {}//////
@@ -173,11 +176,11 @@ public:
     virtual void OnTransformChildrenChanged() {}
     virtual void OnTransformParentChanged() {}*/
     //virtual void OnTriggerEnter() {}
-    virtual void OnTriggerEnter2D(BoxCollider2D* boxCollider2D) {}
+    virtual void OnTriggerEnter2D(Collider2D* collider2D) {}
     //virtual void OnTriggerExit() {}
-    virtual void OnTriggerExit2D(BoxCollider2D* boxCollider2D) {}
+    virtual void OnTriggerExit2D(Collider2D* collider2D) {}
     //virtual void OnTriggerStay() {}
-    virtual void OnTriggerStay2D(BoxCollider2D* boxCollider2D) {}
+    virtual void OnTriggerStay2D(Collider2D* collider2D) {}
     virtual void OnValidate() {}//////
     //virtual void OnWillRenderObject() {}
     virtual void Reset() {}/////
@@ -383,7 +386,7 @@ public:
     List<GameObject*> AllGameObject;
     SceneManager* sceneManager;
     List<Camera*> AllCameras;
-    List<BoxCollider2D*> LstColliders;
+    List<Collider2D*> LstColliders;
     //void GetRootGameObjects();
     //bool IsValid();
 
@@ -446,10 +449,64 @@ public:
 };
 
 
+
+
+
+class Collider2D : MonoBehaviour {
+    //https://docs.unity3d.com/ScriptReference/Collider2D.html
+protected:
+    List<Collider2D*> LstColliders;
+public:
+    bool IsTrigger;
+    Collider2D(GameObject* gameObject, bool IsTrigger, const char* UUID = NULL) : MonoBehaviour("Collider2D", gameObject, UUID) {
+        gameObject->scene->LstColliders.Add(this);
+        this->IsTrigger = IsTrigger;
+    };
+
+    void Update();
+
+    bool Contains(Collider2D* collider) {
+        for (int o = 0; o < LstColliders.Count; o++) {
+            if (collider == LstColliders[o])
+                return true;
+
+        }
+        return false;
+    };
+
+    virtual bool AreTheyTouching(Collider2D* boxCollider) {};
+    
+};
+
+class BoxCollider2D : Collider2D {//Collider2D {
+    //https://docs.unity3d.com/ScriptReference/BoxCollider2D.html
+
+
+public:
+    Vector2* center;
+    Vector2* size;
+
+    BoxCollider2D(GameObject* gameObject,bool IsTrigger,Vector2* center,Vector2* size, const char* UUID = NULL);
+
+    
+
+    bool AreTheyTouching(Collider2D* boxCollider);
+
+    
+
+    ~BoxCollider2D() {
+        delete center;
+        delete size;
+    };
+};
+
 class Rigidbody : MonoBehaviour {
 private:
+    Collider2D* MyCollider;
     Vector2* lastPosition;
-    BoxCollider2D* MyBoxCollider;
+
+    bool CheckCollider();
+    bool IsVisible();
 public:
     float Mass;
     bool UseGravity;
@@ -459,9 +516,7 @@ public:
     Rigidbody(GameObject* gameObject, float Mass, bool UseGravity, bool IsKinematic, const char* UUID = NULL);
 
     void PhysicsCalculator();
-    void OnCollisionEnter2D(BoxCollider2D* boxCollider2D);
-    void OnCollisionStay2D(BoxCollider2D* boxCollider2D);
-    void LateUpdate();
+
 
     ~Rigidbody() {
         delete velocity;
@@ -469,43 +524,8 @@ public:
     };
 
     void Start();
-    
-};
+    void LateUpdate();
 
-
-/*class Collider2D : MonoBehaviour {
-    //https://docs.unity3d.com/ScriptReference/Collider2D.html
-public:
-    
-};*/
-
-class BoxCollider2D : MonoBehaviour {//Collider2D {
-    //https://docs.unity3d.com/ScriptReference/BoxCollider2D.html
-
-private:
-    List<BoxCollider2D*> LstColliders;
-public:
-    bool IsTrigger;
-    Vector2* center;
-    Vector2* size;
-
-    BoxCollider2D(GameObject* gameObject,bool IsTrigger,Vector2* center,Vector2* size, const char* UUID = NULL);
-
-    void Update() ;
-
-    bool Contains(BoxCollider2D* boxCollider) {
-        for (int o = 0; o < LstColliders.Count; o++) {
-            if (boxCollider == LstColliders[o])
-                return true;
-                
-        }
-        return false;
-    };
-
-    ~BoxCollider2D() {
-        delete center;
-        delete size;
-    };
 };
 
 class Text : MonoBehaviour {
@@ -548,7 +568,7 @@ public:
     
     ProjectSettings() {
         //<ProjectSettings>
-        Gravity = new Vector2();
+        Gravity = new Vector2(/*GravityValue*/);
         //<\ProjectSettings>
     };
 

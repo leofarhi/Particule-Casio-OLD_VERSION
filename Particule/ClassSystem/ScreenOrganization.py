@@ -95,11 +95,11 @@ class ScreenOrganization:
         self.Particule.Scene = Scene(self.GridCenter)
         self.Particule.Scene.pack(fill=BOTH, expand=True)
 
-        self.Particule.Animator = Animator(self.GridCenter)
-        self.Particule.Animator.pack(fill=BOTH, expand=True)
+        #self.Particule.Animator = Animator(self.GridCenter)
+        #self.Particule.Animator.pack(fill=BOTH, expand=True)
 
         self.GridCenter.add(self.Particule.Scene, text='Scene')
-        self.GridCenter.add(self.Particule.Animator, text='Animator')
+        #self.GridCenter.add(self.Particule.Animator, text='Animator')
         #self.GridCenter.add(self.CanevasAsset.FrameAssetStore, text='Asset Store')
         #self.GridCenter.add(self.CanevasAsset.FrameAssetImport, text='My Asset')
 
@@ -147,11 +147,15 @@ class ScreenOrganization:
         gameobject = self.Particule.Hierarchy.CreateObject()
         gameobject.AddComponentByName("Camera")
         return gameobject
+
+    def OpenSceneFile(self):
+        rep=Fl.open_file(rep =self.Particule.FolderProject)#,filetypes=(("Scene files", "*.particule")))
+        self.Particule.SaveData.LoadScene(rep)
     def SetMenuItem(self):
         self.Particule.MenuItem = MenuItem(self.Particule.Mafenetre)
         self.MenuItem = self.Particule.MenuItem
         self.MenuItem.AddItem("Fichier/Creer une Scene" ,self.CreateScene)
-        self.MenuItem.AddItem("Fichier/Ouvrir une Scene",self.Particule.SaveData.LoadScene)  # ,self.OpenScene)
+        self.MenuItem.AddItem("Fichier/Ouvrir une Scene",self.OpenSceneFile)  # ,self.OpenScene)
         self.MenuItem.Add_separator("Fichier")
         self.MenuItem.AddItem("Fichier/Enregistrer",self.Particule.SaveData.SaveScene)  # ,SaveAll)
         self.MenuItem.AddItem("Fichier/Enregistrer sous...")  # ,SaveAll)

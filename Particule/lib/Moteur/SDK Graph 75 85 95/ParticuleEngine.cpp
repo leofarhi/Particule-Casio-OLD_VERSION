@@ -62,9 +62,23 @@ void Vector2::Set(float x, float y) {
     this->x = x;
     this->y = y;
 };
+void Vector2::Set(Vector2* vect) {
+    this->x = vect->x;
+    this->y = vect->y;
+};
+
 void Vector2::Set(Vector2 vect) {
     this->x = vect.x;
     this->y = vect.y;
+};
+
+void Vector2::Add(Vector2* vect) {
+    this->x += vect->x;
+    this->y += vect->y;
+};
+void Vector2::Add(float x, float y) {
+    this->x += x;
+    this->y += y;
 };
 
 bool Vector2::operator==(const Vector2& other) {
@@ -426,64 +440,84 @@ Rigidbody::Rigidbody(GameObject* gameObject, float Mass, bool UseGravity, bool I
 
 void Rigidbody::Start() {
     this->velocity->Set(0, 0);
-    this->lastPosition->Set(gameObject->transform->position->x, gameObject->transform->position->y);
-    this->MyBoxCollider = ((BoxCollider2D*)this->gameObject->GetComponent("BoxCollider2D"));
+    this->lastPosition->Set(this->gameObject->transform->position);
+    this->MyCollider = (Collider2D*)(((BoxCollider2D*)this->gameObject->GetComponent("BoxCollider2D")));
+}
+
+
+bool Rigidbody::CheckCollider() {
+    if (MyCollider != NULL && gameObject->isStatic && !MyCollider->IsTrigger)
+        return false;
+    for (int i = 0; i < gameObject->scene->LstColliders.Count; i++) {
+        if (MyCollider != gameObject->scene->LstColliders[i] && ((Component*)gameObject->scene->LstColliders[i])->gameObject->IsActive()) {
+            if (!gameObject->scene->LstColliders[i]->IsTrigger && MyCollider->AreTheyTouching(gameObject->scene->LstColliders[i]))
+                return true;
+        }
+    }
+    return false;
+}
+
+bool Rigidbody::IsVisible() {
+    
+    float posX = gameObject->transform->position->x;
+    float posY = gameObject->transform->position->y;
+    float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
+    float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
+    return (posX - camX + (127 * 2) > 0 && posX - camX < (128 * 2) && posY - camY + (63 * 2)>0 && posY - camY < (64 * 2));
 }
 
 void Rigidbody::PhysicsCalculator() {
-    //calcule de physique (gravite)
-    //a faire
-    this->velocity->Set(0, 0);///////////
-    this->lastPosition->Set(gameObject->transform->position->x, gameObject->transform->position->y);
+    if (!(UseGravity && IsVisible()))
+        return;
+
+    if (CheckCollider()) {
+        gameObject->transform->position->Set(lastPosition);
+    }
+    else {
+        this->velocity->Set(this->velocity->x - (this->gameObject->scene->sceneManager->projectSettings->Gravity->x * this->Mass),
+            this->velocity->y - (this->gameObject->scene->sceneManager->projectSettings->Gravity->y * this->Mass));
+        this->lastPosition->Set(this->gameObject->transform->position);
+    }
+    gameObject->transform->position->Add(this->velocity->x, -this->velocity->y);
+    if (CheckCollider()) {
+        int x = 0;
+        int y = 0;
+        this->velocity->Set(velocity->x * 2, velocity->y * 2);
+        while (y < abs((int)this->velocity->y) || x < abs((int)this->velocity->x))
+        {
+            if (CheckCollider()) {
+                if (y < abs((int)this->velocity->y))
+                    gameObject->transform->position->Add(0, -(abs(this->velocity->y) / this->velocity->y) * (-1));
+                if (x < abs((int)this->velocity->x))
+                    gameObject->transform->position->Add((abs(this->velocity->x) / this->velocity->x) * (-1), 0);
+            }
+            y++;
+            x++;
+        }
+        this->velocity->Set(0, 0);
+    }
+    if (CheckCollider()) {
+        gameObject->transform->position->Set(lastPosition);
+    }
+    this->lastPosition->Set(this->gameObject->transform->position);
 };
-
-void Rigidbody::OnCollisionEnter2D(BoxCollider2D* boxCollider2D) {
-
-    if (!(boxCollider2D->IsTrigger || (MyBoxCollider != NULL && MyBoxCollider->IsTrigger)))
-        this->velocity->Set(lastPosition->x - gameObject->transform->position->x, lastPosition->y - gameObject->transform->position->y);
-}
-void Rigidbody::OnCollisionStay2D(BoxCollider2D* boxCollider2D) {
-
-    if (!(boxCollider2D->IsTrigger || (MyBoxCollider != NULL && MyBoxCollider->IsTrigger)))
-        this->velocity->Set(lastPosition->x - gameObject->transform->position->x, lastPosition->y - gameObject->transform->position->y);
-}
 
 void Rigidbody::LateUpdate() {
-    gameObject->transform->position->Set(gameObject->transform->position->x + this->velocity->x, gameObject->transform->position->y + this->velocity->y);
-}
+    if (CheckCollider()) {
+        gameObject->transform->position->Set(lastPosition);
+    }
 
-
-BoxCollider2D::BoxCollider2D(GameObject* gameObject, bool IsTrigger, Vector2* center, Vector2* size, const char* UUID) : MonoBehaviour("BoxCollider2D", gameObject, UUID) {
-    this->IsTrigger = IsTrigger;
-    this->center = center;
-    this->size = size;
-    //LstColliders.DeleteAct = false;
-    gameObject->scene->LstColliders.Add(this);
 };
 
-void BoxCollider2D::Update() {
+void Collider2D::Update() {
+
     if (gameObject->isStatic && !IsTrigger)
         return;
     for (int i = 0; i < gameObject->scene->LstColliders.Count; i++) {
         if (this != gameObject->scene->LstColliders[i] && gameObject->scene->LstColliders[i]->gameObject->IsActive()) {
-            int x1 = gameObject->scene->LstColliders[i]->gameObject->transform->position->x +
-                gameObject->scene->LstColliders[i]->center->x - (gameObject->scene->LstColliders[i]->size->x / 2);
-            int x2 = gameObject->scene->LstColliders[i]->gameObject->transform->position->x +
-                gameObject->scene->LstColliders[i]->center->x + (gameObject->scene->LstColliders[i]->size->x / 2);
-            int y1 = gameObject->scene->LstColliders[i]->gameObject->transform->position->y +
-                gameObject->scene->LstColliders[i]->center->y - (gameObject->scene->LstColliders[i]->size->y / 2);
-            int y2 = gameObject->scene->LstColliders[i]->gameObject->transform->position->y +
-                gameObject->scene->LstColliders[i]->center->y + (gameObject->scene->LstColliders[i]->size->y / 2);
 
-            int MyX1 = gameObject->transform->position->x + center->x - (size->x / 2);
-            int MyX2 = gameObject->transform->position->x + center->x + (size->x / 2);
-            int MyY1 = gameObject->transform->position->y + center->y - (size->y / 2);
-            int MyY2 = gameObject->transform->position->y + center->y + (size->y / 2);
 
-            if (x1 < MyX2 &&
-                x2 > MyX1 &&
-                y1 < MyY2 &&
-                y2 > MyY1) {
+            if (AreTheyTouching(gameObject->scene->LstColliders[i])) {
                 // collision détectée !
                 if (Contains(gameObject->scene->LstColliders[i])) {
                     for (int o = 0; o < gameObject->ListOfComponent.Count; o++) {
@@ -523,6 +557,36 @@ void BoxCollider2D::Update() {
         }
     }
 };
+
+
+BoxCollider2D::BoxCollider2D(GameObject* gameObject, bool IsTrigger, Vector2* center, Vector2* size, const char* UUID) : Collider2D(gameObject, IsTrigger, UUID) {
+    ((Object*)this)->name = "BoxCollider2D";
+    this->center = center;
+    this->size = size;
+    //LstColliders.DeleteAct = false;
+};
+
+bool BoxCollider2D::AreTheyTouching(Collider2D* collider) {
+    int x1 = ((Component*)collider)->gameObject->transform->position->x +
+        ((BoxCollider2D*)collider)->center->x - (((BoxCollider2D*)collider)->size->x / 2);
+    int x2 = ((Component*)collider)->gameObject->transform->position->x +
+        ((BoxCollider2D*)collider)->center->x + (((BoxCollider2D*)collider)->size->x / 2);
+    int y1 = ((Component*)collider)->gameObject->transform->position->y +
+        ((BoxCollider2D*)collider)->center->y - (((BoxCollider2D*)collider)->size->y / 2);
+    int y2 = ((Component*)collider)->gameObject->transform->position->y +
+        ((BoxCollider2D*)collider)->center->y + (((BoxCollider2D*)collider)->size->y / 2);
+    
+    int MyX1 = ((Component*)this)->gameObject->transform->position->x + ((BoxCollider2D*)this)->center->x - (size->x / 2);
+    int MyX2 = ((Component*)this)->gameObject->transform->position->x + ((BoxCollider2D*)this)->center->x + (size->x / 2);
+    int MyY1 = ((Component*)this)->gameObject->transform->position->y + ((BoxCollider2D*)this)->center->y - (size->y / 2);
+    int MyY2 = ((Component*)this)->gameObject->transform->position->y + ((BoxCollider2D*)this)->center->y + (size->y / 2);
+    return (x1 < MyX2&&
+        x2 > MyX1 &&
+        y1 < MyY2&&
+        y2 > MyY1);
+}
+
+
 
 
 Text::Text(GameObject* gameObject, unsigned char* text, const char* UUID) : MonoBehaviour("Text", gameObject, UUID) {

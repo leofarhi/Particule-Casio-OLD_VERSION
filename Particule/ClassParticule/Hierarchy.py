@@ -129,8 +129,10 @@ class Hierarchy(EditorWindow):
                 nb+=1
         else:
             path = self.Particule.FolderWindow.repertoirSlc + "/" + gameObj.name + ".prefab"
+        data = gameObj.Copy()
+        (((data[temp])['ListOfComponent'])[(data[temp])['transform']])['parent'] = None
         with open(path,"w") as fic:
-            fic.write(str(gameObj.Copy()))
+            fic.write(str(data))
         self.Particule.UpdateOnFocus()
     def deleteObject(self,*args):
         temp = self.t.focus()
@@ -145,7 +147,9 @@ class Hierarchy(EditorWindow):
         temp = self.t.focus()
         if self.t.parent(temp) == "":
             return
-        pyperclip.copy(str(self.allGameObjectOnScene[temp].Copy()))
+        data=self.allGameObjectOnScene[temp].Copy()
+        (((data[temp])['ListOfComponent'])[(data[temp])['transform']])['parent']=None
+        pyperclip.copy(str(data))
     def PastObject(self,*args):
         dico = pyperclip.paste()
         try: dico=eval(dico)
@@ -153,7 +157,8 @@ class Hierarchy(EditorWindow):
             return
         if type(dico)!=dict:
             return
-        for gameobject in dico.items():
+        DicoCp = eval(str(dico))
+        for gameobject in DicoCp.items():#dico.items():
             datas=gameobject[1]
             if datas["TypeObject"]!="GameObject":continue
             root = self.t.get_children("")[0]
@@ -173,15 +178,15 @@ class Hierarchy(EditorWindow):
             gameObject.sceneCullingMask = datas["sceneCullingMask"]
             gameObject.tag = Tag(datas["tag"])
             scenePath = datas["scene"]
+
             dataComponent = datas["ListOfComponent"]
             DatasSceneInfo = self.Particule.SaveData.GetDataScene(scenePath)
             MyCompo=[]
-            for index, component in dataComponent.items():
+            for index, component in dataComponent.items():#dataComponent.items():
                 try:
                     classCompo = getattr(sys.modules['Particule'], component["TypeObject"])
                 except:
                     classCompo = getattr(sys.modules['Particule'], "MissingScript")
-                temp = None
                 component["gameObject"] = gameObject.ID
                 if component["TypeObject"] == "Transform":
                     temp = gameObject.transform
@@ -189,7 +194,9 @@ class Hierarchy(EditorWindow):
                 else:
                     temp = classCompo(gameObject)
                     component = eval(str(component).replace(index, temp.ID))
+                dico = eval(str(dico).replace(index, temp.ID))
                 MyCompo.append([temp,component])
+
             ALLInScene=[]
             for i in self.Particule.All_UUID.values():
                 if issubclass(type(i),ClassParticule.Component.Component):
@@ -200,13 +207,17 @@ class Hierarchy(EditorWindow):
             for i in ALLInScene+[o[0] for o in MyCompo]:
                 if i!= None:
                     DicoAllScene[i.ID] = i
+            dico = eval(str(dico))
             for i in MyCompo:
                 if type(i[0]) is type(gameObject.transform):
+                    (i[1])["parent"]=None
+                    (i[1])["childs"] =[]
                     gameObject.transform.LoadDataDict(DatasSceneInfo, gameObject.transform, i[1], DicoAllScene, DicoAllScene)
                 else:
                     i[0].LoadDataDict(DatasSceneInfo, i[0], i[1], DicoAllScene, DicoAllScene)
                     gameObject.ListOfComponent.append(i[0])
                     i[0].gameObject = gameObject
+            dico = eval(str(dico).replace(gameobject[0], gameObject.ID))
             gameObject.transform = gameObject.transform
             name = gameObject.name
             if gameObject.activeSelf:
@@ -217,7 +228,19 @@ class Hierarchy(EditorWindow):
             NewT = self.t.insert(root, "end", str(gameObject.ID), text=name, values=(gameObject.ID, "dir"), tags=(tag))
             self.t.see(NewT)
             self.t.update()
-            return gameObject
+        for gameobject in dico.items():
+            GmObj =self.allGameObjectOnScene[gameobject[0]]
+            temp=gameobject[0]
+            data = gameobject[1]
+            parentTemp=(((data)['ListOfComponent'])[(data)['transform']])['parent']
+            if parentTemp!=None:
+                for i in dico.items():
+                    if (i[1])['transform']==parentTemp:
+                        tmpGmOb = i[0]
+                        break
+                GmObj.transform.SetParent(self.allGameObjectOnScene[tmpGmOb].transform)
+        self.Particule.UpdateOnFocus()
+        return gameObject
     def DuplicateObject(self,*args):
         self.CopyObject()
         self.PastObject()
@@ -300,8 +323,12 @@ class Hierarchy(EditorWindow):
             if (tempI == "None"):
                 tempI = None
             else:
-                tempI = tempI
+                if type(self.ItemSelected)==GameObject:
+                    for component in self.ItemSelected.ListOfComponent:
+                        component.WhenComponentIsHideSignal()
                 self.ItemSelected = self.allGameObjectOnScene[tempI]
+                for component in self.ItemSelected.ListOfComponent:
+                    component.WhenComponentIsShowSignal()
             self.Particule.Inspector.UpdateItemSelected()
         except:
             return

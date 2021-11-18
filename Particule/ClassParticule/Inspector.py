@@ -142,7 +142,9 @@ class Inspector(EditorWindow):
             i.pack_forget()
         for i in ItemSelected.ListOfComponent:
             i.PrintOnGui()
-        self.ZoneComponentCanvas.configure(scrollregion=self.ZoneComponentCanvas.bbox('all'))
+        for i in range(3):
+            self.ZoneComponentCanvas.configure(scrollregion=self.ZoneComponentCanvas.bbox('all'))
+            self.ZoneComponentCanvas.update()
 
     def all_children(self, wid):
         finList=[]

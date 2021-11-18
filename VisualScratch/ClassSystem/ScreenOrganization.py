@@ -84,7 +84,7 @@ class ScreenOrganization:
         self.Fichier.add_command(label="Nouveau", command=self.Sys.NewFile)
         self.Fichier.add_command(label="Ouvrir...", command=self.Sys.OpenFile)
         self.Fichier.add_command(label="Enregistrer", command=self.Sys.SaveFile)
-        self.Fichier.add_command(label="Enregistrer sous...", command=self.Sys.SaveAsFile)
+        #self.Fichier.add_command(label="Enregistrer sous...", command=self.Sys.SaveAsFile)
         self.Fichier.add_separator()
         self.Fichier.add_command(label="Compile Script", command=self.Sys.CompileScript)
         self.Fichier.add_separator()

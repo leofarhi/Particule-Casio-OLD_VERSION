@@ -70,6 +70,54 @@ class BuildSettings(EditorWindow):
         #WTypeCompile.mainloop()
         #WTypeCompile.destroy()
 
+        self.checkBoxTree.bind("<Button-3>", self.popup)
+        self.contextMenu = Menu(self.Particule.Mafenetre, tearoff=False)
+
+        self.contextMenu.add_command(label="Move Up", command=self.moveUp)
+        self.contextMenu.add_command(label="Move Down", command=self.moveDown)
+        self.contextMenu.add_command(label="Remove", command=self.deleteObject)
+        self.contextMenu.add_command(label="Save", command=self.SaveLstScene)
+
+    def popup(self, event):
+        """action in event of button 3 on tree view"""
+        # select row under mouse
+        iid = self.checkBoxTree.identify_row(event.y)
+        if iid:
+            # mouse pointer over item
+            self.checkBoxTree.selection_set(iid)
+            self.contextMenu.post(event.x_root, event.y_root)
+        else:
+            # mouse pointer not over item
+            # occurs when items do not fill frame
+            # no action required
+            pass
+
+    def moveDown(self,*args):
+        leaves = self.checkBoxTree.selection()
+        for i in reversed(leaves):
+            self.checkBoxTree.move(i, self.checkBoxTree.parent(i), self.checkBoxTree.index(i) + 1)
+        self.SaveLstScene()
+
+    def moveUp(self,*args):
+        leaves = self.checkBoxTree.selection()
+        for i in leaves:
+            self.checkBoxTree.move(i, self.checkBoxTree.parent(i), self.checkBoxTree.index(i) - 1)
+        self.SaveLstScene()
+
+    def deleteObject(self,*args):
+        for item in self.checkBoxTree.selection():
+            self.checkBoxTree.delete(item)
+        self.SaveLstScene()
+
+    def SaveLstScene(self,*args):
+        size=len(self.checkBoxTree.get_children())
+        Scenes = [None for i in range(size)]
+        for i in list(self.checkBoxTree.get_children("")):
+            check = (self.checkBoxTree.item(i)['tags'])[0]=='checked'
+            Scenes[int(self.checkBoxTree.index(i))]=[self.checkBoxTree.item(i)['text'],check]
+        rf.save(self.Particule.FolderProject + "/ProjectSettings/BuildSettings.txt", "ScenesInBuild", Scenes)
+
+
     def AddCurrentScene(self,*args):
         scenes = rf.GetList(self.Particule.FolderProject + "/ProjectSettings/BuildSettings.txt", "ScenesInBuild")
         for i in self.Particule.Scene.scenes:

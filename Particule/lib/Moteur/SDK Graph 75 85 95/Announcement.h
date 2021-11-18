@@ -13,6 +13,7 @@ class Texture;
 class Camera;
 class Image;
 class Text;
+class Collider2D;
 class BoxCollider2D;
 class ProjectSettings;
 void LoadScene(Scene* scene, int nb);

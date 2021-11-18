@@ -27,7 +27,7 @@ class Sprite(Component):
         self.ReloadImg()
 
         self.Particule.Scene.surface.tag_bind(self.Mesh,'<Button-1>', self.Clic)  # evevement clic gauche (press)
-        self.Particule.Scene.surface.tag_bind(self.Mesh,'<B1-Motion>', self.Drag)
+        #self.Particule.Scene.surface.tag_bind(self.Mesh,'<B1-Motion>', self.Drag)
         #self.Particule.Scene.surface.tag_bind(self.Mesh,'<ButtonRelease-1>', self.Drop)
 
 

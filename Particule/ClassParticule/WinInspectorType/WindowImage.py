@@ -1,5 +1,6 @@
 from Particule import *
 from ClassSystem.EditorWindow import EditorWindow
+from ClassParticule.FileVariable import FileVariable
 from ClassParticule.AddComponentFrame import AddComponentFrame
 
 class WindowImage(EditorWindow):
@@ -16,13 +17,14 @@ class WindowImage(EditorWindow):
         self.LstAllSelectTextureType.grid(row=0, column=1)
         self.LstAllSelectTextureType["value"]=["Default","Sprite (2D and UI)","Cursor"]
         #self.LstAllSelectTextureType.bind('<<ComboboxSelected>>', self.updateDataGameObj)
-        self.FrameComboboxTextureType.grid(row=0, column=0)
+
+        #self.FrameComboboxTextureType.grid(row=0, column=0)
 
         self.varAlpha = IntVar()
         self.varAlpha.set(1)
         # self.varActive.trace("w", self.updateDataGameObj)
         self.CheckAlpha = Checkbutton(self.mainFrame,text="Alpha", variable=self.varAlpha, offvalue=0, onvalue=1)
-        self.CheckAlpha.grid(row=1, column=0)
+        #self.CheckAlpha.grid(row=1, column=0)
 
         self.boutonTransformeImg = Button(self.mainFrame,text= "Transformer l'image",command=self.CreateImage)
         self.boutonTransformeImg.grid(row=2,column=0, sticky='EWNS',padx=10,pady=10)

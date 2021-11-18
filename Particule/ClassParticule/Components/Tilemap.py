@@ -6,6 +6,7 @@ import numpy
 import PIL
 import SystemExt.ImageFunctions as ImageFunctions
 from PIL import ImageFilter, ImageOps
+from ClassParticule.Components.BoxCollider2D import BoxCollider2D
 class Tilemap(Component):
     def __init__(self,gameObject,**kwargs):
         Component.__init__(self,gameObject,__name__.split(".")[-1],**kwargs)
@@ -13,6 +14,8 @@ class Tilemap(Component):
         #repImg = "C:/Users/leofa/OneDrive/Documents/PycharmProjects/Particule/lib/logo.png"
 
         self.canvas = self.Particule.Scene.surface
+        self.IsHide = True
+        self.gameObject.isStatic = True
 
         self._lastZoom=1
 
@@ -30,6 +33,7 @@ class Tilemap(Component):
         self.grille = []
         self.LoadMap()
         self.PaintPen = 1
+
 
 
 
@@ -64,7 +68,20 @@ class Tilemap(Component):
         self.NotebookTilemap.add(self.FrameSettings, text='Settings')
         self.NotebookTilemap.add(self.FramePalette, text='Palette')
 
+        self.FrameSettingsCollider = Frame(self.FrameSettings)
+        self.FrameSettingsCollider.pack(fill=X, expand=True)
+
+        self.FrameSettingsTypeGUI = Frame(self.FrameSettings)
+        self.FrameSettingsTypeGUI.pack(fill=BOTH, expand=True)
+
+        self.ButtonCollision = Button(self.FrameSettingsCollider,text="Add/Update Collider",command=self.AddCollider)
+        self.ButtonCollision.grid(row=0, column=0)
+
+        self.ButtonCollision = Button(self.FrameSettingsCollider, text="Remove Collider", command=self.RemoveCollider)
+        self.ButtonCollision.grid(row=0, column=1)
+
         self.FrameSettings.Particule = self.Particule
+        self.FrameSettingsTypeGUI.Particule = self.Particule
         self.FramePalette.Particule = self.Particule
 
         self.RefeshPalette()
@@ -77,13 +94,63 @@ class Tilemap(Component):
             if i[0] in ["Textures"]+self.AttributVisible:
                 # print(i[0],getattr(self,i[0]))
                 one = True
-                tempUI = TypeGUI(self.FrameSettings, self, i[0],self.TypeVariables[i[0]])
+                tempUI = TypeGUI(self.FrameSettingsTypeGUI, self, i[0],self.TypeVariables[i[0]])
                 tempUI.grid(row=count, column=0, sticky='EWNS')
                 self._valueGUI.append(tempUI)
                 count += 1
                 # Button(self.myFrame,text=self.gameObject.name+i[0]+" : "+str(i[1].get())).pack()
         if not one:
-            Label(self.FrameSettings, text="Pas de paramètres").pack()
+            Label(self.FrameSettingsTypeGUI, text="Pas de paramètres").pack()
+
+    def RemoveCollider(self):
+        i=0
+        while i <len(self.gameObject.ListOfComponent):
+            if type(self.gameObject.ListOfComponent[i]) == BoxCollider2D:
+                self.gameObject.ListOfComponent[i].Destroy()
+            else:
+                i+=1
+
+    def AddCollider(self):
+        self.RemoveCollider()
+        DataTemp = eval(str(self.DataTilemap))
+        for y,i in enumerate(DataTemp):
+            for x,o in enumerate(i):
+                if ((DataTemp[y])[x]!=0):
+                    temp = self.gameObject.AddComponent(BoxCollider2D)
+
+                    if x+1< len(i) and (DataTemp[y])[x+1]!=0:
+                        j=0
+                        while x+j< len(i) and (DataTemp[y])[x+j]!=0:
+                            (DataTemp[y])[x + j]=0
+                            j+=1
+                        H=1
+                        while y+H< len(DataTemp):
+                            somme=True
+                            for k in range(j):
+                                somme=((DataTemp[y+H])[x + k]!=0) and somme
+                            if not somme:
+                                break
+                            H+=1
+                        for m in range(H):
+                            for k in range(j):
+                                (DataTemp[y + m])[x + k]=0
+                        temp.Center = Vector2((self.SizeCase.x * x) + ((self.SizeCase.x* j) / 2),
+                                              (self.SizeCase.y * y) + (self.SizeCase.y*H / 2))
+                        temp.Size = Vector2(self.SizeCase.x*j,self.SizeCase.y*H)
+                    elif y+1< len(DataTemp) and (DataTemp[y+1])[x]!=0:
+                        j = 0
+                        while y + j < len(DataTemp) and (DataTemp[y+j])[x] != 0:
+                            (DataTemp[y+j])[x] = 0
+                            j += 1
+                        temp.Center = Vector2((self.SizeCase.x * x) + (self.SizeCase.x / 2),
+                                              (self.SizeCase.y * y) + ((self.SizeCase.y* j) / 2))
+                        temp.Size = Vector2(self.SizeCase.x, self.SizeCase.y* j)
+                    else:
+                        (DataTemp[y])[x] = 0
+                        temp.Center = Vector2((self.SizeCase.x * x) + (self.SizeCase.x / 2),
+                                              (self.SizeCase.y * y) + (self.SizeCase.y / 2))
+                        temp.Size = self.SizeCase+Vector2()
+
 
 
     def Clic(self, event):
@@ -139,6 +206,8 @@ class Tilemap(Component):
                 #self.grille.append(gr)
                 tempM.append(ImgCan)
             self.Meshs.append(tempM)
+        if self.IsHide:
+            self.WhenComponentIsHideSignal()
     def UpdateLst(self):
         self.SizeTilemap.y = abs(self.SizeTilemap.y)
         self.SizeTilemap.x = abs(self.SizeTilemap.x)
@@ -164,6 +233,19 @@ class Tilemap(Component):
                 modif = True
         return modif
 
+    def WhenComponentIsShowSignal(self):
+        self.IsHide = False
+        for i in self.Meshs:
+            for o in i:
+                self.canvas.itemconfig(o, state='normal')
+                self.Particule.Scene.surface.tag_raise(o)
+
+    def WhenComponentIsHideSignal(self):
+        self.IsHide=True
+        for y, i in enumerate(self.DataTilemap):
+            for x, o in enumerate(i):
+                if o == 0:
+                    self.canvas.itemconfig((self.Meshs[y])[x], state='hidden')
 
     def AddScriptAfterInitCasio(self):
         lst = []

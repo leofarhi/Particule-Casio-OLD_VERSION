@@ -22,7 +22,7 @@ class BoxCollider2D(Component):
                                    })
         self.AttributVisible = ["IsTrigger", "Center", "Size"]
         self.Particule.Scene.surface.tag_bind(self.Mesh, '<Button-1>', self.Clic)
-        self.Particule.Scene.surface.tag_bind(self.Mesh, '<B1-Motion>', self.Drag)
+        #self.Particule.Scene.surface.tag_bind(self.Mesh, '<B1-Motion>', self.Drag)
     def Clic(self, event):
         self.Particule.Hierarchy.t.focus(str(self.gameObject.ID))
         self.Particule.Hierarchy.t.selection_set(str(self.gameObject.ID))
@@ -47,6 +47,8 @@ class BoxCollider2D(Component):
             int((Start.y+y+self.Particule.Scene.y)*z),
             int((End.x+x-self.Particule.Scene.x)*z),
             int((End.y+y+self.Particule.Scene.y)*z))
+
+    def WhenComponentIsShowSignal(self):
         self.Particule.Scene.surface.tag_raise(self.Mesh)
 
     def SaveDataDict(self):

@@ -96,6 +96,12 @@ class Component(Object):
     def WhenComponentIsHide(self):
         pass
 
+    def WhenComponentIsShowSignal(self):
+        pass
+
+    def WhenComponentIsHideSignal(self):
+        pass
+
     def popup(self, event):
         self.contextMenu.post(event.x_root, event.y_root)
     def Destroy(self,*args):

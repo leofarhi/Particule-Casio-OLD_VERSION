@@ -1,6 +1,9 @@
 from Particule import *
 from ClassSystem.EditorWindow import EditorWindow
 import math
+import pygame
+import platform
+
 class Arrow:
     def __init__(self,canvas,angle,color):
         self.x,self.y = 0,0
@@ -69,6 +72,25 @@ class Scene(EditorWindow):
 
         self.surface = Canvas(self, background='white')
         self.surface.pack(fill=tkinter.BOTH, expand=True)#.grid(row=1, column=0)
+
+        """
+        ####Pygame Intégration
+
+        os.environ['SDL_WINDOWID'] = str(self.surface.winfo_id())
+        os.environ['SDL_VIDEODRIVER'] = 'windib'
+
+        self.surfacePygame = pygame.display.set_mode((500, 500))
+        self.surfacePygame.fill(pygame.Color(255, 255, 255))
+        pygame.display.init()
+        pygame.display.update()
+        self.surface.update()
+
+        pygame.draw.circle(self.surfacePygame, (0, 0, 0), (250, 250), 125)
+        pygame.display.update()
+        ####
+        """
+
+
 
         """
         self.arrowX = Arrow(self.surface,0,"blue")

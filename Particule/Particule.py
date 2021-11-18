@@ -137,7 +137,7 @@ def show_about():
 
 class Particule:
     def __init__(self,FolderProject=os.getcwd()+"/ProjectFolder"):
-        self.Process = []
+        self.Process = ["Starting"]
         self.version = "2021.1.0"
         self.VisualScratchPath="C:\\Users\\leofa\\OneDrive\\Documents\\PycharmProjects\\Particule-Casio\\VS Out\\main\\main.exe"
 
@@ -146,6 +146,7 @@ class Particule:
         self.All_UUID = {}
 
         self.SLN_System = SLN_System(self)
+
 
         #print(path)
 
@@ -234,6 +235,8 @@ class Particule:
 
         #self.CanevasAsset.UpdateScreen()
         self.Mafenetre.protocol("WM_DELETE_WINDOW", self.on_closing)
+
+        self.Process.remove("Starting")
         self.Mafenetre.mainloop()
 
     def GetCodeFromVisualScratch(self):
@@ -314,7 +317,7 @@ class Particule:
                     self.AllComponent.append(attribute)
 
     def CreateUUID(self,TypeObject,UUID = False):
-        if UUID == False:
+        if UUID == False or str(UUID).lower() =="false":
             UUID = "UUID_"+(str(uuid.uuid4()).replace("-","_"))
             while UUID in self.All_UUID:
                 UUID = "UUID_"+(str(uuid.uuid4()).replace("-","_"))
@@ -345,6 +348,7 @@ class Particule:
         print("FocusMainWindow")
         if self.UpdateOnFocus in self.Process:
             return
+        if "Starting" in self.Process:return
         self.Process.append(self.UpdateOnFocus)
         progress = ProgressBarPopup(self.Mafenetre)
 

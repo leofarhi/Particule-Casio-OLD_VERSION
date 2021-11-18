@@ -298,6 +298,8 @@ class FolderWindow(EditorWindow):
                     UUID = TempID
                 else:
                     fv = FileVariable(self.Particule, rep + "/" + i, TempID)
+                    if TempID==False:
+                        TempID = fv.ID
                     UUID = self.Particule.CreateUUID(fv,TempID)
                     AllFileVariable.append(fv)
                     #fv.UpdateCheck()

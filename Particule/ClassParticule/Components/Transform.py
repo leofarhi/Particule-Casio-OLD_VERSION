@@ -60,8 +60,42 @@ class Transform(Component):
         self.arrowY = Arrow(self.Particule.Scene.surface, math.pi / 2, "green")
         self.arrowX.Hide()
         self.arrowY.Hide()
+        canvas = self.Particule.Scene.surface
+        self.arrowMiddle = canvas.create_rectangle(0, 0, 0, 0, fill='red')
+        canvas.tag_bind(self.arrowX.line, '<B1-Motion>', self.MoveOnX)
+        canvas.tag_bind(self.arrowY.line, '<B1-Motion>', self.MoveOnY)
+        canvas.tag_bind(self.arrowMiddle, '<B1-Motion>', self.Drag)
+        self.Particule.Scene.surface.itemconfig(self.arrowMiddle, state='hidden')
 
         #print(self.GetAttribut())
+
+
+    def MoveOnX(self, event):
+        #event.x, event.y
+        z = self.Particule.Scene.zoom
+        self.gameObject.transform.position.set(( (event.x//z)+self.Particule.Scene.x, self.gameObject.transform.position.y))
+        self.Particule.Inspector.UpdateItemSelected()
+
+    def MoveOnY(self, event):
+        #event.x, event.y
+        z = self.Particule.Scene.zoom
+        self.gameObject.transform.position.set(( self.gameObject.transform.position.x, (event.y//z)-self.Particule.Scene.y))
+        self.Particule.Inspector.UpdateItemSelected()
+
+    def Drag(self, event):
+        #event.x, event.y
+        z = self.Particule.Scene.zoom
+        self.gameObject.transform.position.set(( (event.x//z)+self.Particule.Scene.x, (event.y//z)-self.Particule.Scene.y))
+        self.Particule.Inspector.UpdateItemSelected()
+
+
+    def SetParent(self, Other):
+        if self.parent!=None:
+            self.parent.childs.remove(self)
+            self.parent = None
+        if not self in Other.childs:
+            Other.childs.append(self)
+        self.parent = Other
     def UpdateOnGUI(self):
         self.childCount = len(self.childs)
         if self.parent == None:
@@ -112,17 +146,30 @@ class Transform(Component):
         coords = ((x - self.Particule.Scene.x) * z,(y + self.Particule.Scene.y) * z)
         self.arrowX.Move(*coords)
         self.arrowY.Move(*coords)
+        size=3
+        self.Particule.Scene.surface.coords(self.arrowMiddle,coords[0]-size,coords[1]-size ,coords[0]+size,coords[1]+size )
+        self.Particule.Scene.surface.tag_raise(self.arrowMiddle)
+
+    def WhenComponentIsShowSignal(self):
+        z = self.Particule.Scene.zoom
+        x, y = self.gameObject.transform.position.get()
+        coords = ((x - self.Particule.Scene.x) * z, (y + self.Particule.Scene.y) * z)
+        self.arrowX.Move(*coords)
+        self.arrowY.Move(*coords)
         self.arrowX.Show()
         self.arrowY.Show()
+        self.Particule.Scene.surface.itemconfig(self.arrowMiddle, state='normal')
 
 
-    def WhenComponentIsHide(self):
+    def WhenComponentIsHideSignal(self):
         self.arrowX.Hide()
         self.arrowY.Hide()
+        self.Particule.Scene.surface.itemconfig(self.arrowMiddle, state='hidden')
 
     def Destroy(self):
         self.arrowX.Delete()
         self.arrowY.Delete()
+        self.Particule.Scene.surface.delete(self.arrowMiddle)
         Component.Destroy(self)
 
     def DetachChildren(self):
@@ -150,8 +197,6 @@ class Transform(Component):
     def SetAsFirstSibling(self):
         pass
     def SetAsLastSibling(self):
-        pass
-    def SetParent(self):
         pass
     def SetPositionAndRotation(self):
         pass

@@ -2,10 +2,10 @@ import sys, os
 from tkinter.filedialog import *
 from tkinter import *
 
-def open_file(rep=os.getcwd()):
+def open_file(rep=os.getcwd(),**kwargs):
     root = Tk ()
     #root.withdraw()
-    root.filename = askopenfilename (initialdir = rep, title = "Select file" )#, filetypes = (( "jpeg files" , "* .jpg" ), ( "all files" , "* * . * " )))
+    root.filename = askopenfilename (initialdir = rep, title = "Select file",**kwargs )#, filetypes = (( "jpeg files" , "* .jpg" ), ( "all files" , "* * . * " )))
     root.destroy()
     return root.filename
 def open_files(rep=os.getcwd()):

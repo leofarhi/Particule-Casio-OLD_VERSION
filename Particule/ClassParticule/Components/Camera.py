@@ -7,7 +7,7 @@ class Camera(Component):
         self.Mesh = self.canevas.create_rectangle(0,0, 127, 63, fill="")
 
         self.Particule.Scene.surface.tag_bind(self.Mesh, '<Button-1>', self.Clic)
-        self.Particule.Scene.surface.tag_bind(self.Mesh, '<B1-Motion>', self.Drag)
+        #self.Particule.Scene.surface.tag_bind(self.Mesh, '<B1-Motion>', self.Drag)
     def Clic(self, event):
         self.Particule.Hierarchy.t.focus(str(self.gameObject.ID))
         self.Particule.Hierarchy.t.selection_set(str(self.gameObject.ID))
@@ -26,6 +26,8 @@ class Camera(Component):
         x,y = self.gameObject.transform.position.get()
         self.Particule.Scene.surface.coords(self.Mesh,int((x-self.Particule.Scene.x)*z),int((y+self.Particule.Scene.y)*z),
                                             int((x-self.Particule.Scene.x+127)*z),int((y+self.Particule.Scene.y+63)*z))
+
+    def WhenComponentIsShowSignal(self):
         self.Particule.Scene.surface.tag_raise(self.Mesh)
     def Destroy(self):
         self.Particule.Scene.surface.delete(self.Mesh)

@@ -4,7 +4,27 @@ pygame.mixer.init()
 surfaceW = 1270
 surfaceH = 630
 surface = pygame.display.set_mode((surfaceW,surfaceH),)
+def creaTexteObj(texte, Police, couleur):
+    texteSurface = Police.render(texte, True, couleur)
+    return texteSurface, texteSurface.get_rect()
 
+def message(texte, taille, col, x, y, police, trans=255):
+    font_Texte = pygame.font.Font(police, taille)
+    font_TexteSurf, font_TexteRect = creaTexteObj(texte, font_Texte, (col[0], col[1], col[2], 255))
+    font_TexteRect.center = x, y
+    surface.blit(font_TexteSurf, font_TexteRect)
+def message_left(texte, taille, col, x, y, police, trans=255):
+    font_Texte = pygame.font.Font(police, taille)
+    font_TexteSurf, font_TexteRect = creaTexteObj(texte, font_Texte, (col[0], col[1], col[2], 255))
+    font_TexteRect.topleft = x, y
+    surface.blit(font_TexteSurf, font_TexteRect)
+    return font_TexteSurf, font_TexteRect
+
+def taille_texte_left(texte, taille, couleur, x, y, police):
+    font_Texte = pygame.font.Font(police, taille)
+    font_TexteSurf, font_TexteRect = creaTexteObj(texte, font_Texte, couleur)
+    font_TexteRect.topleft = x, y
+    return font_TexteSurf, font_TexteRect
 KEYDOWN=[]
 KEYPRESS=[]
 KEYUP=[]
@@ -71,41 +91,42 @@ class Obj25D:
     def __init__(self):
         self.x=0
         self.y=0
+        self.z=-100
+        self.depth=50
         self.img = img
         self.w, self.h = img.get_size()
 
     def Print(self,):
-        self.PrintObj(100,-2,250)
+        self.PrintObj(self.depth,1,self.z)
         #surface.blit(img,(self.x-camera.x,self.y+camera.y))
 
     def Clone(self):
-        rx = self.Z_Pos+camera.z
-        if int(self.w*(rx/100))<0 or int(self.h*(rx/100))<0:
+        rx = self.Z_Pos+(camera.z/10)
+        if rx<=0:
             return
-        y=abs(rx*-1.2)+camera.y+((self.y+camera.y)*(rx/1))+(surfaceH/2)+self.y
-        x=camera.x+((self.x-camera.x)*(rx/1))+(surfaceW/2)
-        if y<-self.w or y>surfaceH or rx<16 or rx>145:
+        y=((self.y+camera.y)*(rx/20))+(surfaceH/2)
+        x=((self.x-camera.x)*(rx/20))+(surfaceW/2)
+        if y<-self.h or y>surfaceH or rx<16 or rx>145:
             return
         img= pygame.transform.scale(self.img, (int(self.w*(rx/100)), int(self.h*(rx/100))))
         surface.blit(img,(x,y))
     def PrintObj(self,TerrainLength,Resolution,StartPoint):
-        longueur = (((((20/30)*8)*TerrainLength)-160)/5)*(-Resolution)
-        self.Y_Base=100
-        self.Z_Pos=StartPoint
-        self.Y_Base-=2
-        self.Z_Pos+=Resolution
-        self.Z_Pos+=TerrainLength*Resolution
-        for i in range(TerrainLength):
+        #longueur = (((((20/30)*8)*TerrainLength)-160)/5)*(-Resolution)
+        self.Z_Pos=-StartPoint
+        self.Z_Pos-=TerrainLength
+        for i in range(TerrainLength*abs(Resolution)):
             self.Clone()
-            self.Z_Pos-=Resolution
+            self.Z_Pos+=1/Resolution
     
 obj = Obj25D()
 
 obj2 = Obj25D()
 
-obj2.x+=5
+obj2.x+=100
 
 obj2.y+=5
+
+obj2.z=-50
 
 elems = [obj,obj2]
 while True:
@@ -113,18 +134,19 @@ while True:
     for i in elems:
         i.Print()
     if GetKey(273):
-        camera.z+=0.1
+        camera.z+=5
     if GetKey(274):
-        camera.z-=0.1
+        camera.z-=5
         
     if GetKey(275):
-        camera.x-=0.1
+        camera.x-=5
     if GetKey(276):
-        camera.x+=0.1
+        camera.x+=5
 
     if GetKey(119):
-        camera.y+=0.1
+        camera.y+=5
     if GetKey(115):
-        camera.y-=0.1
+        camera.y-=5
+    message(str(camera.z), 25, (0,0,0), 30, 10, "Calibri.ttf")
     show_screen()
 
