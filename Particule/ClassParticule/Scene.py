@@ -126,7 +126,11 @@ class Scene(EditorWindow):
         self.surface.bind('<B1-Motion>', self.Drag)
         self.surface.bind('<ButtonRelease-1>', self.Drop)
 
-        self.surface.bind('<MouseWheel>', self.wheel)  # with Windows and MacOS, but not Linux
+        if platform.system()=="Linux":
+            self.surface.bind("<Button-4>", self.wheel)
+            self.surface.bind("<Button-5>", self.wheel)
+        else:
+            self.surface.bind('<MouseWheel>', self.wheel)  # with Windows and MacOS, but not Linux
         #self.surface.bind('<Button-5>', self.wheel)  # only with Linux, wheel scroll down
         #self.surface.bind('<Button-4>', self.wheel)  # only with Linux, wheel scroll up
 

@@ -14,10 +14,13 @@ import shutil
 
 from Particule import Particule
 from ParticuleHub import ParticuleHub
+import platform
 
-
-#shutil.rmtree(os.getcwd() + "/lib/temp_lib")
-os.system('rmdir /S /Q "{}"'.format(os.getcwd() + "/lib/temp_lib"))
+try:
+    shutil.rmtree(os.getcwd() + "/lib/temp_lib")
+except:
+    if platform.system()=="Windows":
+        os.system('rmdir /S /Q "{}"'.format(os.getcwd() + "/lib/temp_lib"))
 time.sleep(1)
 M.create_rep(os.getcwd() + "/lib/temp_lib")
 WinParticuleHub=ParticuleHub()

@@ -20,6 +20,14 @@ class WindowImage(EditorWindow):
 
         #self.FrameComboboxTextureType.grid(row=0, column=0)
 
+        self.width = 300
+        self.height = 300
+
+        self.canvas = Canvas(self.mainFrame, width = self.width, height = self.height)
+        self.imgPres=None
+        self.ImagePresentation = self.canvas.create_image(0, 0, anchor=NW, image=self.Particule.FolderWindow.TextureVide.Img)
+        self.canvas.grid(row=1, column=0)
+
         self.varAlpha = IntVar()
         self.varAlpha.set(1)
         # self.varActive.trace("w", self.updateDataGameObj)
@@ -42,3 +50,24 @@ class WindowImage(EditorWindow):
                     self.Particule.FolderWindow.GetAll_UUID()
                     self.Particule.SLN_System.UpdateSLN()
                     self.Particule.FolderWindow.update_search_files()
+
+    def Update(self):
+        if len(self.Particule.FolderWindow.selected_file_indices) > 0:
+            if os.path.splitext(self.Particule.FolderWindow.detailed_file_list[
+                                    list(self.Particule.FolderWindow.selected_file_indices)[0]])[1] in [".png", ".jpg",".bmp"]:
+                path = self.Particule.FolderWindow.detailed_file_list[
+                    list(self.Particule.FolderWindow.selected_file_indices)[0]]
+                ImgStd = ImageTk.Image.open(path)
+                if ImgStd.height>ImgStd.width:
+                    newWidth=int(ImgStd.width * (self.height/ImgStd.height))
+                    newHeight=int(self.height)
+                else:
+                    newWidth = int(self.width)
+                    newHeight = int(ImgStd.height * (self.width / ImgStd.width))
+                ImgStd = ImgStd.resize(
+                    (newWidth, newHeight),
+                    resample=Image.NEAREST)
+
+                self.imgPres =  ImageTk.PhotoImage(ImgStd)
+                self.canvas.itemconfig(self.ImagePresentation, image=self.imgPres)
+                self.canvas.coords(self.ImagePresentation,(self.height/2)-(newWidth/2),0)

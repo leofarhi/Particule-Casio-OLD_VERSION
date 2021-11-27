@@ -1,0 +1,5 @@
+Physics2D&Gravity::(0.0, 0.0)
+Player&Auteur::
+Player&ProductName::
+Player&VersionGame::0.0
+Player&ScreenSize::(127.0, 63.0)

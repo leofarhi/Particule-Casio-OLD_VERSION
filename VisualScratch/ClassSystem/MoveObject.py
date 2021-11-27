@@ -1,4 +1,5 @@
-from ClassSystem.Scratch import *
+#from ClassSystem.Scratch import *
+import platform
 class MoveObject:
     def __init__(self,WindCanvas):
         self.WindCanvas = WindCanvas
@@ -9,6 +10,7 @@ class MoveObject:
         self.DragAndInOtherBlock = False
         self.LastMclicX = None
         self.LastMclicY = None
+        self.HaveDrag=False
 
     def ClicDuMilleu(self, event):
         self.LastMclicX = event.x
@@ -48,6 +50,7 @@ class MoveObject:
                             maxTemp = W
 
     def Drag(self, event):
+        self.HaveDrag = True
         X = event.x
         Y = event.y
         if X < 0:
@@ -91,6 +94,9 @@ class MoveObject:
         self.Y = Y
 
     def Drop(self, event):
+        if platform.system()=="Linux":
+            if not self.HaveDrag:return
+        self.HaveDrag = False
         Done = False
         if self.WidgetIsDrabed != False:
             if self.WidgetIsDrabed.TypeForme in self.WindCanvas.FormeParametre:

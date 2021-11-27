@@ -1,4 +1,8 @@
 #pragma once
+
+#ifndef ClassParticuleEngine
+#define ClassParticuleEngine
+//<LibInclude>
 extern "C"
 {
 #include "keybios.h"
@@ -10,15 +14,17 @@ extern "C"
 #include "string.h"
 #include "time.h"
 }
-#ifndef ClassParticuleEngine
-#define ClassParticuleEngine
+
 #include "Announcement.h"
-#include "MonochromeLib.h"
+#include "ParticuleGraphics.hpp"
 #include "List.h"
 #include <iostream>
 #include <math.h>
 #include "usefull.h"
 #include "Ressources.h"
+#include "ParticuleBase.hpp"
+//<\LibInclude>
+
 
 int Random(int start, int end);
 
@@ -26,70 +32,32 @@ int LenChar(char* txt);
 
 int mod(int x, int m);
 
-enum Tag;
 
-enum Layer;
 
-class Vector2 {
-    //https://docs.unity3d.com/ScriptReference/Vector2.html
-public:
-    float x;
-    float y;
-    Vector2();
-    Vector2(float x, float y);
-    void Set(float x, float y);
-    void Set(Vector2 vect);
 
-    bool operator==(const Vector2& other);
-
-    bool operator!=(const Vector2& other);
-
-    Vector2 operator+(const Vector2& other);
-
-    Vector2 operator-(const Vector2& other);
-
-    Vector2 operator*(const Vector2& other);
-
-    Vector2 operator/(const Vector2& other);
-};
-/*
-class Quaternion {
-    //https://docs.unity3d.com/ScriptReference/Quaternion.html
-public:
-
+enum Tag
+{
+    Untagged = 0,
+    Respawn = 1,
+    Finish = 2,
+    EditorOnly = 3,
+    MainCamera = 4,
+    Player = 5,
+    GameController = 6
 };
 
-class Matrix4x4 {
-    //https://docs.unity3d.com/ScriptReference/Matrix4x4.html
-public:
-
-};*/
-
-class Object {
-    //https://docs.unity3d.com/ScriptReference/Object.html
-public:
-    Object(const char* name, const char* UUID = NULL);
-
-    virtual ~Object() {};
-    //hideFlags c'est pour l'éditeur donc il n'est pas présent
-    unsigned char* name;
-    unsigned char* GetInstanceID();
-    unsigned char* ToString();
-
-    virtual void Destroy() {}
-    /*virtual void DestroyImmediate() {}
-    virtual void DontDestroyOnLoad() {}
-    virtual void FindObjectOfType() {}
-    virtual void FindObjectsOfType() {}
-    virtual void Instantiate() {}*/
-
-    // Overload operator
-    bool operator==(const Object& obj);
-
-    bool operator!=(const Object& obj);
-private:
-    unsigned char* ID;
+enum Layer
+{
+    Default = 0,
+    TransparentFX = 1,
+    IgnoreRaycast = 2,
+    Water = 3,
+    UI = 4
 };
+
+
+
+
 
 class Component : public Object {
     //https://docs.unity3d.com/ScriptReference/Component.html
@@ -130,11 +98,11 @@ public:
     virtual void OnBecameInvisible() {}
     virtual void OnBecameVisible() {}*/
     //virtual void OnCollisionEnter() {}
-    virtual void OnCollisionEnter2D(BoxCollider2D* boxCollider2D) {}/////
+    virtual void OnCollisionEnter2D(Collider2D* collider2D) {}/////
     //virtual void OnCollisionExit() {}
-    virtual void OnCollisionExit2D(BoxCollider2D* boxCollider2D) {}//////
+    virtual void OnCollisionExit2D(Collider2D* collider2D) {}//////
     //virtual void OnCollisionStay() {}
-    virtual void OnCollisionStay2D(BoxCollider2D* boxCollider2D) {}//////
+    virtual void OnCollisionStay2D(Collider2D* collider2D) {}//////
     //virtual void OnConnectedToServer() {}
     virtual void OnControllerColliderHit() {}//////
     virtual void OnDestroy() {}//////
@@ -173,11 +141,11 @@ public:
     virtual void OnTransformChildrenChanged() {}
     virtual void OnTransformParentChanged() {}*/
     //virtual void OnTriggerEnter() {}
-    virtual void OnTriggerEnter2D(BoxCollider2D* boxCollider2D) {}
+    virtual void OnTriggerEnter2D(Collider2D* collider2D) {}
     //virtual void OnTriggerExit() {}
-    virtual void OnTriggerExit2D(BoxCollider2D* boxCollider2D) {}
+    virtual void OnTriggerExit2D(Collider2D* collider2D) {}
     //virtual void OnTriggerStay() {}
-    virtual void OnTriggerStay2D(BoxCollider2D* boxCollider2D) {}
+    virtual void OnTriggerStay2D(Collider2D* collider2D) {}
     virtual void OnValidate() {}//////
     //virtual void OnWillRenderObject() {}
     virtual void Reset() {}/////
@@ -263,53 +231,7 @@ class VisualElement : public Focusable {
 */
 
 
-enum TextureDimension;
 
-enum FilterMode;
-
-class Texture : public Object {
-    //https://docs.unity3d.com/ScriptReference/Texture.html
-public:
-    Texture();
-    Texture(const char* name, int width, int height, const unsigned char* Data, const char* UUID = NULL);
-    unsigned char* textureData;
-    /*
-    bool allowThreadedTextureCreation;
-    int currentTextureMemory;
-    int desiredTextureMemory;
-    int GenerateAllMips;
-    int nonStreamingTextureCount;
-    int nonStreamingTextureMemory;
-    int streamingMipmapUploadCount;
-    int streamingRendererCount;
-    int streamingTextureCount;
-    bool streamingTextureDiscardUnusedMips;
-    bool streamingTextureForceLoadAll;
-    int streamingTextureLoadingCount;
-    int streamingTexturePendingLoadCount;
-    int targetTextureMemory;
-    int totalTextureMemory;*/
-
-    //int anisoLevel;
-    TextureDimension dimension;
-    FilterMode filterMode;
-    //graphicsFormat;//https://docs.unity3d.com/ScriptReference/Experimental.Rendering.GraphicsFormat.html
-    int height;
-    //imageContentsHash;//https://docs.unity3d.com/ScriptReference/Hash128.html
-    bool isReadable;
-    //float mipMapBias;
-    //int mipmapCount;
-    //int updateCount;
-    int width;
-    //wrapMode;//https://docs.unity3d.com/ScriptReference/TextureWrapMode.html
-    //wrapModeU;
-    //wrapModeV;
-    //wrapModeW;
-
-    
-
-
-};
 
 class MonoBehaviour : public Behaviour {
     //https://docs.unity3d.com/ScriptReference/MonoBehaviour.html
@@ -383,7 +305,7 @@ public:
     List<GameObject*> AllGameObject;
     SceneManager* sceneManager;
     List<Camera*> AllCameras;
-    List<BoxCollider2D*> LstColliders;
+    List<Collider2D*> LstColliders;
     //void GetRootGameObjects();
     //bool IsValid();
 
@@ -416,7 +338,7 @@ public:
     Camera(GameObject* gameObject, const char* UUID = NULL);
 };
 
-class Image : MonoBehaviour { //: public VisualElement {
+class Image : public MonoBehaviour { //: public VisualElement {
     //https://docs.unity3d.com/ScriptReference/UIElements.Image.html
 public:
     //unsigned char* ussClassName;
@@ -432,7 +354,7 @@ public:
     void OnRenderObject();
 };
 
-class Sprite : MonoBehaviour { //: public VisualElement {
+class Sprite : public MonoBehaviour { //: public VisualElement {
     //https://docs.unity3d.com/ScriptReference/UIElements.Image.html
 public:
 
@@ -446,10 +368,64 @@ public:
 };
 
 
-class Rigidbody : MonoBehaviour {
+
+
+
+class Collider2D : public MonoBehaviour {
+    //https://docs.unity3d.com/ScriptReference/Collider2D.html
+protected:
+    List<Collider2D*> LstColliders;
+public:
+    bool IsTrigger;
+    Collider2D(GameObject* gameObject, bool IsTrigger, const char* UUID = NULL) : MonoBehaviour("Collider2D", gameObject, UUID) {
+        gameObject->scene->LstColliders.Add(this);
+        this->IsTrigger = IsTrigger;
+    };
+
+    void Update();
+
+    bool Contains(Collider2D* collider) {
+        for (int o = 0; o < LstColliders.Count; o++) {
+            if (collider == LstColliders[o])
+                return true;
+
+        }
+        return false;
+    };
+
+    virtual bool AreTheyTouching(Collider2D* boxCollider) { return false; };
+    
+};
+
+class BoxCollider2D : public Collider2D {//Collider2D {
+    //https://docs.unity3d.com/ScriptReference/BoxCollider2D.html
+
+
+public:
+    Vector2* center;
+    Vector2* size;
+
+    BoxCollider2D(GameObject* gameObject,bool IsTrigger,Vector2* center,Vector2* size, const char* UUID = NULL);
+
+    
+
+    bool AreTheyTouching(Collider2D* boxCollider);
+
+    
+
+    ~BoxCollider2D() {
+        delete center;
+        delete size;
+    };
+};
+
+class Rigidbody : public MonoBehaviour {
 private:
+    Collider2D* MyCollider;
     Vector2* lastPosition;
-    BoxCollider2D* MyBoxCollider;
+
+    bool CheckCollider();
+    bool IsVisible();
 public:
     float Mass;
     bool UseGravity;
@@ -459,9 +435,7 @@ public:
     Rigidbody(GameObject* gameObject, float Mass, bool UseGravity, bool IsKinematic, const char* UUID = NULL);
 
     void PhysicsCalculator();
-    void OnCollisionEnter2D(BoxCollider2D* boxCollider2D);
-    void OnCollisionStay2D(BoxCollider2D* boxCollider2D);
-    void LateUpdate();
+
 
     ~Rigidbody() {
         delete velocity;
@@ -469,46 +443,11 @@ public:
     };
 
     void Start();
-    
+    void LateUpdate();
+
 };
 
-
-/*class Collider2D : MonoBehaviour {
-    //https://docs.unity3d.com/ScriptReference/Collider2D.html
-public:
-    
-};*/
-
-class BoxCollider2D : MonoBehaviour {//Collider2D {
-    //https://docs.unity3d.com/ScriptReference/BoxCollider2D.html
-
-private:
-    List<BoxCollider2D*> LstColliders;
-public:
-    bool IsTrigger;
-    Vector2* center;
-    Vector2* size;
-
-    BoxCollider2D(GameObject* gameObject,bool IsTrigger,Vector2* center,Vector2* size, const char* UUID = NULL);
-
-    void Update() ;
-
-    bool Contains(BoxCollider2D* boxCollider) {
-        for (int o = 0; o < LstColliders.Count; o++) {
-            if (boxCollider == LstColliders[o])
-                return true;
-                
-        }
-        return false;
-    };
-
-    ~BoxCollider2D() {
-        delete center;
-        delete size;
-    };
-};
-
-class Text : MonoBehaviour {
+class Text : public MonoBehaviour {
 
 public:
     unsigned char* text;
@@ -520,7 +459,7 @@ public:
 
 };
 
-class Tilemap : MonoBehaviour { 
+class Tilemap : public MonoBehaviour {
 public:
 
     Texture** images;
@@ -598,7 +537,7 @@ this->Direction=0;
 
 void OnRenderObject();
 
-void OnTriggerEnter2D(BoxCollider2D* boxCollider2D);
+void OnTriggerEnter2D(Collider2D* boxCollider2D);
 
 void Start();
 
@@ -618,7 +557,7 @@ public:
     
     void Start();
 
-void OnTriggerEnter2D(BoxCollider2D* boxCollider2D);
+void OnTriggerEnter2D(Collider2D* boxCollider2D);
 
 
 };
@@ -783,7 +722,7 @@ this->NextSprite=0;
 
     };
     
-    void OnCollisionStay2D(BoxCollider2D* boxCollider2D);
+    void OnCollisionStay2D(Collider2D* boxCollider2D);
 
 void Start();
 
@@ -797,11 +736,13 @@ void Show();
 class ProjectSettings {
 public:
     Vector2* Gravity;
+    Vector2* ScreenSize;
 
     
     ProjectSettings() {
         //<ProjectSettings>
-        Gravity = new Vector2();
+        Gravity = new Vector2(0.0f,0.0f);
+        ScreenSize = new Vector2(127,63);
         //<\ProjectSettings>
     };
 
@@ -1130,6 +1071,9 @@ GameObject* UUID_d48b2bd1_4444_482e_b1e0_2828c233fdbc;
 GameObject* UUID_ff29f8b8_c43d_481d_88d0_ef6568d461a2;
 GameObject* UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0;
 GameObject* UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016;
+GameObject* UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a;
+Camera* UUID_1442eb0f_49d9_42b2_95b6_0bcc3509fed3;
+
 Sprite* UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3;
 
 BoxCollider2D* UUID_cc4fe40e_05f8_4b07_b5b7_3f9e8ee50539;
@@ -1404,6 +1348,13 @@ UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->isStatic = true;
 UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->transform->position->Set(88.0,-80.0);
 UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->transform->localPosition->Set(88.0,-80.0);
 newScene->AddGameObject(UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016);
+UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a= new GameObject(newScene, "GameObject","UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a");
+UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a->activeSelf = true;
+UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a->activeInHierarchy = true;
+UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a->isStatic = false;
+UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a->transform->position->Set(0,0);
+UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a->transform->localPosition->Set(0,0);
+newScene->AddGameObject(UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a);
 
 
 
@@ -1648,6 +1599,13 @@ UUID_5662e19b_88d9_4c2b_a993_ea3b26f30ff0->AddComponent((Component*)UUID_cc4fe40
 
 UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3 = new Sprite(UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016,Texture_UUID_e3fe3204_9c0c_4f64_9ccc_601f5a7d8e56,false,"UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3");
 UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016->AddComponent((Component*)UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3);
+
+
+
+
+
+UUID_1442eb0f_49d9_42b2_95b6_0bcc3509fed3 = new Camera(UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a,"UUID_1442eb0f_49d9_42b2_95b6_0bcc3509fed3");
+UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a->AddComponent((Component*)UUID_1442eb0f_49d9_42b2_95b6_0bcc3509fed3);
 
 
 }if (index == 2){
@@ -2287,7 +2245,7 @@ UUID_46d2d931_a923_4a86_b7dc_b8c4d180a91b->AddComponent((Component*)UUID_d90fec2
     }
 
     Scene* GetSceneInBuild(unsigned char* name) {
-        unsigned char* AllName[] = { "Main" };
+        unsigned char* AllName[] = { (unsigned char*)"Main" };
         int count = 0;
         for (int i = 0; i < count; i++)
         {

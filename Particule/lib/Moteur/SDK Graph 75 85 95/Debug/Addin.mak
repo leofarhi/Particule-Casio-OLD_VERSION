@@ -14,7 +14,8 @@ SH_EXEDIR=$(TCDIR)\bin
 
 # Hitachi SH C/C++ Compiler02 phase
 SHCC02_EXE=shc.exe
-SHCC02_DEP="$(OSDIR)\FX\include\fxlib.h" "MonochromeLib.h" "time.h" "usefull.h" "Announcement.h" "List.h" "Ressources.h" "ParticuleEngine.hpp"
+SHCC02_DEP="$(OSDIR)\FX\include\fxlib.h" "MonochromeLib.h" "time.h" "usefull.h" "Announcement.h" "List.h" "Ressources.h" "ParticuleEngine.hpp" \
+      "ParticuleBase.hpp" "ParticuleGraphics.hpp"
 
 # Hitachi SH Assembler03 phase
 SHASM03_EXE=asmsh.exe
@@ -32,7 +33,7 @@ FILEOBJ0="$(OUTDIR)\$(FILE0).obj"
 FILE1=time
 FILESRC1="$(APPDIR)\$(FILE1).c"
 FILEOBJ1="$(OUTDIR)\$(FILE1).obj"
-FILE2=Tutoriel
+FILE2=main
 FILESRC2="$(APPDIR)\$(FILE2).cpp"
 FILEOBJ2="$(OUTDIR)\$(FILE2).obj"
 FILE3=usefull
@@ -41,8 +42,14 @@ FILEOBJ3="$(OUTDIR)\$(FILE3).obj"
 FILE4=ParticuleEngine
 FILESRC4="$(APPDIR)\$(FILE4).cpp"
 FILEOBJ4="$(OUTDIR)\$(FILE4).obj"
+FILE5=ParticuleBase
+FILESRC5="$(APPDIR)\$(FILE5).cpp"
+FILEOBJ5="$(OUTDIR)\$(FILE5).obj"
+FILE6=ParticuleGraphics
+FILESRC6="$(APPDIR)\$(FILE6).cpp"
+FILEOBJ6="$(OUTDIR)\$(FILE6).obj"
 RFILE=FXADDINror
-USERALLOBJ=$(FILEOBJ0) $(FILEOBJ1) $(FILEOBJ2) $(FILEOBJ3) $(FILEOBJ4)
+USERALLOBJ=$(FILEOBJ0) $(FILEOBJ1) $(FILEOBJ2) $(FILEOBJ3) $(FILEOBJ4) $(FILEOBJ5) $(FILEOBJ6)
 
 #######################
 # nmake "all" statement
@@ -145,6 +152,40 @@ $(FILEOBJ4) : $(FILESRC4) $(SHCC02_DEP)
 -chgincpath
 -errorpath
 $(FILESRC4)
+-lang=cpp
+-nologo
+-debug
+<<
+
+$(FILEOBJ5) : $(FILESRC5) $(SHCC02_DEP)
+	"$(SH_EXEDIR)\$(SHCC02_EXE)" -subcommand=<<
+-cpu=sh3
+-include="$(OSDIR)\FX\include","$(APPDIR)"
+-objectfile=$(FILEOBJ5)
+-show=source
+-listfile="$(OUTDIR)\$(FILE5).lst"
+-size
+-noinline
+-chgincpath
+-errorpath
+$(FILESRC5)
+-lang=cpp
+-nologo
+-debug
+<<
+
+$(FILEOBJ6) : $(FILESRC6) $(SHCC02_DEP)
+	"$(SH_EXEDIR)\$(SHCC02_EXE)" -subcommand=<<
+-cpu=sh3
+-include="$(OSDIR)\FX\include","$(APPDIR)"
+-objectfile=$(FILEOBJ6)
+-show=source
+-listfile="$(OUTDIR)\$(FILE6).lst"
+-size
+-noinline
+-chgincpath
+-errorpath
+$(FILESRC6)
 -lang=cpp
 -nologo
 -debug

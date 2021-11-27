@@ -6,7 +6,7 @@ class ScriptBlockPython(ScriptBlock):
     def __init__(self, _Sys=None):
         ScriptBlock.__init__(self,_Sys)
         self.Onglet="Opérateurs"
-        self.TypeForme="Rectangle"
+        self.TypeForme="Encadrement"
         self.Texte="Convertit Int/Float/string"
         self.Parametres=[['Label', 'Convertir '],['EmptyCercle'],['Label', 'qui est un '],
                          ["Liste",["int","float","string"] ],['Label', 'en '],
@@ -56,4 +56,7 @@ class ScriptBlockPython(ScriptBlock):
                 code=""
 
         code += self.BlockSys.GetSuite(lst, 0)
+        if To=="string":
+            code+="delete[] "+var+";\n"
+        code += self.BlockSys.GetSuite(lst, 1)
         return code

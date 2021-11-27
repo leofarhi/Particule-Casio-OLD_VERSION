@@ -1,6 +1,13 @@
 from VisualScratch import *
 from ClassSystem.Scratch import *
 from ClassSystem.Color import *
+import unicodedata
+import platform
+
+
+def CorrectString(s):
+    return ''.join(c for c in unicodedata.normalize('NFD', s)
+                   if unicodedata.category(c) != 'Mn')
 class Forme:
     def __init__(self,WindCanvas, x, y, Parametres, Color, Name, PythonScript, Options=[], Load=False):
         self.WindCanvas = WindCanvas
@@ -107,7 +114,7 @@ class Forme:
                 # print(self.GroupeParametre[ind])
                 if i[0] == "Label":
                     tempV = 0
-                    if Game_OS == "Mac": tempV = 0.5
+                    if platform.system()!='Windows': tempV = 0.5
                     r += len(i[1]) * (3 + tempV)
                 if i[0] == "EmptyCercle":
                     h = 10
@@ -120,11 +127,13 @@ class Forme:
                 if i[0] == "TexteEtNombre":
                     h = 10
                     r += 3
+                    if platform.system() != 'Windows': r += 8
                     d = 5
                     r += d + h + 25
                 if i[0] == "Liste":
                     h = 10
                     r += 3
+                    if platform.system() != 'Windows': r += 15
                     d = 5
                     r += d + h + 45
                 if i[0] == "Booleen":
@@ -146,10 +155,11 @@ class Forme:
             if True:#try:
                 # if (self.GroupeParametre[ind])[0] in Autorise or (self.GroupeParametre[ind])[1]==None
                 if i[0] == "Label":
+                    i[1]=CorrectString(i[1])
                     A = self.Canevas.create_text(x + (r * self.Zoom), y, text=i[1], anchor='w', fill="white",
                                                  font=("TkDefaultFont", int(10 * (self.Zoom / 2))))
                     tempV = 0
-                    if Game_OS == "Mac": tempV = 0.5
+                    if platform.system()!='Windows': tempV = 0.5
                     r += len(i[1]) * (3 + tempV)
                     MyGroupWidget.append(A)
                     self.BoxColiParametre.append([0, 0, 0, 0])
@@ -197,7 +207,7 @@ class Forme:
                             tx.set(str(i[1]))
                             (self.Parametres[ind])[1] = tx
                     tempWidth = int(10 * (self.Zoom / 2))
-                    if Game_OS == "Mac": tempWidth = 6
+                    if platform.system() == 'Mac': tempWidth = 6
                     A = Entry(self.Canevas, textvariable=tx, width=tempWidth)
                     A.bind("<FocusOut>", partial(CorrigeBind, tx))
                     tempMacAddY = 0
@@ -207,11 +217,13 @@ class Forme:
                     MyGroupWidget.append(A)
                     d = 5
                     r += d + 10 + 25
+                    if platform.system() != 'Windows': r += 8
                     self.BoxColiParametre.append([0, 0, 0, 0])
                     self.ParametrePosi.append([0, 0])
                 if i[0] == "Liste":
                     h = 15
                     r += 3
+                    if platform.system() != 'Windows': r += 1
                     if len(i) < 3:
                         tx = StringVar()
                         self.Parametres[ind].append(tx)
@@ -223,7 +235,7 @@ class Forme:
                             tx.set(str(i[2]))
                             (self.Parametres[ind])[2] = tx
                     tempWidth = int(15 * (self.Zoom / 2))
-                    if Game_OS == "Mac": tempWidth = 9
+                    if platform.system() == 'Mac': tempWidth = 9
                     A = ttk.Combobox(self.Canevas, textvariable=tx, width=tempWidth)
                     A['values'] = tuple(i[1])
                     tempMacAddY = 0
@@ -233,6 +245,7 @@ class Forme:
                     MyGroupWidget.append(A)
                     d = 5
                     r += d + 10 + 45
+                    if platform.system() != 'Windows': r += 14
                     self.BoxColiParametre.append([0, 0, 0, 0])
                     self.ParametrePosi.append([0, 0])
                 if i[0] == "Booleen":
@@ -357,3 +370,4 @@ class Forme:
         else:
             TempWidget = self.WindCanvas.AllWidget.get(self.ParentBlock)
             TempWidget.update()
+

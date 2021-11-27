@@ -1,7 +1,11 @@
 Ecrire et lire un fichier
-réglé l'ordre des Sprite (le joueur tout à la fin)
-Réglé la conversion int to str C++ (scratch block) char[20] memoire
+régler l'ordre des Sprite (le joueur tout à la fin)
+Régler la conversion int to str C++ (scratch block) char[20] memoire
 Cacher le component si l'object sur la scene est désactivé
 Faire la Docu
 Réduire l'initialisation des positions de transform C++
 Faire le Project Setttings (Gravité,Ico du jeu, nom, etc..)
+Géré les delete
+Visual Scratch copy and past
+deplacer des fichier dans particule
+terminer type liste et Array

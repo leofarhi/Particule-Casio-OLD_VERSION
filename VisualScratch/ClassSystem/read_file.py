@@ -24,14 +24,14 @@ def cherchefichier(fichier, rep_dico):
 def setup_file(namePath):
     setup=[]
     try:
-        with open(namePath,'r') as fic:
+        with open(namePath,'r', encoding="ISO-8859-1") as fic:
             setup=fic.readlines()
         for i in range(len(setup)):
             setup[i]=setup[i].rstrip()
             setup[i]=setup[i].split("::")
     except:
         """
-        with open(namePath,'w') as fic:
+        with open(namePath,'w', encoding='latin-1') as fic:
             fic.write("Version:0.0")
             setup=[]
         """

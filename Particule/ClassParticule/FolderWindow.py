@@ -19,6 +19,7 @@ from tkinter.messagebox import askyesno
 import psutil
 import pyperclip
 from ClassParticule.FileVariable import FileVariable
+import platform
 
 class FolderWindow(EditorWindow):
     def __init__(self,RootWindow):
@@ -620,8 +621,11 @@ class FolderWindow(EditorWindow):
                 if self.file_list[self.current_file_index].split(".")[-1] == "particule":
                     self.Particule.SaveData.LoadScene(self.detailed_file_list[self.current_file_index])
                 if self.file_list[self.current_file_index].split(".")[-1] == "SBAsset":
-                    if not "main.exe" in (i.name() for i in psutil.process_iter()):
-                        subprocess.Popen([self.Particule.VisualScratchPath, self.Particule.FolderProject + '/SLN/Solution.sls'])
+                    if platform.system()=='Windows':
+                        if not "main.exe" in (i.name() for i in psutil.process_iter()):
+                            subprocess.Popen([self.Particule.VisualScratchPath, self.Particule.FolderProject + '/SLN/Solution.sls'])
+                    elif platform.system() == 'Linux':
+                        subprocess.Popen(["python", self.Particule.VisualScratchPath, self.Particule.FolderProject + '/SLN/Solution.sls'])
                 if self.file_list[self.current_file_index].split(".")[-1] == "prefab":
                     valid = askyesno(title='confirmation',
                                      message='êtes-vous sûr de vouloir ajouter cette prefab ? ')

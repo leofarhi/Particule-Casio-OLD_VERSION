@@ -37,5 +37,5 @@ class ScriptBlock:
     def WhenCompileForPython(self,lst,base):
         return base
 
-    def WhenCompileForCasio(self,lst,base):
+    def WhenCompileForCasio(self,lst):
         return self.BlockSys.GetSuite(lst,0)

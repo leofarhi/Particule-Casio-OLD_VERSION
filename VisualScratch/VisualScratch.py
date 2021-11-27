@@ -69,6 +69,7 @@ from ClassSystem.MoveObject import MoveObject
 from PIL import ImageTk,Image
 from ClassSystem.BlockSys import *
 import ClassSystem.File_Folder as File_Folder
+import platform
 
 
 class Loading:
@@ -86,7 +87,8 @@ class Loading:
         self.Root.geometry(geom)
         self.Root.lift()
         self.Root.wm_attributes("-topmost", True)
-        self.Root.wm_attributes("-disabled", True)
+        if platform.system()=='Windows':
+            self.Root.wm_attributes("-disabled", True)
         #self.Root.wm_attributes("-transparentcolor", "white")
         self.label.pack()
         self.Root.after(1000, self.Root.destroy)

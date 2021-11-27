@@ -25,6 +25,9 @@ class Component(Object):
             if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
                 self.Particule.Scene.UUID_Objects[indexScene].update({self.ID:self})
 
+        self.CodeBefore=""
+        self.CodeAfter=""
+
 
     def SaveDataDict(self):
         return {"name":self.name,
@@ -121,6 +124,7 @@ class Component(Object):
         if type(self).__name__ == "Transform":
             return ("\n","\n")
         CodeBefore=""
+        CodeAfter=""
         parametres=","
         for indexAtt,i in enumerate(self.AttributVisible):
             var = getattr(self,i)
@@ -155,7 +159,12 @@ class Component(Object):
                     if typeRecur==list:
                         raise Exception("les listes de listes ne sont pas encore pris en compte")
                     if dicoVar["LstType"]=="List":
-                        raise Exception("les listes ne sont pas encore pris en compte")
+                        code=""
+                        for ind,o in enumerate(var):
+                            if type(o)==str:o='"'+o+'"'
+                            code +=str(self.ID)+"->"+str(i)+".Add("+o+");\n"
+                        CodeAfter += code
+                        parametres += "null"  # "
                     if dicoVar["LstType"]=="Array":
                         Etoile="*"
                         if not typeRecur in [int,float,str,bool]:
@@ -164,23 +173,25 @@ class Component(Object):
                         code = "static "+typeRecur.__name__+Etoile+"Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)+\
                                "= new "+ typeRecur.__name__+(Etoile[-2])+"["+str(len(var))+"];\n"
                         for ind,o in enumerate(var):
+                            if type(o) == str: o = '"' + o + '"'
                             code+="Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)+"["+ind+"] = "+o+";\n"
-                            raise Exception("les listes ne sont pas encore pris en compte")
-                        raise Exception("rajouter CodeBefore")
-                        CodeBefore+=code
-                        parametres +="Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)
+                        code += str(self.ID) + "->" + str(i) +"="+"Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)+";\n"
+                        CodeAfter+=code
+                        parametres +="null"#"Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)
                 else:
                     #print(eval("self."+i))
                     parametres +=var.ID
             parametres+=","
+        self.CodeBefore = CodeBefore
+        self.CodeAfter = CodeAfter
         return (type(self).__name__+"* "+self.ID+";\n",
                 self.ID+" = new "+type(self).__name__+'('+self.gameObject.ID+parametres+'"'+self.ID+'");\n')
 
     def AddScriptBeforInitCasio(self):
-        return ""
+        return self.CodeBefore
 
     def AddScriptAfterInitCasio(self):
-        return ""
+        return self.CodeAfter
 
 
 

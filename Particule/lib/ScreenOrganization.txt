@@ -1,0 +1,3 @@
+GridCenter::(800, 605)
+GridCenterLeft::(274, 605)
+GridCenterBottom::(1079, 211)

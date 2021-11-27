@@ -1,0 +1,665 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\ParticuleBase.c
+           pp
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+      ParticuleB     1    #include "ParticuleBase.hpp"
+      ParticuleB     2    
+      ParticuleB     3    Vector2::Vector2() {
+P   00000000              ___ct__7Vector2Fv:               ; function: Vector2::Vector2()
+                                                           ; frame size=8
+    00000000 4F22                   STS.L       PR,@-R15
+    00000002 6343                   MOV         R4,R3
+    00000004 7FFC                   ADD         #-4,R15
+    00000006 2338                   TST         R3,R3
+    00000008 8F06                   BF/S        L336
+    0000000A 2F42                   MOV.L       R4,@R15
+    0000000C D398                   MOV.L       L367+2,R3  ; ___nw__FUl
+    0000000E 430B                   JSR         @R3
+    00000010 E408                   MOV         #8,R4
+    00000012 2008                   TST         R0,R0
+    00000014 8D05                   BT/S        L335
+    00000016 2F02                   MOV.L       R0,@R15
+    00000018              L336:                             
+      ParticuleB     4        this->x = 0;
+    00000018 62F2                   MOV.L       @R15,R2
+    0000001A E300                   MOV         #0,R3
+    0000001C 2232                   MOV.L       R3,@R2
+      ParticuleB     5        this->y = 0;
+    0000001E 62F2                   MOV.L       @R15,R2
+    00000020 1231                   MOV.L       R3,@(4,R2)
+    00000022              L335:                             
+    00000022 60F2                   MOV.L       @R15,R0
+      ParticuleB     6    }
+    00000024 7F04                   ADD         #4,R15
+    00000026 4F26                   LDS.L       @R15+,PR
+    00000028 000B                   RTS
+    0000002A 0009                   NOP
+      ParticuleB     7    Vector2::Vector2(float x, float y) {
+    0000002C              ___ct__7Vector2FfT1:             ; function: Vector2::Vector2(float, float)
+                                                           ; frame size=16
+    0000002C 4F22                   STS.L       PR,@-R15
+    0000002E 7FF4                   ADD         #-12,R15
+    00000030 2F42                   MOV.L       R4,@R15
+    00000032 1F52                   MOV.L       R5,@(8,R15)
+    00000034 1F61                   MOV.L       R6,@(4,R15)
+    00000036 63F2                   MOV.L       @R15,R3
+    00000038 2338                   TST         R3,R3
+    0000003A 8B05                   BF          L339
+    0000003C D38C                   MOV.L       L367+2,R3  ; ___nw__FUl
+    0000003E 430B                   JSR         @R3
+    00000040 E408                   MOV         #8,R4
+    00000042 2008                   TST         R0,R0
+    00000044 8D06                   BT/S        L338
+    00000046 2F02                   MOV.L       R0,@R15
+    00000048              L339:                             
+      ParticuleB     8        this->x = x;
+    00000048 62F2                   MOV.L       @R15,R2
+    0000004A 53F2                   MOV.L       @(8,R15),R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000004C 2232                   MOV.L       R3,@R2
+      ParticuleB     9        this->y = y;
+    0000004E 62F2                   MOV.L       @R15,R2
+    00000050 53F1                   MOV.L       @(4,R15),R3
+    00000052 1231                   MOV.L       R3,@(4,R2)
+    00000054              L338:                             
+    00000054 60F2                   MOV.L       @R15,R0
+      ParticuleB    10    };
+    00000056 7F0C                   ADD         #12,R15
+    00000058 4F26                   LDS.L       @R15+,PR
+    0000005A 000B                   RTS
+    0000005C 0009                   NOP
+      ParticuleB    11    void Vector2::Set(float x, float y) {
+    0000005E              _Set__7Vector2FfT1:              ; function: Vector2::Set(float, float)
+                                                           ; frame size=0
+      ParticuleB    12        this->x = x;
+    0000005E 2452                   MOV.L       R5,@R4
+      ParticuleB    13        this->y = y;
+      ParticuleB    14    };
+    00000060 000B                   RTS
+    00000062 1461                   MOV.L       R6,@(4,R4)
+      ParticuleB    15    void Vector2::Set(Vector2* vect) {
+    00000064              _Set__7Vector2FP7Vector2:        ; function: Vector2::Set(Vector2 *)
+                                                           ; frame size=0
+      ParticuleB    16        this->x = vect->x;
+    00000064 6352                   MOV.L       @R5,R3
+    00000066 2432                   MOV.L       R3,@R4
+      ParticuleB    17        this->y = vect->y;
+    00000068 5251                   MOV.L       @(4,R5),R2
+      ParticuleB    18    };
+    0000006A 000B                   RTS
+    0000006C 1421                   MOV.L       R2,@(4,R4)
+      ParticuleB    19    
+      ParticuleB    20    void Vector2::Set(Vector2 vect) {
+    0000006E              _Set__7Vector2F7Vector2:         ; function: Vector2::Set(Vector2)
+                                                           ; frame size=0
+      ParticuleB    21        this->x = vect.x;
+    0000006E 65F3                   MOV         R15,R5
+    00000070 6352                   MOV.L       @R5,R3
+    00000072 2432                   MOV.L       R3,@R4
+      ParticuleB    22        this->y = vect.y;
+    00000074 5251                   MOV.L       @(4,R5),R2
+      ParticuleB    23    };
+    00000076 000B                   RTS
+    00000078 1421                   MOV.L       R2,@(4,R4)
+      ParticuleB    24    
+      ParticuleB    25    void Vector2::Add(Vector2* vect) {
+      ParticuleB    26        this->x += vect->x;
+      ParticuleB    27        this->y += vect->y;
+      ParticuleB    28    };
+      ParticuleB    29    void Vector2::Add(float x, float y) {
+    0000007A              _Add__7Vector2FfT1:              ; function: Vector2::Add(float, float)
+                                                           ; frame size=4
+                                                           ; used runtime library name:
+                                                           ; __adds
+      ParticuleB    30        this->x += x;
+    0000007A 6053                   MOV         R5,R0
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000007C D37D                   MOV.L       L367+6,R3  ; __adds
+    0000007E 4F22                   STS.L       PR,@-R15
+    00000080 430B                   JSR         @R3
+    00000082 6142                   MOV.L       @R4,R1
+    00000084 2402                   MOV.L       R0,@R4
+      ParticuleB    31        this->y += y;
+    00000086 6063                   MOV         R6,R0
+    00000088 D27A                   MOV.L       L367+6,R2  ; __adds
+    0000008A 420B                   JSR         @R2
+    0000008C 5141                   MOV.L       @(4,R4),R1
+      ParticuleB    32    };
+    0000008E 4F26                   LDS.L       @R15+,PR
+    00000090 000B                   RTS
+    00000092 1401                   MOV.L       R0,@(4,R4)
+    00000094              _Add__7Vector2FP7Vector2:        ; function: Vector2::Add(Vector2 *)
+                                                           ; frame size=4
+                                                           ; used runtime library name:
+                                                           ; __adds
+    00000094 4F22                   STS.L       PR,@-R15
+    00000096 6052                   MOV.L       @R5,R0
+    00000098 D376                   MOV.L       L367+6,R3  ; __adds
+    0000009A 430B                   JSR         @R3
+    0000009C 6142                   MOV.L       @R4,R1
+    0000009E 2402                   MOV.L       R0,@R4
+    000000A0 5051                   MOV.L       @(4,R5),R0
+    000000A2 D274                   MOV.L       L367+6,R2  ; __adds
+    000000A4 420B                   JSR         @R2
+    000000A6 5141                   MOV.L       @(4,R4),R1
+    000000A8 4F26                   LDS.L       @R15+,PR
+    000000AA 000B                   RTS
+    000000AC 1401                   MOV.L       R0,@(4,R4)
+      ParticuleB    33    
+      ParticuleB    34    bool Vector2::operator==(const Vector2& other) {
+    000000AE              ___eq__7Vector2FRC7Vector2:      ; function: Vector2::operator ==(const Vector2 &)
+                                                           ; frame size=4
+                                                           ; used runtime library name:
+                                                           ; __nes
+    000000AE 4F22                   STS.L       PR,@-R15
+      ParticuleB    35        return this->x == other.x && this->y == other.y;
+    000000B0 6142                   MOV.L       @R4,R1
+    000000B2 D371                   MOV.L       L367+10,R3 ; __nes
+    000000B4 430B                   JSR         @R3
+    000000B6 6052                   MOV.L       @R5,R0
+    000000B8 8800                   CMP/EQ      #0,R0
+    000000BA 8B08                   BF          L346
+    000000BC 5141                   MOV.L       @(4,R4),R1
+    000000BE D26E                   MOV.L       L367+10,R2 ; __nes
+    000000C0 420B                   JSR         @R2
+    000000C2 5051                   MOV.L       @(4,R5),R0
+    000000C4 8800                   CMP/EQ      #0,R0
+    000000C6 8B02                   BF          L346
+    000000C8 4F26                   LDS.L       @R15+,PR
+    000000CA 000B                   RTS
+    000000CC E001                   MOV         #1,R0
+    000000CE              L346:                             
+    000000CE E000                   MOV         #0,R0
+      ParticuleB    36    }
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    4
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000000D0              L348:                             
+    000000D0 4F26                   LDS.L       @R15+,PR
+    000000D2 000B                   RTS
+    000000D4 0009                   NOP
+      ParticuleB    37    
+      ParticuleB    38    bool Vector2::operator!=(const Vector2& other) {
+    000000D6              ___ne__7Vector2FRC7Vector2:      ; function: Vector2::operator !=(const Vector2 &)
+                                                           ; frame size=4
+                                                           ; used runtime library name:
+                                                           ; __nes
+    000000D6 4F22                   STS.L       PR,@-R15
+      ParticuleB    39        return !(this->x == other.x && this->y == other.y);
+    000000D8 6142                   MOV.L       @R4,R1
+    000000DA D367                   MOV.L       L367+10,R3 ; __nes
+    000000DC 430B                   JSR         @R3
+    000000DE 6052                   MOV.L       @R5,R0
+    000000E0 8800                   CMP/EQ      #0,R0
+    000000E2 8B08                   BF          L349
+    000000E4 5141                   MOV.L       @(4,R4),R1
+    000000E6 D264                   MOV.L       L367+10,R2 ; __nes
+    000000E8 420B                   JSR         @R2
+    000000EA 5051                   MOV.L       @(4,R5),R0
+    000000EC 8800                   CMP/EQ      #0,R0
+    000000EE 8B02                   BF          L349
+    000000F0 4F26                   LDS.L       @R15+,PR
+    000000F2 000B                   RTS
+    000000F4 E000                   MOV         #0,R0
+    000000F6              L349:                             
+    000000F6 E001                   MOV         #1,R0
+      ParticuleB    40    }
+    000000F8              L351:                             
+    000000F8 4F26                   LDS.L       @R15+,PR
+    000000FA 000B                   RTS
+    000000FC 0009                   NOP
+      ParticuleB    41    
+      ParticuleB    42    Vector2 Vector2::operator+(const Vector2& other) {
+    000000FE              ___pl__7Vector2FRC7Vector2:      ; function: Vector2::operator +(const Vector2 &)
+                                                           ; frame size=20
+                                                           ; used runtime library name:
+                                                           ; __adds, __quick_evn_mvn
+      ParticuleB    43        return Vector2(this->x + other.x, this->y + other.y);
+    000000FE 6053                   MOV         R5,R0
+    00000100 D35C                   MOV.L       L367+6,R3  ; __adds
+    00000102 4F22                   STS.L       PR,@-R15
+    00000104 7FF0                   ADD         #-16,R15
+    00000106 1F41                   MOV.L       R4,@(4,R15)
+    00000108 2F52                   MOV.L       R5,@R15
+    0000010A 51F1                   MOV.L       @(4,R15),R1
+    0000010C 5111                   MOV.L       @(4,R1),R1
+    0000010E 430B                   JSR         @R3
+    00000110 5001                   MOV.L       @(4,R0),R0
+    00000112 6603                   MOV         R0,R6
+    00000114 51F1                   MOV.L       @(4,R15),R1
+    00000116 60F2                   MOV.L       @R15,R0
+    00000118 6112                   MOV.L       @R1,R1
+    0000011A D356                   MOV.L       L367+6,R3  ; __adds
+    0000011C 430B                   JSR         @R3
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000011E 6002                   MOV.L       @R0,R0
+    00000120 6503                   MOV         R0,R5
+    00000122 64F3                   MOV         R15,R4
+    00000124 BF82                   BSR         ___ct__7Vector2FfT1
+    00000126 7408                   ADD         #8,R4
+    00000128 51F5                   MOV.L       @(20,R15),R1
+    0000012A 62F3                   MOV         R15,R2
+    0000012C D353                   MOV.L       L367+14,R3 ; __quick_evn_mvn
+    0000012E 7208                   ADD         #8,R2
+    00000130 430B                   JSR         @R3
+    00000132 E008                   MOV         #8,R0
+      ParticuleB    44    }
+    00000134 7F10                   ADD         #16,R15
+    00000136 4F26                   LDS.L       @R15+,PR
+    00000138 000B                   RTS
+    0000013A 0009                   NOP
+      ParticuleB    45    
+      ParticuleB    46    Vector2 Vector2::operator-(const Vector2& other) {
+    0000013C              ___mi__7Vector2FRC7Vector2:      ; function: Vector2::operator -(const Vector2 &)
+                                                           ; frame size=20
+                                                           ; used runtime library name:
+                                                           ; __subs, __quick_evn_mvn
+    0000013C 4F22                   STS.L       PR,@-R15
+      ParticuleB    47        return Vector2(this->x - other.x, this->y - other.y);
+    0000013E 6053                   MOV         R5,R0
+    00000140 D34F                   MOV.L       L367+18,R3 ; __subs
+    00000142 7FF0                   ADD         #-16,R15
+    00000144 1F41                   MOV.L       R4,@(4,R15)
+    00000146 2F52                   MOV.L       R5,@R15
+    00000148 51F1                   MOV.L       @(4,R15),R1
+    0000014A 5111                   MOV.L       @(4,R1),R1
+    0000014C 430B                   JSR         @R3
+    0000014E 5001                   MOV.L       @(4,R0),R0
+    00000150 51F1                   MOV.L       @(4,R15),R1
+    00000152 6603                   MOV         R0,R6
+    00000154 D34A                   MOV.L       L367+18,R3 ; __subs
+    00000156 60F2                   MOV.L       @R15,R0
+    00000158 6112                   MOV.L       @R1,R1
+    0000015A 430B                   JSR         @R3
+    0000015C 6002                   MOV.L       @R0,R0
+    0000015E 6503                   MOV         R0,R5
+    00000160 64F3                   MOV         R15,R4
+    00000162 BF63                   BSR         ___ct__7Vector2FfT1
+    00000164 7408                   ADD         #8,R4
+    00000166 62F3                   MOV         R15,R2
+    00000168 D344                   MOV.L       L367+14,R3 ; __quick_evn_mvn
+    0000016A 7208                   ADD         #8,R2
+    0000016C 51F5                   MOV.L       @(20,R15),R1
+    0000016E 430B                   JSR         @R3
+    00000170 E008                   MOV         #8,R0
+      ParticuleB    48    }
+    00000172 7F10                   ADD         #16,R15
+    00000174 4F26                   LDS.L       @R15+,PR
+    00000176 000B                   RTS
+    00000178 0009                   NOP
+      ParticuleB    49    
+      ParticuleB    50    Vector2 Vector2::operator*(const Vector2& other) {
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    6
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000017A              ___ml__7Vector2FRC7Vector2:      ; function: Vector2::operator *(const Vector2 &)
+                                                           ; frame size=20
+                                                           ; used runtime library name:
+                                                           ; __muls, __quick_evn_mvn
+      ParticuleB    51        return Vector2(this->x * other.x, this->y * other.y);
+    0000017A 6053                   MOV         R5,R0
+    0000017C D341                   MOV.L       L367+22,R3 ; __muls
+    0000017E 4F22                   STS.L       PR,@-R15
+    00000180 7FF0                   ADD         #-16,R15
+    00000182 1F41                   MOV.L       R4,@(4,R15)
+    00000184 2F52                   MOV.L       R5,@R15
+    00000186 51F1                   MOV.L       @(4,R15),R1
+    00000188 5111                   MOV.L       @(4,R1),R1
+    0000018A 430B                   JSR         @R3
+    0000018C 5001                   MOV.L       @(4,R0),R0
+    0000018E 6603                   MOV         R0,R6
+    00000190 51F1                   MOV.L       @(4,R15),R1
+    00000192 60F2                   MOV.L       @R15,R0
+    00000194 6112                   MOV.L       @R1,R1
+    00000196 D33B                   MOV.L       L367+22,R3 ; __muls
+    00000198 430B                   JSR         @R3
+    0000019A 6002                   MOV.L       @R0,R0
+    0000019C 6503                   MOV         R0,R5
+    0000019E 64F3                   MOV         R15,R4
+    000001A0 BF44                   BSR         ___ct__7Vector2FfT1
+    000001A2 7408                   ADD         #8,R4
+    000001A4 51F5                   MOV.L       @(20,R15),R1
+    000001A6 62F3                   MOV         R15,R2
+    000001A8 D334                   MOV.L       L367+14,R3 ; __quick_evn_mvn
+    000001AA 7208                   ADD         #8,R2
+    000001AC 430B                   JSR         @R3
+    000001AE E008                   MOV         #8,R0
+      ParticuleB    52    }
+    000001B0 7F10                   ADD         #16,R15
+    000001B2 4F26                   LDS.L       @R15+,PR
+    000001B4 000B                   RTS
+    000001B6 0009                   NOP
+      ParticuleB    53    
+      ParticuleB    54    Vector2 Vector2::operator/(const Vector2& other) {
+    000001B8              ___dv__7Vector2FRC7Vector2:      ; function: Vector2::operator /(const Vector2 &)
+                                                           ; frame size=20
+                                                           ; used runtime library name:
+                                                           ; __divs, __quick_evn_mvn
+    000001B8 4F22                   STS.L       PR,@-R15
+      ParticuleB    55        return Vector2(this->x / other.x, this->y / other.y);
+    000001BA 6053                   MOV         R5,R0
+    000001BC D332                   MOV.L       L367+26,R3 ; __divs
+    000001BE 7FF0                   ADD         #-16,R15
+    000001C0 1F41                   MOV.L       R4,@(4,R15)
+    000001C2 2F52                   MOV.L       R5,@R15
+    000001C4 51F1                   MOV.L       @(4,R15),R1
+    000001C6 5111                   MOV.L       @(4,R1),R1
+    000001C8 430B                   JSR         @R3
+    000001CA 5001                   MOV.L       @(4,R0),R0
+    000001CC 51F1                   MOV.L       @(4,R15),R1
+    000001CE 6603                   MOV         R0,R6
+    000001D0 D32D                   MOV.L       L367+26,R3 ; __divs
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    7
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000001D2 60F2                   MOV.L       @R15,R0
+    000001D4 6112                   MOV.L       @R1,R1
+    000001D6 430B                   JSR         @R3
+    000001D8 6002                   MOV.L       @R0,R0
+    000001DA 6503                   MOV         R0,R5
+    000001DC 64F3                   MOV         R15,R4
+    000001DE BF25                   BSR         ___ct__7Vector2FfT1
+    000001E0 7408                   ADD         #8,R4
+    000001E2 62F3                   MOV         R15,R2
+    000001E4 D325                   MOV.L       L367+14,R3 ; __quick_evn_mvn
+    000001E6 7208                   ADD         #8,R2
+    000001E8 51F5                   MOV.L       @(20,R15),R1
+    000001EA 430B                   JSR         @R3
+    000001EC E008                   MOV         #8,R0
+      ParticuleB    56    }
+    000001EE 7F10                   ADD         #16,R15
+    000001F0 4F26                   LDS.L       @R15+,PR
+    000001F2 000B                   RTS
+    000001F4 0009                   NOP
+      ParticuleB    57    
+      ParticuleB    58    
+      ParticuleB    59    
+      ParticuleB    60    Object::Object(const char* name, const char* UUID) {
+    000001F6              ___ct__6ObjectFPCcT1:            ; function: Object::Object(const char *, const char *)
+                                                           ; frame size=16
+    000001F6 4F22                   STS.L       PR,@-R15
+    000001F8 7FF4                   ADD         #-12,R15
+    000001FA 2F42                   MOV.L       R4,@R15
+    000001FC 1F52                   MOV.L       R5,@(8,R15)
+    000001FE 1F61                   MOV.L       R6,@(4,R15)
+    00000200 63F2                   MOV.L       @R15,R3
+    00000202 2338                   TST         R3,R3
+    00000204 8B05                   BF          L357
+    00000206 D31A                   MOV.L       L367+2,R3  ; ___nw__FUl
+    00000208 430B                   JSR         @R3
+    0000020A E40C                   MOV         #12,R4
+    0000020C 2008                   TST         R0,R0
+    0000020E 8D09                   BT/S        L356
+    00000210 2F02                   MOV.L       R0,@R15
+    00000212              L357:                             
+    00000212 62F2                   MOV.L       @R15,R2
+    00000214 D31D                   MOV.L       L367+30,R3 ; __$__vtbl__6Object
+    00000216 1232                   MOV.L       R3,@(8,R2)
+      ParticuleB    61        this->name = (unsigned char*)name;
+    00000218 62F2                   MOV.L       @R15,R2
+    0000021A 53F2                   MOV.L       @(8,R15),R3
+    0000021C 2232                   MOV.L       R3,@R2
+      ParticuleB    62        this->ID = (unsigned char*)UUID;
+    0000021E 62F2                   MOV.L       @R15,R2
+    00000220 53F1                   MOV.L       @(4,R15),R3
+    00000222 1231                   MOV.L       R3,@(4,R2)
+    00000224              L356:                             
+    00000224 60F2                   MOV.L       @R15,R0
+      ParticuleB    63    };
+    00000226 7F0C                   ADD         #12,R15
+    00000228 4F26                   LDS.L       @R15+,PR
+    0000022A 000B                   RTS
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    8
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    0000022C 0009                   NOP
+      ParticuleB    64    
+      ParticuleB    65    
+      ParticuleB    66    unsigned char* Object::GetInstanceID() {
+      ParticuleB    67        return ID;
+      ParticuleB    68    };
+      ParticuleB    69    unsigned char* Object::ToString() {
+      ParticuleB    70        return name;
+      ParticuleB    71    };
+      ParticuleB    72    
+      ParticuleB    73    
+      ParticuleB    74    // Overload operator
+      ParticuleB    75    bool Object::operator==(const Object& obj) {
+      ParticuleB    76        return this->ID == obj.ID;
+      ParticuleB    77    }
+      ParticuleB    78    
+      ParticuleB    79    bool Object::operator!=(const Object& obj) {
+      ParticuleB    80        return this->ID != obj.ID;
+      ParticuleB    81    }
+    0000022E              __$__dt__6ObjectFv:              ; function: Object::~Object()
+                                                           ; frame size=4
+    0000022E 2FE6                   MOV.L       R14,@-R15
+    00000230 6E43                   MOV         R4,R14
+    00000232 2EE8                   TST         R14,R14
+    00000234 8908                   BT          L361
+    00000236 E301                   MOV         #1,R3
+    00000238 D214                   MOV.L       L367+30,R2 ; __$__vtbl__6Object
+    0000023A 2538                   TST         R3,R5
+    0000023C 1E22                   MOV.L       R2,@(8,R14)
+    0000023E 8903                   BT          L361
+    00000240 D113                   MOV.L       L367+34,R1 ; ___dl__FPv
+    00000242 64E3                   MOV         R14,R4
+    00000244 412B                   JMP         @R1
+    00000246 6EF6                   MOV.L       @R15+,R14
+    00000248              L361:                             
+    00000248 000B                   RTS
+    0000024A 6EF6                   MOV.L       @R15+,R14
+    0000024C              _GetInstanceID__6ObjectFv:       ; function: Object::GetInstanceID()
+                                                           ; frame size=0
+    0000024C 000B                   RTS
+    0000024E 5041                   MOV.L       @(4,R4),R0
+    00000250              _ToString__6ObjectFv:            ; function: Object::ToString()
+                                                           ; frame size=0
+    00000250 000B                   RTS
+    00000252 6042                   MOV.L       @R4,R0
+    00000254              __$Destroy__6ObjectFv:           ; function: Object::Destroy()
+                                                           ; frame size=0
+    00000254 000B                   RTS
+    00000256 0009                   NOP
+    00000258              ___eq__6ObjectFRC6Object:        ; function: Object::operator ==(const Object &)
+                                                           ; frame size=0
+    00000258 5351                   MOV.L       @(4,R5),R3
+    0000025A 5241                   MOV.L       @(4,R4),R2
+    0000025C 3230                   CMP/EQ      R3,R2
+    0000025E 000B                   RTS
+    00000260 0029                   MOVT        R0
+    00000262              ___ne__6ObjectFRC6Object:        ; function: Object::operator !=(const Object &)
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    9
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+                                                           ; frame size=0
+    00000262 5151                   MOV.L       @(4,R5),R1
+    00000264 5041                   MOV.L       @(4,R4),R0
+    00000266 3010                   CMP/EQ      R1,R0
+    00000268 0029                   MOVT        R0
+    0000026A 000B                   RTS
+    0000026C CA01                   XOR         #1,R0
+    0000026E              L367:                             
+    0000026E 0000                   .DATA.W     0
+    00000270 <00000000>             .DATA.L     ___nw__FUl
+    00000274 <00000000>             .DATA.L     __adds
+    00000278 <00000000>             .DATA.L     __nes
+    0000027C <00000000>             .DATA.L     __quick_evn_mvn
+    00000280 <00000000>             .DATA.L     __subs
+    00000284 <00000000>             .DATA.L     __muls
+    00000288 <00000000>             .DATA.L     __divs
+    0000028C <00000000>             .DATA.L     __$__vtbl__6Object
+    00000290 <00000000>             .DATA.L     ___dl__FPv
+C$V 00000000              __$__vtbl__6Object:              ; static: virtual function table for Object
+    00000000 0000000000             .DATA.L     H'00000000,H'00000000
+             000000       
+    00000008 <00000000>             .DATA.L     __$__T_6Object
+    0000000C 0000000000             .DATA.L     H'00000000,H'00000000
+             000000       
+    00000014 <00000000>             .DATA.L     __$__dt__6ObjectFv
+    00000018 0000000000             .DATA.L     H'00000000,H'00000000
+             000000       
+    00000020 <00000000>             .DATA.L     __$Destroy__6ObjectFv
+C   00000000              L259:
+    00000000 4F626A6563             .SDATA      "Object"
+             74           
+    00000006 00                     .DATA.B     H'00
+D   00000000              __$__T_6Object:                  ; static: typeinfo for Object
+    00000000 <00000000>             .DATA.L     ___vtbl__Q2_3std9type_info,L259,__$__TID_6Object
+             <00000000>   
+             <00000000>   
+    0000000C 00000000               .DATA.L     H'00000000
+B   00000000              __$__TID_6Object:                ; static: type identifier for Object
+    00000000 00000001               .RES.B      1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:         0
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:       81
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               00000294 Byte(s)
+PROGRAM  SECTION (P$VTBL):                          00000000 Byte(s)
+CONSTANT SECTION (C):                               00000007 Byte(s)
+CONSTANT SECTION (C$VTBL):                          00000024 Byte(s)
+DATA     SECTION (D):                               00000010 Byte(s)
+DATA     SECTION (D$VTBL):                          00000000 Byte(s)
+BSS      SECTION (B):                               00000001 Byte(s)
+BSS      SECTION (B$VTBL):                          00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 000002D0 Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:            9
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:          18
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            40
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmk6779.tmp 
+

@@ -1,3 +1,4 @@
+//<LibInclude>
 extern "C"
 {
 #include "keybios.h"
@@ -10,13 +11,15 @@ extern "C"
 #include "time.h"
 }
 #include "Announcement.h"
-#include "MonochromeLib.h"
+#include "ParticuleGraphics.hpp"
 #include "List.h"
 #include <iostream>
 #include <math.h>
 #include "usefull.h"
 #include "Ressources.h"
 #include "ParticuleEngine.hpp"
+#include "ParticuleBase.hpp"
+//<\LibInclude>
 
 int Random(int start, int end) {
     return (getTicks() % (end - start)) + start;
@@ -30,91 +33,9 @@ int mod(int x, int m) {
     return (x % m + m) % m;
 }
 
-enum Tag
-{
-    Untagged = 0,
-    Respawn = 1,
-    Finish = 2,
-    EditorOnly = 3,
-    MainCamera = 4,
-    Player = 5,
-    GameController = 6
-};
-
-enum Layer
-{
-    Default = 0,
-    TransparentFX = 1,
-    IgnoreRaycast = 2,
-    Water = 3,
-    UI = 4
-};
-
-Vector2::Vector2() {
-    this->x = 0;
-    this->y = 0;
-}
-Vector2::Vector2(float x, float y) {
-    this->x = x;
-    this->y = y;
-};
-void Vector2::Set(float x, float y) {
-    this->x = x;
-    this->y = y;
-};
-void Vector2::Set(Vector2 vect) {
-    this->x = vect.x;
-    this->y = vect.y;
-};
-
-bool Vector2::operator==(const Vector2& other) {
-    return this->x == other.x && this->y == other.y;
-}
-
-bool Vector2::operator!=(const Vector2& other) {
-    return !(this->x == other.x && this->y == other.y);
-}
-
-Vector2 Vector2::operator+(const Vector2& other) {
-    return Vector2(this->x + other.x, this->y + other.y);
-}
-
-Vector2 Vector2::operator-(const Vector2& other) {
-    return Vector2(this->x - other.x, this->y - other.y);
-}
-
-Vector2 Vector2::operator*(const Vector2& other) {
-    return Vector2(this->x * other.x, this->y * other.y);
-}
-
-Vector2 Vector2::operator/(const Vector2& other) {
-    return Vector2(this->x / other.x, this->y / other.y);
-}
 
 
 
-Object::Object(const char* name, const char* UUID) {
-    this->name = (unsigned char*)name;
-    this->ID = (unsigned char*)UUID;
-};
-
-
-unsigned char* Object::GetInstanceID() {
-    return ID;
-};
-unsigned char* Object::ToString() {
-    return name;
-};
-
-
-// Overload operator
-bool Object::operator==(const Object& obj) {
-    return this->ID == obj.ID;
-}
-
-bool Object::operator!=(const Object& obj) {
-    return this->ID != obj.ID;
-}
 
 Component::Component(const char* name, GameObject* gameObject, const char* UUID) : Object(name, UUID)
 {
@@ -219,35 +140,8 @@ class VisualElement : public Focusable {
 */
 
 
-enum TextureDimension
-{
-    Unknown,
-    None,
-    Any,
-    Tex2D,
-    Tex3D,
-    Cube,
-    Tex2DArray,
-    CubeArray
-};
 
-enum FilterMode
-{
-    Point,
-    Bilinear,
-    Trilinear
-};
 
-Texture::Texture() : Object("None", NULL) {
-    textureData = "";
-    this->width = 0;
-    this->height = 0;
-};
-Texture::Texture(const char* name, int width, int height, const unsigned char* Data, const char* UUID) : Object(name, UUID) {
-    textureData = (unsigned char*)Data;
-    this->width = width;
-    this->height = height;
-};
 
 MonoBehaviour::MonoBehaviour(const char* name, GameObject* gameObject, const char* UUID) : Behaviour(name, gameObject, UUID) {
     useGUILayout = true;
@@ -393,8 +287,8 @@ void Image::OnRenderObject() {
     float posY = gameObject->transform->position->y;
     float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
     float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
-    if (posX - camX + image->height > 0 && posX - camX < 128 && posY - camY + image->height>0 && posY - camY < 64)
-        ML_bmp_or_cl((const unsigned char*)image->textureData, (int)(posX - camX), (int)(posY - camY), image->width, image->height);
+    if (posX - camX + image->height > 0 && posX - camX < this->gameObject->scene->sceneManager->projectSettings->ScreenSize->x+1 && posY - camY + image->height>0 && posY - camY < this->gameObject->scene->sceneManager->projectSettings->ScreenSize->y+1)
+        DisplayTexture(image, (int)(posX - camX), (int)(posY - camY));
 };
 
 Sprite::Sprite(GameObject* gameObject, Texture* image,bool HaveBackground, const char* UUID) : MonoBehaviour("Sprite", gameObject, UUID) {
@@ -407,10 +301,10 @@ void Sprite::OnRenderObject() {
     float posY = gameObject->transform->position->y;
     float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
     float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
-    if (posX - camX + image->height > 0 && posX - camX < 128 && posY - camY + image->height>0 && posY - camY < 64)
+    if (posX - camX + image->height > 0 && posX - camX < this->gameObject->scene->sceneManager->projectSettings->ScreenSize->x+1 && posY - camY + image->height>0 && posY - camY < this->gameObject->scene->sceneManager->projectSettings->ScreenSize->y+1)
         if (HaveBackground)
-            ML_rectangle((int)(posX - camX), (int)(posY - camY), (int)(posX - camX)+image->width, (int)(posY - camY)+image->height, 0, ML_WHITE, ML_WHITE);
-        ML_bmp_or_cl((const unsigned char*)image->textureData, (int)(posX - camX), (int)(posY - camY), image->width, image->height);
+            DrawRectangle((int)(posX - camX), (int)(posY - camY), image->width, image->height, ML_WHITE);
+    DisplayTexture(image, (int)(posX - camX), (int)(posY - camY));
 };
 
 
@@ -426,64 +320,86 @@ Rigidbody::Rigidbody(GameObject* gameObject, float Mass, bool UseGravity, bool I
 
 void Rigidbody::Start() {
     this->velocity->Set(0, 0);
-    this->lastPosition->Set(gameObject->transform->position->x, gameObject->transform->position->y);
-    this->MyBoxCollider = ((BoxCollider2D*)this->gameObject->GetComponent("BoxCollider2D"));
+    this->lastPosition->Set(this->gameObject->transform->position);
+    this->MyCollider = (Collider2D*)(((BoxCollider2D*)this->gameObject->GetComponent("BoxCollider2D")));
+}
+
+
+bool Rigidbody::CheckCollider() {
+    if (MyCollider != NULL && gameObject->isStatic && !MyCollider->IsTrigger)
+        return false;
+    for (int i = 0; i < gameObject->scene->LstColliders.Count; i++) {
+        if (MyCollider != gameObject->scene->LstColliders[i] && ((Component*)gameObject->scene->LstColliders[i])->gameObject->IsActive()) {
+            if (!gameObject->scene->LstColliders[i]->IsTrigger && MyCollider->AreTheyTouching(gameObject->scene->LstColliders[i]))
+                return true;
+        }
+    }
+    return false;
+}
+
+bool Rigidbody::IsVisible() {
+    
+    float posX = gameObject->transform->position->x;
+    float posY = gameObject->transform->position->y;
+    float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
+    float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
+    return (posX - camX + (this->gameObject->scene->sceneManager->projectSettings->ScreenSize->x * 2) > 0 && posX - camX < (this->gameObject->scene->sceneManager->projectSettings->ScreenSize->x * 2) && posY - camY + (this->gameObject->scene->sceneManager->projectSettings->ScreenSize->y * 2)>0 && posY - camY < (this->gameObject->scene->sceneManager->projectSettings->ScreenSize->y * 2));
 }
 
 void Rigidbody::PhysicsCalculator() {
-    //calcule de physique (gravite)
-    //a faire
-    this->velocity->Set(0, 0);///////////
-    this->lastPosition->Set(gameObject->transform->position->x, gameObject->transform->position->y);
+    if (!(UseGravity && IsVisible())) {
+        this->lastPosition->Set(this->gameObject->transform->position);
+        return;
+    }
+
+    if (CheckCollider()) {
+        gameObject->transform->position->Set(lastPosition);
+    }
+    else {
+        this->velocity->Set(this->velocity->x - (this->gameObject->scene->sceneManager->projectSettings->Gravity->x * this->Mass),
+            this->velocity->y - (this->gameObject->scene->sceneManager->projectSettings->Gravity->y * this->Mass));
+        this->lastPosition->Set(this->gameObject->transform->position);
+    }
+    gameObject->transform->position->Add(this->velocity->x, -this->velocity->y);
+    if (CheckCollider()) {
+        int x = 0;
+        int y = 0;
+        this->velocity->Set(velocity->x * 2, velocity->y * 2);
+        while (y < abs((int)this->velocity->y) || x < abs((int)this->velocity->x))
+        {
+            if (CheckCollider()) {
+                if (y < abs((int)this->velocity->y))
+                    gameObject->transform->position->Add(0, -(abs(this->velocity->y) / this->velocity->y) * (-1));
+                if (x < abs((int)this->velocity->x))
+                    gameObject->transform->position->Add((abs(this->velocity->x) / this->velocity->x) * (-1), 0);
+            }
+            y++;
+            x++;
+        }
+        this->velocity->Set(0, 0);
+    }
+    if (CheckCollider()) {
+        gameObject->transform->position->Set(lastPosition);
+    }
+    this->lastPosition->Set(this->gameObject->transform->position);
 };
-
-void Rigidbody::OnCollisionEnter2D(BoxCollider2D* boxCollider2D) {
-
-    if (!(boxCollider2D->IsTrigger || (MyBoxCollider != NULL && MyBoxCollider->IsTrigger)))
-        this->velocity->Set(lastPosition->x - gameObject->transform->position->x, lastPosition->y - gameObject->transform->position->y);
-}
-void Rigidbody::OnCollisionStay2D(BoxCollider2D* boxCollider2D) {
-
-    if (!(boxCollider2D->IsTrigger || (MyBoxCollider != NULL && MyBoxCollider->IsTrigger)))
-        this->velocity->Set(lastPosition->x - gameObject->transform->position->x, lastPosition->y - gameObject->transform->position->y);
-}
 
 void Rigidbody::LateUpdate() {
-    gameObject->transform->position->Set(gameObject->transform->position->x + this->velocity->x, gameObject->transform->position->y + this->velocity->y);
-}
+    if (CheckCollider()) {
+        gameObject->transform->position->Set(lastPosition);
+    }
 
-
-BoxCollider2D::BoxCollider2D(GameObject* gameObject, bool IsTrigger, Vector2* center, Vector2* size, const char* UUID) : MonoBehaviour("BoxCollider2D", gameObject, UUID) {
-    this->IsTrigger = IsTrigger;
-    this->center = center;
-    this->size = size;
-    //LstColliders.DeleteAct = false;
-    gameObject->scene->LstColliders.Add(this);
 };
 
-void BoxCollider2D::Update() {
+void Collider2D::Update() {
+
     if (gameObject->isStatic && !IsTrigger)
         return;
     for (int i = 0; i < gameObject->scene->LstColliders.Count; i++) {
         if (this != gameObject->scene->LstColliders[i] && gameObject->scene->LstColliders[i]->gameObject->IsActive()) {
-            int x1 = gameObject->scene->LstColliders[i]->gameObject->transform->position->x +
-                gameObject->scene->LstColliders[i]->center->x - (gameObject->scene->LstColliders[i]->size->x / 2);
-            int x2 = gameObject->scene->LstColliders[i]->gameObject->transform->position->x +
-                gameObject->scene->LstColliders[i]->center->x + (gameObject->scene->LstColliders[i]->size->x / 2);
-            int y1 = gameObject->scene->LstColliders[i]->gameObject->transform->position->y +
-                gameObject->scene->LstColliders[i]->center->y - (gameObject->scene->LstColliders[i]->size->y / 2);
-            int y2 = gameObject->scene->LstColliders[i]->gameObject->transform->position->y +
-                gameObject->scene->LstColliders[i]->center->y + (gameObject->scene->LstColliders[i]->size->y / 2);
 
-            int MyX1 = gameObject->transform->position->x + center->x - (size->x / 2);
-            int MyX2 = gameObject->transform->position->x + center->x + (size->x / 2);
-            int MyY1 = gameObject->transform->position->y + center->y - (size->y / 2);
-            int MyY2 = gameObject->transform->position->y + center->y + (size->y / 2);
 
-            if (x1 < MyX2 &&
-                x2 > MyX1 &&
-                y1 < MyY2 &&
-                y2 > MyY1) {
+            if (AreTheyTouching(gameObject->scene->LstColliders[i])) {
                 // collision détectée !
                 if (Contains(gameObject->scene->LstColliders[i])) {
                     for (int o = 0; o < gameObject->ListOfComponent.Count; o++) {
@@ -525,6 +441,36 @@ void BoxCollider2D::Update() {
 };
 
 
+BoxCollider2D::BoxCollider2D(GameObject* gameObject, bool IsTrigger, Vector2* center, Vector2* size, const char* UUID) : Collider2D(gameObject, IsTrigger, UUID) {
+    this->Object::name = (unsigned char*)"BoxCollider2D";
+    this->center = center;
+    this->size = size;
+    //LstColliders.DeleteAct = false;
+};
+
+bool BoxCollider2D::AreTheyTouching(Collider2D* collider) {
+    int x1 = collider->Component::gameObject->transform->position->x +
+        ((BoxCollider2D*)collider)->center->x - (((BoxCollider2D*)collider)->size->x / 2);
+    int x2 = collider->Component::gameObject->transform->position->x +
+        ((BoxCollider2D*)collider)->center->x + (((BoxCollider2D*)collider)->size->x / 2);
+    int y1 = collider->Component::gameObject->transform->position->y +
+        ((BoxCollider2D*)collider)->center->y - (((BoxCollider2D*)collider)->size->y / 2);
+    int y2 = collider->Component::gameObject->transform->position->y +
+        ((BoxCollider2D*)collider)->center->y + (((BoxCollider2D*)collider)->size->y / 2);
+    
+    int MyX1 = this->Component::gameObject->transform->position->x + ((BoxCollider2D*)this)->center->x - (size->x / 2);
+    int MyX2 = this->Component::gameObject->transform->position->x + ((BoxCollider2D*)this)->center->x + (size->x / 2);
+    int MyY1 = this->Component::gameObject->transform->position->y + ((BoxCollider2D*)this)->center->y - (size->y / 2);
+    int MyY2 = this->Component::gameObject->transform->position->y + ((BoxCollider2D*)this)->center->y + (size->y / 2);
+    return (x1 < MyX2&&
+        x2 > MyX1 &&
+        y1 < MyY2&&
+        y2 > MyY1);
+}
+
+
+
+
 Text::Text(GameObject* gameObject, unsigned char* text, const char* UUID) : MonoBehaviour("Text", gameObject, UUID) {
     this->text = text;
 
@@ -535,7 +481,7 @@ void Text::OnRenderObject() {
     float posY = gameObject->transform->position->y;
     float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
     float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
-    PrintMini((int)(posX - camX), (int)(posY - camY), (unsigned char*)this->text, MINI_OVER);
+    PrintTextMini((unsigned char*)this->text,(int)(posX - camX), (int)(posY - camY));
 }
 
 Tilemap::Tilemap(GameObject* gameObject, Vector2* sizeTilemap, Vector2* sizeCase, const char* UUID) : MonoBehaviour("Tilemap", gameObject, UUID) {
@@ -554,8 +500,8 @@ void Tilemap::OnRenderObject() {
         for (int w = h * sizeTilemap->x; w < (h + 1) * sizeTilemap->x; w++) {
             int tempx = (int)((posX - camX) + x * sizeCase->x);
             int tempy = (int)((posY - camY) + h * sizeCase->y);
-            if (tempx + sizeCase->x > 0 && tempx < 128 && tempy + sizeCase->y>0 && tempy < 64)
-                ML_bmp_or_cl((const unsigned char*)(images[Datas[w]])->textureData, tempx, tempy, (images[Datas[w]])->width, (images[Datas[w]])->height);
+            if (tempx + sizeCase->x > 0 && tempx < this->gameObject->scene->sceneManager->projectSettings->ScreenSize->x+1 && tempy + sizeCase->y>0 && tempy < this->gameObject->scene->sceneManager->projectSettings->ScreenSize->y+1)
+                DisplayTexture((images[Datas[w]]), tempx, tempy);
             x++;
         }
     }
@@ -662,8 +608,10 @@ EpeeGm = gameObject->Find("Epee");
 
 }
 void AllFightGolem::OnRenderObject() {
+    delete[] StrPVplayer;
 StrPVplayer = new unsigned char[20];
 sprintf((char*)StrPVplayer, "%d", this->PVplayer);
+delete[] StrPVGolem;
 StrPVGolem = new unsigned char[20];
 sprintf((char*)StrPVGolem, "%d", this->PVGolem);
 PrintMini(20, 0, (unsigned char*)StrPVplayer, MINI_OVER);
@@ -716,7 +664,7 @@ void BallGolem::OnRenderObject() {
 ML_filled_circle(this->gameObject->transform->position->x, this->gameObject->transform->position->y, 4,ML_BLACK);
 
 }
-void BallGolem::OnTriggerEnter2D(BoxCollider2D* boxCollider2D) {
+void BallGolem::OnTriggerEnter2D(Collider2D* boxCollider2D) {
 if ((((Component*)boxCollider2D)->gameObject==PlayerGm)){
 GameMg->PVplayer--;
 this->gameObject->transform->position->x = -300;
@@ -746,7 +694,7 @@ void ChangeSceneTrigger::Start(){
 MainPlayer = gameObject->Find("Player");
 
 }
-void ChangeSceneTrigger::OnTriggerEnter2D(BoxCollider2D* boxCollider2D) {
+void ChangeSceneTrigger::OnTriggerEnter2D(Collider2D* boxCollider2D) {
 if ((((Component*)boxCollider2D)->gameObject==MainPlayer)){
 LoadScene(this->gameObject->scene,this->SceneNb);
 return;
@@ -1044,6 +992,7 @@ this->points=0;
 StrPoints = new unsigned char[20];
 sprintf((char*)StrPoints, "%d", this->points);
 PrintMini(0, 0, (unsigned char*)StrPoints, MINI_OVER);
+delete[] StrPoints;
 if (((this->points)>(24))){
 LoadScene(this->gameObject->scene,2);
 return;
@@ -1204,7 +1153,7 @@ ML_rectangle((127 / 2) - (12 / 2), (63 / 2) - (20 / 2), (127 / 2) + (12 / 2), (6
 
 }
 
-void RoomCible::OnCollisionStay2D(BoxCollider2D* boxCollider2D) {
+void RoomCible::OnCollisionStay2D(Collider2D* boxCollider2D) {
 if (IsKeyDown(KEY_CTRL_EXE)){
 if ((IsMonster)){
 GameMg->points+=1;

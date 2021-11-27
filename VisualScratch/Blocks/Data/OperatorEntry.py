@@ -21,7 +21,7 @@ class ScriptBlockPython(ScriptBlock):
         code = ""
         temp = str(self.BlockSys.GetVariable(lst,0)[1])
         if temp[0]=='"' or temp[-1]=='"':
-            code += str(temp)
+            code += "(unsigned char*)"+str(temp)
             return code
         try:
             temp_ = int(temp)
@@ -31,6 +31,6 @@ class ScriptBlockPython(ScriptBlock):
                 temp_ = float(temp.replace(",", "."))
                 code += str(temp_)
             except:
-                code += '"' + temp + '"'
+                code += "(unsigned char*)"+'"' + temp + '"'
         return code
     

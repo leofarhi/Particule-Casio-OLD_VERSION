@@ -40,16 +40,29 @@ class ScriptBlockPython(ScriptBlock):
         name = os.path.splitext(name)[0]
 
         suite = self.BlockSys.GetSuite(lst,0)
+        NotInInit=[]
         GetPublic = []
         temp=suite.split("&&Public:")
         for i in temp:
             if ":Public&&" in i:
+                tmp=False
+                if "&&NotInInit&&" in i:
+                    i = i.replace("&&NotInInit&&","")
+                    tmp = True
                 GetPublic.append((i.split(":Public&&")[0]).split(":Type:"))
+                if tmp:
+                    NotInInit.append((GetPublic[-1])[0])
         GetPrivate = []
         temp = suite.split("&&Private:")
         for i in temp:
             if ":Private&&" in i:
+                tmp = False
+                if "&&NotInInit&&" in i:
+                    i = i.replace("&&NotInInit&&", "")
+                    tmp = True
                 GetPrivate.append((i.split(":Private&&")[0]).split(":Type:"))
+                if tmp:
+                    NotInInit.append((GetPrivate[-1])[0])
 
 
 
@@ -66,18 +79,21 @@ class ScriptBlockPython(ScriptBlock):
 
         listInit=","
         for i in GetPublic:
+            if i[0] in NotInInit:continue
             Type = i[1]
             Type = self.BlockSys.GetTypeValueAttributCasio(Type)
             listInit += Type + " " + i[0] + ","
 
         initPrivate=""
         for i in GetPrivate:
+            if i[0] in NotInInit: continue
             try:
                 initPrivate += "this->" + i[0] + "=" + self.BlockSys.GetInitValueAttributCasio(i[1]) + ";\n"
             except:pass
 
         initPublic=""
         for i in GetPublic:
+            if i[0] in NotInInit: continue
             initPublic+="this->"+i[0]+"="+i[0]+";\n"
 
         initPublic+=initPrivate

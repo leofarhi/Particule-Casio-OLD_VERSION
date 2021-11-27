@@ -21,9 +21,20 @@ from ClassParticule.SaveData import SaveData
 from ClassParticule.BuildSettings import BuildSettings
 from ClassParticule.WinInspectorType.WindowImage import WindowImage
 from SystemExt import File_Folder as Fl
+
+def LoadSizeWindow(name,width,height):
+    data = rf.found("lib/ScreenOrganization.txt",name)
+    if data!=False:
+        width, height = eval(data)
+    return width,height
+
+def SaveSizeWindow(name,frame):
+    width,height = frame.winfo_width(),frame.winfo_height()
+    rf.save("lib/ScreenOrganization.txt",name,str((width,height,)))
 class ScreenOrganization:
     def __init__(self,_Particule):
         self.Particule=_Particule
+        temp = ProjectSettingsWindow(self.Particule.Mafenetre,OnlyLoad=True)
 
         if not "BuildSettings.txt" in os.listdir(self.Particule.FolderProject + "/ProjectSettings"):
             rf.save(self.Particule.FolderProject + "/ProjectSettings/BuildSettings.txt","ScenesInBuild",[])
@@ -37,6 +48,10 @@ class ScreenOrganization:
         self.SetMenuItem()
         self.Bind_Setup()
         self.Particule.SaveData.LoadScene()
+    def SaveScreenOrganization(self):
+        SaveSizeWindow("GridCenter",self.GridCenter)
+        SaveSizeWindow("GridCenterLeft",self.GridCenterLeft)
+        SaveSizeWindow("GridCenterBottom", self.GridCenterBottom)
     def CreateDefaultScene(self):
         if not os.path.exists(self.Particule.FolderProject+"Assets/Scenes"):
             M.create_rep(self.Particule.FolderProject + "/Assets/Scenes")
@@ -69,7 +84,8 @@ class ScreenOrganization:
         pwCenter.Particule = self.Particule
         self.GridCenterTop = PFrame(pwCenter)
         self.GridCenterTop.pack(fill=BOTH, expand=True)
-        self.GridCenterBottom = Notebook(pwCenter)
+        _,height = LoadSizeWindow("GridCenterBottom", 0, 500)
+        self.GridCenterBottom = Notebook(pwCenter,height=height)
         self.GridCenterBottom.pack(fill=BOTH, expand=True)
         pwCenter.add(self.GridCenterTop)
         pwCenter.add(self.GridCenterBottom)
@@ -79,9 +95,11 @@ class ScreenOrganization:
 
         pwTop = PanedWindow(self.GridCenterTop, orient='horizontal')
         pwTop.Particule = self.Particule
-        self.GridCenter = Notebook(pwTop,width=885,height=500)
+        width,height = LoadSizeWindow("GridCenter",885,500)
+        self.GridCenter = Notebook(pwTop,width=width,height=height)
         self.GridCenter.pack(fill=BOTH, expand=True)
-        self.GridCenterLeft = Notebook(pwTop,width=230,height=500)
+        width, height = LoadSizeWindow("GridCenterLeft", 230, 500)
+        self.GridCenterLeft = Notebook(pwTop,width=width,height=height)
         self.GridCenterLeft.pack(fill=BOTH, expand=True)
 
         pwTop.add(self.GridCenterLeft)
@@ -131,6 +149,7 @@ class ScreenOrganization:
             self.Particule.Inspector.GameObjectWindow.pack(fill=BOTH, expand=True)
         elif Name=="Image":
             self.Particule.WindowImage.pack(fill=BOTH, expand=True)
+            self.Particule.WindowImage.Update()
 
     def CreateScene(self):
         rep = Fl.save_file(self.Particule.FolderProject + "/Assets/Scenes/")
@@ -151,6 +170,24 @@ class ScreenOrganization:
     def OpenSceneFile(self):
         rep=Fl.open_file(rep =self.Particule.FolderProject)#,filetypes=(("Scene files", "*.particule")))
         self.Particule.SaveData.LoadScene(rep)
+    def SetColor(self,TypeColor):
+        pathFile = self.Particule.FolderProject + "/ProjectSettings/ProjectSettings.txt"
+        if TypeColor=="Monochrome":
+            self.Particule.CalculatriceCouleur = False
+        elif TypeColor=="RGB":
+            self.Particule.CalculatriceCouleur = True
+        rf.save(pathFile, "Player&CalculatriceCouleur", self.Particule.CalculatriceCouleur)
+        self.Particule.UpdateOnFocus()
+    def SetCalculatrice(self,TypeCalculatrice):
+        pathFile = self.Particule.FolderProject + "/ProjectSettings/ProjectSettings.txt"
+        if TypeCalculatrice=="Graph 35+USB/75/85/95 (SD)":
+            self.Particule.CalculatriceCouleur = False
+            rf.save(pathFile, "Player&ScreenSize", (127,63))
+        elif TypeCalculatrice=="Graph 90+E":
+            self.Particule.CalculatriceCouleur = True
+            rf.save(pathFile, "Player&ScreenSize", (396,224))
+        rf.save(pathFile, "Player&CalculatriceCouleur", self.Particule.CalculatriceCouleur)
+        self.Particule.UpdateOnFocus()
     def SetMenuItem(self):
         self.Particule.MenuItem = MenuItem(self.Particule.Mafenetre)
         self.MenuItem = self.Particule.MenuItem
@@ -158,25 +195,27 @@ class ScreenOrganization:
         self.MenuItem.AddItem("Fichier/Ouvrir une Scene",self.OpenSceneFile)  # ,self.OpenScene)
         self.MenuItem.Add_separator("Fichier")
         self.MenuItem.AddItem("Fichier/Enregistrer",self.Particule.SaveData.SaveScene)  # ,SaveAll)
-        self.MenuItem.AddItem("Fichier/Enregistrer sous...")  # ,SaveAll)
-        self.MenuItem.Add_separator("Fichier")
-        self.MenuItem.AddItem("Fichier/Nouveau Projet...")  # ,self.LoadSystem.MenuOpenFolder)
-        self.MenuItem.AddItem("Fichier/Ouvrir un Projet...")  # ,self.LoadSystem.MenuOpenFolder)
+        #self.MenuItem.AddItem("Fichier/Enregistrer sous...")  # ,SaveAll)
+        #self.MenuItem.Add_separator("Fichier")
+        #self.MenuItem.AddItem("Fichier/Nouveau Projet...")  # ,self.LoadSystem.MenuOpenFolder)
+        #self.MenuItem.AddItem("Fichier/Ouvrir un Projet...")  # ,self.LoadSystem.MenuOpenFolder)
         self.MenuItem.Add_separator("Fichier")
         self.MenuItem.AddItem("Fichier/Build Settings",partial(BuildSettings,self.Particule.Mafenetre))  # ,WinChoiceTypeCompile)
         # self.MenuItem.AddItem("Fichier/Build And Run")
         self.MenuItem.Add_separator("Fichier")
-        self.MenuItem.AddItem("Fichier/Quitter")  # ,self.Mafenetre.quit)
+        self.MenuItem.AddItem("Fichier/Quitter",self.Particule.on_closing)  # ,self.Mafenetre.quit)
 
-        self.MenuItem.AddItem("Edit/Undo")
-        self.MenuItem.AddItem("Edit/Redo")
-        self.MenuItem.Add_separator("Edit")
-        self.MenuItem.AddItem("Edit/Tout Selectionner")
-        self.MenuItem.AddItem("Edit/Tout Deselectionner")
-        self.MenuItem.AddItem("Edit/Selectionner les enfants")
-        self.MenuItem.AddItem("Edit/Selectionner la Prefab Root")
-        self.MenuItem.AddItem("Edit/Inverser la selection")
-        self.MenuItem.Add_separator("Edit")
+
+
+        #self.MenuItem.AddItem("Edit/Undo")
+        #self.MenuItem.AddItem("Edit/Redo")
+        #self.MenuItem.Add_separator("Edit")
+        #self.MenuItem.AddItem("Edit/Tout Selectionner")
+        #self.MenuItem.AddItem("Edit/Tout Deselectionner")
+        #self.MenuItem.AddItem("Edit/Selectionner les enfants")
+        #self.MenuItem.AddItem("Edit/Selectionner la Prefab Root")
+        #self.MenuItem.AddItem("Edit/Inverser la selection")
+        #self.MenuItem.Add_separator("Edit")
         self.MenuItem.AddItem("Edit/Couper")
         self.MenuItem.AddItem("Edit/Copier")
         self.MenuItem.AddItem("Edit/Coller")
@@ -185,23 +224,23 @@ class ScreenOrganization:
         self.MenuItem.AddItem("Edit/Renommer")
         self.MenuItem.AddItem("Edit/Supprimer")
         self.MenuItem.Add_separator("Edit")
-        self.MenuItem.AddItem("Edit/Frame Selected")
-        self.MenuItem.AddItem("Edit/Lock View to Selected")
+        #self.MenuItem.AddItem("Edit/Frame Selected")
+        #self.MenuItem.AddItem("Edit/Lock View to Selected")
         self.MenuItem.AddItem("Edit/Find")
-        self.MenuItem.Add_separator("Edit")
-        self.MenuItem.AddItem("Edit/Play")
-        self.MenuItem.AddItem("Edit/Pause")
-        self.MenuItem.AddItem("Edit/Step")
-        self.MenuItem.Add_separator("Edit")
-        self.MenuItem.AddItem("Edit/Sign in...")
-        self.MenuItem.AddItem("Edit/Sign out")
+        #self.MenuItem.Add_separator("Edit")
+        #self.MenuItem.AddItem("Edit/Play")
+        #self.MenuItem.AddItem("Edit/Pause")
+        #self.MenuItem.AddItem("Edit/Step")
+        #self.MenuItem.Add_separator("Edit")
+        #self.MenuItem.AddItem("Edit/Sign in...")
+        #self.MenuItem.AddItem("Edit/Sign out")
         self.MenuItem.Add_separator("Edit")
         self.MenuItem.AddItem("Edit/Selection")
         self.MenuItem.Add_separator("Edit")
         self.MenuItem.AddItem("Edit/Parametre du Projet...", partial(ProjectSettingsWindow,self.Particule.Mafenetre))
         self.MenuItem.AddItem("Edit/Preferences...")
         self.MenuItem.AddItem("Edit/Shortcuts...")
-        self.MenuItem.AddItem("Edit/Clear All PlayerPrefs")
+        #self.MenuItem.AddItem("Edit/Clear All PlayerPrefs")
 
         self.MenuItem.AddItem("Asset/Create")
         self.MenuItem.AddItem("Asset/Show in Explorer",self.ShowInExplorer)
@@ -220,10 +259,10 @@ class ScreenOrganization:
         self.MenuItem.AddItem("Asset/Find References In Scene")
         self.MenuItem.AddItem("Asset/Select Dependencies")
         self.MenuItem.Add_separator("Asset")
-        self.MenuItem.AddItem("Asset/Refresh")
-        self.MenuItem.AddItem("Asset/Reimport")
-        self.MenuItem.Add_separator("Asset")
-        self.MenuItem.AddItem("Asset/Reimport All")
+        self.MenuItem.AddItem("Asset/Refresh",self.Particule.UpdateOnFocus)
+        #self.MenuItem.AddItem("Asset/Reimport")
+        #self.MenuItem.Add_separator("Asset")
+        #self.MenuItem.AddItem("Asset/Reimport All")
         self.MenuItem.Add_separator("Asset")
         self.MenuItem.AddItem("Asset/Extract From Prefab")
         self.MenuItem.Add_separator("Asset")
@@ -291,6 +330,11 @@ class ScreenOrganization:
         self.MenuItem.AddItem("Window/AI")
         self.MenuItem.AddItem("Window/XR")
         self.MenuItem.AddItem("Window/UI")
+
+        for i in self.Particule.ListeCalculatrices:
+            self.MenuItem.AddItem("Calculatrice/"+i.replace("/"," "),partial(self.SetCalculatrice,i))
+        self.MenuItem.AddItem("Couleur/Monochrome",partial(self.SetColor,"Monochrome"))
+        self.MenuItem.AddItem("Couleur/RBG",partial(self.SetColor,"RGB"))
 
         self.MenuItem.AddItem("Aide/A propos")  # ,show_about)
         self.MenuItem.Add_separator("Aide")

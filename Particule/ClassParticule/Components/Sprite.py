@@ -45,7 +45,7 @@ class Sprite(Component):
     def ReloadImg(self):
         try:
             self.repImg = self.texture.path.replace(self.Particule.FolderProject,"")
-            self.Img = ImageTk.Image.open(self.Particule.FolderProject+"/"+self.repImg)
+            self.Img = self.texture.ImgStd#ImageTk.Image.open(self.Particule.FolderProject+"/"+self.repImg)
             self.width = self.Img.width
             self.height = self.Img.height
             self.Img = self.Img.resize((int(self.Img.width*self._lastZoom), int(self.Img.height*self._lastZoom)),resample=Image.NEAREST)

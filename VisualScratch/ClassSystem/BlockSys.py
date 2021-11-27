@@ -91,6 +91,8 @@ class BlockSys:
             return "Vector2()"
         elif Type == "Texture":
             return 'self.texture = self.Particule.FolderWindow.TextureVide'
+        elif Type[:4] == 'List' or Type[:5] == 'Array':
+            return "[]"
     def GetSaveValueAttributPython(self,Type,name):
         if Type in ["int","float","string","bool"]:
             return '"'+name+'":self.'+name
@@ -98,6 +100,8 @@ class BlockSys:
             return '"'+name+'":self.'+name+".get()"
         elif Type == "Texture":
             return '"'+name+'":self.'+name+".ID"
+        elif Type[:4] == 'List' or Type[:5]=='Array':
+            return '"' + name + '":self.' + name
     def GetSetTypeDicoPython(self,Type):
         if Type == "int":
             return '{"Type":int}'
@@ -111,10 +115,12 @@ class BlockSys:
             return '{"Type":Vector2}'
         elif Type == "Texture":
             return '{"Type":Texture}'
-        elif Type == "list(int)":
-            return '{"Type":list,"LstValueType":{"Type":int},"LstType":"List"}'
-        elif Type == "array(int)":
-            return '{"Type":list,"LstValueType":{"Type":int},"LstType":"Array"}'
+        elif Type[:4]=='List':
+            return '{"Type":list,"LstValueType":'+\
+                   self.GetSetTypeDicoPython(((Type.split("<",1)[1]).split(">",1)[0]))+',"LstType":"List"}'
+        elif Type[:5]=='Array':
+            return '{"Type":list,"LstValueType":'+\
+                   self.GetSetTypeDicoPython(((Type.split("<",1)[1]).split(">",1)[0]))+',"LstType":"Array"}'
     def GetLoadValueAttributPython(self,Type,name):
         if Type in ["int","float","string","bool"]:
             return 'self.'+name+'= dataCompo["'+name+'"]'
@@ -122,6 +128,8 @@ class BlockSys:
             return 'self.'+name+'= Vector2.set(Vector2(),dataCompo["'+name+'"])'
         elif Type == "Texture":
             return 'self.'+name+'= self.Particule.GetTextureUUID(dataCompo["'+name+'"])'
+        elif Type[:4] == 'List' or Type[:5]=='Array':
+            return 'self.'+name+'= dataCompo["'+name+'"]'
     def GetInitValueAttributCasio(self,Type):
         if Type == "int":
             return "0"
@@ -135,11 +143,17 @@ class BlockSys:
             return "new Vector2()"
         elif Type == "Texture":
             return 'new Texture()'
+        elif Type[:4] == 'List' or Type[:5] == 'Array':
+            return None
 
     def GetTypeValueAttributCasio(self,Type):
         if Type in ["int","float","bool"]:
             return Type
         elif Type=="string":
             return "unsigned char*"
+        elif Type[:4]=='List':
+            return "List<"+self.GetTypeValueAttributCasio((Type.split("<",1)[1]).split(">",1)[0])+">"
+        elif Type[:5]=='Array':
+            return self.GetTypeValueAttributCasio((Type.split("<",1)[1]).split(">",1)[0])+"*"
         else:
-            return Type+"*"
+            return Type#+"*"

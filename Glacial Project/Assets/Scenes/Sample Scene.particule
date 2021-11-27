@@ -454,6 +454,21 @@
                 "UUID_ad568a35_d6d0_48e4_91cb_963751390689",
                 "UUID_7f8f0d11_b23c_4d20_9de8_5dd2dce6ece3"
             ]
+        },
+        "UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a": {
+            "name": "GameObject",
+            "activeInHierarchy": true,
+            "activeSelf": true,
+            "isStatic": false,
+            "layer": 0,
+            "scene": "Assets/Scenes/Sample Scene.particule",
+            "sceneCullingMask": "",
+            "tag": 0,
+            "transform": "UUID_dfa2fa3d_03b8_4d2b_92d3_7fbfdb13a160",
+            "ListOfComponent": [
+                "UUID_dfa2fa3d_03b8_4d2b_92d3_7fbfdb13a160",
+                "UUID_1442eb0f_49d9_42b2_95b6_0bcc3509fed3"
+            ]
         }
     },
     "Components": {
@@ -1790,6 +1805,25 @@
             "name": "Sprite",
             "gameObject": "UUID_6ee4b8f0_6cd0_49dc_87f1_9a00a92c6016",
             "repImg": "UUID_2eb7ff6f_9ee6_4d20_8101_85d488b47c82"
+        },
+        "UUID_dfa2fa3d_03b8_4d2b_92d3_7fbfdb13a160": {
+            "name": "Transform",
+            "gameObject": "UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a",
+            "childCount": 0,
+            "localPosition": [
+                0,
+                0
+            ],
+            "position": [
+                0,
+                0
+            ],
+            "parent": null,
+            "childs": []
+        },
+        "UUID_1442eb0f_49d9_42b2_95b6_0bcc3509fed3": {
+            "name": "Camera",
+            "gameObject": "UUID_6ea62c05_b925_4fcd_905f_6b2ad3de4a4a"
         }
     }
 }

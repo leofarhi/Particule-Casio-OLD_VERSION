@@ -1,0 +1,401 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\main.cpp
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        main.cpp     1    /*****************************************************************/
+        main.cpp     2    /*                                                               */
+        main.cpp     3    /*   CASIO fx-9860G SDK Library                                  */
+        main.cpp     4    /*                                                               */
+        main.cpp     5    /*   File name : [ProjectName].c                                 */
+        main.cpp     6    /*                                                               */
+        main.cpp     7    /*   Copyright (c) 2006 CASIO COMPUTER CO., LTD.                 */
+        main.cpp     8    /*                                                               */
+        main.cpp     9    /*****************************************************************/
+        main.cpp    10    
+        main.cpp    11    extern "C"
+        main.cpp    12    {
+        main.cpp    13    #include "keybios.h"
+        main.cpp    14    #include "fxlib.h"
+        main.cpp    15    #include <stdio.h>
+        main.cpp    16    #include "stdio.h"
+        main.cpp    17    #include "stdlib.h"
+        main.cpp    18    
+        main.cpp    19    #include "string.h"
+        main.cpp    20    #include "time.h"
+        main.cpp    21    
+        main.cpp    22    
+        main.cpp    23    
+        main.cpp    24    
+        main.cpp    25    }
+        main.cpp    26    #include "usefull.h"
+        main.cpp    27    
+        main.cpp    28    //****************************************************************************
+        main.cpp    29    //  AddIn_main (Sample program main function)
+        main.cpp    30    //
+        main.cpp    31    //  param   :   isAppli   : 1 = This application is launched by MAIN MENU.
+        main.cpp    32    //                        : 0 = This application is launched by a strip in eACT application.
+        main.cpp    33    //
+        main.cpp    34    //              OptionNum : Strip number (0~3)
+        main.cpp    35    //                         (This parameter is only used when isAppli parameter is 0.)
+        main.cpp    36    //
+        main.cpp    37    //  retval  :   1 = No error / 0 = Error
+        main.cpp    38    //
+        main.cpp    39    //****************************************************************************
+        main.cpp    40    #include "Announcement.h"
+        main.cpp    41    #include "List.h"
+        main.cpp    42    #include "ParticuleGraphics.hpp"
+        main.cpp    43    #include "ParticuleEngine.hpp"
+        main.cpp    44    #include "Ressources.h"
+        main.cpp    45    
+        main.cpp    46    
+        main.cpp    47    
+        main.cpp    48    int main() {
+P   00000000              _main:                           ; function: main
+                                                           ; frame size=40
+    00000000 2FE6                   MOV.L       R14,@-R15
+    00000002 2FD6                   MOV.L       R13,@-R15
+    00000004 2FC6                   MOV.L       R12,@-R15
+    00000006 2FB6                   MOV.L       R11,@-R15
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000008 2FA6                   MOV.L       R10,@-R15
+    0000000A 2F96                   MOV.L       R9,@-R15
+    0000000C 2F86                   MOV.L       R8,@-R15
+    0000000E 4F22                   STS.L       PR,@-R15
+    00000010 D438                   MOV.L       L282+2,R4  ; __$__T30262636$250
+    00000012 7FF8                   ADD         #-8,R15
+    00000014 DE38                   MOV.L       L282+6,R14 ; __$__2890_26_sceneManager$251
+    00000016 6342                   MOV.L       @R4,R3
+    00000018 2338                   TST         R3,R3
+    0000001A 8B34                   BF          L268
+    0000001C E301                   MOV         #1,R3
+        main.cpp    49        static SceneManager* sceneManager = new SceneManager();
+    0000001E ED00                   MOV         #0,R13
+    00000020 2432                   MOV.L       R3,@R4
+    00000022 63D3                   MOV         R13,R3
+    00000024 2338                   TST         R3,R3
+    00000026 8F06                   BF/S        L270
+    00000028 2FD2                   MOV.L       R13,@R15
+    0000002A D334                   MOV.L       L282+10,R3 ; ___nw__FUl
+    0000002C 430B                   JSR         @R3
+    0000002E E420                   MOV         #32,R4
+    00000030 2008                   TST         R0,R0
+    00000032 8D26                   BT/S        L274
+    00000034 2F02                   MOV.L       R0,@R15
+    00000036              L270:                             
+    00000036 E301                   MOV         #1,R3
+    00000038 62F2                   MOV.L       @R15,R2
+    0000003A 1236                   MOV.L       R3,@(24,R2)
+    0000003C 62F2                   MOV.L       @R15,R2
+    0000003E E300                   MOV         #0,R3
+    00000040 1237                   MOV.L       R3,@(28,R2)
+    00000042 62F2                   MOV.L       @R15,R2
+    00000044 12D4                   MOV.L       R13,@(16,R2)
+    00000046 E2FF                   MOV         #-1,R2
+    00000048 63F2                   MOV.L       @R15,R3
+    0000004A 13D5                   MOV.L       R13,@(20,R3)
+    0000004C 63F2                   MOV.L       @R15,R3
+    0000004E 1321                   MOV.L       R2,@(4,R3)
+    00000050 63F2                   MOV.L       @R15,R3
+    00000052 E200                   MOV         #0,R2
+    00000054 1322                   MOV.L       R2,@(8,R3)
+    00000056 62D3                   MOV         R13,R2
+    00000058 63F2                   MOV.L       @R15,R3
+    0000005A 2228                   TST         R2,R2
+    0000005C 6933                   MOV         R3,R9
+    0000005E 790C                   ADD         #12,R9
+    00000060 8F06                   BF/S        L272
+    00000062 1FD1                   MOV.L       R13,@(4,R15)
+    00000064 D325                   MOV.L       L282+10,R3 ; ___nw__FUl
+    00000066 430B                   JSR         @R3
+    00000068 E404                   MOV         #4,R4
+    0000006A 2008                   TST         R0,R0
+    0000006C 8D05                   BT/S        L273
+    0000006E 1F01                   MOV.L       R0,@(4,R15)
+    00000070              L272:                             
+    00000070 58F1                   MOV.L       @(4,R15),R8
+    00000072 D323                   MOV.L       L282+14,R3 ; ___ct__7Vector2Fv
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000074 430B                   JSR         @R3
+    00000076 E400                   MOV         #0,R4
+    00000078 2802                   MOV.L       R0,@R8
+    0000007A              L273:                             
+    0000007A 52F1                   MOV.L       @(4,R15),R2
+    0000007C 2922                   MOV.L       R2,@R9
+    0000007E B051                   BSR         __$LoadTextures__12SceneManagerFv
+    00000080 64F2                   MOV.L       @R15,R4
+    00000082              L274:                             
+    00000082 63F2                   MOV.L       @R15,R3
+    00000084 2E32                   MOV.L       R3,@R14
+    00000086              L268:                             
+        main.cpp    50        //reference croise
+        main.cpp    51        sceneManager->LoadScene(0);
+    00000086 E500                   MOV         #0,R5
+    00000088 D31E                   MOV.L       L282+18,R3 ; _LoadScene__12SceneManagerFi
+    0000008A 430B                   JSR         @R3
+    0000008C 64E2                   MOV.L       @R14,R4
+        main.cpp    52        sceneManager->StartScene();
+    0000008E D21E                   MOV.L       L282+22,R2 ; _StartScene__12SceneManagerFv
+    00000090 420B                   JSR         @R2
+    00000092 64E2                   MOV.L       @R14,R4
+    00000094 DA1D                   MOV.L       L282+26,R10; _UpdateScene__12SceneManagerFv
+    00000096 DB1E                   MOV.L       L282+30,R11; _ClearScreen__Fv
+    00000098 DC1E                   MOV.L       L282+34,R12; _KeyDown
+    0000009A DD1F                   MOV.L       L282+38,R13; _UpdateScreen__Fv
+        main.cpp    53        while (!IsKeyDown(KEY_CTRL_MENU) && (!sceneManager->_quit))
+    0000009C A006                   BRA         L275
+    0000009E 0009                   NOP
+    000000A0              L276:                             
+        main.cpp    54        {
+        main.cpp    55            ClearScreen();
+    000000A0 4B0B                   JSR         @R11
+    000000A2 0009                   NOP
+        main.cpp    56            sceneManager->UpdateScene();
+    000000A4 4A0B                   JSR         @R10
+    000000A6 64E2                   MOV.L       @R14,R4
+        main.cpp    57    
+        main.cpp    58            //Sleep(100);
+        main.cpp    59            UpdateScreen();
+    000000A8 4D0B                   JSR         @R13
+    000000AA 0009                   NOP
+    000000AC              L275:                             
+    000000AC 4C0B                   JSR         @R12
+    000000AE E430                   MOV         #48,R4
+    000000B0 600C                   EXTU.B      R0,R0
+    000000B2 2008                   TST         R0,R0
+    000000B4 8B04                   BF          L277
+    000000B6 D210                   MOV.L       L282+6,R2  ; __$__2890_26_sceneManager$251
+    000000B8 6322                   MOV.L       @R2,R3
+    000000BA 5132                   MOV.L       @(8,R3),R1
+    000000BC 2118                   TST         R1,R1
+    000000BE 89EF                   BT          L276
+    000000C0              L277:                             
+        main.cpp    60        }
+        main.cpp    61        delete sceneManager;
+    000000C0 D316                   MOV.L       L282+42,R3 ; ___dl__FPv
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    4
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    000000C2 430B                   JSR         @R3
+    000000C4 64E2                   MOV.L       @R14,R4
+        main.cpp    62        return 1;
+    000000C6 E001                   MOV         #1,R0
+        main.cpp    63    }
+    000000C8 7F08                   ADD         #8,R15
+    000000CA 4F26                   LDS.L       @R15+,PR
+    000000CC 68F6                   MOV.L       @R15+,R8
+    000000CE 69F6                   MOV.L       @R15+,R9
+    000000D0 6AF6                   MOV.L       @R15+,R10
+    000000D2 6BF6                   MOV.L       @R15+,R11
+    000000D4 6CF6                   MOV.L       @R15+,R12
+    000000D6 6DF6                   MOV.L       @R15+,R13
+    000000D8 000B                   RTS
+    000000DA 6EF6                   MOV.L       @R15+,R14
+        main.cpp    64    
+        main.cpp    65    extern "C"
+        main.cpp    66    {
+        main.cpp    67    int AddIn_main(int isAppli, unsigned short OptionNum)
+    000000DC              _AddIn_main:                     ; function: AddIn_main
+                                                           ; frame size=8
+    000000DC 4F22                   STS.L       PR,@-R15
+    000000DE 7FFC                   ADD         #-4,R15
+        main.cpp    68    {
+        main.cpp    69        main();
+    000000E0 BF8E                   BSR         _main
+    000000E2 0009                   NOP
+        main.cpp    70        unsigned int key;
+        main.cpp    71        return GetKey(&key);
+    000000E4 D20E                   MOV.L       L282+46,R2 ; _GetKey
+    000000E6 420B                   JSR         @R2
+    000000E8 64F3                   MOV         R15,R4
+        main.cpp    72    }
+    000000EA 7F04                   ADD         #4,R15
+    000000EC 4F26                   LDS.L       @R15+,PR
+    000000EE 000B                   RTS
+    000000F0 0009                   NOP
+    000000F2              L282:                             
+    000000F2 0000                   .DATA.W     0
+    000000F4 <00000000>             .DATA.L     __$__T30262636$250
+    000000F8 <00000000>             .DATA.L     __$__2890_26_sceneManager$251
+    000000FC <00000000>             .DATA.L     ___nw__FUl
+    00000100 <00000000>             .DATA.L     ___ct__7Vector2Fv
+    00000104 <00000000>             .DATA.L     _LoadScene__12SceneManagerFi
+    00000108 <00000000>             .DATA.L     _StartScene__12SceneManagerFv
+    0000010C <00000000>             .DATA.L     _UpdateScene__12SceneManagerFv
+    00000110 <00000000>             .DATA.L     _ClearScreen__Fv
+    00000114 <00000000>             .DATA.L     _KeyDown
+    00000118 <00000000>             .DATA.L     _UpdateScreen__Fv
+    0000011C <00000000>             .DATA.L     ___dl__FPv
+    00000120 <00000000>             .DATA.L     _GetKey
+        main.cpp    73    
+        main.cpp    74    
+        main.cpp    75    
+        main.cpp    76    
+        main.cpp    77    //****************************************************************************
+        main.cpp    78    //**************                                              ****************
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    5
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+        main.cpp    79    //**************                 Notice!                      ****************
+        main.cpp    80    //**************                                              ****************
+        main.cpp    81    //**************  Please do not change the following source.  ****************
+        main.cpp    82    //**************                                              ****************
+        main.cpp    83    //****************************************************************************
+        main.cpp    84    
+        main.cpp    85    
+        main.cpp    86    #pragma section _BR_Size
+        main.cpp    87    unsigned long BR_Size;
+        main.cpp    88    #pragma section
+        main.cpp    89    
+        main.cpp    90    
+        main.cpp    91    #pragma section _TOP
+        main.cpp    92    
+        main.cpp    93    //****************************************************************************
+        main.cpp    94    //  InitializeSystem
+        main.cpp    95    //
+        main.cpp    96    //  param   :   isAppli   : 1 = Application / 0 = eActivity
+        main.cpp    97    //              OptionNum : Option Number (only eActivity)
+        main.cpp    98    //
+        main.cpp    99    //  retval  :   1 = No error / 0 = Error
+        main.cpp   100    //
+        main.cpp   101    //****************************************************************************
+        main.cpp   102    int InitializeSystem(int isAppli, unsigned short OptionNum)
+P_T 00000000              _InitializeSystem:               ; function: InitializeSystem
+                                                           ; frame size=0
+        main.cpp   103    {
+        main.cpp   104        return INIT_ADDIN_APPLICATION(isAppli, OptionNum);
+    00000000 D301                   MOV.L       L283+2,R3  ; _INIT_ADDIN_APPLICATION
+    00000002 432B                   JMP         @R3
+    00000004 0009                   NOP
+    00000006              L283:                             
+    00000006 0000                   .DATA.W     0
+    00000008 <00000000>             .DATA.L     _INIT_ADDIN_APPLICATION
+        main.cpp   105    }
+        main.cpp   106    
+        main.cpp   107    #pragma section
+        main.cpp   108    }
+P   00000124              __$LoadTextures__12SceneManagerFv:
+                                                           ; function: SceneManager::LoadTextures()
+                                                           ; frame size=0
+    00000124 000B                   RTS
+    00000126 0009                   NOP
+B_B 00000000              _BR_Size:                        ; static: BR_Size
+    00000000 00000004               .RES.L      1
+B   00000000              __$__T30262636$250:              ; static: __T30262636
+    00000000 00000004               .RES.L      1
+    00000004              __$__2890_26_sceneManager$251:   ; static: sceneManager
+    00000004 00000004               .RES.L      1
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:        49
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:      108
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               00000128 Byte(s)
+PROGRAM  SECTION (P_BR_Size):                       00000000 Byte(s)
+PROGRAM  SECTION (P_TOP):                           0000000C Byte(s)
+CONSTANT SECTION (C):                               00000000 Byte(s)
+CONSTANT SECTION (C_BR_Size):                       00000000 Byte(s)
+CONSTANT SECTION (C_TOP):                           00000000 Byte(s)
+DATA     SECTION (D):                               00000000 Byte(s)
+DATA     SECTION (D_BR_Size):                       00000000 Byte(s)
+DATA     SECTION (D_TOP):                           00000000 Byte(s)
+BSS      SECTION (B):                               00000008 Byte(s)
+BSS      SECTION (B_BR_Size):                       00000004 Byte(s)
+BSS      SECTION (B_TOP):                           00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 00000140 Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:           11
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:           4
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            25
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmk65E0.tmp 
+

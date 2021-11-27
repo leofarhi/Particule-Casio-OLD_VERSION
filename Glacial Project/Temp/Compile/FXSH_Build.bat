@@ -2,7 +2,7 @@
 rem Do not edit! This batch file is created by CASIO fx-9860G SDK.
 
 if exist debug\*.obj  del debug\*.obj
-if exist TUTORIEL.G1A  del TUTORIEL.G1A
+if exist PARTIC.G1A  del PARTIC.G1A
 
 cd debug
 if exist FXADDINror.bin  del FXADDINror.bin
@@ -11,7 +11,7 @@ cd ..
 if not exist debug\FXADDINror.bin  goto error
 
 "C:\Users\leofa\Applications\CASIO\fx9860 Dev Kit\Tools\MakeAddinHeader363.exe" "C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Glacial Project\Temp\Compile"
-if not exist TUTORIEL.G1A  goto error
+if not exist PARTIC.G1A  goto error
 echo Build has completed.
 goto end
 

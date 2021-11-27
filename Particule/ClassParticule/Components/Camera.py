@@ -4,7 +4,9 @@ class Camera(Component):
     def __init__(self,gameObject,**kwargs):
         Component.__init__(self, gameObject, __name__.split(".")[-1],**kwargs)
         self.canevas = self.Particule.Scene.surface
-        self.Mesh = self.canevas.create_rectangle(0,0, 127, 63, fill="")
+        self.pathProjectSettings = self.Particule.FolderProject + "/ProjectSettings/ProjectSettings.txt"
+        self.w,self.h=self.ReloadSize()
+        self.Mesh = self.canevas.create_rectangle(0,0, self.w,self.h, fill="")
 
         self.Particule.Scene.surface.tag_bind(self.Mesh, '<Button-1>', self.Clic)
         #self.Particule.Scene.surface.tag_bind(self.Mesh, '<B1-Motion>', self.Drag)
@@ -25,10 +27,14 @@ class Camera(Component):
         z = self.Particule.Scene.zoom
         x,y = self.gameObject.transform.position.get()
         self.Particule.Scene.surface.coords(self.Mesh,int((x-self.Particule.Scene.x)*z),int((y+self.Particule.Scene.y)*z),
-                                            int((x-self.Particule.Scene.x+127)*z),int((y+self.Particule.Scene.y+63)*z))
+                                            int((x-self.Particule.Scene.x+self.w)*z),int((y+self.Particule.Scene.y+self.h)*z))
 
     def WhenComponentIsShowSignal(self):
         self.Particule.Scene.surface.tag_raise(self.Mesh)
     def Destroy(self):
         self.Particule.Scene.surface.delete(self.Mesh)
         Component.Destroy(self)
+
+    def ReloadSize(self):
+        temp = eval(rf.found(self.pathProjectSettings, "Player&ScreenSize"))
+        return temp

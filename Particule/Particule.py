@@ -90,6 +90,8 @@ from ClassSystem.TypeGUI import TypeGUI
 from ClassSystem.SLN_System import SLN_System
 from ClassSystem.ProgressBarPopup import ProgressBarPopup
 import ClassParticule.Component
+import platform
+from ClassParticule.Texture import Texture
 """
 from ClassParticule.Inspector import Inspector
 from ClassSystem.WindowPanel import *
@@ -118,7 +120,7 @@ else:
 def ColorRGB(RGB):
     return "#%02x%02x%02x" % RGB
 
-
+"""
 def show_about():
     about_window = Toplevel(self.Mafenetre)
     about_window.title(TradTxt("A propos"))
@@ -130,7 +132,7 @@ def show_about():
     # lb3.pack()
     lb3 = Label(about_window, text=TradTxt("Version incomplète"))
     lb3.pack()
-
+"""
 
 
 
@@ -139,13 +141,18 @@ class Particule:
     def __init__(self,FolderProject=os.getcwd()+"/ProjectFolder"):
         self.Process = ["Starting"]
         self.version = "2021.1.0"
-        self.VisualScratchPath="C:\\Users\\leofa\\OneDrive\\Documents\\PycharmProjects\\Particule-Casio\\VS Out\\main\\main.exe"
-
+        if platform.system() == 'Windows':
+            self.VisualScratchPath="C:\\Users\\leofa\\OneDrive\\Documents\\PycharmProjects\\Particule-Casio\\VS Out\\main\\main.exe"
+        else:
+            self.VisualScratchPath ="/home/farhi/Bureau/PycharmProjects/Particule-Casio/VisualScratch/main.py"
         self.rep_sys = os.getcwd()
         self.FolderProject = FolderProject
         self.All_UUID = {}
 
         self.SLN_System = SLN_System(self)
+        self.ListeCalculatrices=["Graph 35+USB/75/85/95 (SD)","Graph 90+E"]
+        self.CalculatriceChoice="Graph 35+USB/75/85/95 (SD)"
+        self.CalculatriceCouleur = rf.found(self.FolderProject + "/ProjectSettings/ProjectSettings.txt", "Player&CalculatriceCouleur")
 
 
         #print(path)
@@ -240,11 +247,16 @@ class Particule:
         self.Mafenetre.mainloop()
 
     def GetCodeFromVisualScratch(self):
-
-        process = subprocess.Popen([self.VisualScratchPath,self.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
+        if platform.system()=='Windows':
+            process = subprocess.Popen([self.VisualScratchPath,self.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
+            code = eval(process.stdout.readlines()[-1].decode('latin-1'))
+            PythonCode = code[0]
+        elif platform.system() == 'Linux':
+            process = subprocess.Popen(["python",self.VisualScratchPath,self.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
+        else:
+            raise Exception("Platform Not supporting")
         #print(eval(process.stdout.readlines()[-1]))
-        code=eval(process.stdout.readlines()[-1].decode('latin-1'))
-        PythonCode=code[0]
+
         try:
             for i in os.listdir(self.FolderProject + "/Library/ScriptEditor/"):
                 if ".py" in i:
@@ -261,6 +273,9 @@ class Particule:
 
 
     def on_closing(self):
+        try:
+            self.ScreenOrganization.SaveScreenOrganization()
+        except:pass
         if messagebox.askokcancel("Quit", TradTxt("Voulez-vous quitter ?")):
             self.Mafenetre.destroy()
 
@@ -359,6 +374,9 @@ class Particule:
         self.FolderWindow.CreateMetaFile()
         progress.SetValue(50)
         self.FolderWindow.GetAll_UUID()
+        for i in self.All_UUID.values():
+            if type(i) == Texture:
+                i.ReloadImg()
         progress.SetValue(70)
         self.SLN_System.UpdateSLN()
         progress.SetValue(90)

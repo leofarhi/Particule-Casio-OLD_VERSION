@@ -74,19 +74,22 @@ class Transform(Component):
         #event.x, event.y
         z = self.Particule.Scene.zoom
         self.gameObject.transform.position.set(( (event.x//z)+self.Particule.Scene.x, self.gameObject.transform.position.y))
-        self.Particule.Inspector.UpdateItemSelected()
+        #self.Particule.Inspector.UpdateItemSelected()
+        self.PrintOnGui()
 
     def MoveOnY(self, event):
         #event.x, event.y
         z = self.Particule.Scene.zoom
         self.gameObject.transform.position.set(( self.gameObject.transform.position.x, (event.y//z)-self.Particule.Scene.y))
-        self.Particule.Inspector.UpdateItemSelected()
+        #self.Particule.Inspector.UpdateItemSelected()
+        self.PrintOnGui()
 
     def Drag(self, event):
         #event.x, event.y
         z = self.Particule.Scene.zoom
         self.gameObject.transform.position.set(( (event.x//z)+self.Particule.Scene.x, (event.y//z)-self.Particule.Scene.y))
-        self.Particule.Inspector.UpdateItemSelected()
+        #self.Particule.Inspector.UpdateItemSelected()
+        self.PrintOnGui()
 
 
     def SetParent(self, Other):

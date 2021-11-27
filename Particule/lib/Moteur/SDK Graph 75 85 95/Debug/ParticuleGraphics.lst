@@ -1,0 +1,269 @@
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    1
+
+************ OBJECT LISTING ************
+
+FILE NAME: C:\Users\leofa\OneDrive\Documents\PycharmProjects\Particule-Casio\Particule\lib\Moteur\SDK Graph 75 85 95\ParticuleGraphi
+           cs.cpp
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+      ParticuleG     1    #include "ParticuleGraphics.hpp"
+      ParticuleG     2    #include "MonochromeLib.h"
+      ParticuleG     3    #include "usefull.h"
+      ParticuleG     4    
+      ParticuleG     5    void ClearScreen() {
+P   00000000              _ClearScreen__Fv:                ; function: ClearScreen()
+                                                           ; frame size=0
+      ParticuleG     6            ML_clear_vram();
+    00000000 D321                   MOV.L       L271,R3    ; _ML_clear_vram
+    00000002 432B                   JMP         @R3
+    00000004 0009                   NOP
+      ParticuleG     7    };
+      ParticuleG     8    
+      ParticuleG     9    void UpdateScreen() {
+    00000006              _UpdateScreen__Fv:               ; function: UpdateScreen()
+                                                           ; frame size=0
+      ParticuleG    10            ML_display_vram();
+    00000006 D321                   MOV.L       L271+4,R3  ; _ML_display_vram
+    00000008 432B                   JMP         @R3
+    0000000A 0009                   NOP
+      ParticuleG    11    };
+      ParticuleG    12    
+      ParticuleG    13    void DisplayTexture(Texture* texture, int x, int y, int Zoom = 100, int Rotate = 90) {
+    0000000C              _DisplayTexture__FP7TextureiN32: ; function: DisplayTexture(Texture *, int, int, int, int)
+                                                           ; frame size=12
+    0000000C 2FE6                   MOV.L       R14,@-R15
+    0000000E 6E43                   MOV         R4,R14
+      ParticuleG    14            ML_bmp_or_cl((const unsigned char*)texture->textureData, x, y, texture->width, texture->height);
+    00000010 D21F                   MOV.L       L271+8,R2  ; _ML_bmp_or_cl
+    00000012 4F22                   STS.L       PR,@-R15
+    00000014 53E4                   MOV.L       @(16,R14),R3
+    00000016 2F36                   MOV.L       R3,@-R15
+    00000018 57E5                   MOV.L       @(20,R14),R7
+    0000001A 420B                   JSR         @R2
+    0000001C 54E3                   MOV.L       @(12,R14),R4
+      ParticuleG    15    };
+    0000001E 7F04                   ADD         #4,R15
+    00000020 4F26                   LDS.L       @R15+,PR
+    00000022 000B                   RTS
+    00000024 6EF6                   MOV.L       @R15+,R14
+      ParticuleG    16    
+      ParticuleG    17    void DisplayTexture(Texture* texture, int x, int y) {
+    00000026              _DisplayTexture__FP7TextureiT2:  ; function: DisplayTexture(Texture *, int, int)
+                                                           ; frame size=12
+    00000026 2FE6                   MOV.L       R14,@-R15
+    00000028 4F22                   STS.L       PR,@-R15
+    0000002A 6E43                   MOV         R4,R14
+      ParticuleG    18            ML_bmp_or_cl((const unsigned char*)texture->textureData, x, y, texture->width, texture->height);
+    0000002C D218                   MOV.L       L271+8,R2  ; _ML_bmp_or_cl
+    0000002E 53E4                   MOV.L       @(16,R14),R3
+    00000030 2F36                   MOV.L       R3,@-R15
+    00000032 57E5                   MOV.L       @(20,R14),R7
+    00000034 420B                   JSR         @R2
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    2
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000036 54E3                   MOV.L       @(12,R14),R4
+      ParticuleG    19    };
+    00000038 7F04                   ADD         #4,R15
+    0000003A 4F26                   LDS.L       @R15+,PR
+    0000003C 000B                   RTS
+    0000003E 6EF6                   MOV.L       @R15+,R14
+      ParticuleG    20    
+      ParticuleG    21    void DrawRectangle(int x, int y, int width, int height) {
+    00000040              _DrawRectangle__FiN31:           ; function: DrawRectangle(int, int, int, int)
+                                                           ; frame size=36
+    00000040 2FE6                   MOV.L       R14,@-R15
+      ParticuleG    22            ML_rectangle(x, y, x + width, y + height, 0, ML_WHITE, ML_WHITE);
+    00000042 EE00                   MOV         #0,R14
+    00000044 D113                   MOV.L       L271+12,R1 ; _ML_rectangle
+    00000046 4F22                   STS.L       PR,@-R15
+    00000048 7FF0                   ADD         #-16,R15
+    0000004A 2F42                   MOV.L       R4,@R15
+    0000004C 1F51                   MOV.L       R5,@(4,R15)
+    0000004E 1F63                   MOV.L       R6,@(12,R15)
+    00000050 1F72                   MOV.L       R7,@(8,R15)
+    00000052 2FE6                   MOV.L       R14,@-R15
+    00000054 2FE6                   MOV.L       R14,@-R15
+    00000056 2FE6                   MOV.L       R14,@-R15
+    00000058 53F5                   MOV.L       @(20,R15),R3
+    0000005A 57F4                   MOV.L       @(16,R15),R7
+    0000005C 52F6                   MOV.L       @(24,R15),R2
+    0000005E 373C                   ADD         R3,R7
+    00000060 56F3                   MOV.L       @(12,R15),R6
+    00000062 362C                   ADD         R2,R6
+    00000064 55F4                   MOV.L       @(16,R15),R5
+    00000066 410B                   JSR         @R1
+    00000068 54F3                   MOV.L       @(12,R15),R4
+      ParticuleG    23    };
+    0000006A 7F1C                   ADD         #28,R15
+    0000006C 4F26                   LDS.L       @R15+,PR
+    0000006E 000B                   RTS
+    00000070 6EF6                   MOV.L       @R15+,R14
+      ParticuleG    24    
+      ParticuleG    25    void PrintTextMini(unsigned char* text,int x,int y) {
+    00000072              _PrintTextMini__FPUciT2:         ; function: PrintTextMini(unsigned char *, int, int)
+                                                           ; frame size=12
+    00000072 7FF4                   ADD         #-12,R15
+      ParticuleG    26            PrintMini(x, y, (unsigned char*)text, MINI_OVER);
+    00000074 D308                   MOV.L       L271+16,R3 ; _PrintMini
+    00000076 E710                   MOV         #16,R7
+    00000078 1F42                   MOV.L       R4,@(8,R15)
+    0000007A 2F52                   MOV.L       R5,@R15
+    0000007C 1F61                   MOV.L       R6,@(4,R15)
+    0000007E 56F2                   MOV.L       @(8,R15),R6
+    00000080 55F1                   MOV.L       @(4,R15),R5
+    00000082 64F2                   MOV.L       @R15,R4
+    00000084 432B                   JMP         @R3
+    00000086 7F0C                   ADD         #12,R15
+    00000088              L271:                             
+    00000088 <00000000>             .DATA.L     _ML_clear_vram
+    0000008C <00000000>             .DATA.L     _ML_display_vram
+    00000090 <00000000>             .DATA.L     _ML_bmp_or_cl
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    3
+
+
+SCT OFFSET   CODE       C LABEL     INSTRUCTION OPERAND    COMMENT
+
+    00000094 <00000000>             .DATA.L     _ML_rectangle
+    00000098 <00000000>             .DATA.L     _PrintMini
+      ParticuleG    27    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+SH SERIES C/C++ Compiler (Ver. 6.0C)                                                                 26-Nov-2021 01:59:36  PAGE    1
+
+
+******** STATISTICS INFORMATION ********
+
+
+********** ERROR INFORMATION ***********
+
+NUMBER OF ERRORS:           0
+NUMBER OF WARNINGS:         0
+
+
+
+
+******* SOURCE LINE INFORMATION ********
+
+COMPILED SOURCE LINE:       27
+
+
+
+******* SECTION SIZE INFORMATION *******
+
+PROGRAM  SECTION (P):                               0000009C Byte(s)
+CONSTANT SECTION (C):                               00000000 Byte(s)
+DATA     SECTION (D):                               00000000 Byte(s)
+BSS      SECTION (B):                               00000000 Byte(s)
+
+ TOTAL PROGRAM SIZE: 0000009C Byte(s)
+
+
+
+********** LABEL INFORMATION ***********
+
+NUMBER OF EXTERNAL REFERENCE SYMBOLS:            5
+NUMBER OF EXTERNAL DEFINITION SYMBOLS:           6
+NUMBER OF INTERNAL/EXTERNAL SYMBOLS:            12
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+*** COMMAND PARAMETER ***
+
+
+  -subcommand=C:\Users\leofa\AppData\Local\Temp\hmk67D8.tmp 
+
