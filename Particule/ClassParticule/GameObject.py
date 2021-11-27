@@ -51,6 +51,10 @@ class GameObject(Object):
             Data.update(Tchild.gameObject.Copy())
         return Data
 
+    def ChangeActifSelf(self):
+        for component in self.ListOfComponent:
+            component.ChangeActifSelf()
+
     def UpdateOnGUI(self):
         if self.scene!="" and self.scene in self.Particule.Scene.scenes:
             indexScene = self.Particule.Scene.scenes.index(self.scene)

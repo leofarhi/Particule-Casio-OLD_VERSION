@@ -3,6 +3,7 @@ from ClassSystem.Scratch import *
 from ClassSystem.Color import *
 import unicodedata
 import platform
+import pyperclip
 
 
 def CorrectString(s):
@@ -39,6 +40,40 @@ class Forme:
         if Load != False: self.LoadData(Load)
 
         self.PythonScript.WhenAdded()
+
+    def AddContextMenu(self,MainFrame):
+        # self.myFrame.pack(fill=tkinter.BOTH, expand=True)
+        self.Canevas.tag_bind(MainFrame,"<Button-3>", self.popup)
+        self.contextMenu = Menu(self.WindCanvas._Sys.Mafenetre, tearoff=False)
+        # self.contextMenu.add_command(label="Copy")
+        # self.contextMenu.add_command(label="Past")
+        #self.contextMenu.add_separator()
+        # self.contextMenu.add_command(label="Duplicate")
+        #self.contextMenu.add_command(label="Delete")#, command=self.Destroy)
+        self.contextMenu.add_command(label="Copier", command=partial(self.Copy,None))
+        self.contextMenu.add_command(label="Coller" , command=self.WindCanvas._Sys.Scratch.Paste)
+
+    def Copy(self,lst):
+        master=False
+        if lst==None:
+            lst=[]
+            master = True
+        data=self.SaveData()
+        if master:
+            data[4]=None
+        lst.append(data)
+
+        for ind, i in enumerate(self.GroupeParametre):
+            if i[1] != None: (self.WindCanvas.AllWidget.get(i[1])).Copy(lst)
+        for i in self.NextBlockIn:
+            if i != None:
+                (self.WindCanvas.AllWidget.get(i)).Copy(lst)
+        if master:
+            pyperclip.copy("$$VisualScratch$$:" + str(lst))
+
+
+    def popup(self, event):
+        self.contextMenu.post(event.x_root, event.y_root)
 
     def Init(self):
         self.h = 15

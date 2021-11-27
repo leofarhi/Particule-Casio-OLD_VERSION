@@ -28,6 +28,10 @@ class Camera(Component):
         x,y = self.gameObject.transform.position.get()
         self.Particule.Scene.surface.coords(self.Mesh,int((x-self.Particule.Scene.x)*z),int((y+self.Particule.Scene.y)*z),
                                             int((x-self.Particule.Scene.x+self.w)*z),int((y+self.Particule.Scene.y+self.h)*z))
+        if self.gameObject.activeInHierarchy and self.gameObject.activeSelf:
+            self.Particule.Scene.surface.itemconfig(self.Mesh, state='normal')
+        else:
+            self.Particule.Scene.surface.itemconfig(self.Mesh, state='hidden')
 
     def WhenComponentIsShowSignal(self):
         self.Particule.Scene.surface.tag_raise(self.Mesh)

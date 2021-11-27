@@ -105,6 +105,9 @@ class Component(Object):
     def WhenComponentIsHideSignal(self):
         pass
 
+    def ChangeActifSelf(self):
+        pass
+
     def popup(self, event):
         self.contextMenu.post(event.x_root, event.y_root)
     def Destroy(self,*args):
@@ -145,7 +148,7 @@ class Component(Object):
                     path = os.path.basename(var.path)
                     path = os.path.splitext(path)[0]
                     if (var.path=="Library/lib/vide.png"):
-                        parametres +="new Texture()"
+                        parametres +="Texture_TextureVide" #"new Texture()"
                     else:
                         parametres += "Texture_"+path
                     """

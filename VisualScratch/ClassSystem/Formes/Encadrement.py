@@ -134,6 +134,7 @@ class Encadrement(Forme):
             e += (h / 2)
 
         A = self.Canevas.create_polygon(posi, outline=color(Couleurs.gris), fill=self.Color)
+        self.AddContextMenu(A)
         for i in range(Encoche):
             MyGroupWidget = []
             try:

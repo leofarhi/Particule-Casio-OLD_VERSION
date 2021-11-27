@@ -33,9 +33,9 @@ class Inspector(EditorWindow):
         self.varActive = IntVar()
         self.varActive.set(1)
         #self.varActive.trace("w", self.updateDataGameObj)
-        self.CheckActive = Checkbutton(self.frameTop, variable=self.varActive, offvalue=0, onvalue=1,command=self.updateDataGameObj)
+        self.CheckActive = Checkbutton(self.frameTop, variable=self.varActive, offvalue=0, onvalue=1,command=self.ChangeActifSelf)
         self.CheckActive.grid(row=0, column=0)
-        #self.CheckActive.bind("<ButtonRelease-1>", self.updateDataGameObj)
+        #self.CheckActive.bind("<ButtonRelease-1>", self.ChangeActifSelf)
 
         self.var_Entry_name = StringVar()
         #self.var_Entry_name.trace("w", self.updateDataGameObj)
@@ -152,3 +152,10 @@ class Inspector(EditorWindow):
         for item in _list:
             finList.append(item)
         return finList
+
+    def ChangeActifSelf(self,*args):
+        self.updateDataGameObj()
+        ItemSelected = self.Particule.Hierarchy.ItemSelected
+        if ItemSelected == None:
+            return
+        ItemSelected.ChangeActifSelf()

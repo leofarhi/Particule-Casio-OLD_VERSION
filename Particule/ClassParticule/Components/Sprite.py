@@ -71,6 +71,10 @@ class Sprite(Component):
         z = self.Particule.Scene.zoom
         x,y = self.gameObject.transform.position.get()
         self.Particule.Scene.surface.coords(self.Mesh,(x-self.Particule.Scene.x)*z,(y+self.Particule.Scene.y)*z)
+        if self.gameObject.activeInHierarchy and self.gameObject.activeSelf:
+            self.Particule.Scene.surface.itemconfig(self.Mesh, state='normal')
+        else:
+            self.Particule.Scene.surface.itemconfig(self.Mesh, state='hidden')
 
 
     def Destroy(self):

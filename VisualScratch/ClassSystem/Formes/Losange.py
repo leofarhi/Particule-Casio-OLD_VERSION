@@ -27,6 +27,7 @@ class Losange(Forme):
                 self.x, self.y + ((h / 2) * self.Zoom))
 
         A = self.Canevas.create_polygon(posi, outline=color(Couleurs.gris), fill=self.Color)
+        self.AddContextMenu(A)
         MyGroupWidget.append(A)
         self.BoxCollider.append(
             [self.x, self.y, self.x + (r * self.Zoom) + ((h * self.Zoom) * 2), self.y + (h * self.Zoom)])

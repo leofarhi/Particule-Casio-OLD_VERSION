@@ -24,6 +24,7 @@ class EndBox(Forme):
                 self.x + (r * self.Zoom), self.y, self.x + (r * self.Zoom), self.y + (h * self.Zoom), self.x,
                 self.y + (h * self.Zoom))
         A = self.Canevas.create_polygon(posi, outline=color(Couleurs.gris), fill=self.Color)
+        self.AddContextMenu(A)
         MyGroupWidget.append(A)
         self.BoxCollider.append([self.x, self.y, self.x + (r * self.Zoom), self.y + (h * self.Zoom)])
 

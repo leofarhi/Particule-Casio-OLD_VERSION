@@ -235,17 +235,25 @@ class Tilemap(Component):
 
     def WhenComponentIsShowSignal(self):
         self.IsHide = False
-        for i in self.Meshs:
-            for o in i:
-                self.canvas.itemconfig(o, state='normal')
-                self.Particule.Scene.surface.tag_raise(o)
+        if self.gameObject.activeInHierarchy and self.gameObject.activeSelf:
+            for i in self.Meshs:
+                for o in i:
+                    self.canvas.itemconfig(o, state='normal')
+                    self.Particule.Scene.surface.tag_raise(o)
 
     def WhenComponentIsHideSignal(self):
         self.IsHide=True
         for y, i in enumerate(self.DataTilemap):
             for x, o in enumerate(i):
-                if o == 0:
+                if o == 0 or not (self.gameObject.activeInHierarchy and self.gameObject.activeSelf):
                     self.canvas.itemconfig((self.Meshs[y])[x], state='hidden')
+
+    def ChangeActifSelf(self):
+        if self.gameObject.activeInHierarchy and self.gameObject.activeSelf:
+            self.WhenComponentIsShowSignal()
+        else:
+            self.WhenComponentIsHideSignal()
+
 
     def AddScriptAfterInitCasio(self):
         lst = []

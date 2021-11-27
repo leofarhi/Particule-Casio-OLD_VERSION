@@ -16,6 +16,8 @@ from importlib import import_module
 import importlib.util
 from PIL import ImageTk,Image
 from ClassSystem.Color import *
+import pyperclip
+import uuid
 
 
 
@@ -91,6 +93,20 @@ class Scratch:
 
         self.MainCanvas.pack(fill=BOTH, expand=True)
         self.AllWidget = {}  # dictionnaire
+        #self.AddContextMenu()
+
+    def AddContextMenu(self):
+        # self.myFrame.pack(fill=tkinter.BOTH, expand=True)
+        self.MainCanvas.bind("<Button-3>", self.popup)
+        self.contextMenu = Menu(self._Sys.Mafenetre, tearoff=False)
+        # self.contextMenu.add_command(label="Copy")
+        # self.contextMenu.add_command(label="Past")
+        #self.contextMenu.add_separator()
+        # self.contextMenu.add_command(label="Duplicate")
+        #self.contextMenu.add_command(label="Delete")#, command=self.Destroy)
+        self.contextMenu.add_command(label="Coller" , command=self.Paste)
+    def popup(self, event):
+        self.contextMenu.post(event.x_root, event.y_root)
 
     def AddCodeLst(self,Widget):
         Refuser = ["Label"]
@@ -161,8 +177,47 @@ class Scratch:
         for ind, i in enumerate(LstWid):
             i.LoadData(Lst[ind])
         for forme in list(self.WindCanvas.AllWidget.values()):
-            if forme.ParentBlock == None:
+            if forme.ParentBlock == None or forme.TypeForme=="Encadrement":
                 forme.update()
+
+    def LoadWidgetRuntime(self,Lst):
+        LstWid = []
+        for i in range(len(Lst)):
+            wid = self.CreateWidget((Lst[i])[6].replace(".py", ""))
+            LstWid.append(wid)
+            del self.WindCanvas.AllWidget[wid.WidgetIndex]
+            wid.WidgetIndex = (Lst[i])[2]
+            self.WindCanvas.AllWidget.update({(Lst[i])[2]: wid})
+        for ind, i in enumerate(LstWid):
+            i.LoadData(Lst[ind])
+        for forme in list(self.WindCanvas.AllWidget.values()):
+            if forme.ParentBlock == None or forme.TypeForme=="Encadrement":
+                forme.update()
+
+    def Paste(self):
+        Datas = pyperclip.paste()
+        if not "$$VisualScratch$$:" in Datas: return
+        Datas = eval(Datas.replace("$$VisualScratch$$:",""))
+        next = self.GetNewIndexWidget()
+        for index in range(len(Datas)):
+            actu = (Datas[index])[2]
+            newId = next+"0"+str(index)+self.CreateUUID()
+            for ind2 in range(len(Datas)):
+                if actu in (Datas[ind2])[3]:
+                    (Datas[ind2])[3][(Datas[ind2])[3].index(actu)]=newId
+                if actu == (Datas[ind2])[4]:
+                    (Datas[ind2])[4]=newId
+                if actu in [i[1] for i in (Datas[ind2])[5]]:
+                    tmpLst=[i[1] for i in (Datas[ind2])[5]]
+                    ((Datas[ind2])[5][tmpLst.index(actu)])[1] = newId
+            (Datas[index])[2]=newId
+        (Datas[0])[0]=100
+        (Datas[0])[1]=100
+        self.LoadWidgetRuntime(Datas)
+
+    def CreateUUID(self):
+        return str(uuid.uuid4()).replace("-","_")
+
 
     def CreateWidget(self,Block):
         file = self.RepFolderBlocks + "/Data/" + Block + ".py"

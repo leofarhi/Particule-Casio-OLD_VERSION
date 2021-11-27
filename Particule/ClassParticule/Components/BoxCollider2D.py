@@ -47,6 +47,10 @@ class BoxCollider2D(Component):
             int((Start.y+y+self.Particule.Scene.y)*z),
             int((End.x+x-self.Particule.Scene.x)*z),
             int((End.y+y+self.Particule.Scene.y)*z))
+        if self.gameObject.activeInHierarchy and self.gameObject.activeSelf:
+            self.Particule.Scene.surface.itemconfig(self.Mesh, state='normal')
+        else:
+            self.Particule.Scene.surface.itemconfig(self.Mesh, state='hidden')
 
     def WhenComponentIsShowSignal(self):
         self.Particule.Scene.surface.tag_raise(self.Mesh)

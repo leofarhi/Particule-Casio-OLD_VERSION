@@ -21,6 +21,7 @@ class Cercle(Forme):
         A = self.Canevas.create_oval(self.x, self.y - ((h / 2) * self.Zoom), self.x + (h * self.Zoom),
                                      self.y + ((h / 2) * self.Zoom), outline=color(Couleurs.gris), fill=self.Color)
         MyGroupWidget.append(A)
+        self.AddContextMenu(A)
         A = self.Canevas.create_oval(self.x + (r * self.Zoom), self.y - ((h / 2) * self.Zoom),
                                      self.x + (h * self.Zoom) + (r * self.Zoom), self.y + ((h / 2) * self.Zoom),
                                      outline=color(Couleurs.gris), fill=self.Color)

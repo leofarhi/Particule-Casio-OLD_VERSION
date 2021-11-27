@@ -536,12 +536,14 @@ public:
 
     void StartScene();
 
+    Texture* Texture_TextureVide;
     //TexturesID
 
 private:
     List<Scene*> AllSceneLoaded;
 
     void LoadTextures() {
+        Texture_TextureVide = new Texture();
         //CreateTextures
     };
 

@@ -36,6 +36,10 @@ class Text(Component):
         self.Particule.Scene.surface.itemconfig(self.Mesh, text=self.text, font=(self.font, int(5 * z)))
         x,y = self.gameObject.transform.position.get()
         self.Particule.Scene.surface.coords(self.Mesh,(x-self.Particule.Scene.x)*z,(y+self.Particule.Scene.y)*z)
+        if self.gameObject.activeInHierarchy and self.gameObject.activeSelf:
+            self.Particule.Scene.surface.itemconfig(self.Mesh, state='normal')
+        else:
+            self.Particule.Scene.surface.itemconfig(self.Mesh, state='hidden')
 
     def SaveDataDict(self):
         data = Component.SaveDataDict(self)
