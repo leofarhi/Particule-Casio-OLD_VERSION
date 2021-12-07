@@ -13,5 +13,5 @@ bool IsKeyDown(int key) {
 }
 
 void Sleep(int t) {
-	sleep(t);
+	//sleep(t);
 }

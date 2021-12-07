@@ -47,8 +47,10 @@ class BuildSettings(EditorWindow):
         self.WTypeCompilemainframe.pack(fill=BOTH)
 
         WTypeCompileListPlatform = Listbox(self.WTypeCompilemainframe)
+        """
         for item in ["Graph 35+USB/75/85/95 (SD)"]:#Pj.Platforms:
             WTypeCompileListPlatform.insert(END, item)
+        """
         WTypeCompileListPlatform.grid(row=0, column=0, sticky='EWNS')
 
         WTypeCompileListPlatform.selection_set(0)
@@ -491,7 +493,9 @@ name: """ + i + "\n")
 
         imgTemp = cv2.imread(self.Particule.FolderProject + "/ProjectSettings/MainIcon.bmp")
         cv2.imwrite(desti + "/ParticuleGame/assets-fx/icon.png", imgTemp)
-        #cv2.imwrite(desti + "/ParticuleGame/assets-cg/icon.png", imgTemp)
+
+        shutil.copy(self.Particule.FolderProject + "/ProjectSettings/icon-sel.png", desti + "/ParticuleGame/assets-cg/icon-sel.png")
+        shutil.copy(self.Particule.FolderProject + "/ProjectSettings/icon-uns.png", desti + "/ParticuleGame/assets-cg/icon-uns.png")
 
         desti = self.Particule.FolderProject + "/Temp/Compile"
 

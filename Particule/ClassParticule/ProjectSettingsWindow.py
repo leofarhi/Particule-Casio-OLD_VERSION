@@ -39,10 +39,10 @@ class ProjectSettingsWindow(EditorWindow):
         buttonApply.pack(anchor = "s", side = "right",padx=5,pady=5)
 
         self.EditorFrame = LabelFrame(self.NotebookOnglet)
-        self.EditorFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
+        #self.EditorFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
 
         self.GraphicsFrame = LabelFrame(self.NotebookOnglet)
-        self.GraphicsFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
+        #self.GraphicsFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
 
         #self.PhysicsFrame = LabelFrame(self.NotebookOnglet)
         #self.PhysicsFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
@@ -54,30 +54,30 @@ class ProjectSettingsWindow(EditorWindow):
         self.PlayerFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
 
         self.PresetManagerFrame = LabelFrame(self.NotebookOnglet)
-        self.PresetManagerFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
+        #self.PresetManagerFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
 
         self.QualityFrame = LabelFrame(self.NotebookOnglet)
-        self.QualityFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
+        #self.QualityFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
 
         self.ScriptExecutionOrderFrame = LabelFrame(self.NotebookOnglet)
-        self.ScriptExecutionOrderFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
+        #self.ScriptExecutionOrderFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
 
         self.TagsAndLayersFrame = LabelFrame(self.NotebookOnglet)
-        self.TagsAndLayersFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
+        #self.TagsAndLayersFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
 
         self.TimeFrame = LabelFrame(self.NotebookOnglet)
-        self.TimeFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
+        #self.TimeFrame.pack(fill=tkinter.BOTH, expand=True, anchor=N)
 
 
-        self.NotebookOnglet.add(self.EditorFrame, text='Editor')
-        self.NotebookOnglet.add(self.GraphicsFrame, text='Graphics')
+        #self.NotebookOnglet.add(self.EditorFrame, text='Editor')
+        #self.NotebookOnglet.add(self.GraphicsFrame, text='Graphics')
         self.NotebookOnglet.add(self.Physics2DFrame, text='Physics 2D')
         self.NotebookOnglet.add(self.PlayerFrame, text='Player')
-        self.NotebookOnglet.add(self.PresetManagerFrame, text='Preset Manager')
-        self.NotebookOnglet.add(self.QualityFrame, text='Quality')
-        self.NotebookOnglet.add(self.ScriptExecutionOrderFrame, text='Script Execution Order')
-        self.NotebookOnglet.add(self.TagsAndLayersFrame, text='Tags and Layers')
-        self.NotebookOnglet.add(self.TimeFrame, text='Time')
+        #self.NotebookOnglet.add(self.PresetManagerFrame, text='Preset Manager')
+        #self.NotebookOnglet.add(self.QualityFrame, text='Quality')
+        #self.NotebookOnglet.add(self.ScriptExecutionOrderFrame, text='Script Execution Order')
+        #self.NotebookOnglet.add(self.TagsAndLayersFrame, text='Tags and Layers')
+        #self.NotebookOnglet.add(self.TimeFrame, text='Time')
 
 
         ##############- Editor -##############

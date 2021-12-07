@@ -126,9 +126,9 @@ class ParticuleHub:
             BoutonInstallerSDK = ButtonInstall(TempFrame, text=TradTxt("Installer SDK Graph 75 85 95"), width=20, height=5,
                                  command=self.DownloadSdkCasio)
             BoutonInstallerSDK.grid(row=0, column=0)
-        BoutonInstallerSDK = ButtonInstall(TempFrame, text=TradTxt("Installer Gint"), width=20, height=5,
+        BoutonInstallerGint = ButtonInstall(TempFrame, text=TradTxt("Installer Gint"), width=20, height=5,
                                     command=self.DownloadGint)
-        BoutonInstallerSDK.grid(row=0, column=1)
+        #BoutonInstallerGint.grid(row=0, column=1)
         # webbrowser.open('http://www.python.org')
 
     def ChangeOnglet(self, WinFrame):

@@ -180,6 +180,7 @@ class FolderWindow(EditorWindow):
         self.mitem.overrideredirect(1)
         self.mitem.config(bg="white")
         self.mitem.withdraw()
+        self.DropFile=None
 
 
         # Bind events
@@ -283,9 +284,35 @@ class FolderWindow(EditorWindow):
                         #texture = Texture(self.Particule, Path=self.Particule.FolderProject + "/Library/ImagesBmpCache/" +guid+'.bmp',
                         #                  name=os.path.basename(self.detailed_file_list[list(self.selected_file_indices)[0]]))
                     except:pass
+        if self.DropFile!=None:
+            self.Drop_item(event)
         #print(str(len(self.file_list)) + '   Selected: ' + str(len(self.selected_file_indices)) )
         #print(self.selected_file_indices)
         #print(self.repertoirSlc +"/"+self.detailed_file_list[list(self.selected_file_indices)[0]])
+
+    def Drop_item(self,event):
+        #print(self.DropFile)
+        mouse_x, mouse_y = self.canvas.canvasx(event.x), self.canvas.canvasy(event.y)
+        x_cell_pos = int(mouse_x / self.cell_width)
+        y_cell_pos = int(mouse_y / self.cell_height)
+        max_width = self.canvas_width - (self.canvas_width % self.cell_width)
+        current_file_index = int(((max_width / self.cell_width) * y_cell_pos) + x_cell_pos)
+        if (current_file_index >= 0 and current_file_index < len(self.file_list) and mouse_x < max_width):
+            slc = self.detailed_file_list[current_file_index]
+            #print(slc)
+            if self.is_dir(slc) and (not slc in self.DropFile):
+                for i in self.DropFile:
+                    if self.repertoirSlc +"/"+self.nameFilereturn==slc:
+                        shutil.move(i, os.path.dirname(self.repertoirSlc) +"/"+os.path.basename(i))
+                        shutil.move(i+".meta", os.path.dirname(self.repertoirSlc) + "/" + os.path.basename(i)+".meta")
+                    else:
+                        shutil.move(i, slc + "/" + os.path.basename(i))
+                        shutil.move(i + ".meta", slc + "/" + os.path.basename(i) + ".meta")
+        self.DropFile = None
+        self.CreateMetaFile()
+        self.GetAll_UUID()
+        self.Particule.SLN_System.UpdateSLN()
+        self.update_search_files()
 
     def GetAll_UUID(self,rep=None):
         if rep == None:
@@ -548,6 +575,7 @@ class FolderWindow(EditorWindow):
         y = self.Particule.Mafenetre.winfo_pointery()
         self.mitem.geometry("%dx%d+%d+%d" % (32, 32, x, y))
         self.mitem.deiconify()
+        self.DropFile=[file]
         #self.t['cursor'] = "hand2"
         return
         # Calculate steps and offsets for x-direction
@@ -634,7 +662,7 @@ class FolderWindow(EditorWindow):
                         with open(path,"r") as fic:
                             pyperclip.copy(fic.read())
                             self.Particule.Hierarchy.PastObject()
-
+    """
     def file_properties_window(self):
         # Check number of files selected
         if (len(self.selected_file_indices) is not 1): return
@@ -656,83 +684,16 @@ class FolderWindow(EditorWindow):
         self.properties_dialog = Filedialogs.file_properties_dialog(self, 'Properties', self.rename_window,
                                                                     self.change_permissions_window,
                                                                     self.properties_icon, properties)
-
+    
     def rename_window(self):
         self.properties_dialog.destroy()
         self.rename_dialog = Filedialogs.name_dialog(self, 'Rename', self.rename_file_thread, self.rename_icon)
-
-    def rename_file_thread(self):
-        rename_name = self.rename_dialog.rename_entry.get()
-        # Destroy rename window
-        self.rename_dialog.destroy()
-        # Show message box
-        self.start_wait()
-        # start thread
-        self.thread = threading.Thread(target=self.rename_file, args=(
-        self.ftpController, self.file_list, self.detailed_file_list, self.selected_file_indices, rename_name))
-        self.thread.daemon = True
-        self.thread.start()
-        self.process_thread_requests()
-
-    def rename_file(self, ftpController, file_list, detailed_file_list, selected_file_indices, rename_name):
-        try:
-            for key in selected_file_indices:
-                file_name = ftpController.cwd_parent(file_list[key])
-                # If a directory
-                if (self.ftpController.is_dir(detailed_file_list[key])):
-                    ftpController.rename_dir(file_name, rename_name)
-                    # If a file
-                else:
-                    ftpController.ftp.rename(file_name, rename_name)
-            # Deselect everything
-            thread_request_queue.put(lambda: self.selected_file_indices.clear())
-            # update file list and redraw icons
-            thread_request_queue.put(lambda: self.cont_wait())
-            thread_request_queue.put(lambda: self.update_file_list())
-        except:
-            thread_request_queue.put(
-                lambda: self.update_status_red('Unable to rename, try a diffrent name or try reconnecting.'))
-            thread_request_queue.put(lambda: self.lock_status_bar())
-
-    def change_permissions_window(self):
-        self.properties_dialog.destroy()
-        self.permission_window = Filedialogs.name_dialog(self, 'chmod', self.change_permissions_thread,
-                                                         self.permissions_icon, 'Enter octal notation:')
-
-    def change_permissions_thread(self):
-        octal_notation = self.permission_window.rename_entry.get()
-        # Destroy permission window
-        self.permission_window.destroy()
-        # Show message box
-        self.start_wait()
-        # start thread
-        self.thread = threading.Thread(target=self.change_permissions, args=(
-        self.ftpController, self.file_list, self.selected_file_indices, octal_notation))
-        self.thread.daemon = True
-        self.thread.start()
-        self.process_thread_requests()
-
-
-
-
-
-
 
 
     def search_window_ask(self):
         self.search_window = Filedialogs.name_dialog(self, 'Search', self.search_thread, self.search_icon,
                                                      'Enter file name:')
-
-    def search_thread(self):
-        # Create console/terminal window
-        self.create_progress_window()
-        # Create new thread for searching
-        self.thread = threading.Thread(target=self.search_file,
-                                       args=(self.ftpController, self.search_window.rename_entry.get()))
-        self.search_window.destroy()
-        self.thread.daemon = True
-        self.thread.start()
-        self.process_thread_requests()
+    """
 
     def update_search_files(self):
         # Replace file lists with search results and redraw icons
@@ -745,53 +706,13 @@ class FolderWindow(EditorWindow):
             self.detailed_file_list.insert(0, self.repertoirSlc+"/"+self.nameFilereturn)
         self.draw_icons()
 
-    def search_finished(self):
-        self.search_performed = True
-
+    """
     def delete_window(self, event=None):
         if (len(self.selected_file_indices) < 1): return
         self.delete_warning = Filedialogs.warning_dialog(self, 'Are you sure?', self.delete_thread,
                                                          self.delete_icon, 'Delete selected files/folders?')
 
-    def delete_thread(self):
-        # Create console/terminal window
-        self.create_progress_window()
-        self.replace = threading.Event()
-        self.replace.clear()
-        # Destroy warning window
-        self.delete_warning.destroy()
-        # Set current status
-        self.update_status('Deleting file(s)...')
-        # Start thread
-        self.thread = threading.Thread(target=self.delete_item, args=(
-        self.ftpController, self.file_list, self.detailed_file_list, self.selected_file_indices))
-        self.thread.daemon = True
-        self.thread.start()
-        self.process_thread_requests()
-
-    def delete_item(self, ftpController, file_list, detailed_file_list, selected_file_indices):
-        # Thread safe progress function
-        def progress(file_name, status):
-            thread_request_queue.put(lambda: self.progress(file_name, status))
-
-        # Loop through all selected files and folders
-        for index in selected_file_indices:
-            file_name = ftpController.cwd_parent(file_list[index])
-            # If directory
-            if (self.ftpController.is_dir(detailed_file_list[index])):
-                ftpController.delete_dir(file_name, progress)
-            # If file
-            else:
-                ftpController.delete_file(file_name, progress)
-        # Deselect everything
-        thread_request_queue.put(lambda: self.deselect_everything)
-        # Update file list and redraw icons
-        thread_request_queue.put(lambda: self.update_file_list())
-        thread_request_queue.put(lambda: self.update_status(' '))
-        thread_request_queue.put(lambda: self.progress('You can now close the window', 'Done'))
-        thread_request_queue.put(lambda: self.console_window.enable_close_button())
-        thread_request_queue.put(lambda: self.deselect_everything())
-
+    
     def clipboard_cut(self, event=None):
         # Check number of files in clipboard
         if (len(self.selected_file_indices) < 1): return
@@ -823,53 +744,7 @@ class FolderWindow(EditorWindow):
                 self.clipboard_file_list.append(self.file_list[index])
             self.detailed_clipboard_file_list.append(self.detailed_file_list[index])
         self.deselect_everything()
-
-    def clipboard_paste_thread_create(self, event=None):
-        # Check number of files in clipboard
-        if (len(self.clipboard_file_list) < 1): return
-        # Create console/terminal window
-        self.create_progress_window()
-        # start thread
-        self.thread = threading.Thread(target=self.clipboard_paste,
-                                       args=(self.ftpController, self.clipboard_path_list, self.clipboard_file_list,
-                                             self.detailed_clipboard_file_list, self.cut, self.copy))
-        self.thread.daemon = True
-        self.thread.start()
-        self.process_thread_requests()
-
-    def clipboard_paste(self, ftpController, clipboard_path_list, clipboard_file_list, detailed_clipboard_file_list,
-                        cut, copy):
-        # Set current status
-        thread_request_queue.put(lambda: self.update_status('Moving file(s)...'))
-        if (cut is True):
-            # Loop through all selected files and folders
-            for clipboard_path, file_name in zip(clipboard_path_list, clipboard_file_list):
-                ftpController.move_dir(clipboard_path + '/' + file_name, ftpController.pwd() + '/' + file_name,
-                                       self.progress, self.ask_replace)
-            thread_request_queue.put(lambda: self.clear_clipboard())
-            thread_request_queue.put(lambda: self.progress('You can now close the window', 'Done'))
-        elif (copy is True):
-            # Set current status
-            thread_request_queue.put(lambda: self.update_status('Copying file(s)...'))
-            # Loop through all selected files and folders
-            for clipboard_path, file_name, file_details in zip(clipboard_path_list, clipboard_file_list,
-                                                               detailed_clipboard_file_list):
-                # Check for file or directory, use appropriate function
-                try:
-                    if (self.ftpController.is_dir(file_details)):
-                        ftpController.copy_dir(clipboard_path, file_name, self.progress, self.ask_replace)
-                    else:
-                        ftpController.copy_file(clipboard_path, file_name,
-                                                int(self.ftpController.get_properties(file_details)[3]), self.progress,
-                                                self.ask_replace)
-                except:
-                    thread_request_queue.put(lambda: self.progress('Failed to copy file/folder', file_name))
-            thread_request_queue.put(lambda: self.clear_clipboard())
-            thread_request_queue.put(lambda: self.progress('You can now close the window', 'Done'))
-        # update file list and redraw icons
-        thread_request_queue.put(lambda: self.update_file_list())
-        thread_request_queue.put(lambda: self.update_status(' '))
-        thread_request_queue.put(lambda: self.console_window.enable_close_button())
+    
 
     def clear_clipboard(self):
         del self.clipboard_file_list[:]
@@ -900,15 +775,6 @@ class FolderWindow(EditorWindow):
             self.replace_all = True
             return True
 
-    def thread_safe_replace(self, file_name, status):
-        with self.thread_lock:
-            self.replace_flag = self.ask_replace(file_name, status)
-
-    def reset_replace(self):
-        # Set replace all and skip all mode to false
-        self.replace_all = False
-        self.skip_all = False
-
 
     def create_progress_window(self):
         self.console_window = Filedialogs.console_dialog(self, self.console_icon, self.reset_replace)
@@ -923,10 +789,7 @@ class FolderWindow(EditorWindow):
             return
         # Print to console
         self.console_window.insert(status + ': ' + file_name)
-
-    def info(self):
-        self.info_window = Filedialogs.about_dialog(self, 'About', self.whipFTP_icon, 'whipFTP v5.0',
-                                                    '© Vishnu Shankar')
+    """
 
     def disable_toolbar(self, event=None):
         # Disable all buttons

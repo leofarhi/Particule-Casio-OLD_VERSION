@@ -52,7 +52,8 @@ class WindowImage(EditorWindow):
                     self.Particule.FolderWindow.update_search_files()
 
     def Update(self):
-        if len(self.Particule.FolderWindow.selected_file_indices) > 0:
+        if len(self.Particule.FolderWindow.selected_file_indices) > 0 \
+                and len(self.Particule.FolderWindow.detailed_file_list)>list(self.Particule.FolderWindow.selected_file_indices)[0]:
             if os.path.splitext(self.Particule.FolderWindow.detailed_file_list[
                                     list(self.Particule.FolderWindow.selected_file_indices)[0]])[1] in [".png", ".jpg",".bmp"]:
                 path = self.Particule.FolderWindow.detailed_file_list[

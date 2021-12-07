@@ -142,9 +142,9 @@ class Particule:
         self.Process = ["Starting"]
         self.version = "2021.1.0"
         if platform.system() == 'Windows':
-            self.VisualScratchPath="C:\\Users\\leofa\\OneDrive\\Documents\\PycharmProjects\\Particule-Casio\\VS Out\\main\\main.exe"
+            self.VisualScratchPath=os.path.dirname(os.getcwd())+"/VS Out/VisualScratch/VisualScratch.exe"
         else:
-            self.VisualScratchPath ="/home/farhi/Bureau/PycharmProjects/Particule-Casio/VisualScratch/main.py"
+            self.VisualScratchPath =os.path.dirname(os.getcwd())+"/VisualScratch/main.py"
         self.rep_sys = os.getcwd()
         self.FolderProject = FolderProject
         self.All_UUID = {}
@@ -367,7 +367,13 @@ class Particule:
         self.Process.append(self.UpdateOnFocus)
         progress = ProgressBarPopup(self.Mafenetre)
 
+        self.FolderWindow.CreateMetaFile()
+        self.FolderWindow.GetAll_UUID()
+        self.SLN_System.UpdateSLN()
+        self.FolderWindow.update_search_files()
+
         self.GetCodeFromVisualScratch()
+
         self.LoadComponents()
         self.LoadComponents()
         progress.SetValue(30)

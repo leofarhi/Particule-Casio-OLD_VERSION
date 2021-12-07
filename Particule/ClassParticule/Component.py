@@ -161,26 +161,29 @@ class Component(Object):
                     typeRecur = (dicoVar["LstValueType"])['Type']
                     if typeRecur==list:
                         raise Exception("les listes de listes ne sont pas encore pris en compte")
-                    if dicoVar["LstType"]=="List":
+                    elif dicoVar["LstType"]=="List":
                         code=""
                         for ind,o in enumerate(var):
-                            if type(o)==str:o='"'+o+'"'
-                            code +=str(self.ID)+"->"+str(i)+".Add("+o+");\n"
+                            if typeRecur==str:o = "(unsigned char*)"+'"' + str(o) + '"'
+                            code +=str(self.ID)+"->"+str(i)+".Add("+str(o)+");\n"
                         CodeAfter += code
-                        parametres += "null"  # "
-                    if dicoVar["LstType"]=="Array":
+                        parametres += ""  # "
+                        continue
+                    elif dicoVar["LstType"]=="Array":
                         Etoile="*"
                         if not typeRecur in [int,float,str,bool]:
                             Etoile+="*"
                         Etoile += " "
                         code = "static "+typeRecur.__name__+Etoile+"Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)+\
-                               "= new "+ typeRecur.__name__+(Etoile[-2])+"["+str(len(var))+"];\n"
+                               "= new "+ typeRecur.__name__+(Etoile[:-2])+"["+str(len(var))+"];\n"
+                        print(typeRecur)
                         for ind,o in enumerate(var):
-                            if type(o) == str: o = '"' + o + '"'
-                            code+="Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)+"["+ind+"] = "+o+";\n"
+                            if typeRecur == str: o = "(unsigned char*)"+'"' + str(o) + '"'
+                            code+="Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)+"["+str(ind)+"] = "+str(o)+";\n"
                         code += str(self.ID) + "->" + str(i) +"="+"Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)+";\n"
                         CodeAfter+=code
-                        parametres +="null"#"Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)
+                        parametres +=""#"Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)
+                        continue
                 else:
                     #print(eval("self."+i))
                     parametres +=var.ID
