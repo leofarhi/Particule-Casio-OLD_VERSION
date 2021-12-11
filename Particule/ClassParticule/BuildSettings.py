@@ -176,6 +176,8 @@ class BuildSettings(EditorWindow):
                     code += i[0]+"->activeSelf = "+str(i[1].activeSelf).lower()+";\n"
                     code += i[0] + "->activeInHierarchy = " + str(i[1].activeInHierarchy).lower() + ";\n"
                     code += i[0] + "->isStatic = " + str(i[1].isStatic).lower() + ";\n"
+                    code += i[0] + "->tag = Tag(" + str(i[1].tag.value) + ");\n"
+                    code += i[0] + "->layer = Layer(" + str(i[1].layer.value) + ");\n"
                     code += i[0]+'->transform->position->Set('+str(i[1].transform.position.x)+','+str(i[1].transform.position.y)+');\n'
                     code += i[0] + '->transform->localPosition->Set(' + str(i[1].transform.localPosition.x) + ',' + str(i[1].transform.localPosition.y) + ');\n'
 

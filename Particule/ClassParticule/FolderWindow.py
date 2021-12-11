@@ -223,8 +223,8 @@ class FolderWindow(EditorWindow):
 
         self.canvas.bind("<Button-3>", self.popup)
         self.contextMenu = Menu(self.Particule.Mafenetre, tearoff=False)
-        self.contextMenu.add_command(label="Copy")
-        self.contextMenu.add_command(label="Past")
+        #self.contextMenu.add_command(label="Copy")
+        #self.contextMenu.add_command(label="Past")
         self.contextMenu.add_separator()
         self.CreateMenu = Menu(self.Particule.Mafenetre, tearoff=False)
         self.contextMenu.add_cascade(label= "Create",menu=self.CreateMenu)
@@ -233,7 +233,7 @@ class FolderWindow(EditorWindow):
         self.CreateMenu.add_command(label="Folder", command=self.create_dir)
 
         self.contextMenu.add_separator()
-        self.contextMenu.add_command(label="Rename")
+        self.contextMenu.add_command(label="Rename",command=self.RenameFile)
         #self.contextMenu.add_command(label="Duplicate")
         self.contextMenu.add_command(label="Delete", command=self.Destroy)
 
@@ -694,6 +694,24 @@ class FolderWindow(EditorWindow):
         self.search_window = Filedialogs.name_dialog(self, 'Search', self.search_thread, self.search_icon,
                                                      'Enter file name:')
     """
+
+    def RenameFile(self):
+        try:
+            file = self.detailed_file_list[self.current_file_index]
+        except:
+            return
+        if not os.path.exists(file):return
+        name = simpledialog.askstring(title="Renommer",
+                                      prompt="Quel est le nouveau nom de "+os.path.basename(file))
+        directory =os.path.dirname(file)
+        ext = os.path.splitext(os.path.basename(file))[1]
+        if name == None:
+            return
+        newfile = directory+"/"+name+ext
+
+        os.rename(file, newfile)
+        os.rename(file+".meta", newfile+".meta")
+        rf.save(newfile + ".meta", "pathFile", newfile)
 
     def update_search_files(self):
         # Replace file lists with search results and redraw icons

@@ -20,6 +20,7 @@ class SearchWindow(EditorWindow):
         self.var_barreRecherche = StringVar()
         self.SearchBar =  Entry(self, textvariable=self.var_barreRecherche)
         self.SearchBar.pack(fill=X)
+        self.SearchBar.bind('<KeyRelease>', self.rechercheBind)
 
         onglets = ttk.Notebook(self)
         onglets.pack(fill=BOTH, expand=True)
@@ -27,10 +28,10 @@ class SearchWindow(EditorWindow):
         self.FolderFrame = ttk.Frame(onglets)
         self.SceneFrame = ttk.Frame(onglets)
         self.FolderFrame.pack(fill=BOTH, expand=True)
-        self.SceneFrame.pack(fill=BOTH, expand=True)
+        #self.SceneFrame.pack(fill=BOTH, expand=True)
 
         onglets.add(self.FolderFrame, text='All')#'Folder')
-        onglets.add(self.SceneFrame, text='Scene')
+        #onglets.add(self.SceneFrame, text='Scene')
 
         scrollbarFolder = Scrollbar(self.FolderFrame)
         scrollbarFolder.pack(side=RIGHT, fill=Y)
@@ -72,6 +73,14 @@ class SearchWindow(EditorWindow):
     def ClearListe(self):
         self.mylistFolder.delete(0, END)
         #self.mylistScene.delete(0, END)
+
+    def rechercheBind(self,_):
+        self.ClearListe()
+        for elem in self.LstObjFound:
+            name = elem[1].name
+            if not self.var_barreRecherche.get().lower() in name.lower():
+                continue
+            self.mylistFolder.insert(END, name)
 
 
     def OnLostFocus(self,_=None):

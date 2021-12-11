@@ -72,7 +72,7 @@ class ParticuleHub:
 
     def NewProject(self,Folder=None):
         if Folder==None:
-            Folder = self.AddProject()
+            Folder = self.AddProject(True)
         M.create_rep(Folder+ "/Assets")
         M.create_rep(Folder + "/Assets/MyAsset")
         M.create_rep(Folder + "/Library")
@@ -160,9 +160,15 @@ class ParticuleHub:
         self.FWinProjetCanvasScroll.configure(
             scrollregion=self.FWinProjetCanvasScroll.bbox("all"))  # ,width=200,height=200)
 
-    def AddProject(self):
+    def AddProject(self,NewProject):
         global _i
         rep = Fl.open_folder()
+        if NewProject:
+            name = simpledialog.askstring(title="Nom du Projet",
+                                          prompt="Nom du Projet")
+            if name == None:
+                return
+            rep+="/"+name
         LstProjects = rf.GetList("setup.txt", "AllProjects")
         LstProjects.append([rep.split("/")[-1], rep])
         rf.save("setup.txt", "AllProjects", str(LstProjects))
@@ -226,10 +232,13 @@ class ParticuleHub:
                 FrameLstP.pack(fill=X, side=TOP)  # , padx = 5, pady = 5,anchor='nw')#,fill = X)
                 FrameLstPLabel = Frame(FrameLstP, bg="white")
                 FrameLstPLabel.pack(side=LEFT)
-                LabelLstP = Label(FrameLstPLabel, text=i[0], justify="left", bg="white")
+                LabelLstP = Label(FrameLstPLabel, text=(i[0])[:50], justify="left", bg="white")
                 LabelLstP.grid(row=0, column=0, sticky="w")
 
-                LabelLstPRep = Label(FrameLstPLabel, text=i[1], justify="left", bg="white")
+                pathTemp = (i[1])[:65]
+                if pathTemp!=i[1]:
+                    pathTemp+="..."
+                LabelLstPRep = Label(FrameLstPLabel, text=pathTemp, justify="left", bg="white")
                 LabelLstPRep.grid(row=1, column=0, sticky="w")
 
                 bouttonDel = Button(FrameLstP, text=TradTxt("Retirer"), command=partial(self.DelProject, i))

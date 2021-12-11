@@ -68,7 +68,9 @@ public:
 
     Component(const char* name, GameObject* gameObject, const char* UUID = NULL);
 
-    virtual ~Component() {};
+    virtual ~Component() {
+        OnDestroy();
+    };
 
     /*void BroadcastMessage();
     void CompareTag();
@@ -98,14 +100,14 @@ public:
     virtual void OnBecameInvisible() {}
     virtual void OnBecameVisible() {}*/
     //virtual void OnCollisionEnter() {}
-    virtual void OnCollisionEnter2D(Collider2D* collider2D) {}/////
+    virtual void OnCollisionEnter2D(Collider2D* collider2D) {}
     //virtual void OnCollisionExit() {}
-    virtual void OnCollisionExit2D(Collider2D* collider2D) {}//////
+    virtual void OnCollisionExit2D(Collider2D* collider2D) {}
     //virtual void OnCollisionStay() {}
-    virtual void OnCollisionStay2D(Collider2D* collider2D) {}//////
+    virtual void OnCollisionStay2D(Collider2D* collider2D) {}
     //virtual void OnConnectedToServer() {}
     virtual void OnControllerColliderHit() {}//////
-    virtual void OnDestroy() {}//////
+    virtual void OnDestroy() {}
     virtual void OnDisable() {}//////
     /*virtual void OnDisconnectedFromServer() {}
     virtual void OnDrawGizmos() {}

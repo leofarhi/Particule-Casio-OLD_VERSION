@@ -21,6 +21,7 @@ from ClassParticule.SaveData import SaveData
 from ClassParticule.BuildSettings import BuildSettings
 from ClassParticule.WinInspectorType.WindowImage import WindowImage
 from SystemExt import File_Folder as Fl
+from ClassParticule.ShowAboutWindow import ShowAboutWindow
 
 def LoadSizeWindow(name,width,height):
     data = rf.found("lib/ScreenOrganization.txt",name)
@@ -216,17 +217,17 @@ class ScreenOrganization:
         #self.MenuItem.AddItem("Edit/Selectionner la Prefab Root")
         #self.MenuItem.AddItem("Edit/Inverser la selection")
         #self.MenuItem.Add_separator("Edit")
-        self.MenuItem.AddItem("Edit/Couper")
-        self.MenuItem.AddItem("Edit/Copier")
-        self.MenuItem.AddItem("Edit/Coller")
+        #self.MenuItem.AddItem("Edit/Couper")
+        self.MenuItem.AddItem("Edit/Copier",self.Particule.Hierarchy.CopyObject)
+        self.MenuItem.AddItem("Edit/Coller",self.Particule.Hierarchy.PastObject)
         self.MenuItem.Add_separator("Edit")
-        self.MenuItem.AddItem("Edit/Dupliquer")
-        self.MenuItem.AddItem("Edit/Renommer")
-        self.MenuItem.AddItem("Edit/Supprimer")
-        self.MenuItem.Add_separator("Edit")
+        self.MenuItem.AddItem("Edit/Dupliquer",self.Particule.Hierarchy.DuplicateObject)
+        #self.MenuItem.AddItem("Edit/Renommer")
+        self.MenuItem.AddItem("Edit/Supprimer",self.Particule.Hierarchy.deleteObject)
+        #self.MenuItem.Add_separator("Edit")
         #self.MenuItem.AddItem("Edit/Frame Selected")
         #self.MenuItem.AddItem("Edit/Lock View to Selected")
-        self.MenuItem.AddItem("Edit/Find")
+        #self.MenuItem.AddItem("Edit/Find")
         #self.MenuItem.Add_separator("Edit")
         #self.MenuItem.AddItem("Edit/Play")
         #self.MenuItem.AddItem("Edit/Pause")
@@ -340,7 +341,7 @@ class ScreenOrganization:
         self.MenuItem.AddItem("Couleur/Monochrome",partial(self.SetColor,"Monochrome"))
         self.MenuItem.AddItem("Couleur/RBG",partial(self.SetColor,"RGB"))
 
-        self.MenuItem.AddItem("Aide/A propos")  # ,show_about)
+        self.MenuItem.AddItem("Aide/A propos",partial(ShowAboutWindow,self.Particule.Mafenetre))
         """
         self.MenuItem.Add_separator("Aide")
         self.MenuItem.AddItem("Aide/Manuel de Particule")

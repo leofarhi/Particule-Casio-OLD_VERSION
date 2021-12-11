@@ -120,22 +120,6 @@ else:
 def ColorRGB(RGB):
     return "#%02x%02x%02x" % RGB
 
-"""
-def show_about():
-    about_window = Toplevel(self.Mafenetre)
-    about_window.title(TradTxt("A propos"))
-    lb1 = Label(about_window, text="Version 2.0 beta")
-    lb1.pack()
-    lb2 = Label(about_window, text=TradTxt("Fait par Farhi"))
-    lb2.pack()
-    # lb3=Label(about_window, text=TradTxt("Compilateur : Bide.jar fait par Zezombye"))
-    # lb3.pack()
-    lb3 = Label(about_window, text=TradTxt("Version incomplète"))
-    lb3.pack()
-"""
-
-
-
 
 class Particule:
     def __init__(self,FolderProject=os.getcwd()+"/ProjectFolder"):

@@ -43,6 +43,7 @@ class WindowImage(EditorWindow):
                 path = self.Particule.FolderWindow.detailed_file_list[list(self.Particule.FolderWindow.selected_file_indices)[0]]
                 print(path)
                 guid = rf.found(path+".meta","guid")
+                print(guid)
                 if (str(guid)!=str(False)):
                     TransformImage.ImportImage(path,self.Particule.FolderProject + "/Library/ImagesBmpCache/" +guid+'.bmp')
                     #self.Particule.UpdateOnFocus()
