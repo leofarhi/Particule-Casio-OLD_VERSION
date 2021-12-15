@@ -19,6 +19,8 @@ class Tilemap(Component):
 
         self._lastZoom=1
 
+        self.ColliderSelection=""
+
         self.SizeTilemap=Vector2(10,10)
         self.SizeCase = Vector2(16, 16)
         self.Textures = [self.Particule.FolderWindow.TextureVide]
@@ -26,11 +28,13 @@ class Tilemap(Component):
         self.TypeVariables.update({"SizeTilemap": {"Type": Vector2},
                                    "SizeCase": {"Type": Vector2},
                                    "Textures": {"Type":list,"LstValueType":{"Type":Texture},"LstType":"Array"},
+                                   "ColliderSelection": {"Type": str},
                                    })
         self._lastRepImgs = str([o.path for o in self.Textures])
         self.Meshs=[]
         self.Imgs=[]
         self.grille = []
+        self.UpdateLst()
         self.LoadMap()
         self.PaintPen = 1
 
@@ -91,7 +95,7 @@ class Tilemap(Component):
         one = False
         count = 0
         for i in self.GetAttribut():
-            if i[0] in ["Textures"]+self.AttributVisible:
+            if i[0] in ["Textures","ColliderSelection"]+self.AttributVisible:
                 # print(i[0],getattr(self,i[0]))
                 one = True
                 tempUI = TypeGUI(self.FrameSettingsTypeGUI, self, i[0],self.TypeVariables[i[0]])
@@ -101,6 +105,20 @@ class Tilemap(Component):
                 # Button(self.myFrame,text=self.gameObject.name+i[0]+" : "+str(i[1].get())).pack()
         if not one:
             Label(self.FrameSettingsTypeGUI, text="Pas de paramètres").pack()
+
+    def GetConfigCollider(self):
+        temp = self.ColliderSelection.split(";")
+        nbValid = []
+        for i in temp:
+            try:
+                nbValid.append(int(i))
+            except:pass
+        temp=""
+        for i in nbValid:
+            temp+=str(i)+";"
+        temp = temp[:-1]
+        self.ColliderSelection = temp
+        return nbValid
 
     def RemoveCollider(self):
         i=0
@@ -112,22 +130,28 @@ class Tilemap(Component):
 
     def AddCollider(self):
         self.RemoveCollider()
+        collConfig = self.GetConfigCollider()
+        if len(collConfig)==0:
+            for i in range(len(self.Textures)+1):
+                collConfig.append(i)
+        if 0 in collConfig:
+            collConfig.remove(0)
         DataTemp = eval(str(self.DataTilemap))
         for y,i in enumerate(DataTemp):
             for x,o in enumerate(i):
-                if ((DataTemp[y])[x]!=0):
+                if ((DataTemp[y])[x] in collConfig):
                     temp = self.gameObject.AddComponent(BoxCollider2D)
 
-                    if x+1< len(i) and (DataTemp[y])[x+1]!=0:
+                    if x+1< len(i) and (DataTemp[y])[x+1] in collConfig:
                         j=0
-                        while x+j< len(i) and (DataTemp[y])[x+j]!=0:
+                        while x+j< len(i) and (DataTemp[y])[x+j] in collConfig:
                             (DataTemp[y])[x + j]=0
                             j+=1
                         H=1
                         while y+H< len(DataTemp):
                             somme=True
                             for k in range(j):
-                                somme=((DataTemp[y+H])[x + k]!=0) and somme
+                                somme=((DataTemp[y+H])[x + k] in collConfig) and somme
                             if not somme:
                                 break
                             H+=1
@@ -137,9 +161,9 @@ class Tilemap(Component):
                         temp.Center = Vector2((self.SizeCase.x * x) + ((self.SizeCase.x* j) / 2),
                                               (self.SizeCase.y * y) + (self.SizeCase.y*H / 2))
                         temp.Size = Vector2(self.SizeCase.x*j,self.SizeCase.y*H)
-                    elif y+1< len(DataTemp) and (DataTemp[y+1])[x]!=0:
+                    elif y+1< len(DataTemp) and (DataTemp[y+1])[x] in collConfig:
                         j = 0
-                        while y + j < len(DataTemp) and (DataTemp[y+j])[x] != 0:
+                        while y + j < len(DataTemp) and (DataTemp[y+j])[x]  in collConfig:
                             (DataTemp[y+j])[x] = 0
                             j += 1
                         temp.Center = Vector2((self.SizeCase.x * x) + (self.SizeCase.x / 2),
@@ -169,14 +193,18 @@ class Tilemap(Component):
 
     def LoadMap(self):
         self.Imgs = []
+        """
         for i in self.Meshs:
             for o in i:
                 self.canvas.delete(o)
+        """
         for i in self.grille:
             self.canvas.delete(i)
-        self.Meshs=[]
+        self.grille=[]
+        ##self.Meshs=[]
+
         for y,i in enumerate(self.DataTilemap):
-            tempM=[]
+            ##tempM=[]
             for x, o in enumerate(i):
                 if not o<len(self.Textures):
                     o=0
@@ -198,14 +226,18 @@ class Tilemap(Component):
                 img = ImageFunctions.WhiteToTransparent(img)
                 img = ImageTk.PhotoImage(img)
                 self.Imgs.append(img)
-                ImgCan = self.canvas.create_image(x*self.SizeCase.x, y*self.SizeCase.y, anchor=tkinter.NW, image=self.Imgs[-1])
+
+                ImgCan = (self.Meshs[y])[x]
+                self.Particule.Scene.surface.itemconfig((self.Meshs[y])[x], image=self.Imgs[-1])
+
+                ##ImgCan = self.canvas.create_image(x*self.SizeCase.x, y*self.SizeCase.y, anchor=tkinter.NW, image=self.Imgs[-1])
                 self.canvas.tag_bind(ImgCan, '<Button-1>', self.Clic)
                 for i in range(100):
                     self.canvas.tag_lower(ImgCan)
                 #gr = self.canvas.create_rectangle(x*self.SizeCase.x, y*self.SizeCase.y, self.SizeCase.x, self.SizeCase.y, fill="")
                 #self.grille.append(gr)
-                tempM.append(ImgCan)
-            self.Meshs.append(tempM)
+                ##tempM.append(ImgCan)
+            ##self.Meshs.append(tempM)
         if self.IsHide:
             self.WhenComponentIsHideSignal()
     def UpdateLst(self):
@@ -231,6 +263,74 @@ class Tilemap(Component):
                     for i in range(len(self.DataTilemap[o]), self.SizeTilemap.x):
                         self.DataTilemap[o].append(0)
                 modif = True
+            if len(self.DataTilemap) > self.SizeTilemap.y:
+                for i in range(len(self.DataTilemap) - self.SizeTilemap.y):
+                    del self.DataTilemap[-1]
+                modif = True
+            elif len(self.DataTilemap) < self.SizeTilemap.y:
+                for i in range(len(self.DataTilemap), self.SizeTilemap.y):
+                    self.DataTilemap.append([0 for i in range(self.SizeTilemap.x)])
+                modif = True
+            if len(self.DataTilemap) > 0:
+                if len(self.DataTilemap[0]) > self.SizeTilemap.x:
+                    for o in range(len(self.DataTilemap)):
+                        for i in range(len(self.DataTilemap[o]) - self.SizeTilemap.x):
+                            del (self.DataTilemap[o])[-1]
+                    modif = True
+                elif len(self.DataTilemap[0]) < self.SizeTilemap.x:
+                    for o in range(len(self.DataTilemap)):
+                        for i in range(len(self.DataTilemap[o]), self.SizeTilemap.x):
+                            self.DataTilemap[o].append(0)
+                    modif = True
+
+        #########
+        if len(self.Meshs)>self.SizeTilemap.y:
+            for i in range(len(self.Meshs) - self.SizeTilemap.y):
+                for i in self.Meshs[-1]:
+                    self.canvas.delete(i)
+                del self.Meshs[-1]
+            modif = True
+        elif len(self.Meshs)<self.SizeTilemap.y:
+            for i in range(len(self.Meshs), self.SizeTilemap.y):
+                self.Meshs.append([self.canvas.create_image(0,0, anchor=tkinter.NW, image=self.Particule.FolderWindow.TextureVide.Img) for i in range(self.SizeTilemap.x)])
+            modif = True
+        if len(self.Meshs)>0:
+            if len(self.Meshs[0]) > self.SizeTilemap.x:
+                for o in range(len(self.Meshs)):
+                    for i in range(len(self.Meshs[o]) - self.SizeTilemap.x):
+                        self.canvas.delete((self.Meshs[o])[-1])
+                        del (self.Meshs[o])[-1]
+                modif = True
+            elif len(self.Meshs[0]) < self.SizeTilemap.x:
+                for o in range(len(self.Meshs)):
+                    for i in range(len(self.Meshs[o]), self.SizeTilemap.x):
+                        self.Meshs[o].append(self.canvas.create_image(0,0, anchor=tkinter.NW, image=self.Particule.FolderWindow.TextureVide.Img))
+                modif = True
+            if len(self.Meshs) > self.SizeTilemap.y:
+                for i in range(len(self.Meshs) - self.SizeTilemap.y):
+                    for i in self.Meshs[-1]:
+                        self.canvas.delete(i)
+                    del self.Meshs[-1]
+                modif = True
+            elif len(self.Meshs) < self.SizeTilemap.y:
+                for i in range(len(self.Meshs), self.SizeTilemap.y):
+                    self.Meshs.append([self.canvas.create_image(0, 0, anchor=tkinter.NW,
+                                                                image=self.Particule.FolderWindow.TextureVide.Img) for i
+                                       in range(self.SizeTilemap.x)])
+                modif = True
+            if len(self.Meshs) > 0:
+                if len(self.Meshs[0]) > self.SizeTilemap.x:
+                    for o in range(len(self.Meshs)):
+                        for i in range(len(self.Meshs[o]) - self.SizeTilemap.x):
+                            self.canvas.delete((self.Meshs[o])[-1])
+                            del (self.Meshs[o])[-1]
+                    modif = True
+                elif len(self.Meshs[0]) < self.SizeTilemap.x:
+                    for o in range(len(self.Meshs)):
+                        for i in range(len(self.Meshs[o]), self.SizeTilemap.x):
+                            self.Meshs[o].append(self.canvas.create_image(0, 0, anchor=tkinter.NW,
+                                                                          image=self.Particule.FolderWindow.TextureVide.Img))
+                    modif = True
         return modif
 
     def WhenComponentIsShowSignal(self):
@@ -310,7 +410,8 @@ class Tilemap(Component):
             "SizeTilemap":self.SizeTilemap.get(),
             "SizeCase": self.SizeCase.get(),
             "DataTilemap":self.DataTilemap,
-            "Textures":[i.ID for i in self.Textures]
+            "Textures":[i.ID for i in self.Textures],
+            "ColliderSelection":self.ColliderSelection
         })
         return data
 
@@ -321,5 +422,8 @@ class Tilemap(Component):
         self.SizeTilemap = Vector2.set(Vector2(), dataCompo["SizeTilemap"])
         self.SizeCase = Vector2.set(Vector2(), dataCompo["SizeCase"])
         self.DataTilemap = dataCompo["DataTilemap"]
+        self.ColliderSelection=dataCompo["ColliderSelection"]
+        self.UpdateLst()
         self.LoadMap()
+        self.WhenComponentIsShowSignal()
 

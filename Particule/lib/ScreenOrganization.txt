@@ -1,3 +1,14 @@
-GridCenter::(812, 475)
-GridCenterLeft::(286, 475)
-GridCenterBottom::(1103, 341)
+{
+    "GridCenter": [
+        828,
+        561
+    ],
+    "GridCenterLeft": [
+        302,
+        561
+    ],
+    "GridCenterBottom": [
+        1135,
+        211
+    ]
+}

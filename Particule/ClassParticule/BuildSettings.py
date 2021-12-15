@@ -14,7 +14,7 @@ class BuildSettings(EditorWindow):
                               Resize=False, ScrollbarShow=False)
         self.pack(fill=tkinter.BOTH, expand=True)
 
-        self.WTypeCompileLabel = LabelFrame(self, text="Scene in Build")
+        self.WTypeCompileLabel = LabelFrame(self, text=TradTxt("Scenes dans la construction"))
         self.WTypeCompileLabel.pack(fill=BOTH, expand=True)
         self.pathProjectSettings = self.Particule.FolderProject + "/ProjectSettings/ProjectSettings.txt"
 
@@ -30,7 +30,7 @@ class BuildSettings(EditorWindow):
         #self.checkBoxTree.column("Ordre")
         #self.checkBoxTree.column("Path")
 
-        self.addScene = Button(self.WTypeCompileLabel,text="Add Current Scene",command=self.AddCurrentScene)
+        self.addScene = Button(self.WTypeCompileLabel,text=TradTxt("Ajouter la scene actuelle"),command=self.AddCurrentScene)
         self.addScene.pack(side=RIGHT, padx=5, pady=5)
 
 
@@ -79,10 +79,10 @@ class BuildSettings(EditorWindow):
         self.checkBoxTree.bind("<Button-3>", self.popup)
         self.contextMenu = Menu(self.Particule.Mafenetre, tearoff=False)
 
-        self.contextMenu.add_command(label="Move Up", command=self.moveUp)
-        self.contextMenu.add_command(label="Move Down", command=self.moveDown)
-        self.contextMenu.add_command(label="Remove", command=self.deleteObject)
-        self.contextMenu.add_command(label="Save", command=self.SaveLstScene)
+        self.contextMenu.add_command(label=TradTxt("Deplacer vers le haut"), command=self.moveUp)
+        self.contextMenu.add_command(label=TradTxt("Deplacer vers le bas"), command=self.moveDown)
+        self.contextMenu.add_command(label=TradTxt("Retirer"), command=self.deleteObject)
+        self.contextMenu.add_command(label=TradTxt("Sauvegarder"), command=self.SaveLstScene)
 
     def popup(self, event):
         """action in event of button 3 on tree view"""
@@ -514,8 +514,8 @@ name: """ + i + "\n")
 
     def ProjectSettingsReplace(self,txt):
         # ////////////////////////////- Project Settings -////////////////////////////
-        tempGravity = eval(rf.found(self.pathProjectSettings, "Physics2D&Gravity"))
+        tempGravity = rf.found(self.pathProjectSettings, "Physics2D&Gravity")
         txt = txt.replace("/*GravityValue*/", str(float(tempGravity[0])) + "f," + str(float(tempGravity[1]))+"f")
-        temp = eval(rf.found(self.pathProjectSettings, "Player&ScreenSize"))
+        temp = rf.found(self.pathProjectSettings, "Player&ScreenSize")
         txt = txt.replace("/*ScreenSizeValue*/", str(int(temp[0])) + "," + str(int(temp[1])))
         return txt

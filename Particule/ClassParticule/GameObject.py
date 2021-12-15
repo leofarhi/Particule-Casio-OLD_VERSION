@@ -18,6 +18,8 @@ class GameObject(Object):
         self.transform = Transform(self)
         self.ListOfComponent=[self.transform]
 
+        self.OpenIsHierarchy = 0
+
         if self.scene!="" and self.scene in self.Particule.Scene.scenes:
             indexScene = self.Particule.Scene.scenes.index(self.scene)
             if not self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
@@ -25,6 +27,7 @@ class GameObject(Object):
 
 
     def SaveDataDict(self):
+        self.OpenIsHierarchy = self.Particule.Hierarchy.t.item(self.ID)['open']
         TempDico = {"name": self.name,
                     ""
                     "activeInHierarchy": self.activeInHierarchy,
@@ -35,7 +38,9 @@ class GameObject(Object):
                     "sceneCullingMask": self.sceneCullingMask,
                     "tag": self.tag.value,
                     "transform": self.transform.ID,
-                    "ListOfComponent": [i.ID for i in self.ListOfComponent]
+                    "ListOfComponent": [i.ID for i in self.ListOfComponent],
+
+                    "OpenIsHierarchy": self.OpenIsHierarchy
                     }
         return TempDico
 

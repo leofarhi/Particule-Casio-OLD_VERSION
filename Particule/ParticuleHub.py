@@ -41,7 +41,7 @@ class ParticuleHub:
         self.w = int(GetSystemMetrics(0) * 0.5)
         self.h = int(GetSystemMetrics(1) * 0.5)
         self.RootHub.geometry(str(self.w) + "x" + str(self.h))
-        if Game_OS == "linux":
+        if platform.system().lower() == "linux":
             try:
                 self.RootHub.iconbitmap('@lib/logo.xbm')
             except:
@@ -160,24 +160,24 @@ class ParticuleHub:
         self.FWinProjetCanvasScroll.configure(
             scrollregion=self.FWinProjetCanvasScroll.bbox("all"))  # ,width=200,height=200)
 
-    def AddProject(self,NewProject):
+    def AddProject(self,NewProject=False):
         global _i
         rep = Fl.open_folder()
         if NewProject:
             name = simpledialog.askstring(title="Nom du Projet",
-                                          prompt="Nom du Projet")
+                                          prompt=TradTxt("Nom du Projet"))
             if name == None:
                 return
             rep+="/"+name
         LstProjects = rf.GetList("setup.txt", "AllProjects")
         LstProjects.append([rep.split("/")[-1], rep])
-        rf.save("setup.txt", "AllProjects", str(LstProjects))
+        rf.save("setup.txt", "AllProjects", LstProjects)
         self.FrameWinProjet.destroy()
         self.WinProjet()
         return rep
 
     def BouttonOpen(self, Data):
-        rf.save("setup.txt", "FolderProject", str(Data[1]))
+        rf.save("setup.txt", "FolderProject", Data[1])
         self.NewProject(Data[1])
         self.Start = True
         self.RootHub.destroy()
@@ -186,7 +186,7 @@ class ParticuleHub:
         global _i
         LstProjects = rf.GetList("setup.txt", "AllProjects")
         LstProjects.remove(Data)
-        rf.save("setup.txt", "AllProjects", str(LstProjects))
+        rf.save("setup.txt", "AllProjects", LstProjects)
         self.FrameWinProjet.destroy()
         self.WinProjet()
 
@@ -205,7 +205,7 @@ class ParticuleHub:
                                 command=self.AddProject)
         self.BoutonAdd.pack(side=RIGHT, padx=5, pady=5)
 
-        self.FWinProjet = LabelFrame(self.FrameWinProjet, text="Projets")  # ,width=50,height=100,bd=1)
+        self.FWinProjet = LabelFrame(self.FrameWinProjet, text=TradTxt("Projets"))  # ,width=50,height=100,bd=1)
         self.FWinProjet.pack(fill=BOTH, expand=True, side=LEFT)
 
         self.FWinProjetCanvasScroll = Canvas(self.FWinProjet)
@@ -223,8 +223,8 @@ class ParticuleHub:
         self.AllWinProjetframe.bind("<Configure>", self.Compoframeconfig)
 
         LstProjects = rf.GetList("setup.txt", "AllProjects")
-        if LstProjects == False:
-            rf.save("setup.txt", "AllProjects", "[]")
+        if LstProjects == None:
+            rf.save("setup.txt", "AllProjects", [])
             LstProjects = []
         else:
             for i in LstProjects:

@@ -20,6 +20,7 @@ from pkgutil import iter_modules
 import pkgutil
 from pathlib import Path
 from importlib import import_module
+from SystemExt.Moteur import TradTxt
 
 class Hierarchy(EditorWindow):
     def __init__(self,RootWindow):
@@ -64,27 +65,27 @@ class Hierarchy(EditorWindow):
         # Button-3 is right click on windows
         self.t.bind("<Button-3>", self.popup)
         self.contextMenu = Menu(self.Particule.Mafenetre,tearoff=False)
-        self.contextMenu.add_command(label="Copy",command =self.CopyObject)
-        self.contextMenu.add_command(label="Past",command =self.PastObject)
+        self.contextMenu.add_command(label=TradTxt("Copier"),command =self.CopyObject)
+        self.contextMenu.add_command(label=TradTxt("Coller"),command =self.PastObject)
         self.contextMenu.add_separator()
-        self.contextMenu.add_command(label="Move Up", command=self.moveUp)
-        self.contextMenu.add_command(label="Move Down", command=self.moveDown)
-        self.contextMenu.add_command(label="Go to", command=self.RecentrerCamera)
+        self.contextMenu.add_command(label=TradTxt("Deplacer vers le haut"), command=self.moveUp)
+        self.contextMenu.add_command(label=TradTxt("Deplacer vers le bas"), command=self.moveDown)
+        self.contextMenu.add_command(label=TradTxt("Recentrer"), command=self.RecentrerCamera)
         self.contextMenu.add_separator()
-        self.contextMenu.add_command(label="Rename")
-        self.contextMenu.add_command(label="Duplicate",command =self.DuplicateObject)
-        self.contextMenu.add_command(label="Delete",command = self.deleteObject)
+        #self.contextMenu.add_command(label=TradTxt("Renommer"))
+        self.contextMenu.add_command(label=TradTxt("Dupliquer"),command =self.DuplicateObject)
+        self.contextMenu.add_command(label=TradTxt("Supprimer"),command = self.deleteObject)
         self.contextMenu.add_separator()
-        self.contextMenu.add_command(label="Create Prefab in Folder",command =self.CreatePrefabInFolder)
-        self.contextMenu.add_command(label="Select Children")
-        self.contextMenu.add_command(label="Select Prefab Root")
-        self.contextMenu.add_separator()
-        self.contextMenu.add_command(label="Create Empty")
-        self.contextMenu.add_command(label="2D Object")
-        self.contextMenu.add_command(label="Effects")
+        self.contextMenu.add_command(label=TradTxt("Creer une Prefab dans le dossier"),command =self.CreatePrefabInFolder)
+        #self.contextMenu.add_command(label=TradTxt("Select Children"))
+        #self.contextMenu.add_command(label=TradTxt("Select Prefab Root"))
+        #self.contextMenu.add_separator()
+        #self.contextMenu.add_command(label=TradTxt("Create Empty"))
+        #self.contextMenu.add_command(label=TradTxt("2D Object"))
+        #self.contextMenu.add_command(label=TradTxt("Effects"))
         #self.contextMenu.add_command(label="Light")
-        self.contextMenu.add_command(label="UI")
-        self.contextMenu.add_command(label="Camera")
+        #self.contextMenu.add_command(label=TradTxt("UI"))
+        #self.contextMenu.add_command(label=TradTxt("Camera"))
 
     def RecentrerCamera(self,*args):
         temp = self.t.focus()

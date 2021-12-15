@@ -42,6 +42,10 @@ Component::Component(const char* name, GameObject* gameObject, const char* UUID)
     this->gameObject = gameObject;
 };
 
+Component::~Component() {
+    if (gameObject->ListOfComponent.Contains(this))
+        gameObject->ListOfComponent.Remove(this);
+};
 
 
 Transform::Transform(GameObject* gameObject, const char* UUID, const char* name) : Component(name, gameObject, UUID) {
@@ -56,7 +60,7 @@ Transform::Transform(GameObject* gameObject, const char* UUID, const char* name)
     //localRotation = NULL;
     //localScale = new Vector2(1, 1);
     //localToWorldMatrix = NULL;
-    lossyScale = new Vector2(1, 1);
+    //lossyScale = new Vector2(1, 1);
     parent = NULL;
     //children = []
     position = new Vector2();
@@ -161,6 +165,17 @@ GameObject::GameObject(Scene* scene, const char* name, const char* UUID) : Objec
     ListOfComponent.Add(transform);
 };
 
+GameObject::~GameObject() {
+    for (int i = 0; i < ListOfComponent.Count; i++) {
+        //delete ListOfComponent.Pop();
+        ListOfComponent[0]->Destroy();
+    }
+    ListOfComponent.Clear();
+    if (scene->AllGameObject.Contains(this)) {
+        scene->AllGameObject.Remove(this);
+    }
+};
+
 bool GameObject::IsActive() {
     if (!activeSelf) {
         activeInHierarchy = false;
@@ -194,6 +209,18 @@ GameObject* GameObject::Find(unsigned char* name) {
     return FindWithName(name, this);
 };
 
+GameObject* GameObject::FindWithTag(Tag tag) {
+    for (int i = 0; i < this->scene->AllGameObject.Count; i++)
+    {
+        if (this->scene->AllGameObject[i]->tag == tag)
+            return this->scene->AllGameObject[i];
+    }
+    return NULL;
+};
+
+bool GameObject::CompareTag(Tag tag) {
+    return tag == this->tag;
+};
 
 void Scene::AddGameObject(GameObject* gObj) {
     AllGameObject.Add(gObj);
@@ -259,7 +286,7 @@ void Scene::Start() {
         if (AllGameObject[i]->IsActive()) {
             for (int o = 0; o < AllGameObject[i]->ListOfComponent.Count; o++)
             {
-                AllGameObject[i]->ListOfComponent[o]->Start();
+                AllGameObject[i]->ListOfComponent[o]->Awake();
             }
         }
     }
@@ -268,7 +295,7 @@ void Scene::Start() {
         if (AllGameObject[i]->IsActive()) {
             for (int o = 0; o < AllGameObject[i]->ListOfComponent.Count; o++)
             {
-                AllGameObject[i]->ListOfComponent[o]->Awake();
+                AllGameObject[i]->ListOfComponent[o]->Start();
             }
         }
     }
@@ -276,6 +303,21 @@ void Scene::Start() {
 
 Camera::Camera(GameObject* gameObject, const char* UUID) : Behaviour("Camera", gameObject, UUID) {
     gameObject->scene->AllCameras.Add(this);
+}
+
+void Camera::OnDestroy() {
+    if (gameObject->scene->AllCameras.Contains(this)) {
+        gameObject->scene->AllCameras.Remove(this);
+    }
+};
+
+void Camera::SetMainCamera() {
+    if (!gameObject->scene->AllCameras.Contains(this))
+        gameObject->scene->AllCameras.Add(this);
+    while (gameObject->scene->AllCameras[0]!=this)
+    {
+        gameObject->scene->AllCameras.Add(gameObject->scene->AllCameras.RemoveAt(0));
+    }
 }
 
 Image::Image(GameObject* gameObject, Texture* image, const char* UUID) : MonoBehaviour("Image", gameObject, UUID) {
@@ -326,7 +368,7 @@ void Rigidbody::Start() {
 
 
 bool Rigidbody::CheckCollider() {
-    if (MyCollider != NULL && gameObject->isStatic && !MyCollider->IsTrigger)
+    if (MyCollider == NULL || gameObject->isStatic || MyCollider->IsTrigger)
         return false;
     for (int i = 0; i < gameObject->scene->LstColliders.Count; i++) {
         if (MyCollider != gameObject->scene->LstColliders[i] && ((Component*)gameObject->scene->LstColliders[i])->gameObject->IsActive()) {
@@ -519,6 +561,9 @@ void SceneManager::LoadScene(int index) {
     AllSceneLoaded.Add(GetSceneInBuild(index));
 };
 void SceneManager::LoadScene(unsigned char* name) {
+    for (int i = 0; i < AllSceneLoaded.Count; i++) {
+        delete AllSceneLoaded.Pop();
+    }
     AllSceneLoaded.Clear();
     AllSceneLoaded.Add(GetSceneInBuild(name));
 };

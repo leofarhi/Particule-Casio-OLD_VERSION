@@ -1,57 +1,62 @@
-Projets::Projects
-Apprendre::Learn
-Installs::Installs
-Ajouter/Nouveau::Add/New
-Retirer::Remove
-Ouvrir::Open
-Sélection des blocks::Selection of blocks
-Importé::Imported
-Editeur::Editor
-Evenements::Events
-Controle::Control
-Variable::Variable
-Mes Blocs::My Blocks
-Opérateurs::Operators
-Capteurs::Sensors
-Mouvement::Movement
-Apparence::Appearance
-Stylo::Pen
-Ajouter une variable::Add a variable
-supprimer une variable::delete a variable
-Ajouter::Add
-Supprimer::Remove
-Charger::Charger
-Nouveau::New
-Ouvrir...::To open...
-Enregistrer::Save
-Creer une Scene::Create a Scene
-Ouvrir une Scene::Open a Scene
-Quitter::Quit
-Creer une image casio::Create a casio image
-Creer un Empty::Create an Empty
-Nouveau fichier::New file
-Sauvegarder le fichier::Save file
-Mettre a jour::Update
-A propos::About
-Fichier::File
-Edit::Edit
-Aide::Aide
-Supprimer l'Element::Remove Element
-Creer un Prefab::Create a Prefab
-Nom : ::Last name :
-Position::Position
-Image Sélectionée : ::Selected Image :
-Taille::Size
-Fait par : ::Made by :
-Telechargé::Uploaded
-Propriétés de l'element selectionné::Properties of the selected element
-Image Sélectionnée : ::Selected Image:
-Nom du fichier::File name
-Selectionnez l'emplacement::Select location
-Valider::Validate
-Annuler::Cancel
-confirmation de suppression::deletion confirmation
-Fait par Farhi::Made by Farhi
-Compilateur : Bide.jar fait par Zezombye::Compiler: Bide.jar made by Zezombye
-Valider la suppression::Validate the deletion
-Voulez-vous quitter ?::Do you want to quit?
+{
+    "Projets": "Projects",
+    "Apprendre": "Learn",
+    "Installs": "Installs",
+    "Nouveau Projet": "New project",
+    "Ajouter un Projet": "Add Project",
+    "Retirer": "Remove",
+    "Ouvrir": "Open",
+    "Editeur de jeu pour casio": "Game editor for casio",
+    "Hierarchie": "Hierarchy",
+    "Dossier du Projet": "Project File",
+    "Console": "Console",
+    "Inspecteur": "Inspector",
+    "Fichier/Creer une Scene": "File/Create a Scene",
+    "Fichier/Ouvrir une Scene": "File/Open Scene",
+    "Fichier": "File",
+    "Fichier/Enregistrer": "File/Save",
+    "Fichier/Build Settings": "File/Build Settings",
+    "Fichier/Quitter": "File/Exit",
+    "Edit/Copier": "Edit/Copy",
+    "Edit/Coller": "Edit/Paste",
+    "Edit": "Edit",
+    "Edit/Dupliquer": "Edit/Duplicate",
+    "Edit/Supprimer": "Edit/Delete",
+    "Edit/Parametre du Projet...": "Edit/Project Parameter ...",
+    "Asset/Afficher le dossier": "Asset/Show in Explorer",
+    "Asset/Rafraichir": "Asset/Refresh",
+    "GameObject/Creer un Empty": "GameObject/Create a Empty",
+    "GameObject/Camera": "GameObject/Camera",
+    "Calculatrice/": "Calculator/",
+    "Couleur/Monochrome": "Color/Monochrome",
+    "Couleur/RBG": "Color/RGB",
+    "Aide/A propos": "Help/About",
+    "Ajouter un Component": "Add Component",
+    "Asset/Refresh": "Asset/Refresh",
+    "Copier": "Copy",
+    "Coller": "Past",
+    "Deplacer vers le haut": "Move up",
+    "Deplacer vers le bas": "Move down",
+    "Recentrer": "Go to",
+    "Dupliquer": "Duplicate",
+    "Supprimer": "Delete",
+    "Creer une Prefab dans le dossier": "Create Prefab in Folder",
+    "Creer": "Create",
+    "Scratch Script": "Scratch Script",
+    "Dossier": "Folder",
+    "Renommer": "Rename",
+    "Voulez-vous quitter ?": "Do you want to quit?",
+    "Nom de fichier": "File name",
+    "Quel est le nom de la Class ?": "What is the name of the Class?",
+    "Quel est le nouveau nom de ": "What is the new name of ",
+    "Nom du dossier": "Folder name",
+    "Quel est le nom du dossier": "What is the name of the folder",
+    "etes-vous sur de vouloir supprimer \"": "are you sure you want to delete \"",
+    "etes-vous sur de vouloir ajouter cette prefab ? ": "are you sure you want to add this prefab?",
+    "Sauvegarder": "Save",
+    "Scenes dans la construction": "Scenes in Build",
+    "Ajouter la scene actuelle": "Add Current Scene",
+    "Installer SDK Graph 75 85 95": "Installer SDK Graph 75 85 95",
+    "Installer Gint": "Installer Gint",
+    "Aller \u00e0 la vid\u00e9o": "Go to the video"
+}

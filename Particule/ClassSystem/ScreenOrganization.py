@@ -22,16 +22,17 @@ from ClassParticule.BuildSettings import BuildSettings
 from ClassParticule.WinInspectorType.WindowImage import WindowImage
 from SystemExt import File_Folder as Fl
 from ClassParticule.ShowAboutWindow import ShowAboutWindow
+from ClassParticule.Tag import Tag
 
 def LoadSizeWindow(name,width,height):
     data = rf.found("lib/ScreenOrganization.txt",name)
-    if data!=False:
-        width, height = eval(data)
+    if data!=None:
+        width, height = data
     return width,height
 
 def SaveSizeWindow(name,frame):
     width,height = frame.winfo_width(),frame.winfo_height()
-    rf.save("lib/ScreenOrganization.txt",name,str((width,height,)))
+    rf.save("lib/ScreenOrganization.txt",name,(width,height,))
 class ScreenOrganization:
     def __init__(self,_Particule):
         self.Particule=_Particule
@@ -124,19 +125,19 @@ class ScreenOrganization:
 
         self.Particule.Hierarchy = Hierarchy(self.GridCenterLeft)
         self.Particule.Hierarchy.pack(side="left",fill=BOTH, expand=True)
-        self.GridCenterLeft.add(self.Particule.Hierarchy,text="Hierarchy")
+        self.GridCenterLeft.add(self.Particule.Hierarchy,text=TradTxt("Hierarchie"))
 
         self.Particule.FolderWindow = FolderWindow(self.GridCenterBottom)
         self.Particule.FolderWindow.pack(fill=BOTH, expand=True)
-        self.GridCenterBottom.add(self.Particule.FolderWindow, text="Folder")
+        self.GridCenterBottom.add(self.Particule.FolderWindow, text=TradTxt("Dossier du Projet"))
 
         self.Particule.Console = Console(self.GridCenterBottom)
         self.Particule.Console.pack(fill=BOTH, expand=True)
-        self.GridCenterBottom.add(self.Particule.Console, text="Console")
+        self.GridCenterBottom.add(self.Particule.Console, text=TradTxt("Console"))
 
         self.Particule.Inspector = Inspector(self.GridRight)
         self.Particule.Inspector.pack(fill=BOTH, expand=True)
-        self.GridRight.add(self.Particule.Inspector,text="Inspector")
+        self.GridRight.add(self.Particule.Inspector,text=TradTxt("Inspecteur"))
 
         self.Particule.WindowImage = WindowImage(self.Particule.Inspector)
         self.ChangeInspector()
@@ -164,8 +165,11 @@ class ScreenOrganization:
         self.Particule.FolderWindow.CreateMetaFile()
 
     def CreateCamera(self):
-        gameobject = self.Particule.Hierarchy.CreateObject()
+        gameobject = self.Particule.Hierarchy.CreateObject(name="Camera")
         gameobject.AddComponentByName("Camera")
+        gameobject.name = "Camera"
+        gameobject.tag = Tag.MainCamera
+        #self.Particule.UpdateOnFocus()
         return gameobject
 
     def OpenSceneFile(self):
@@ -192,19 +196,19 @@ class ScreenOrganization:
     def SetMenuItem(self):
         self.Particule.MenuItem = MenuItem(self.Particule.Mafenetre)
         self.MenuItem = self.Particule.MenuItem
-        self.MenuItem.AddItem("Fichier/Creer une Scene" ,self.CreateScene)
-        self.MenuItem.AddItem("Fichier/Ouvrir une Scene",self.OpenSceneFile)  # ,self.OpenScene)
-        self.MenuItem.Add_separator("Fichier")
-        self.MenuItem.AddItem("Fichier/Enregistrer",self.Particule.SaveData.SaveScene)  # ,SaveAll)
+        self.MenuItem.AddItem(TradTxt("Fichier/Creer une Scene") ,self.CreateScene)
+        self.MenuItem.AddItem(TradTxt("Fichier/Ouvrir une Scene"),self.OpenSceneFile)  # ,self.OpenScene)
+        self.MenuItem.Add_separator(TradTxt("Fichier"))
+        self.MenuItem.AddItem(TradTxt("Fichier/Enregistrer"),self.Particule.SaveData.SaveScene)  # ,SaveAll)
         #self.MenuItem.AddItem("Fichier/Enregistrer sous...")  # ,SaveAll)
         #self.MenuItem.Add_separator("Fichier")
         #self.MenuItem.AddItem("Fichier/Nouveau Projet...")  # ,self.LoadSystem.MenuOpenFolder)
         #self.MenuItem.AddItem("Fichier/Ouvrir un Projet...")  # ,self.LoadSystem.MenuOpenFolder)
-        self.MenuItem.Add_separator("Fichier")
-        self.MenuItem.AddItem("Fichier/Build Settings",partial(BuildSettings,self.Particule.Mafenetre))  # ,WinChoiceTypeCompile)
+        self.MenuItem.Add_separator(TradTxt("Fichier"))
+        self.MenuItem.AddItem(TradTxt("Fichier/Build Settings"),partial(BuildSettings,self.Particule.Mafenetre))  # ,WinChoiceTypeCompile)
         # self.MenuItem.AddItem("Fichier/Build And Run")
-        self.MenuItem.Add_separator("Fichier")
-        self.MenuItem.AddItem("Fichier/Quitter",self.Particule.on_closing)  # ,self.Mafenetre.quit)
+        self.MenuItem.Add_separator(TradTxt("Fichier"))
+        self.MenuItem.AddItem(TradTxt("Fichier/Quitter"),self.Particule.on_closing)  # ,self.Mafenetre.quit)
 
 
 
@@ -218,12 +222,12 @@ class ScreenOrganization:
         #self.MenuItem.AddItem("Edit/Inverser la selection")
         #self.MenuItem.Add_separator("Edit")
         #self.MenuItem.AddItem("Edit/Couper")
-        self.MenuItem.AddItem("Edit/Copier",self.Particule.Hierarchy.CopyObject)
-        self.MenuItem.AddItem("Edit/Coller",self.Particule.Hierarchy.PastObject)
-        self.MenuItem.Add_separator("Edit")
-        self.MenuItem.AddItem("Edit/Dupliquer",self.Particule.Hierarchy.DuplicateObject)
+        self.MenuItem.AddItem(TradTxt("Edit/Copier"),self.Particule.Hierarchy.CopyObject)
+        self.MenuItem.AddItem(TradTxt("Edit/Coller"),self.Particule.Hierarchy.PastObject)
+        self.MenuItem.Add_separator(TradTxt("Edit"))
+        self.MenuItem.AddItem(TradTxt("Edit/Dupliquer"),self.Particule.Hierarchy.DuplicateObject)
         #self.MenuItem.AddItem("Edit/Renommer")
-        self.MenuItem.AddItem("Edit/Supprimer",self.Particule.Hierarchy.deleteObject)
+        self.MenuItem.AddItem(TradTxt("Edit/Supprimer"),self.Particule.Hierarchy.deleteObject)
         #self.MenuItem.Add_separator("Edit")
         #self.MenuItem.AddItem("Edit/Frame Selected")
         #self.MenuItem.AddItem("Edit/Lock View to Selected")
@@ -237,14 +241,14 @@ class ScreenOrganization:
         #self.MenuItem.AddItem("Edit/Sign out")
         #self.MenuItem.Add_separator("Edit")
         #self.MenuItem.AddItem("Edit/Selection")
-        self.MenuItem.Add_separator("Edit")
-        self.MenuItem.AddItem("Edit/Parametre du Projet...", partial(ProjectSettingsWindow,self.Particule.Mafenetre))
+        self.MenuItem.Add_separator(TradTxt("Edit"))
+        self.MenuItem.AddItem(TradTxt("Edit/Parametre du Projet..."), partial(ProjectSettingsWindow,self.Particule.Mafenetre))
         #self.MenuItem.AddItem("Edit/Preferences...")
         #self.MenuItem.AddItem("Edit/Shortcuts...")
         #self.MenuItem.AddItem("Edit/Clear All PlayerPrefs")
 
         #self.MenuItem.AddItem("Asset/Create")
-        self.MenuItem.AddItem("Asset/Show in Explorer",self.ShowInExplorer)
+        self.MenuItem.AddItem(TradTxt("Asset/Afficher le dossier"),self.ShowInExplorer)
         """
         self.MenuItem.AddItem("Asset/Open")
         self.MenuItem.AddItem("Asset/Delete")
@@ -262,7 +266,7 @@ class ScreenOrganization:
         #self.MenuItem.AddItem("Asset/Find References In Scene")
         #self.MenuItem.AddItem("Asset/Select Dependencies")
         #self.MenuItem.Add_separator("Asset")
-        self.MenuItem.AddItem("Asset/Refresh",self.Particule.UpdateOnFocus)
+        self.MenuItem.AddItem(TradTxt("Asset/Rafraichir"),self.Particule.UpdateOnFocus)
         #self.MenuItem.AddItem("Asset/Reimport")
         #self.MenuItem.Add_separator("Asset")
         #self.MenuItem.AddItem("Asset/Reimport All")
@@ -273,12 +277,12 @@ class ScreenOrganization:
         #self.MenuItem.Add_separator("Asset")
         #self.MenuItem.AddItem("Asset/Update UIElements Schema")
 
-        self.MenuItem.AddItem("GameObject/Creer un Empty",self.Particule.Hierarchy.CreateObject)  # ,partial(CreateEmpty,self))
+        self.MenuItem.AddItem(TradTxt("GameObject/Creer un Empty"),self.Particule.Hierarchy.CreateObject)  # ,partial(CreateEmpty,self))
         #self.MenuItem.AddItem("GameObject/2D Object")
         #self.MenuItem.AddItem("GameObject/Effects")
         # self.MenuItem.AddItem("GameObject/Light")
         #self.MenuItem.AddItem("GameObject/UI")
-        self.MenuItem.AddItem("GameObject/Camera",self.CreateCamera)
+        self.MenuItem.AddItem(TradTxt("GameObject/Camera"),self.CreateCamera)
         #self.MenuItem.Add_separator("GameObject")
         #self.MenuItem.AddItem("GameObject/Center On Children")
         #self.MenuItem.Add_separator("GameObject")
@@ -337,11 +341,11 @@ class ScreenOrganization:
         """
 
         for i in self.Particule.ListeCalculatrices:
-            self.MenuItem.AddItem("Calculatrice/"+i.replace("/"," "),partial(self.SetCalculatrice,i))
-        self.MenuItem.AddItem("Couleur/Monochrome",partial(self.SetColor,"Monochrome"))
-        self.MenuItem.AddItem("Couleur/RBG",partial(self.SetColor,"RGB"))
+            self.MenuItem.AddItem(TradTxt("Calculatrice/")+i.replace("/"," "),partial(self.SetCalculatrice,i))
+        self.MenuItem.AddItem(TradTxt("Couleur/Monochrome"),partial(self.SetColor,"Monochrome"))
+        self.MenuItem.AddItem(TradTxt("Couleur/RBG"),partial(self.SetColor,"RGB"))
 
-        self.MenuItem.AddItem("Aide/A propos",partial(ShowAboutWindow,self.Particule.Mafenetre))
+        self.MenuItem.AddItem(TradTxt("Aide/A propos"),partial(ShowAboutWindow,self.Particule.Mafenetre))
         """
         self.MenuItem.Add_separator("Aide")
         self.MenuItem.AddItem("Aide/Manuel de Particule")

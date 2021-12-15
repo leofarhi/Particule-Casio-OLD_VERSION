@@ -44,7 +44,7 @@ class WindowImage(EditorWindow):
                 print(path)
                 guid = rf.found(path+".meta","guid")
                 print(guid)
-                if (str(guid)!=str(False)):
+                if guid!=None:
                     TransformImage.ImportImage(path,self.Particule.FolderProject + "/Library/ImagesBmpCache/" +guid+'.bmp')
                     #self.Particule.UpdateOnFocus()
                     self.Particule.FolderWindow.CreateMetaFile()

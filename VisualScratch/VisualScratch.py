@@ -98,7 +98,7 @@ class Loading:
 class VisualScratch:
     def __init__(self,PathSLN = None,BuildMode=False):
         if PathSLN == None:
-            self.SLN = {"PathParticule": "","Version": "2021.1.0","Files": []}
+            self.SLN = {"PathParticule": "","Version": "2022.0b","Files": []}
         else:
             with open(PathSLN,"r") as fic:
                 dataSLN = fic.read()
@@ -116,6 +116,22 @@ class VisualScratch:
         self.Mafenetre.geometry(str(self.w) + "x" + str(self.h))
 
         self.Mafenetre.attributes('-fullscreen', False)
+
+        if platform.system().lower() == "linux":
+            try:
+                self.Mafenetre.iconbitmap('@lib/VisualScratch.xbm')
+            except:
+                pass
+            try:
+                tempimg = tkinter.PhotoImage(file='lib/VisualScratch.png')
+                self.Mafenetre.tk.call('wm', 'iconphoto', self.Mafenetre._w, tempimg)
+            except:
+                pass
+        else:
+            try:
+                self.Mafenetre.iconbitmap('lib/VisualScratch.ico')
+            except:
+                pass
 
         self.fullScreenState = False
         self.ScreenOrganization = ScreenOrganization(self)

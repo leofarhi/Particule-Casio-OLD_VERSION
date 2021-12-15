@@ -63,7 +63,7 @@ class CreateScriptBlockTk:
         rf.save(Trep,"Onglet",Onglet)
         rf.save(Trep,"TypeForme",TypeForme)
         rf.save(Trep,"Texte",Texte)
-        rf.save(Trep,"Parametres",str(Parametres))
+        rf.save(Trep,"Parametres",Parametres)
         rf.save(Trep,"Color",Color)
 
     def CreateBlockInFile(self,mainFrame):

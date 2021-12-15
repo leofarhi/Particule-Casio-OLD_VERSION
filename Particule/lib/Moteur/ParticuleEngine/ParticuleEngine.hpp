@@ -68,9 +68,7 @@ public:
 
     Component(const char* name, GameObject* gameObject, const char* UUID = NULL);
 
-    virtual ~Component() {
-        OnDestroy();
-    };
+    virtual ~Component();
 
     /*void BroadcastMessage();
     void CompareTag();
@@ -108,11 +106,15 @@ public:
     //virtual void OnConnectedToServer() {}
     virtual void OnControllerColliderHit() {}//////
     virtual void OnDestroy() {}
-    virtual void OnDisable() {}//////
+    void Destroy() {
+        OnDestroy();
+        delete this;
+    }
+    //virtual void OnDisable() {}//////
     /*virtual void OnDisconnectedFromServer() {}
     virtual void OnDrawGizmos() {}
     virtual void OnDrawGizmosSelected() {}*/
-    virtual void OnEnable() {}//////
+    //virtual void OnEnable() {}//////
     //virtual void OnFailedToConnect() {}
     //virtual void OnFailedToConnectToMasterServer() {}
     virtual void OnGUI() {}///////
@@ -150,7 +152,7 @@ public:
     virtual void OnTriggerStay2D(Collider2D* collider2D) {}
     virtual void OnValidate() {}//////
     //virtual void OnWillRenderObject() {}
-    virtual void Reset() {}/////
+    //virtual void Reset() {}/////
     virtual void Start() {}
     virtual void Update() {}
 };
@@ -171,7 +173,7 @@ public:
     //Quaternion* localRotation;
     //Vector2* localScale;
     //Matrix4x4* localToWorldMatrix;
-    Vector2* lossyScale;
+    //Vector2* lossyScale;
     Transform* parent;
     Vector2* position;
     //Vector2* right;
@@ -271,18 +273,13 @@ public:
 
     GameObject(Scene* scene, const char* name, const char* UUID = NULL);
 
-    ~GameObject() {
-        for (int i = 0; i < ListOfComponent.Count; i++) {
-            delete ListOfComponent.Pop();
-        }
-        ListOfComponent.Clear();
-    };
+    ~GameObject();
 
     bool IsActive();
 
     void AddComponent(Component* component);
     //void BroadcastMessage();
-    //void CompareTag();
+    bool CompareTag(Tag tag);
     Component* GetComponent(const char* name);
     /*void GetComponentInChildren();
     void GetComponentInParent();
@@ -293,11 +290,14 @@ public:
     void SendMessageUpwards();
     void SetActive();
     void TryGetComponent();*/
+    void Destroy() {
+        delete this;
+    }
 
     //static void CreatePrimitive();
     GameObject* Find(unsigned char* name);
     //static void FindGameObjectsWithTag();
-    //static void FindWithTag();
+    GameObject* FindWithTag(Tag tag);
 };
 
 
@@ -313,7 +313,8 @@ public:
 
     ~Scene() {
         for (int i = 0; i < AllGameObject.Count; i++) {
-            delete AllGameObject.Pop();
+            //delete AllGameObject.Pop();
+            AllGameObject[0]->Destroy();
         }
         AllGameObject.Clear();
     }
@@ -338,6 +339,9 @@ class Camera : public Behaviour {
     //https://docs.unity3d.com/ScriptReference/Camera.html
 public:
     Camera(GameObject* gameObject, const char* UUID = NULL);
+
+    void OnDestroy();
+    void SetMainCamera();
 };
 
 class Image : public MonoBehaviour { //: public VisualElement {
@@ -380,9 +384,12 @@ protected:
 public:
     bool IsTrigger;
     Collider2D(GameObject* gameObject, bool IsTrigger, const char* UUID = NULL) : MonoBehaviour("Collider2D", gameObject, UUID) {
-        gameObject->scene->LstColliders.Add(this);
         this->IsTrigger = IsTrigger;
     };
+
+    void Awake() {
+        gameObject->scene->LstColliders.Add(this);
+    }
 
     void Update();
 

@@ -140,6 +140,31 @@ public:
         return value;
     }
 
+    /*void InsertAt(T val,int index) {
+        if (index < 0 || index>Count) {
+            return;
+        }
+
+        if (index == Count) {
+            Add(val);
+            return;
+        }
+
+        Node<T>* it = get_node(index);
+
+        Node<T>* n = new Node<T>();
+        n->data = val;
+        Count++;
+
+        if (index == 0) {
+            head = n;
+        }
+        n->prev = it->prev;
+        it->prev->next = n;
+        it->prev = n;
+        n->next = it;
+    }*/
+
     T Remove(T obj) {
         int index = IndexOf(obj);
         if (index < 0)

@@ -225,17 +225,17 @@ class FolderWindow(EditorWindow):
         self.contextMenu = Menu(self.Particule.Mafenetre, tearoff=False)
         #self.contextMenu.add_command(label="Copy")
         #self.contextMenu.add_command(label="Past")
-        self.contextMenu.add_separator()
+        #self.contextMenu.add_separator()
         self.CreateMenu = Menu(self.Particule.Mafenetre, tearoff=False)
-        self.contextMenu.add_cascade(label= "Create",menu=self.CreateMenu)
-        self.CreateMenu.add_command(label="Scratch Script",command=self.CreateScratchScript)
+        self.contextMenu.add_cascade(label= TradTxt("Creer"),menu=self.CreateMenu)
+        self.CreateMenu.add_command(label=TradTxt("Scratch Script"),command=self.CreateScratchScript)
         self.CreateMenu.add_separator()
-        self.CreateMenu.add_command(label="Folder", command=self.create_dir)
+        self.CreateMenu.add_command(label=TradTxt("Dossier"), command=self.create_dir)
 
         self.contextMenu.add_separator()
-        self.contextMenu.add_command(label="Rename",command=self.RenameFile)
+        self.contextMenu.add_command(label=TradTxt("Renommer"),command=self.RenameFile)
         #self.contextMenu.add_command(label="Duplicate")
-        self.contextMenu.add_command(label="Delete", command=self.Destroy)
+        self.contextMenu.add_command(label=TradTxt("Supprimer"), command=self.Destroy)
 
 
     def Destroy(self,*args):
@@ -246,7 +246,7 @@ class FolderWindow(EditorWindow):
         if (os.path.basename(file)=="<---"):
             return
         valid = askyesno(title='confirmation',
-                    message='êtes-vous sûr de vouloir supprimer "'+os.path.basename(file)+'" ?')
+                    message=TradTxt('etes-vous sur de vouloir supprimer "')+os.path.basename(file)+'" ?')
         if valid:
             if (os.path.isfile(file)):
                 os.remove(file)
@@ -255,8 +255,8 @@ class FolderWindow(EditorWindow):
             self.Particule.UpdateOnFocus()
 
     def CreateScratchScript(self,*args):
-        name = simpledialog.askstring(title="Nom de fichier",
-                               prompt="Quel est le nom de la Class ?")
+        name = simpledialog.askstring(title=TradTxt("Nom de fichier"),
+                               prompt=TradTxt("Quel est le nom de la Class ?"))
         if name==None:
             return
         fileName = self.repertoirSlc + "/" + name +".SBAsset"
@@ -326,7 +326,7 @@ class FolderWindow(EditorWindow):
                     UUID = TempID
                 else:
                     fv = FileVariable(self.Particule, rep + "/" + i, TempID)
-                    if TempID==False:
+                    if TempID==None:
                         TempID = fv.ID
                     UUID = self.Particule.CreateUUID(fv,TempID)
                     AllFileVariable.append(fv)
@@ -359,11 +359,14 @@ class FolderWindow(EditorWindow):
             pathFile = rep+"/"+i
             pathMeta = rep + "/" + i + ".meta"
             Date = rf.found(pathMeta,"Date")
+            IsHide = rf.found(pathMeta, "IsHide")
             infos = stat(pathFile)
             fileDate = asctime(localtime(infos[ST_MTIME]))
             if fileDate != Date:
                 rf.save(pathMeta,"Date",fileDate)
                 pass#Update this
+            if IsHide==None:
+                rf.save(pathMeta, "IsHide", False)
             rf.save(pathMeta, "pathFile", pathFile)
 
 
@@ -607,8 +610,8 @@ class FolderWindow(EditorWindow):
                                                                                           outline='Red')
 
     def create_dir(self,*args):
-        name = simpledialog.askstring(title="Nom de fichier",
-                                      prompt="Quel est le nom du dossier")
+        name = simpledialog.askstring(title=TradTxt("Nom du dossier"),
+                                      prompt=TradTxt("Quel est le nom du dossier"))
         if name == None:
             return
         M.create_rep(self.repertoirSlc+"/"+name)
@@ -656,7 +659,7 @@ class FolderWindow(EditorWindow):
                         subprocess.Popen(["python", self.Particule.VisualScratchPath, self.Particule.FolderProject + '/SLN/Solution.sls'])
                 if self.file_list[self.current_file_index].split(".")[-1] == "prefab":
                     valid = askyesno(title='confirmation',
-                                     message='êtes-vous sûr de vouloir ajouter cette prefab ? ')
+                                     message=TradTxt('etes-vous sur de vouloir ajouter cette prefab ? '))
                     if valid:
                         path = self.detailed_file_list[self.current_file_index]
                         with open(path,"r") as fic:
@@ -701,8 +704,8 @@ class FolderWindow(EditorWindow):
         except:
             return
         if not os.path.exists(file):return
-        name = simpledialog.askstring(title="Renommer",
-                                      prompt="Quel est le nouveau nom de "+os.path.basename(file))
+        name = simpledialog.askstring(title=TradTxt("Renommer"),
+                                      prompt=TradTxt("Quel est le nouveau nom de ")+os.path.basename(file))
         directory =os.path.dirname(file)
         ext = os.path.splitext(os.path.basename(file))[1]
         if name == None:

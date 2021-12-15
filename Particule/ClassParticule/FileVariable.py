@@ -11,6 +11,7 @@ class FileVariable(Object):
             Path = os.path.splitext(Path)[0]
         self.path = Path
         self.pathMeta = Path+".meta"
+        self.IsHide = rf.found(self.pathMeta, "IsHide")
         if UUID!=False:
             self.ID=UUID
 
@@ -24,6 +25,7 @@ class FileVariable(Object):
                 texture.name = os.path.basename(self.Particule.All_UUID[MainUUID].path)
                 texture.fileVariable = self
                 self.Particule.All_UUID[self.ID] = texture
+        self.IsHide = rf.found(self.pathMeta, "IsHide")
 
 
     def ToString(self):

@@ -155,5 +155,7 @@ class BlockSys:
             return "List<"+self.GetTypeValueAttributCasio((Type.split("<",1)[1]).split(">",1)[0])+">"
         elif Type[:5]=='Array':
             return self.GetTypeValueAttributCasio((Type.split("<",1)[1]).split(">",1)[0])+"*"
+        elif Type == "Texture":
+            return "Texture*"
         else:
             return Type#+"*"

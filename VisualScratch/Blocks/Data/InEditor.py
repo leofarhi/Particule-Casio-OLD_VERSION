@@ -102,7 +102,7 @@ class ScriptBlockPython(ScriptBlock):
         initPrivate = initPrivate.replace("string", "unsigned char*")
         listInit = listInit.replace("string", "unsigned char*")
 
-        code = "class "+ name+""" : MonoBehaviour {
+        code = "class "+ name+""" :  public MonoBehaviour {
 private:
     """+private+"""
 public:

@@ -2,6 +2,7 @@ from Particule import *
 from ClassSystem.ScrollableFrame import ScrollableFrame
 from ClassSystem.Notebook import Notebook
 from tkinter import ttk
+from ClassParticule.Texture import Texture
 
 class SearchWindow(EditorWindow):
     def __init__(self, RootWindow,Object,TypeSearch):
@@ -42,6 +43,8 @@ class SearchWindow(EditorWindow):
         self.LstObjFound=[]
         for UUID,Obj in list(self.Particule.All_UUID.items()):
             if type(Obj)==TypeSearch:
+                if TypeSearch == Texture:
+                    if Obj.fileVariable!=None and Obj.fileVariable.IsHide:continue
                 self.LstObjFound.append((UUID,Obj))
                 self.mylistFolder.insert(END, Obj.name)
 

@@ -138,26 +138,24 @@ class ProjectSettingsWindow(EditorWindow):
 
     def LoadValue(self):
         temp = rf.found(self.pathFile,"Physics2D&Gravity")
-        if temp == False:self.GravityValue.SetValue(0,0)
+        if temp == None:self.GravityValue.SetValue(0,0)
         else:
-            temp = eval(temp)
             self.GravityValue.SetValue(temp[0],temp[1])
 
         temp = rf.found(self.pathFile, "Player&Auteur")
-        if temp == False:self.AuteurValue.set("")
+        if temp == None:self.AuteurValue.set("")
         else:self.AuteurValue.set(temp)
 
         temp = rf.found(self.pathFile, "Player&ProductName")
-        if temp == False:self.ProductNameValue.set("")
+        if temp == None:self.ProductNameValue.set("")
         else:self.ProductNameValue.set(temp)
 
         temp = rf.found(self.pathFile, "Player&VersionGame")
-        if temp == False:self.VersionGameValue.set(0)
+        if temp == None:self.VersionGameValue.set(0)
         else:self.VersionGameValue.set(temp)
 
         temp = rf.found(self.pathFile, "Player&ScreenSize")
-        if temp == False:
+        if temp == None:
             self.ScreenSizeValue.SetValue(127, 63)
         else:
-            temp = eval(temp)
             self.ScreenSizeValue.SetValue(temp[0], temp[1])

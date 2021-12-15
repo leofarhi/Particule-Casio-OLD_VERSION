@@ -164,7 +164,7 @@ def TradTxt(fr):
        c=None
        if cherchefichier(name+".txt", "lib/Langues"):
           c=rf.found("lib/Langues/"+name+".txt",fr)
-          if c!=False:return c
+          if c!=None:return c
     
     translations = translator.translate(fr, dest=name)
     b=translations.text

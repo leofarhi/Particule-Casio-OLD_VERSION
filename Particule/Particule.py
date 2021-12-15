@@ -74,8 +74,10 @@ from pathlib import Path
 from importlib import import_module
 from SystemExt import SpriteCoder
 
+from PIL import ImageFilter, ImageOps
+
 #Build :
-from SystemExt import BuildSDKGraph
+#from SystemExt import BuildSDKGraph
 
 
 from ClassSystem.MenuItem import MenuItem
@@ -110,7 +112,7 @@ from ClassParticule.WindowScene import *
 """
 
 
-if rf.found("setup.txt","Langue")==False:rf.save("setup.txt","Langue",langue_sys)
+if rf.found("setup.txt","Langue")==None:rf.save("setup.txt","Langue",langue_sys)
 else:
    langue_sys=rf.found("setup.txt","Langue")
    M.langue_sys=rf.found("setup.txt","Langue")
@@ -124,7 +126,7 @@ def ColorRGB(RGB):
 class Particule:
     def __init__(self,FolderProject=os.getcwd()+"/ProjectFolder"):
         self.Process = ["Starting"]
-        self.version = "2021.1.0"
+        self.version = "2022.0b"
         if platform.system() == 'Windows':
             self.VisualScratchPath=os.path.dirname(os.getcwd())+"/VS Out/VisualScratch/VisualScratch.exe"
         else:
@@ -149,8 +151,9 @@ class Particule:
         # print(package_dir)
         self.AllComponent = []
         self.PersonnalModule = []
-        self.GetCodeFromVisualScratch()
+
         sys.path.append(self.FolderProject+ "/Library/ScriptEditor")
+        self.GetCodeFromVisualScratch()
         self.LoadComponents()
         #print(self.AllComponent)
         # print(getattr(sys.modules[__name__], "Camera"))
@@ -167,7 +170,7 @@ class Particule:
 
         self.Mafenetre = Tk()
         self.Mafenetre.Particule = self
-        self.Mafenetre.title('Particule - Editeur de jeu pour casio')
+        self.Mafenetre.title('Particule - '+TradTxt('Editeur de jeu pour casio'))
         self.Mafenetre.attributes('-fullscreen', False)
         self.Mafenetre.grid_columnconfigure(0, weight=1)
         self.Mafenetre.grid_rowconfigure(0, weight=1)
@@ -315,8 +318,8 @@ class Particule:
                     self.PersonnalModule.append(attribute)
                     self.AllComponent.append(attribute)
 
-    def CreateUUID(self,TypeObject,UUID = False):
-        if UUID == False or str(UUID).lower() =="false":
+    def CreateUUID(self,TypeObject,UUID = None):
+        if UUID == None or UUID == False or str(UUID).lower() in ["false","none"]:
             UUID = "UUID_"+(str(uuid.uuid4()).replace("-","_"))
             while UUID in self.All_UUID:
                 UUID = "UUID_"+(str(uuid.uuid4()).replace("-","_"))

@@ -60,6 +60,8 @@ class Scene(EditorWindow):
 
         self.scenes = []#repertoire des scenes
         self.UUID_Objects=[]
+        self.InitCanvas()
+
 
         self.x = 0
         self.y = 0
@@ -70,6 +72,7 @@ class Scene(EditorWindow):
         self.mouseY = 0
         self.zoom = 1
 
+    def InitCanvas(self):
         self.surface = Canvas(self, background='white')
         self.surface.pack(fill=tkinter.BOTH, expand=True)#.grid(row=1, column=0)
 
@@ -220,3 +223,8 @@ class Scene(EditorWindow):
         GameObjects = self.Particule.Hierarchy.allGameObjectOnScene
         for ID, gameObject in GameObjects.items():
             gameObject.UpdateOnGUI()
+
+    def ClearAll(self):
+        self.surface.delete("all")
+        #self.surface.destroy()
+        #self.InitCanvas()

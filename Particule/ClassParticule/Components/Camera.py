@@ -40,5 +40,5 @@ class Camera(Component):
         Component.Destroy(self)
 
     def ReloadSize(self):
-        temp = eval(rf.found(self.pathProjectSettings, "Player&ScreenSize"))
+        temp = rf.found(self.pathProjectSettings, "Player&ScreenSize")
         return temp

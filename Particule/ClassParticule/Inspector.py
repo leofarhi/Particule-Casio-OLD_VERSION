@@ -84,7 +84,7 @@ class Inspector(EditorWindow):
         FrameTemp2 = Frame(self.ZoneComponentCanvas)
         self.ZoneComponentCanvas.create_window((0,0),window=FrameTemp2,anchor='n')
 
-        self.Bouton_AddComponent = Button(FrameTemp2, text="Add Component",
+        self.Bouton_AddComponent = Button(FrameTemp2, text=TradTxt("Ajouter un Component"),
                                           command=partial(AddComponentFrame, self.Particule.Mafenetre))
         self.Bouton_AddComponent.pack(fill=tkinter.X, expand=True, anchor=N, padx=10,
                                       pady=10)  # .pack(padx=10,pady=10,fill=tkinter.X, expand=True)#,side=tkinter.TOP, anchor=N)

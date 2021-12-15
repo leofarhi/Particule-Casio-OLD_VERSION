@@ -1,6 +1,6 @@
 #import EditorComponent as InspectorCompo
-from Moteur import *
-import Moteur as M
+from SystemExt.Moteur import *
+import SystemExt.Moteur as M
 from tkinter import *
 import tkinter
 from tkinter.messagebox import *
@@ -103,10 +103,10 @@ def GetCodeLst():
 def SaveAllWidget():
    if RepFolderSaveLoad=="":return
    Lst=[]
-   read_file.save(RepFolderSaveLoad+"/settings.txt","Variables",str(Variables))
+   read_file.save(RepFolderSaveLoad+"/settings.txt","Variables",Variables)
    for forme in list(WindCanvas.AllWidget.values()):
       Lst.append(forme.SaveData())
-   read_file.save(RepFolderSaveLoad+"/Widgets.SBAsset","AllWidget",str(Lst))
+   read_file.save(RepFolderSaveLoad+"/Widgets.SBAsset","AllWidget",Lst)
    for forme in list(WindCanvas.AllWidget.values()):
       if forme.ParentBlock==None:
          forme.update()
@@ -119,14 +119,14 @@ def LoadAllWidget():
    WindCanvas.CamY=0
    Variables=read_file.GetList(RepFolderSaveLoad+"/settings.txt","Variables")
    Lst=read_file.GetList(RepFolderSaveLoad+"/Widgets.SBAsset","AllWidget")
-   if Lst == False:return
+   if Lst == None:return
    LstWid=[]
    for i in range(len(Lst)):
       file=RepFolderBlocks+"/"+(Lst[i])[6]
       para=read_file.GetList(file,"Parametres")
       color=eval("Couleurs."+read_file.found(file,"Color"))
       Options=read_file.GetList(file,"Options")
-      if Options==False:
+      if Options==None:
             Options=[]
       if cherchefichier((file.split("/")[-1]).replace(".txt",".py"),RepFolderPython):
            with open(RepFolderPython+"/"+(file.split("/")[-1]).replace(".txt",".py"),"r") as fic:
@@ -148,8 +148,8 @@ def CreateWidget(Block):
       file=RepFolderBlocks+"/"+Block
       para=read_file.GetList(file,"Parametres")
       color=eval("Couleurs."+read_file.found(file,"Color"))
-      Options=read_file.GetList(file,"Options")
-      if Options==False:
+      Options=read_file.found(file,"Options")
+      if Options==None:
             Options=[]
       if cherchefichier((file.split("/")[-1]).replace(".txt",".py"),RepFolderPython):
            with open(RepFolderPython+"/"+(file.split("/")[-1]).replace(".txt",".py"),"r") as fic:
@@ -454,7 +454,7 @@ class Forme:
                       else:LstCoo.append((o+((-self.y)+y)))
                   self.Canevas.coords(i,tuple(LstCoo))
                   try:
-                      Canevas.tag_raise(i)
+                      self.Canevas.tag_raise(i)
                   except:
                       pass
                except:

@@ -151,7 +151,7 @@ class Scratch:
         #read_file.save(self.RepFolderSaveLoad + "/settings.txt", "self.Variables", str(self.Variables))
         for forme in list(self.WindCanvas.AllWidget.values()):
             Lst.append(forme.SaveData())
-        read_file.save(self.file, "AllWidget", str(Lst))
+        read_file.save(self.file, "AllWidget", eval(str(Lst)))
         for forme in list(self.WindCanvas.AllWidget.values()):
             if forme.ParentBlock == None:
                 forme.update()
@@ -164,8 +164,8 @@ class Scratch:
                 forme.RemoveSelf()
         self.WindCanvas.CamX = 0
         self.WindCanvas.CamY = 0
-        Lst = read_file.GetList(file, "AllWidget")
-        if Lst == False: return
+        Lst = read_file.found(file, "AllWidget")
+        if Lst == None: return
         LstWid = []
         for i in range(len(Lst)):
             LstWid.append(self.CreateWidget((Lst[i])[6].replace(".py", "")))

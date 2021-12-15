@@ -76,7 +76,7 @@ class Component(Object):
                 count += 1
                 # Button(self.myFrame,text=self.gameObject.name+i[0]+" : "+str(i[1].get())).pack()
         if not one:
-            Label(self.myFrame, text="Pas de paramètres").pack()
+            Label(self.myFrame, text=TradTxt("Pas de paramètres")).pack()
     def AddContextMenu(self):
         # self.myFrame.pack(fill=tkinter.BOTH, expand=True)
         self.myFrame.bind("<Button-3>", self.popup)
@@ -85,7 +85,7 @@ class Component(Object):
         # self.contextMenu.add_command(label="Past")
         self.contextMenu.add_separator()
         # self.contextMenu.add_command(label="Duplicate")
-        self.contextMenu.add_command(label="Delete", command=self.Destroy)
+        self.contextMenu.add_command(label=TradTxt("Supprimer"), command=self.Destroy)
     def PrintOnGui(self):
         if self.myFrame ==None:
             self.RefreshGUI()
