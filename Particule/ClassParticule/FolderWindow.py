@@ -226,11 +226,17 @@ class FolderWindow(EditorWindow):
         #self.contextMenu.add_command(label="Copy")
         #self.contextMenu.add_command(label="Past")
         #self.contextMenu.add_separator()
-        self.CreateMenu = Menu(self.Particule.Mafenetre, tearoff=False)
-        self.contextMenu.add_cascade(label= TradTxt("Creer"),menu=self.CreateMenu)
-        self.CreateMenu.add_command(label=TradTxt("Scratch Script"),command=self.CreateScratchScript)
+        AddTextLinux = ""
+        if platform.system().lower() == "linux":
+            self.contextMenu.add_separator()
+            self.CreateMenu = self.contextMenu
+            AddTextLinux = "Creer "
+        else:
+            self.CreateMenu = Menu(self.Particule.Mafenetre, tearoff=False)
+            self.contextMenu.add_cascade(label=TradTxt("Creer"), menu=self.CreateMenu)
+        self.CreateMenu.add_command(label=TradTxt(AddTextLinux + "Scratch Script"), command=self.CreateScratchScript)
         self.CreateMenu.add_separator()
-        self.CreateMenu.add_command(label=TradTxt("Dossier"), command=self.create_dir)
+        self.CreateMenu.add_command(label=TradTxt(AddTextLinux + "Dossier"), command=self.create_dir)
 
         self.contextMenu.add_separator()
         self.contextMenu.add_command(label=TradTxt("Renommer"),command=self.RenameFile)
@@ -261,7 +267,33 @@ class FolderWindow(EditorWindow):
             return
         fileName = self.repertoirSlc + "/" + name +".SBAsset"
         with open(fileName,"w") as fic:
-            fic.write("""AllWidget::[[100, 100, 'Forme0', [None], None, [['Label', None]], 'InEditor', [['Label', "Dans l'Editeur"]], []]]""")
+            fic.write("""{
+    "AllWidget": [
+        [
+            100,
+            100,
+            "Forme0",
+            [
+                null
+            ],
+            null,
+            [
+                [
+                    "Label",
+                    null
+                ]
+            ],
+            "InEditor",
+            [
+                [
+                    "Label",
+                    "Dans l'Editeur"
+                ]
+            ],
+            []
+        ]
+    ]
+}""")
         self.Particule.UpdateOnFocus()
 
     def popup(self, event):

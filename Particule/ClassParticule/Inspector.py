@@ -3,6 +3,7 @@ from ClassSystem.EditorWindow import EditorWindow
 from ClassParticule.AddComponentFrame import AddComponentFrame
 from ClassParticule.Tag import Tag
 from ClassParticule.Layer import Layer
+import platform
 
 class Inspector(EditorWindow):
     def __init__(self,RootWindow):
@@ -67,6 +68,14 @@ class Inspector(EditorWindow):
         self.LstAllSelectLayer.grid(row=0, column=3)
         self.LstAllSelectLayer.bind('<<ComboboxSelected>>', self.updateDataGameObj)
 
+        self.label_Order = Label(self.frameBottom, text="Order : ")
+        self.label_Order.grid(row=1, column=0)
+        self.var_Entry_Order = IntVar()
+        # self.var_Entry_name.trace("w", self.updateDataGameObj)
+        self.entry_Order = Entry(self.frameBottom, textvariable=self.var_Entry_Order)
+        self.entry_Order.bind('<KeyRelease>', self.updateDataGameObj)
+        self.entry_Order.grid(row=1, column=1)
+
         FrameTemp = Frame(self.GameObjectWindow)
         FrameTemp.pack(fill=tkinter.BOTH,expand=True,side=TOP)
         self.ZoneComponentCanvas = Canvas(FrameTemp)
@@ -78,6 +87,10 @@ class Inspector(EditorWindow):
         self.ZoneComponentCanvas.bind('<Configure>',lambda e:self.ZoneComponentCanvas.configure(scrollregion = self.ZoneComponentCanvas.bbox('all')))
         self.ZoneComponentCanvas.bind('<Button-1>', lambda e: self.ZoneComponentCanvas.configure(
             scrollregion=self.ZoneComponentCanvas.bbox('all')))
+
+        self.ZoneComponentCanvas.bind('<Enter>', self._bound_to_mousewheel)
+        self.ZoneComponentCanvas.bind('<Leave>', self._unbound_to_mousewheel)
+
 
         self.ZoneComponentCanvas.configure(yscrollcommand = yscrollbar.set)
 
@@ -92,6 +105,24 @@ class Inspector(EditorWindow):
         self.mainComponentsFrame = LabelFrame(FrameTemp2)
         self.mainComponentsFrame.pack(fill=tkinter.BOTH,expand=True, anchor=N)
 
+    def _bound_to_mousewheel(self, event):
+        if platform.system()=="Linux":
+            self.ZoneComponentCanvas.bind_all("<Button-4>", self._on_mousewheel)
+            self.ZoneComponentCanvas.bind_all("<Button-5>", self._on_mousewheel)
+        else:
+            self.ZoneComponentCanvas.bind_all("<MouseWheel>", self._on_mousewheel)
+
+    def _unbound_to_mousewheel(self, event):
+        if platform.system()=="Linux":
+            self.ZoneComponentCanvas.unbind_all("<Button-4>")
+            self.ZoneComponentCanvas.unbind_all("<Button-5>")
+        else:
+            self.ZoneComponentCanvas.unbind_all("<MouseWheel>")
+    def _on_mousewheel(self, event):
+        self.ZoneComponentCanvas.configure(scrollregion=self.ZoneComponentCanvas.bbox('all'))
+        self.ZoneComponentCanvas.update()
+        self.ZoneComponentCanvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+
 
     def updateDataGameObj(self,*args):
         ItemSelected = self.Particule.Hierarchy.ItemSelected
@@ -103,6 +134,10 @@ class Inspector(EditorWindow):
         ItemSelected.isStatic = bool(self.varStatic.get())
         ItemSelected.tag = Tag(self.LstAllSelectTag.current())
         ItemSelected.layer = Layer(self.LstAllSelectLayer.current())
+        lastOrder = ItemSelected.Order
+        ItemSelected.Order = self.var_Entry_Order.get()
+        if lastOrder!=ItemSelected.Order:
+            self.Particule.Scene.RefreshOrder()
         #print(bool(self.varStatic.get()))
         if ItemSelected.activeSelf and ItemSelected.activeInHierarchy:
             tag = 'Active'
@@ -133,6 +168,7 @@ class Inspector(EditorWindow):
         self.varStatic.set(int(ItemSelected.isStatic))
         self.LstAllSelectTag.current(ItemSelected.tag.value)
         self.LstAllSelectLayer.current(ItemSelected.layer.value)
+        self.var_Entry_Order.set(ItemSelected.Order)
 
         """self.mainComponentsFrame.destroy()
         self.mainComponentsFrame = LabelFrame(self)

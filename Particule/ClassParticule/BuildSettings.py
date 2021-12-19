@@ -170,7 +170,8 @@ class BuildSettings(EditorWindow):
                 CodeInit = ""
                 components = ""
                 self.Particule.SaveData.LoadScene(i[0])
-                for i in self.Particule.Hierarchy.allGameObjectOnScene.items():
+                LstAllGameObjects = self.Particule.Hierarchy.allGameObjectOnScene.items()
+                for i in LstAllGameObjects:
                     CodeInit+="GameObject* "+i[0]+";\n"
                     code += i[0]+'= new GameObject(newScene, "'+i[1].name+'","'+i[0]+'");\n'
                     code += i[0]+"->activeSelf = "+str(i[1].activeSelf).lower()+";\n"
@@ -190,6 +191,11 @@ class BuildSettings(EditorWindow):
                         components+=data[1]
                         if type(compo).__name__ != "Transform":
                             components +=i[0]+"->AddComponent((Component*)"+compo.ID+");\n"
+                LstAllGameObjects = [(i[1].Order, i) for i in LstAllGameObjects]
+                LstAllGameObjects.sort(key=lambda x: x[0])  # ,reverse=True)
+                LstAllGameObjects = [i[1] for i in LstAllGameObjects]
+                for i in LstAllGameObjects:
+                    for compo in i[1].ListOfComponent:
                         components += compo.AddScriptAfterInitCasio() + "\n"
                     code+="newScene->AddGameObject("+i[0]+");\n"
                 code +=components
@@ -363,7 +369,8 @@ class BuildSettings(EditorWindow):
                 CodeInit = ""
                 components = ""
                 self.Particule.SaveData.LoadScene(i[0])
-                for i in self.Particule.Hierarchy.allGameObjectOnScene.items():
+                LstAllGameObjects = self.Particule.Hierarchy.allGameObjectOnScene.items()
+                for i in LstAllGameObjects:
                     CodeInit += "GameObject* " + i[0] + ";\n"
                     code += i[0] + '= new GameObject(newScene, "' + i[1].name + '","' + i[0] + '");\n'
                     code += i[0] + "->activeSelf = " + str(i[1].activeSelf).lower() + ";\n"
@@ -383,6 +390,11 @@ class BuildSettings(EditorWindow):
                         components += data[1]
                         if type(compo).__name__ != "Transform":
                             components += i[0] + "->AddComponent((Component*)" + compo.ID + ");\n"
+                LstAllGameObjects = [(i[1].Order,i) for i in LstAllGameObjects]
+                LstAllGameObjects.sort(key=lambda x: x[0])#,reverse=True)
+                LstAllGameObjects = [i[1] for i in LstAllGameObjects]
+                for i in LstAllGameObjects:
+                    for compo in i[1].ListOfComponent:
                         components += compo.AddScriptAfterInitCasio() + "\n"
                     code += "newScene->AddGameObject(" + i[0] + ");\n"
                 code += components

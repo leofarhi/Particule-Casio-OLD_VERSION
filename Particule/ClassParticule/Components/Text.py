@@ -1,7 +1,7 @@
 from Particule import *
 from ClassParticule.Component import Component
 from ClassParticule.Vector2 import Vector2
-
+import pyglet,tkinter
 class Text(Component):
     def __init__(self,gameObject,**kwargs):
         Component.__init__(self,gameObject,__name__.split(".")[-1],**kwargs)
@@ -9,7 +9,13 @@ class Text(Component):
         self.font = "Consolas"
         self.TypeVariables.update({"text": {"Type": str}})
 
-        self.Mesh = self.Particule.Scene.surface.create_text(0, 0, fill="black",font=(self.font, 5),anchor="nw",
+        self.DefaultSize = 5
+        if self.Particule.CalculatriceChoice=="Graph 90+E":
+            pyglet.font.add_file(self.Particule.rep_sys +'/lib/Kenney Future.ttf')
+            self.font ="Kenney Future"
+            self.DefaultSize = 11
+
+        self.Mesh = self.Particule.Scene.surface.create_text(0, 0, fill="black",font=(self.font, self.DefaultSize),anchor="nw",
                                text=self.text)
         
 
@@ -33,7 +39,7 @@ class Text(Component):
 
     def UpdateOnGUI(self):
         z = self.Particule.Scene.zoom
-        self.Particule.Scene.surface.itemconfig(self.Mesh, text=self.text, font=(self.font, int(5 * z)))
+        self.Particule.Scene.surface.itemconfig(self.Mesh, text=self.text, font=(self.font, int(self.DefaultSize * z)))
         x,y = self.gameObject.transform.position.get()
         self.Particule.Scene.surface.coords(self.Mesh,(x-self.Particule.Scene.x)*z,(y+self.Particule.Scene.y)*z)
         if self.gameObject.activeInHierarchy and self.gameObject.activeSelf:
@@ -56,3 +62,6 @@ class Text(Component):
     def Destroy(self):
         self.Particule.Scene.surface.delete(self.Mesh)
         Component.Destroy(self)
+
+    def GoFrontScreen(self):
+        self.Particule.Scene.surface.tag_raise(self.Mesh)

@@ -137,8 +137,14 @@ class Particule:
 
         self.SLN_System = SLN_System(self)
         self.ListeCalculatrices=["Graph 35+USB/75/85/95 (SD)","Graph 90+E"]
-        self.CalculatriceChoice="Graph 35+USB/75/85/95 (SD)"
+
         self.CalculatriceCouleur = rf.found(self.FolderProject + "/ProjectSettings/ProjectSettings.txt", "Player&CalculatriceCouleur")
+        if self.CalculatriceCouleur ==None:
+            self.CalculatriceCouleur = False
+        self.CalculatriceChoice = rf.found(self.FolderProject + "/ProjectSettings/ProjectSettings.txt",
+                                            "Player&CalculatriceChoice")
+        if self.CalculatriceChoice ==None:
+            self.CalculatriceChoice="Graph 35+USB/75/85/95 (SD)"
 
 
         #print(path)
@@ -240,6 +246,8 @@ class Particule:
             PythonCode = code[0]
         elif platform.system() == 'Linux':
             process = subprocess.Popen(["python",self.VisualScratchPath,self.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
+            code = eval(process.stdout.readlines()[-1].decode('latin-1'))
+            PythonCode = code[0]
         else:
             raise Exception("Platform Not supporting")
         #print(eval(process.stdout.readlines()[-1]))
@@ -392,6 +400,7 @@ class Particule:
                     ItemSelected=None
                 self.Hierarchy.ItemSelected = ItemSelected
                 self.Inspector.UpdateItemSelected()
+        self.Scene.RefreshOrder()
         progress.SetValue(100)
         progress.destroy()
         self.Process.remove(self.UpdateOnFocus)

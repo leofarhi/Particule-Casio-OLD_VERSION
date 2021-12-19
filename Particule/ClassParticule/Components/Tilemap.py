@@ -427,3 +427,8 @@ class Tilemap(Component):
         self.LoadMap()
         self.WhenComponentIsShowSignal()
 
+    def GoFrontScreen(self):
+        for i in self.Meshs:
+            for o in i:
+                self.Particule.Scene.surface.tag_raise(o)
+

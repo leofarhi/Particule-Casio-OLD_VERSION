@@ -51,6 +51,11 @@ class SaveData:
         data.update({"Components": dataComponent})
         return data
     def SaveScene(self):
+        if self.SaveScene in self.Particule.Process:
+            return
+        if self.LoadScene in self.Particule.Process:
+            return
+        self.Particule.Process.append(self.SaveScene)
         H = self.Particule.Hierarchy
         for scene in H.t.get_children(""):
             data = self.GetDataScene(scene)
@@ -59,6 +64,7 @@ class SaveData:
             path = path.replace(self.Particule.FolderProject, "")
             with open(self.Particule.FolderProject+"/"+path,"w") as fic:
                 fic.write(dataSaved)
+        self.Particule.Process.remove(self.SaveScene)
     def UnloadScenes(self):
         H = self.Particule.Hierarchy
         for i in H.t.get_children(""):
@@ -69,6 +75,11 @@ class SaveData:
             H.t.delete(i)
 
     def LoadScene(self,path="Assets/Scenes/Sample Scene.particule"):
+        if self.SaveScene in self.Particule.Process:
+            return
+        if self.LoadScene in self.Particule.Process:
+            return
+        self.Particule.Process.append(self.LoadScene)
         self.UnloadScenes()
         self.Particule.Scene.ClearAll()
         path = path.replace("\\","/").replace(self.Particule.FolderProject.replace("\\","/"),"")
@@ -118,6 +129,7 @@ class SaveData:
             gameObject.scene = path#i["scene"]
             gameObject.sceneCullingMask = i["sceneCullingMask"]
             gameObject.tag = Tag(i["tag"])
+            gameObject.Order = i["Order"]
             gameObject.transform = dicoComponent[i["transform"]]
 
             gameObject.OpenIsHierarchy = i["OpenIsHierarchy"]
@@ -153,7 +165,11 @@ class SaveData:
         for index,parent in dicoHier.items():
             H.CreateObject(root=parent, name=None, gameObject=dicoGameObject[index])
         for gameObject in gameObjects:
-            H.t.item(gameObject.ID, open=gameObject.OpenIsHierarchy)
+            try:
+                H.t.item(gameObject.ID, open=gameObject.OpenIsHierarchy)
+            except:pass
+        self.Particule.Scene.RefreshOrder()
+        self.Particule.Process.remove(self.LoadScene)
     def GetDictOfChild(self,parent,dico):
         if parent.transform.parent == None:
             parentID = parent.scene

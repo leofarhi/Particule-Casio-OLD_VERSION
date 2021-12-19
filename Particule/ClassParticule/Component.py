@@ -199,5 +199,8 @@ class Component(Object):
     def AddScriptAfterInitCasio(self):
         return self.CodeAfter
 
+    def GoFrontScreen(self):
+        pass
+
 
 

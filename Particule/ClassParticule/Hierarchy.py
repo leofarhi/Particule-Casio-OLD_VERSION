@@ -22,6 +22,8 @@ from pathlib import Path
 from importlib import import_module
 from SystemExt.Moteur import TradTxt
 
+#sudo apt-get install xclip
+
 class Hierarchy(EditorWindow):
     def __init__(self,RootWindow):
         EditorWindow.__init__(self,RootWindow,Resize=True,ScrollbarShow=False)
@@ -94,6 +96,11 @@ class Hierarchy(EditorWindow):
         gameObj = self.allGameObjectOnScene[temp]
         self.Particule.Scene.x = gameObj.transform.position.x
         self.Particule.Scene.y = -gameObj.transform.position.y
+    def FindWithName(self,name):
+        for i in self.allGameObjectOnScene.items():
+            if i[1].name==name:
+                return i[1]
+        return None
     def popup(self, event):
         """action in event of button 3 on tree view"""
         # select row under mouse
@@ -178,6 +185,7 @@ class Hierarchy(EditorWindow):
             gameObject.layer = Layer(datas["layer"])
             gameObject.sceneCullingMask = datas["sceneCullingMask"]
             gameObject.tag = Tag(datas["tag"])
+            gameObject.Order = datas["Order"]
             scenePath = datas["scene"]
 
             dataComponent = datas["ListOfComponent"]

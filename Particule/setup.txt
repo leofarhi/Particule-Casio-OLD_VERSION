@@ -4,7 +4,11 @@
         [
             "TestNewVersion",
             "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/TestNewVersion"
+        ],
+        [
+            "MinecraftStoryMode",
+            "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/MinecraftStoryMode"
         ]
     ],
-    "FolderProject": "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/TestNewVersion"
+    "FolderProject": "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/MinecraftStoryMode"
 }

@@ -252,6 +252,8 @@ void Scene::Update() {
             {
                 AllGameObject[i]->ListOfComponent[o]->Update();
             }
+        }else {
+            AllGameObject[i]->transform->Update();
         }
     }
     for (int i = 0; i < AllGameObject.Count; i++)
@@ -265,9 +267,7 @@ void Scene::Update() {
     }
     for (int i = 0; i < AllGameObject.Count; i++)
     {
-        if (AllGameObject[i]->IsActive()) {
-            AllGameObject[i]->transform->Update();
-        }
+        AllGameObject[i]->transform->Update();
     }
     for (int i = 0; i < AllGameObject.Count; i++)
     {
@@ -297,6 +297,9 @@ void Scene::Start() {
             {
                 AllGameObject[i]->ListOfComponent[o]->Start();
             }
+        }
+        else {
+            AllGameObject[i]->transform->Start();
         }
     }
 };
@@ -549,6 +552,99 @@ void Tilemap::OnRenderObject() {
     }
 
 };
+
+CanvasUI::CanvasUI(GameObject* gameObject, const char* UUID) : MonoBehaviour("CanvasUI", gameObject, UUID) {
+    wait = false;
+    ButtonSelection = NULL;
+}
+
+void CanvasUI::FixedUpdate() {
+    float camX = gameObject->scene->AllCameras[0]->gameObject->transform->position->x;
+    float camY = gameObject->scene->AllCameras[0]->gameObject->transform->position->y;
+    gameObject->transform->position->x = camX;
+    gameObject->transform->position->y = camY;
+}
+
+void CanvasUI::Update() {
+    FixedUpdate();
+    if (AllChildrenUI.Count > 0) {
+        if (ButtonSelection == NULL) {
+            for (int i = 0; i < AllChildrenUI.Count; i++)
+            {
+                if (AllChildrenUI[i]->name == ((unsigned char*)"ButtonUI")) {
+                    ButtonSelection = AllChildrenUI[i];
+                    return;
+                }
+            }
+        }
+        else {
+            if (wait && (IsKeyDown(KEY_CTRL_RIGHT) || IsKeyDown(KEY_CTRL_LEFT) || IsKeyDown(KEY_CTRL_DOWN) || IsKeyDown(KEY_CTRL_UP))) {
+                return;
+            }
+            wait = false;
+            int newSlc = -1;
+            if (IsKeyDown(KEY_CTRL_UP)) {
+                for (int i = AllChildrenUI.Count - 1; i >= 0; i--)
+                {
+                    if (AllChildrenUI[i]->name == ((unsigned char*)"ButtonUI") && AllChildrenUI[i] != ButtonSelection) {
+                        if (AllChildrenUI[i]->gameObject->transform->position->y <= ButtonSelection->gameObject->transform->position->y) {
+                            newSlc = i;
+                            i = -1;
+                        }
+                    }
+                }
+            }
+            if (IsKeyDown(KEY_CTRL_DOWN)) {
+                for (int i = 0; i < AllChildrenUI.Count; i++)
+                {
+                    if (AllChildrenUI[i]->name == ((unsigned char*)"ButtonUI") && AllChildrenUI[i] != ButtonSelection) {
+                        if (AllChildrenUI[i]->gameObject->transform->position->y >= ButtonSelection->gameObject->transform->position->y) {
+                            newSlc = i;
+                            i = AllChildrenUI.Count;
+                        }
+                    }
+                }
+            }
+            if (IsKeyDown(KEY_CTRL_LEFT)) {
+                for (int i = AllChildrenUI.Count - 1; i >= 0; i--)
+                {
+                    if (AllChildrenUI[i]->name == ((unsigned char*)"ButtonUI") && AllChildrenUI[i] != ButtonSelection) {
+                        if (AllChildrenUI[i]->gameObject->transform->position->x <= ButtonSelection->gameObject->transform->position->x) {
+                            newSlc = i;
+                            i = -1;
+                        }
+                    }
+                }
+            }
+            if (IsKeyDown(KEY_CTRL_RIGHT)) {
+                for (int i = 0; i < AllChildrenUI.Count; i++)
+                {
+                    if (AllChildrenUI[i]->name == ((unsigned char*)"ButtonUI") && AllChildrenUI[i] != ButtonSelection) {
+                        if (AllChildrenUI[i]->gameObject->transform->position->x >= ButtonSelection->gameObject->transform->position->x) {
+                            newSlc = i;
+                            i = AllChildrenUI.Count;
+                        }
+                    }
+                }
+            }
+            if (newSlc != -1) {
+                ButtonSelection = AllChildrenUI[newSlc];
+                wait = true;
+            }
+
+        }
+
+    }
+}
+
+void CanvasUI::OnRenderObject() {
+    FixedUpdate();
+};
+
+void CanvasUI::LateUpdate() {
+    FixedUpdate();
+};
+
 
 
 

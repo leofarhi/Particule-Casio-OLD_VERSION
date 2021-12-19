@@ -16,8 +16,8 @@ class ScriptBlockPython(ScriptBlock):
         self.Image = None
 
     def WhenCompileForCasio(self,lst):
-        nb = self.BlockSys.GetVariable(lst,1)[1]
-        var = self.BlockSys.GetVariable(lst,0)[1]
+        nb = self.BlockSys.GetVariable(lst,0)[1]
+        var = self.BlockSys.GetVariable(lst,1)[1]
         code = "for (int "+var+" = 0;"+var+"<" + nb+"; "+var+ "++){\n" + self.BlockSys.GetSuite(lst,0) + "\n}\n"
         code += self.BlockSys.GetSuite(lst,1)
         return code

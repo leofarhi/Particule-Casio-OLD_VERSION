@@ -73,3 +73,6 @@ class BoxCollider2D(Component):
     def Destroy(self):
         self.Particule.Scene.surface.delete(self.Mesh)
         Component.Destroy(self)
+
+    def GoFrontScreen(self):
+        self.Particule.Scene.surface.tag_raise(self.Mesh)

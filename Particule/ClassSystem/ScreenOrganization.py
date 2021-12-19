@@ -6,6 +6,7 @@ from tkinter.filedialog import *
 from tkinter import ttk
 import tkinter as tk
 from Particule import *
+import platform
 from ClassSystem.PFrame import PFrame
 from ClassParticule.Hierarchy import Hierarchy
 from ClassSystem.Notebook import Notebook
@@ -143,7 +144,8 @@ class ScreenOrganization:
         self.ChangeInspector()
     def Bind_Setup(self):
         root = self.Particule.Mafenetre
-        root.bind("<FocusIn>", self.Particule.UpdateOnFocus)
+        if platform.system().lower()=="windows":
+            root.bind("<FocusIn>", self.Particule.UpdateOnFocus)
     def ChangeInspector(self,Name="Inspector"):
         self.Particule.Inspector.GameObjectWindow.forget()
         self.Particule.WindowImage.forget()
@@ -187,11 +189,14 @@ class ScreenOrganization:
         pathFile = self.Particule.FolderProject + "/ProjectSettings/ProjectSettings.txt"
         if TypeCalculatrice=="Graph 35+USB/75/85/95 (SD)":
             self.Particule.CalculatriceCouleur = False
+            self.Particule.CalculatriceChoice = "Graph 35+USB/75/85/95 (SD)"
             rf.save(pathFile, "Player&ScreenSize", (127,63))
         elif TypeCalculatrice=="Graph 90+E":
             self.Particule.CalculatriceCouleur = True
+            self.Particule.CalculatriceChoice = "Graph 90+E"
             rf.save(pathFile, "Player&ScreenSize", (396,224))
         rf.save(pathFile, "Player&CalculatriceCouleur", self.Particule.CalculatriceCouleur)
+        rf.save(pathFile, "Player&CalculatriceChoice", self.Particule.CalculatriceChoice)
         self.Particule.UpdateOnFocus()
     def SetMenuItem(self):
         self.Particule.MenuItem = MenuItem(self.Particule.Mafenetre)
@@ -248,7 +253,8 @@ class ScreenOrganization:
         #self.MenuItem.AddItem("Edit/Clear All PlayerPrefs")
 
         #self.MenuItem.AddItem("Asset/Create")
-        self.MenuItem.AddItem(TradTxt("Asset/Afficher le dossier"),self.ShowInExplorer)
+        if platform.system().lower() == "windows":
+            self.MenuItem.AddItem(TradTxt("Asset/Afficher le dossier"),self.ShowInExplorer)
         """
         self.MenuItem.AddItem("Asset/Open")
         self.MenuItem.AddItem("Asset/Delete")
@@ -372,7 +378,8 @@ class ScreenOrganization:
         self.MenuItem.Update()
 
     def ShowInExplorer(self):
-        FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
-        subprocess.run([FILEBROWSER_PATH, os.path.abspath(self.Particule.FolderProject)])
+        if platform.system().lower() == "windows":
+            FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
+            subprocess.run([FILEBROWSER_PATH, os.path.abspath(self.Particule.FolderProject)])
 
 

@@ -32,7 +32,28 @@ int LenChar(char* txt);
 
 int mod(int x, int m);
 
+template <class Event>
+class ParticuleEvent {
+public:
+    void (Event::* function)();
+    Event* self;
 
+    ParticuleEvent() {
+        function = NULL;
+        self = NULL;
+    }
+
+    void Set(void (Event::* func)(), Event* obj) {
+        function = func;
+        self = obj;
+    }
+
+    void Invoke()
+    {
+        if (self!=NULL && function!=NULL)
+            (self->*function)();
+    };
+};
 
 
 enum Tag
@@ -485,6 +506,102 @@ public:
     };
 
     void OnRenderObject();
+};
+
+class CanvasUI : public MonoBehaviour {
+    bool wait;
+public:
+    List<Component*> AllChildrenUI;
+    Component* ButtonSelection;
+    CanvasUI(GameObject* gameObject, const char* UUID = NULL);
+    ~CanvasUI() {
+        AllChildrenUI.Clear();
+    };
+    void Update();
+    void FixedUpdate();
+    void LateUpdate();
+    void OnRenderObject();
+};
+
+template <class T>
+class ButtonUI : public MonoBehaviour {
+public:
+    //void (*OnClick)();
+    //OnClick = (&CanvasUI::Move);
+    //(this->*OnClick)();
+    Texture* NormalTexture;
+    Texture* HighlightedTexture;
+
+    ParticuleEvent<T> OnClick;
+    CanvasUI* canvas;
+
+    Sprite* sprite;
+
+
+    ButtonUI(GameObject* gameObject, Texture* NormalTexture, Texture* HighlightedTexture, const char* UUID = NULL) : MonoBehaviour("ButtonUI", gameObject, UUID) {
+        this->NormalTexture = NormalTexture;
+        this->HighlightedTexture = HighlightedTexture;
+        this->canvas = NULL;
+        this->sprite = NULL;
+    };
+
+    ~ButtonUI() {
+        if (canvas != NULL) {
+            if (canvas->AllChildrenUI.Contains(this)) {
+                canvas->AllChildrenUI.Remove(this);
+            }
+        }
+    };
+
+    void Update() {
+        if (canvas != NULL && canvas->ButtonSelection == this) {
+            if (IsKeyDown(KEY_CTRL_EXE))
+                OnClick.Invoke();
+        }
+    };
+
+    void Awake() {
+        this->sprite = ((Sprite*)this->gameObject->GetComponent("Sprite"));
+
+        if (this->sprite != NULL && NormalTexture == NULL) {
+            NormalTexture = sprite->image;
+        }
+
+        Transform* tempParent = this->gameObject->transform;
+        while (tempParent != NULL && this->canvas == NULL)
+        {
+            this->canvas = ((CanvasUI*)tempParent->gameObject->GetComponent("CanvasUI"));
+            if (this->canvas == NULL)
+            {
+                tempParent = tempParent->parent;
+            }
+        }
+        if (this->canvas != NULL) {
+            canvas->AllChildrenUI.Add(this);
+        }
+    }
+
+    void LateUpdate() {
+
+        if (sprite != NULL) {
+            sprite->HaveBackground = true;
+            if (canvas != NULL && canvas->ButtonSelection == this) {
+
+                if (sprite->image != HighlightedTexture) {
+                    sprite->image = HighlightedTexture;
+                }
+                DrawRectangle(gameObject->transform->localPosition->x - 1, gameObject->transform->localPosition->y - 1, sprite->image->width + 2, sprite->image->height + 2, ML_BLACK);
+            }
+            else
+            {
+
+                if (sprite->image != NormalTexture) {
+                    sprite->image = NormalTexture;
+                }
+            }
+        }
+
+    };
 };
 
 

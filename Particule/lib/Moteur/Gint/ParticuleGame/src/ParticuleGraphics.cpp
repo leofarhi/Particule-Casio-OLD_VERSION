@@ -22,7 +22,7 @@ void DisplayTexture(Texture* texture, int x, int y) {
 };
 
 void DrawRectangle(int x, int y, int width, int height,int Color) {
-	drect(x, y, width, height, Color);
+	drect(x, y, x + width, y + height, Color);
 };
 
 void PrintTextMini(unsigned char* text,int x,int y) {

@@ -45,7 +45,10 @@ class AddComponentFrame(EditorWindow):
             self.lstButton.append(temp)
 
         self.focus_set()
+        self.frame_AllCompo.UpdateScroll()
     def OnLostFocus(self,_=None):
+        self.frame_AllCompo.OnDestroy()
+        self.frame_AllCompo.destroy()
         self.RootWindow.destroy()
 
     def rechercheBind(self,_):
@@ -59,11 +62,13 @@ class AddComponentFrame(EditorWindow):
             name=(compo.__name__).split(".")[-1]
             if not self.var_barreRecherche.get().lower() in name.lower():
                 continue
+            if self.RemoveTypeComponent(name):
+                continue
             temp = Button(self.frame_AllCompo.scrollable_frame, text=name,
                           width=self.frame_AllCompo.canvas.winfo_width(),command = partial(ItemSelected.AddComponent,compo))
             temp.pack(fill=tkinter.X, expand=True)
             self.lstButton.append(temp)
-
+        self.frame_AllCompo.UpdateScroll()
     def RemoveTypeComponent(self,name):
         Lst=["MissingScript","Transform"]
         return name in Lst

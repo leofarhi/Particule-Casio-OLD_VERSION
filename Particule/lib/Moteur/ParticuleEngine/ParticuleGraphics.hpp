@@ -75,6 +75,13 @@ public:
 
 };
 
+struct ML_Color
+{
+    //Nothing
+};
+static ML_Color ML_BLACK;
+static ML_Color ML_WHITE;
+
 void ClearScreen();
 
 void UpdateScreen();
@@ -82,7 +89,7 @@ void UpdateScreen();
 void DisplayTexture(Texture* texture, int x, int y, int Zoom, int Rotate);
 void DisplayTexture(Texture* texture, int x, int y);
 
-void DrawRectangle(int x, int y, int width, int height, int Color);
+void DrawRectangle(int x, int y, int width, int height, ML_Color Color);
 
 void PrintTextMini(unsigned char* text, int x, int y);
 

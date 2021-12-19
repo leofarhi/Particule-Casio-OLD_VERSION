@@ -175,6 +175,9 @@ class Transform(Component):
         self.Particule.Scene.surface.delete(self.arrowMiddle)
         Component.Destroy(self)
 
+    def AddContextMenu(self):
+        return
+
     def DetachChildren(self):
         pass
     def Find(self):

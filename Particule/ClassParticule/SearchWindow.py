@@ -3,6 +3,7 @@ from ClassSystem.ScrollableFrame import ScrollableFrame
 from ClassSystem.Notebook import Notebook
 from tkinter import ttk
 from ClassParticule.Texture import Texture
+import platform
 
 class SearchWindow(EditorWindow):
     def __init__(self, RootWindow,Object,TypeSearch):
@@ -51,7 +52,8 @@ class SearchWindow(EditorWindow):
 
         self.mylistFolder.pack(side=LEFT, fill=BOTH, expand=True)
         scrollbarFolder.config(command=self.mylistFolder.yview)
-
+        if platform.system().lower() == "linux":
+            self.RootWindow.protocol("WM_DELETE_WINDOW", self.OnLostFocus)
 
         """
         #####################
@@ -72,6 +74,7 @@ class SearchWindow(EditorWindow):
         index = int(w.curselection()[0])
         self.Object.Data = (self.LstObjFound[index])[1]
         self.Object.changeOther()
+        self.Particule.Inspector.UpdateItemSelected()
 
     def ClearListe(self):
         self.mylistFolder.delete(0, END)
@@ -87,5 +90,7 @@ class SearchWindow(EditorWindow):
 
 
     def OnLostFocus(self,_=None):
+        if platform.system().lower() == "linux":
+            self.Particule.UpdateOnFocus()
         self.RootWindow.destroy()
 

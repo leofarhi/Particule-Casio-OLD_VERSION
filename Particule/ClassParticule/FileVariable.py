@@ -12,7 +12,7 @@ class FileVariable(Object):
         self.path = Path
         self.pathMeta = Path+".meta"
         self.IsHide = rf.found(self.pathMeta, "IsHide")
-        if UUID!=False:
+        if UUID!=None:
             self.ID=UUID
 
     def UpdateCheck(self):

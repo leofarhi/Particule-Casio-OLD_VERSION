@@ -1,12 +1,14 @@
 from Particule import *
 from ClassParticule.Component import Component
-class Camera(Component):
+from ClassParticule.Layer import Layer
+class CanvasUI(Component):
     def __init__(self,gameObject,**kwargs):
         Component.__init__(self, gameObject, __name__.split(".")[-1],**kwargs)
         self.canevas = self.Particule.Scene.surface
         self.pathProjectSettings = self.Particule.FolderProject + "/ProjectSettings/ProjectSettings.txt"
         self.w,self.h=self.ReloadSize()
-        self.Mesh = self.canevas.create_rectangle(0,0, self.w,self.h, fill="")
+        self.Mesh = self.canevas.create_rectangle(0,0, self.w,self.h, fill="",outline='blue',width=2)
+        self.gameObject.layer = Layer.UI
 
         self.Particule.Scene.surface.tag_bind(self.Mesh, '<Button-1>', self.Clic)
         #self.Particule.Scene.surface.tag_bind(self.Mesh, '<B1-Motion>', self.Drag)
@@ -42,6 +44,3 @@ class Camera(Component):
     def ReloadSize(self):
         temp = rf.found(self.pathProjectSettings, "Player&ScreenSize")
         return temp
-
-    def GoFrontScreen(self):
-        self.Particule.Scene.surface.tag_raise(self.Mesh)

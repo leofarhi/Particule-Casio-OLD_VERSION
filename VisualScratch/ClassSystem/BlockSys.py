@@ -157,5 +157,7 @@ class BlockSys:
             return self.GetTypeValueAttributCasio((Type.split("<",1)[1]).split(">",1)[0])+"*"
         elif Type == "Texture":
             return "Texture*"
+        elif Type == "Vector2":
+            return "Vector2*"
         else:
             return Type#+"*"

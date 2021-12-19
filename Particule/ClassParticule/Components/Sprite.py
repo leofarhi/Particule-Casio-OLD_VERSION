@@ -95,3 +95,6 @@ class Sprite(Component):
         self.HaveBackground = dataCompo["HaveBackground"]
         #Texture(self.Particule,Path=dataCompo["repImg"],name=os.path.basename(dataCompo["repImg"]))
         self.ReloadImg()
+
+    def GoFrontScreen(self):
+        self.Particule.Scene.surface.tag_raise(self.Mesh)

@@ -17,6 +17,7 @@ class GameObject(Object):
         self.tag = Tag.Untagged
         self.transform = Transform(self)
         self.ListOfComponent=[self.transform]
+        self.Order = 0
 
         self.OpenIsHierarchy = 0
 
@@ -38,6 +39,7 @@ class GameObject(Object):
                     "sceneCullingMask": self.sceneCullingMask,
                     "tag": self.tag.value,
                     "transform": self.transform.ID,
+                    "Order": self.Order,
                     "ListOfComponent": [i.ID for i in self.ListOfComponent],
 
                     "OpenIsHierarchy": self.OpenIsHierarchy

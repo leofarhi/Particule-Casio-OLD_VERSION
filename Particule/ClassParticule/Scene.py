@@ -228,3 +228,12 @@ class Scene(EditorWindow):
         self.surface.delete("all")
         #self.surface.destroy()
         #self.InitCanvas()
+
+    def RefreshOrder(self):
+        LstAllGameObjects = self.Particule.Hierarchy.allGameObjectOnScene.items()
+        LstAllGameObjects = [(i[1].Order, i) for i in LstAllGameObjects]
+        LstAllGameObjects.sort(key=lambda x: x[0])  # ,reverse=True)
+        LstAllGameObjects = [(i[1])[1] for i in LstAllGameObjects]
+        for i in LstAllGameObjects:
+            for o in i.ListOfComponent:
+                o.GoFrontScreen()

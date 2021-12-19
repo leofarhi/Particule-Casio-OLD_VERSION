@@ -2,6 +2,7 @@ from Particule import *
 from ClassSystem.EditorWindow import EditorWindow
 from ClassParticule.FileVariable import FileVariable
 from ClassParticule.AddComponentFrame import AddComponentFrame
+import time
 
 class WindowImage(EditorWindow):
     def __init__(self,RootWindow):
@@ -47,9 +48,10 @@ class WindowImage(EditorWindow):
                 if guid!=None:
                     TransformImage.ImportImage(path,self.Particule.FolderProject + "/Library/ImagesBmpCache/" +guid+'.bmp')
                     #self.Particule.UpdateOnFocus()
+                    time.sleep(1)
+                    self.Particule.FolderWindow.CreateMetaFile()
                     self.Particule.FolderWindow.CreateMetaFile()
                     self.Particule.FolderWindow.GetAll_UUID()
-                    self.Particule.SLN_System.UpdateSLN()
                     self.Particule.FolderWindow.update_search_files()
 
     def Update(self):

@@ -1,5 +1,5 @@
 class Object:
-    def __init__(self,Particule,name="",hideFlags=True,UUID=False):
+    def __init__(self,Particule,name="",hideFlags=True,UUID=None):
         self.Particule = Particule
         self.hideFlags = hideFlags
         self.name = name

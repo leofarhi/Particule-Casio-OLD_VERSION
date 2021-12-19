@@ -2,6 +2,5 @@ font.png:
   name: font
   type: font
   charset: print
-  grid.size: 5x7
-  grid.padding: 1
-  proportional: true
+  grid.size: 13x16
+
