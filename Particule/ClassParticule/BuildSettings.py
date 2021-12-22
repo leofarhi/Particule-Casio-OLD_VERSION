@@ -272,8 +272,13 @@ class BuildSettings(EditorWindow):
         for i in os.listdir(self.Particule.FolderProject+ "/Library/ScriptEditor/"):
             if ".py" in i:
                 os.remove(self.Particule.FolderProject+ "/Library/ScriptEditor/"+i)
-        if platform.system() == 'Windows':
-            process = subprocess.Popen([self.Particule.VisualScratchPath,self.Particule.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
+        if platform.system() == 'Windows' :
+            if rf.found("setup.txt","WindowsPY"):
+                process = subprocess.Popen(
+                    ["python", self.Particule.VisualScratchPath, self.Particule.FolderProject + '/SLN/Solution.sls',
+                     "True"], stdout=subprocess.PIPE)
+            else:
+                process = subprocess.Popen([self.Particule.VisualScratchPath,self.Particule.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
         elif platform.system() == 'Linux':
             process = subprocess.Popen(["python",self.Particule.VisualScratchPath,self.Particule.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
         else:

@@ -113,6 +113,7 @@ from ClassParticule.WindowScene import *
 
 
 if rf.found("setup.txt","Langue")==None:rf.save("setup.txt","Langue",langue_sys)
+if rf.found("setup.txt","WindowsPY")==None:rf.save("setup.txt","WindowsPY",False)
 else:
    langue_sys=rf.found("setup.txt","Langue")
    M.langue_sys=rf.found("setup.txt","Langue")
@@ -127,7 +128,7 @@ class Particule:
     def __init__(self,FolderProject=os.getcwd()+"/ProjectFolder"):
         self.Process = ["Starting"]
         self.version = "2022.0b"
-        if platform.system() == 'Windows':
+        if platform.system() == 'Windows' and (not rf.found("setup.txt","WindowsPY")):
             self.VisualScratchPath=os.path.dirname(os.getcwd())+"/VS Out/VisualScratch/VisualScratch.exe"
         else:
             self.VisualScratchPath =os.path.dirname(os.getcwd())+"/VisualScratch/main.py"
@@ -241,9 +242,16 @@ class Particule:
 
     def GetCodeFromVisualScratch(self):
         if platform.system()=='Windows':
-            process = subprocess.Popen([self.VisualScratchPath,self.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
-            code = eval(process.stdout.readlines()[-1].decode('latin-1'))
-            PythonCode = code[0]
+            if  rf.found("setup.txt","WindowsPY"):
+                process = subprocess.Popen(
+                    ["python", self.VisualScratchPath, self.FolderProject + '/SLN/Solution.sls', "True"],
+                    stdout=subprocess.PIPE)
+                code = eval(process.stdout.readlines()[-1].decode('latin-1'))
+                PythonCode = code[0]
+            else:
+                process = subprocess.Popen([self.VisualScratchPath,self.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
+                code = eval(process.stdout.readlines()[-1].decode('latin-1'))
+                PythonCode = code[0]
         elif platform.system() == 'Linux':
             process = subprocess.Popen(["python",self.VisualScratchPath,self.FolderProject + '/SLN/Solution.sls',"True"], stdout=subprocess.PIPE)
             code = eval(process.stdout.readlines()[-1].decode('latin-1'))

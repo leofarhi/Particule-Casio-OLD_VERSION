@@ -10,5 +10,6 @@
             "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/MinecraftStoryMode"
         ]
     ],
-    "FolderProject": "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/MinecraftStoryMode"
+    "FolderProject": "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/TestNewVersion",
+    "WindowsPY": false
 }
