@@ -1,14 +1,14 @@
 {
     "GridCenter": [
-        808,
-        625
+        816,
+        535
     ],
     "GridCenterLeft": [
-        342,
-        625
+        350,
+        535
     ],
     "GridCenterBottom": [
-        1155,
-        191
+        1171,
+        237
     ]
 }

@@ -8,8 +8,12 @@
         [
             "MinecraftStoryMode",
             "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/MinecraftStoryMode"
+        ],
+        [
+            "Tutoriel",
+            "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/Tutoriel"
         ]
     ],
-    "FolderProject": "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/TestNewVersion",
+    "FolderProject": "C:/Users/leofa/OneDrive/Documents/PycharmProjects/CasioParticule/Tutoriel",
     "WindowsPY": false
 }

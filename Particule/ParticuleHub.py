@@ -115,7 +115,7 @@ class ParticuleHub:
         TempFrame = Frame(self.WinMain)
         TempFrame.pack(fill=BOTH, expand=True, side=LEFT)
         BoutonLearn = Button(TempFrame, text=TradTxt("Aller à la vidéo"), width=20, height=5,
-                             command=partial(webbrowser.open, "https://youtu.be/WSUmLMhd7HQ"))
+                             command=partial(webbrowser.open, "https://www.youtube.com/playlist?list=PLht1FtWLov65FJ_V6SY-IYa5eTTgvdsvf"))
         BoutonLearn.pack(fill=X)
         # webbrowser.open('http://www.python.org')
 
