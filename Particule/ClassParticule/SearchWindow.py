@@ -43,11 +43,11 @@ class SearchWindow(EditorWindow):
 
         self.LstObjFound=[]
         for UUID,Obj in list(self.Particule.All_UUID.items()):
-            if type(Obj)==TypeSearch:
+            if type(Obj)==TypeSearch or issubclass(type(Obj),TypeSearch):
                 if TypeSearch == Texture:
                     if Obj.fileVariable!=None and Obj.fileVariable.IsHide:continue
                 self.LstObjFound.append((UUID,Obj))
-                self.mylistFolder.insert(END, Obj.name)
+                self.mylistFolder.insert(END, str(Obj))
 
 
         self.mylistFolder.pack(side=LEFT, fill=BOTH, expand=True)
@@ -86,7 +86,7 @@ class SearchWindow(EditorWindow):
             name = elem[1].name
             if not self.var_barreRecherche.get().lower() in name.lower():
                 continue
-            self.mylistFolder.insert(END, name)
+            self.mylistFolder.insert(END, str(elem[1]))
 
 
     def OnLostFocus(self,_=None):

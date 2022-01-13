@@ -135,7 +135,10 @@ class Inspector(EditorWindow):
         ItemSelected.tag = Tag(self.LstAllSelectTag.current())
         ItemSelected.layer = Layer(self.LstAllSelectLayer.current())
         lastOrder = ItemSelected.Order
-        ItemSelected.Order = self.var_Entry_Order.get()
+        try:
+            ItemSelected.Order = self.var_Entry_Order.get()
+        except:
+            ItemSelected.Order =0
         if lastOrder!=ItemSelected.Order:
             self.Particule.Scene.RefreshOrder()
         #print(bool(self.varStatic.get()))

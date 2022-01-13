@@ -75,6 +75,7 @@ from importlib import import_module
 from SystemExt import SpriteCoder
 
 from PIL import ImageFilter, ImageOps
+import pyglet
 
 #Build :
 #from SystemExt import BuildSDKGraph
@@ -94,6 +95,9 @@ from ClassSystem.ProgressBarPopup import ProgressBarPopup
 import ClassParticule.Component
 import platform
 from ClassParticule.Texture import Texture
+import CppEditor.VisualScratchConverter
+from ClassParticule.ParticuleEvent import ParticuleEvent
+from CppEditor.ParticuleScript import ParticuleScript
 """
 from ClassParticule.Inspector import Inspector
 from ClassSystem.WindowPanel import *
@@ -230,6 +234,8 @@ class Particule:
 
         # self.Inspector.EditElement()
 
+        ParticuleScript(self)
+
         self.MainLoop()
         #self.Inspector.LoopEdit()
         #self.LoadSystem.All_load_Element_Start(True)
@@ -241,6 +247,7 @@ class Particule:
         self.Mafenetre.mainloop()
 
     def GetCodeFromVisualScratch(self):
+        """
         if platform.system()=='Windows':
             if  rf.found("setup.txt","WindowsPY"):
                 process = subprocess.Popen(
@@ -259,6 +266,9 @@ class Particule:
         else:
             raise Exception("Platform Not supporting")
         #print(eval(process.stdout.readlines()[-1]))
+        """
+        code = CppEditor.VisualScratchConverter.CompileSLN(self.FolderProject + '/SLN/Solution.sls')
+        PythonCode = code[0]
 
         try:
             for i in os.listdir(self.FolderProject + "/Library/ScriptEditor/"):

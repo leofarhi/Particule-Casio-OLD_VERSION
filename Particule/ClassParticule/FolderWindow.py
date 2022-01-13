@@ -423,7 +423,7 @@ class FolderWindow(EditorWindow):
         ext= os.path.splitext(file)[1]
         if ext in [".bmp",".png",".jpeg",".jpg"]:
             return self.Picturefile_icon
-        elif ext == ".SBAsset":
+        elif ext == ".hpp":
             return self.VisualScratchfile_icon
         elif ext == ".particule":
             return self.Scenefile_icon

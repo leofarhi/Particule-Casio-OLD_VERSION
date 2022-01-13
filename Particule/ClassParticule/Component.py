@@ -27,6 +27,13 @@ class Component(Object):
 
         self.CodeBefore=""
         self.CodeAfter=""
+        self._Templates = []
+
+    def __str__(self):
+        return str(self.name+ ' ('+self.gameObject.name+")")
+
+    def ToString(self):
+        return self.__str__()
 
 
     def SaveDataDict(self):
@@ -111,7 +118,6 @@ class Component(Object):
     def popup(self, event):
         self.contextMenu.post(event.x_root, event.y_root)
     def Destroy(self,*args):
-        Object.Destroy(self)
         if self.gameObject.scene != "" and self.gameObject.scene in self.Particule.Scene.scenes:
             indexScene = self.Particule.Scene.scenes.index(self.gameObject.scene)
             if self.ID in self.Particule.Scene.UUID_Objects[indexScene]:
@@ -122,6 +128,7 @@ class Component(Object):
         for i in self._valueGUI:
             i.destroy()
         self.Particule.Inspector.UpdateItemSelected()
+        Object.Destroy(self)
 
     def BuildValue(self):
         if type(self).__name__ == "Transform":
@@ -184,6 +191,8 @@ class Component(Object):
                         CodeAfter+=code
                         parametres +=""#"Lst_"+str(i)+"_"+str(indexAtt)+"_"+str(self.ID)
                         continue
+                elif type(var).__name__=="Transform":
+                    parametres+=var.gameObject.ID+"->transform"
                 else:
                     #print(eval("self."+i))
                     parametres +=var.ID
@@ -193,6 +202,12 @@ class Component(Object):
         return (type(self).__name__+"* "+self.ID+";\n",
                 self.ID+" = new "+type(self).__name__+'('+self.gameObject.ID+parametres+'"'+self.ID+'");\n')
 
+    def GetTypeObject(self,TypeObject):
+        assert type(TypeObject)==str
+        TypeObject = TypeObject.replace("*","").replace("&","").replace(" ","")
+        TypeObject = TypeObject.split("<")[0]
+        return getattr(sys.modules['Particule'], TypeObject)
+
     def AddScriptBeforInitCasio(self):
         return self.CodeBefore
 
@@ -201,6 +216,8 @@ class Component(Object):
 
     def GoFrontScreen(self):
         pass
+
+
 
 
 

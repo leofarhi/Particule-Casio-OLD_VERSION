@@ -55,8 +55,9 @@ class SLN_System:
             rep = self.Particule.FolderProject+"/Assets"
         lstDir = os.listdir(rep)
         for i in lstDir:
-            if ".SBAsset" == os.path.splitext(i)[1] and os.path.isfile(rep + "/" + i):
-                lst.append(rep + "/" + i)
+            if ".hpp" == (os.path.splitext(i)[1]).lower() and os.path.isfile(rep + "/" + i):
+                if not self.Particule.FolderProject+"/Temp" in os.path.abspath(i):
+                    lst.append(rep + "/" + i)
             if not os.path.isfile(rep+"/"+i):
                 self.FoundFile(lst,rep+"/"+i)
         return lst

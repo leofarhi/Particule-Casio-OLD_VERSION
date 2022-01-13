@@ -18,6 +18,7 @@ class CanvasUI(Component):
         self.Particule.Hierarchy.SetItemSelect()
     def Drag(self, event):
         #event.x, event.y
+        self.GoFrontScreen()
         z = self.Particule.Scene.zoom
         self.gameObject.transform.position.set(
             ((event.x // z) + self.Particule.Scene.x, (event.y // z) - self.Particule.Scene.y))
@@ -44,3 +45,6 @@ class CanvasUI(Component):
     def ReloadSize(self):
         temp = rf.found(self.pathProjectSettings, "Player&ScreenSize")
         return temp
+
+    def GoFrontScreen(self):
+        self.Particule.Scene.surface.tag_raise(self.Mesh)

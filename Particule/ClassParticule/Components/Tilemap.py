@@ -22,6 +22,8 @@ class Tilemap(Component):
         self.ColliderSelection=""
 
         self.SizeTilemap=Vector2(10,10)
+        self.LastSizeTilemap=Vector2(10,10)
+        self.LastSizeTilemap.set(self.SizeTilemap.get())
         self.SizeCase = Vector2(16, 16)
         self.Textures = [self.Particule.FolderWindow.TextureVide]
         self.DataTilemap=[]
@@ -232,8 +234,8 @@ class Tilemap(Component):
 
                 ##ImgCan = self.canvas.create_image(x*self.SizeCase.x, y*self.SizeCase.y, anchor=tkinter.NW, image=self.Imgs[-1])
                 self.canvas.tag_bind(ImgCan, '<Button-1>', self.Clic)
-                for i in range(100):
-                    self.canvas.tag_lower(ImgCan)
+                #for i in range(100):
+                #    self.canvas.tag_lower(ImgCan)
                 #gr = self.canvas.create_rectangle(x*self.SizeCase.x, y*self.SizeCase.y, self.SizeCase.x, self.SizeCase.y, fill="")
                 #self.grille.append(gr)
                 ##tempM.append(ImgCan)
@@ -241,6 +243,11 @@ class Tilemap(Component):
         if self.IsHide:
             self.WhenComponentIsHideSignal()
     def UpdateLst(self):
+        if self.SizeTilemap.x*self.SizeTilemap.y<700:
+            self.LastSizeTilemap.set(self.SizeTilemap.get())
+        else:
+            self.SizeTilemap.set(self.LastSizeTilemap.get())
+
         self.SizeTilemap.y = abs(self.SizeTilemap.y)
         self.SizeTilemap.x = abs(self.SizeTilemap.x)
         modif = False
@@ -386,14 +393,22 @@ class Tilemap(Component):
             self.LoadMap()
         z = self.Particule.Scene.zoom
         x,y = self.gameObject.transform.position.get()
-        index = 0
+        #index = 0
+        ScreenW = self.Particule.Scene.surface.winfo_width()
+        ScreenH = self.Particule.Scene.surface.winfo_height()
         for y2,i in enumerate(self.Meshs):
             for x2,o in enumerate(i):
-                self.canvas.coords(o,((x+x2*self.SizeCase.x)-self.Particule.Scene.x)*z,((y+y2*self.SizeCase.y)+self.Particule.Scene.y)*z)
+                posX=((x+x2*self.SizeCase.x)-self.Particule.Scene.x)*z
+                posY=((y+y2*self.SizeCase.y)+self.Particule.Scene.y)*z
+                if posX>ScreenW or posY>ScreenH or posX+(self.SizeCase.x*z)<0 or posY+(self.SizeCase.y*z)<0:
+                    self.canvas.itemconfig(o, state='hidden')
+                elif (self.gameObject.activeInHierarchy and self.gameObject.activeSelf):
+                    self.canvas.itemconfig(o, state='normal')
+                self.canvas.coords(o,posX,posY)
                 #self.canvas.coords(self.grille[index], int(((x+x2*self.SizeCase.x)-self.Particule.Scene.x)*z),int(((y+y2*self.SizeCase.y)+self.Particule.Scene.y)*z),
                 #                int(((x+(x2+1)*self.SizeCase.x)-self.Particule.Scene.x)*z),int(((y+(y2+1)*self.SizeCase.y)+self.Particule.Scene.y)*z)*z)
 
-                index+=1
+                #index+=1
 
 
     def Destroy(self):
@@ -420,6 +435,8 @@ class Tilemap(Component):
         #self.texture = Texture(self.Particule,Path=dataCompo["repImg"],name=os.path.basename(dataCompo["repImg"]))
         self.Textures = [self.Particule.GetTextureUUID(o) for o in dataCompo["Textures"]]
         self.SizeTilemap = Vector2.set(Vector2(), dataCompo["SizeTilemap"])
+        self.LastSizeTilemap = Vector2(10, 10)
+        self.LastSizeTilemap.set(self.SizeTilemap.get())
         self.SizeCase = Vector2.set(Vector2(), dataCompo["SizeCase"])
         self.DataTilemap = dataCompo["DataTilemap"]
         self.ColliderSelection=dataCompo["ColliderSelection"]

@@ -24,6 +24,7 @@ class Camera(Component):
 
 
     def UpdateOnGUI(self):
+        self.GoFrontScreen()
         z = self.Particule.Scene.zoom
         x,y = self.gameObject.transform.position.get()
         self.Particule.Scene.surface.coords(self.Mesh,int((x-self.Particule.Scene.x)*z),int((y+self.Particule.Scene.y)*z),

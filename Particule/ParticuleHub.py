@@ -34,6 +34,7 @@ class ParticuleHub:
     def __init__(self):
         self.Start = False
         self.RootHub = Tk()
+        M.create_rep(os.getcwd()+"/Projects")
         self.RootHub.title('Particule - Hub')
         self.RootHub.resizable(False, False)
         self.RootHub.grid_columnconfigure(0, weight=1)
@@ -162,7 +163,7 @@ class ParticuleHub:
 
     def AddProject(self,NewProject=False):
         global _i
-        rep = Fl.open_folder()
+        rep = Fl.open_folder(os.getcwd()+"/Projects")
         if NewProject:
             name = simpledialog.askstring(title="Nom du Projet",
                                           prompt=TradTxt("Nom du Projet"))

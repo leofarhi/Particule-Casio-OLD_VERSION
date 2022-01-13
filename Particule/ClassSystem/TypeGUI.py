@@ -5,6 +5,7 @@ from ClassParticule.Texture import Texture
 from Particule import *
 from ClassParticule.SearchWindow import SearchWindow
 from functools import partial
+from ClassParticule.ParticuleEvent import ParticuleEvent
 
 def ChangeLst(Objet,NameLst,Index,Value):
     lst = getattr(Objet, NameLst)
@@ -93,6 +94,17 @@ class TypeGUI(PFrame):
 
             self.entry2.bind('<KeyRelease>', self.changeVector2)
             self.entry2.grid(row=1, column=3, sticky='EWNS')#.pack(fill=tkinter.BOTH, expand=True)
+        elif TypeVariables["Type"] == ParticuleEvent:
+            self.Data = variable
+            self.FrameList = LabelFrame(self, text=str(VarName))
+            self.FrameList.Particule = self.Particule
+            self.FrameList.pack(fill=tkinter.BOTH, expand=True)
+            self.var1 = TypeGUI(self.FrameList, variable, "Component",
+                                {"Type": getattr(sys.modules['Particule'], "Component")}, True, variable.ClassObject)
+            self.var2 = TypeGUI(self.FrameList, variable, "Fonction",
+                                {"Type": str}, True, variable.Classfunction)
+            self.var1.grid(row=0, column=0, sticky='EWNS')
+            self.var2.grid(row=1, column=0, sticky='EWNS')
         else:
             self.Data = variable
             self.IsDragable = True
@@ -153,6 +165,8 @@ class TypeGUI(PFrame):
             return Vector2(0,0)
         elif TYPE == Texture:
             return self.Particule.FolderWindow.TextureVide
+        elif TYPE == ParticuleEvent:
+            return ParticuleEvent()
         else:
             return None
 
@@ -170,6 +184,9 @@ class TypeGUI(PFrame):
         elif self.TypeVariables["Type"] == Vector2:
             self.var1.set(variable.x)
             self.var2.set(variable.y)
+        elif self.TypeVariables["Type"] == ParticuleEvent:
+            self.Data.ClassObject = self.var1.Data
+            self.Data.Classfunction = self.var2.var.get()
         else:
             try:
                 self.var.set(variable.ToString())
@@ -179,6 +196,8 @@ class TypeGUI(PFrame):
     def changeIntFloatStrBool(self,*args):
         if type(self.Objet)==ListVar:
             self.Objet.Val[self.VarName] = self.var.get()
+        elif type(self.Objet) == ParticuleEvent:
+            self.Objet.Classfunction = self.var.get()
         else:
             if self.TypeVariables["Type"] == bool:
                 setattr(self.Objet, self.VarName, self.var.get()==1)
@@ -201,7 +220,10 @@ class TypeGUI(PFrame):
     def changeOther(self,event=None):
         if type(self.Objet) == ListVar:
             self.Objet.Val[self.VarName] = self.Data
-        try:
-            setattr(self.Objet, self.VarName, self.Data)
-        except:
-            pass
+        elif type(self.Objet) == ParticuleEvent:
+            self.Objet.ClassObject = self.Data
+        else:
+            try:
+                setattr(self.Objet, self.VarName, self.Data)
+            except:
+                pass

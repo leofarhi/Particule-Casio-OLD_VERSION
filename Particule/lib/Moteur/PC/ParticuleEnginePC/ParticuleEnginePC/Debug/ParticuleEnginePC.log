@@ -1,0 +1,40 @@
+﻿  Main.cpp
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.hpp(589,116): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.hpp(601): message : voir la référence à l'instanciation classe modèle 'ButtonUI<T>' en cours de compilation
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.hpp(589,71): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\Main.cpp(25,47): warning C4244: 'argument' : conversion de 'float' en 'unsigned int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\Main.cpp(24,47): warning C4244: 'argument' : conversion de 'float' en 'unsigned int', perte possible de données
+  ParticuleEngine.cpp
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.hpp(589,116): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.hpp(601): message : voir la référence à l'instanciation classe modèle 'ButtonUI<T>' en cours de compilation
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.hpp(589,71): warning C4244: 'argument' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.cpp(489,12): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.cpp(491,12): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.cpp(493,12): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.cpp(495,12): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.cpp(498,14): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.cpp(499,14): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.cpp(500,14): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.cpp(501,14): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleEngine.cpp(537,20): warning C4244: 'initialisation' : conversion de 'float' en 'int', perte possible de données
+  ParticuleGraphics.cpp
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleGraphics.cpp(19,38): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleGraphics.cpp(19,23): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleGraphics.cpp(28,38): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleGraphics.cpp(28,23): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleGraphics.cpp(35,69): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
+          with
+          [
+              T=float
+          ]
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleGraphics.cpp(35,49): warning C4244: 'argument' : conversion de 'int' en 'T', perte possible de données
+          with
+          [
+              T=float
+          ]
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleGraphics.cpp(37,40): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleGraphics.cpp(37,25): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleGraphics.cpp(47,37): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\ParticuleEnginePC\ParticuleGraphics.cpp(47,22): warning C4244: 'argument' : conversion de 'int' en 'float', perte possible de données
+  Génération de code en cours...
+  ParticuleEnginePC.vcxproj -> C:\Users\leofa\OneDrive\Bureau\Gint 3D\PC\Project\ParticuleEnginePC\Debug\ParticuleEnginePC.exe

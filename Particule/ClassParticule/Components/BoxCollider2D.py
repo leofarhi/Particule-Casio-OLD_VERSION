@@ -37,6 +37,7 @@ class BoxCollider2D(Component):
 
 
     def UpdateOnGUI(self):
+        self.GoFrontScreen()
         z = self.Particule.Scene.zoom
         x,y = self.gameObject.transform.position.get()
         Start = Vector2(self.Center.x - (self.Size.x // 2), self.Center.y - (self.Size.y // 2))

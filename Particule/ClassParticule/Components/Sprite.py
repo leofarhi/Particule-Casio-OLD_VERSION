@@ -55,8 +55,9 @@ class Sprite(Component):
                 self.Img = ImageFunctions.WhiteToTransparent(self.Img)
             self.Img = ImageTk.PhotoImage(self.Img)
         except:
-            self.Img = Image.open("lib/vide.png")
-            self.Img = ImageTk.PhotoImage(self.Img)
+            Img = Image.open("lib/vide.png")
+            self.Img = ImageTk.PhotoImage(Img)
+            Img.close()
             self.width = self.Img.width()
             self.height = self.Img.height()
         self.Particule.Scene.surface.itemconfig(self.Mesh,image = self.Img)
@@ -70,9 +71,16 @@ class Sprite(Component):
             self.ReloadImg()
         z = self.Particule.Scene.zoom
         x,y = self.gameObject.transform.position.get()
-        self.Particule.Scene.surface.coords(self.Mesh,(x-self.Particule.Scene.x)*z,(y+self.Particule.Scene.y)*z)
+        posX=(x-self.Particule.Scene.x)*z
+        posY = (y+self.Particule.Scene.y)*z
+        ScreenW = self.Particule.Scene.surface.winfo_width()
+        ScreenH = self.Particule.Scene.surface.winfo_height()
+        self.Particule.Scene.surface.coords(self.Mesh,posX,posY)
         if self.gameObject.activeInHierarchy and self.gameObject.activeSelf:
-            self.Particule.Scene.surface.itemconfig(self.Mesh, state='normal')
+            if posX > ScreenW or posY > ScreenH or posX + (self.width * z) < 0 or posY + (self.height * z) < 0:
+                self.Particule.Scene.surface.itemconfig(self.Mesh, state='hidden')
+            else :
+                self.Particule.Scene.surface.itemconfig(self.Mesh, state='normal')
         else:
             self.Particule.Scene.surface.itemconfig(self.Mesh, state='hidden')
 

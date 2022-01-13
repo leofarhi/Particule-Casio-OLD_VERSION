@@ -65,8 +65,9 @@ def create_line(lst):
     return a
 def ImageCompile(file):
     img=Image.open(file)
-    img = img.convert('1')
-    img.save(file)
+    imgT = img.convert('1')
+    imgT.save(file)
+    img.close()
 def ImageConvert(imgRep):
     scale_percent=50
     name=((imgRep.split("/")[-1]).split("."))[0]
@@ -80,8 +81,9 @@ def ImageConvert(imgRep):
     frame = cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
     """
     if not extend=="bmp":
-        frame=Image.open(imgRep)
-        frame=np.array(frame)
+        frameT=Image.open(imgRep)
+        frame=np.array(frameT)
+        frameT.close()
         frame=contour(frame)
         frame=gray(frame)
         frame=bitam(frame)
@@ -108,8 +110,9 @@ def ImportImage(rep,repDesti):
     frame = cv2.resize(frame, dim, interpolation = cv2.INTER_AREA)
     """
     if not extend=="bmp":
-        frame=Image.open(imgRep)
-        frame=np.array(frame)
+        frameT=Image.open(imgRep)
+        frame=np.array(frameT)
+        frameT.close()
         frame=contour(frame)
         frame=gray(frame)
         frame=bitam(frame)

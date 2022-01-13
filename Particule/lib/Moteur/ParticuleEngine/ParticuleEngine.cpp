@@ -21,9 +21,11 @@ extern "C"
 #include "ParticuleBase.hpp"
 //<\LibInclude>
 
+//<RandomFonction>
 int Random(int start, int end) {
     return (getTicks() % (end - start)) + start;
 }
+//<\RandomFonction>
 
 int LenChar(char* txt) {
     return strlen(txt);

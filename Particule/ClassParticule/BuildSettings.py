@@ -4,6 +4,7 @@ from ClassSystem.CheckboxTreeview import *
 from PIL import ImageFilter
 import platform
 import cv2
+import CppEditor.VisualScratchConverter
 class BuildSettings(EditorWindow):
     def __init__(self, RootWindow):
         #bt = RootWindow.Particule.Inspector.Bouton_AddComponent
@@ -62,7 +63,7 @@ class BuildSettings(EditorWindow):
         ArchitectureLabel.grid(row=0, column=0)
         self.CompileArchitec_var = tk.StringVar()
         self.CompileArchitecCombobox = ttk.Combobox(WInfoCompileFrame, textvariable=self.CompileArchitec_var,
-             values=["SDK Graph 75 85 95","Gint"])  # os.listdir("lib/ScriptBlocks/Compilateur"))
+             values=["SDK Graph 75 85 95","Gint","PC"])  # os.listdir("lib/ScriptBlocks/Compilateur"))
         self.CompileArchitecCombobox.grid(row=0, column=1)
         self.CompileArchitecCombobox.current(0)
 
@@ -138,6 +139,8 @@ class BuildSettings(EditorWindow):
             self.BuildAllForSDKCasio()
         elif (self.CompileArchitec_var.get()=="Gint"):
             self.BuildAllForGint()
+        elif (self.CompileArchitec_var.get()=="PC"):
+            self.BuildAllForPC()
 
     def BuildAllForSDKCasio(self,*args):
         self.Particule.SaveData.SaveScene()
@@ -272,6 +275,7 @@ class BuildSettings(EditorWindow):
         for i in os.listdir(self.Particule.FolderProject+ "/Library/ScriptEditor/"):
             if ".py" in i:
                 os.remove(self.Particule.FolderProject+ "/Library/ScriptEditor/"+i)
+        """
         if platform.system() == 'Windows' :
             if rf.found("setup.txt","WindowsPY"):
                 process = subprocess.Popen(
@@ -285,6 +289,9 @@ class BuildSettings(EditorWindow):
             raise Exception("Platform Not supporting")
         #print(eval(process.stdout.readlines()[-1]))
         code=eval(process.stdout.readlines()[-1].decode('latin-1'))
+        """
+        code = CppEditor.VisualScratchConverter.CompileSLN(self.Particule.FolderProject + '/SLN/Solution.sls')
+
         CasioCodeLst=code[1]
         Hpp=""
         Cpp=""
@@ -298,7 +305,7 @@ class BuildSettings(EditorWindow):
             Announcement+="class "+name+";\n"
         return (Announcement,Hpp,Cpp)
 
-    def BuildAllForGint(self):
+    def BuildAllForPC(self):
         self.Particule.SaveData.SaveScene()
         AllImages = ""
         CodeOfScenes = ""
@@ -306,7 +313,7 @@ class BuildSettings(EditorWindow):
         TexturesID = ""
 
         desti = self.Particule.FolderProject + "/Temp/Compile"
-        destiCode = desti + "/ParticuleGame/src"
+        destiCode = desti + "/ParticuleEnginePC/ParticuleEnginePC"
         M.create_rep(desti)
         for i in os.listdir(desti):
             try:
@@ -319,7 +326,7 @@ class BuildSettings(EditorWindow):
                         os.system('rmdir /S /Q "{}"'.format(desti + "/" + i))
 
 
-        shutil.copytree("lib/Moteur/Gint/ParticuleGame", desti + "/ParticuleGame")
+        shutil.copytree("lib/Moteur/PC/ParticuleEnginePC", desti + "/ParticuleEnginePC")
 
         for i in os.listdir("lib/Moteur/ParticuleEngine"):
             try:
@@ -327,8 +334,9 @@ class BuildSettings(EditorWindow):
             except:
                 shutil.copytree("lib/Moteur/ParticuleEngine/" + i, destiCode + "/" + i)
 
-        for i in os.listdir("lib/Moteur/Gint/ParticuleGame/src/"):
-            shutil.copy("lib/Moteur/Gint/ParticuleGame/src/" + i, destiCode + "/" + i)
+        for i in os.listdir("lib/Moteur/PC/ParticuleEnginePC/ParticuleEnginePC/"):
+            if os.path.isfile("lib/Moteur/PC/ParticuleEnginePC/ParticuleEnginePC/" + i):
+                shutil.copy("lib/Moteur/PC/ParticuleEnginePC/ParticuleEnginePC/" + i, destiCode + "/" + i)
         os.remove(destiCode + "/usefull.cpp")
         os.remove(destiCode + "/usefull.h")
         os.remove(destiCode + "/time.c")
@@ -342,18 +350,14 @@ class BuildSettings(EditorWindow):
             name = os.path.splitext(name)[0]
             #img = SpriteCoder.ConvertImg(path + "/" + i, name)[0]
             imgTemp = cv2.imread(path + "/" + i)
-            cv2.imwrite(desti+"/ParticuleGame/assets-fx/"+name+".png", imgTemp)
+            cv2.imwrite(desti+"/ParticuleEnginePC/ParticuleEnginePC/Ressources/"+name+".png", imgTemp)
             if self.Particule.CalculatriceCouleur:
                 FileVar = self.Particule.All_UUID[name]
                 if os.path.splitext(FileVar.path)[1].lower() == ".png":
-                    shutil.copy(FileVar.path, desti + "/ParticuleGame/assets-cg/" + name + ".png")
+                    shutil.copy(FileVar.path, desti + "/ParticuleEnginePC/ParticuleEnginePC/Ressources/" + name + ".png")
                 else:
                     imgTemp = cv2.imread(FileVar.path)
-                    cv2.imwrite(desti + "/ParticuleGame/assets-cg/" + name + ".png", imgTemp)
-            else:
-                cv2.imwrite(desti + "/ParticuleGame/assets-cg/" + name + ".png", imgTemp)
-            img = "extern bopti_image_t "+name+";"
-            AllImages += img + "\n"
+                    cv2.imwrite(desti + "/ParticuleEnginePC/ParticuleEnginePC/Ressources/" + name + ".png", imgTemp)
             NameTexture.append(name)
 
             Img = ImageTk.Image.open(path + "/" + i)
@@ -361,7 +365,7 @@ class BuildSettings(EditorWindow):
             height = Img.height
             TexturesID += "Texture* Texture_" + name + ";\n"
             CreateTexturesCode += "sceneManager->Texture_" + name + '= new Texture("Texture",' + str(width) + "," + str(
-                height) + ",&" + name + ');\n'
+                height) + ',"Ressources/' + name + '.png");\n'
 
 
         # print(AllImages)
@@ -410,13 +414,6 @@ class BuildSettings(EditorWindow):
         Announcement, CasioCode, Cpp = self.GetCodeCasioFromVisualScratch()
 
 
-
-        # with open(desti+"/Ressources.h","r", encoding = "ISO-8859-1") as fic:
-        #    txt=fic.read()
-        # txt = txt.replace("//AddImages",AllImages)
-        # with open(desti+"/Ressources.h","w") as fic:
-        #    fic.write(txt)
-
         with open(destiCode + "/ParticuleEngine.hpp", "r", encoding="ISO-8859-1") as fic:
             txt = fic.read()
         txt = txt.replace("//AddScenes", CodeOfScenes)
@@ -429,7 +426,219 @@ class BuildSettings(EditorWindow):
         temp=txt.split("//<\LibInclude>", 1)
         txtInclude, txt = temp[0],temp[1]
         txtInclude = txtInclude.replace("//<LibInclude>","")
+        txtInclude = txtInclude.replace('extern "C"',"")
         txtInclude = txtInclude.split("{",1)[0]+txtInclude.split("}",1)[1]
+        txtInclude = """#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "string.h"
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>\n""" + txtInclude
+        txtInclude = txtInclude.replace('#include "usefull.h"', "")
+
+        txt = txtInclude + txt
+        ####################################################
+        txt = self.ProjectSettingsReplace(txt)
+
+        with open(destiCode + "/ParticuleEngine.hpp", "w") as fic:
+            fic.write(txt)
+
+        with open(destiCode + "/ParticuleEngine.cpp", "r", encoding="ISO-8859-1") as fic:
+            txt = fic.read()
+
+        txt += Cpp
+
+        ####################################################
+        temp = txt.split("//<\LibInclude>", 1)
+        txtInclude, txt = temp[0], temp[1]
+        txtInclude = txtInclude.replace("//<LibInclude>","")
+        txtInclude = txtInclude.replace('extern "C"', "")
+        txtInclude = txtInclude.split("}")[1]
+        txtInclude = """#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include "string.h"
+
+#include <iostream>
+#include <cstdlib>
+#include <ctime>\n"""+txtInclude
+        txtInclude = txtInclude.replace('#include "usefull.h"', "")
+
+        txt = txtInclude+txt
+
+        randomFunct = (txt.split("//<RandomFonction>",1)[1]).split("//<\RandomFonction>",1)[0]
+        newRandomFunct ="""
+int Random(int start, int end) {
+    return rand() % (end - start + 1) + start;
+};
+        """
+        txt = txt.replace(randomFunct,newRandomFunct)
+        ####################################################
+
+        with open(destiCode + "/ParticuleEngine.cpp", "w") as fic:
+            fic.write(txt)
+
+        with open(destiCode + "/Announcement.h", "r", encoding="ISO-8859-1") as fic:
+            txt = fic.read()
+        txt += Announcement
+        with open(destiCode + "/Announcement.h", "w") as fic:
+            fic.write(txt)
+
+        with open(destiCode + "/Main.cpp", "r", encoding="ISO-8859-1") as fic:
+            txt = fic.read()
+        txt = txt.replace("//AddImages", AllImages)
+        txt = txt.replace("//CreateTextures", CreateTexturesCode)
+        with open(destiCode + "/Main.cpp", "w") as fic:
+            fic.write(txt)
+
+        desti = self.Particule.FolderProject + "/Temp/Compile"
+
+        # subprocess.Popen(r'explorer /select,"' + desti+"/ParticuleEngine.h" + '"')
+        if platform.system() == "Windows":
+            FILEBROWSER_PATH = os.path.join(os.getenv('WINDIR'), 'explorer.exe')
+            subprocess.run([FILEBROWSER_PATH, os.path.abspath(desti)])
+        else:
+            try:
+                os.system(r'xdg-open ' + os.path.abspath(desti))
+            except:
+                pass
+
+
+
+    def BuildAllForGint(self):
+        self.Particule.SaveData.SaveScene()
+        AllImages = ""
+        CodeOfScenes = ""
+        CreateTexturesCode = ""
+        TexturesID = ""
+
+        desti = self.Particule.FolderProject + "/Temp/Compile"
+        destiCode = desti + "/ParticuleGame/src"
+        M.create_rep(desti)
+        for i in os.listdir(desti):
+            try:
+                os.remove(desti + "/" + i)
+            except:
+                try:
+                    shutil.rmtree(desti + "/" + i)
+                except:
+                    if platform.system() == "Windows":
+                        os.system('rmdir /S /Q "{}"'.format(desti + "/" + i))
+
+        shutil.copytree("lib/Moteur/Gint/ParticuleGame", desti + "/ParticuleGame")
+
+        for i in os.listdir("lib/Moteur/ParticuleEngine"):
+            try:
+                shutil.copy("lib/Moteur/ParticuleEngine/" + i, destiCode + "/" + i)
+            except:
+                shutil.copytree("lib/Moteur/ParticuleEngine/" + i, destiCode + "/" + i)
+
+        for i in os.listdir("lib/Moteur/Gint/ParticuleGame/src/"):
+            shutil.copy("lib/Moteur/Gint/ParticuleGame/src/" + i, destiCode + "/" + i)
+        os.remove(destiCode + "/usefull.cpp")
+        os.remove(destiCode + "/usefull.h")
+        os.remove(destiCode + "/time.c")
+        os.remove(destiCode + "/time.h")
+
+        path = self.Particule.FolderProject + "/Library/ImagesBmpCache"
+        NameTexture = []
+        for i in os.listdir(path):
+            if ".meta" in i: continue
+            name = os.path.basename(i)
+            name = os.path.splitext(name)[0]
+            # img = SpriteCoder.ConvertImg(path + "/" + i, name)[0]
+            imgTemp = cv2.imread(path + "/" + i)
+            cv2.imwrite(desti + "/ParticuleGame/assets-fx/" + name + ".png", imgTemp)
+            if self.Particule.CalculatriceCouleur:
+                FileVar = self.Particule.All_UUID[name]
+                if os.path.splitext(FileVar.path)[1].lower() == ".png":
+                    shutil.copy(FileVar.path, desti + "/ParticuleGame/assets-cg/" + name + ".png")
+                else:
+                    imgTemp = cv2.imread(FileVar.path)
+                    cv2.imwrite(desti + "/ParticuleGame/assets-cg/" + name + ".png", imgTemp)
+            else:
+                cv2.imwrite(desti + "/ParticuleGame/assets-cg/" + name + ".png", imgTemp)
+            img = "extern bopti_image_t " + name + ";"
+            AllImages += img + "\n"
+            NameTexture.append(name)
+
+            Img = ImageTk.Image.open(path + "/" + i)
+            width = Img.width
+            height = Img.height
+            TexturesID += "Texture* Texture_" + name + ";\n"
+            CreateTexturesCode += "sceneManager->Texture_" + name + '= new Texture("Texture",' + str(
+                width) + "," + str(
+                height) + ",&" + name + ');\n'
+
+        # print(AllImages)
+        scenes = rf.GetList(self.Particule.FolderProject + "/ProjectSettings/BuildSettings.txt", "ScenesInBuild")
+
+        for ind, i in enumerate(scenes):
+            if i[1]:
+                CodeOfScenes += "if (index == " + str(ind) + "){\n"
+                code = ""
+                CodeInit = ""
+                components = ""
+                self.Particule.SaveData.LoadScene(i[0])
+                LstAllGameObjects = self.Particule.Hierarchy.allGameObjectOnScene.items()
+                for i in LstAllGameObjects:
+                    CodeInit += "GameObject* " + i[0] + ";\n"
+                    code += i[0] + '= new GameObject(newScene, "' + i[1].name + '","' + i[0] + '");\n'
+                    code += i[0] + "->activeSelf = " + str(i[1].activeSelf).lower() + ";\n"
+                    code += i[0] + "->activeInHierarchy = " + str(i[1].activeInHierarchy).lower() + ";\n"
+                    code += i[0] + "->isStatic = " + str(i[1].isStatic).lower() + ";\n"
+                    code += i[0] + '->transform->position->Set(' + str(i[1].transform.position.x) + ',' + str(
+                        i[1].transform.position.y) + ');\n'
+                    code += i[0] + '->transform->localPosition->Set(' + str(
+                        i[1].transform.localPosition.x) + ',' + str(
+                        i[1].transform.localPosition.y) + ');\n'
+
+                    if i[1].transform.parent != None:
+                        code += i[0] + "->transform->SetParent(" + i[
+                            1].transform.parent.gameObject.ID + "->transform);"
+                    for compo in i[1].ListOfComponent:
+                        data = compo.BuildValue()
+                        code = data[0] + code
+                        components += compo.AddScriptBeforInitCasio() + "\n"
+                        components += data[1]
+                        if type(compo).__name__ != "Transform":
+                            components += i[0] + "->AddComponent((Component*)" + compo.ID + ");\n"
+                LstAllGameObjects = [(i[1].Order, i) for i in LstAllGameObjects]
+                LstAllGameObjects.sort(key=lambda x: x[0])  # ,reverse=True)
+                LstAllGameObjects = [i[1] for i in LstAllGameObjects]
+                for i in LstAllGameObjects:
+                    for compo in i[1].ListOfComponent:
+                        components += compo.AddScriptAfterInitCasio() + "\n"
+                    code += "newScene->AddGameObject(" + i[0] + ");\n"
+                code += components
+                code = CodeInit + code
+                CodeOfScenes += code
+                CodeOfScenes += "\n}"
+
+        Announcement, CasioCode, Cpp = self.GetCodeCasioFromVisualScratch()
+
+        # with open(desti+"/Ressources.h","r", encoding = "ISO-8859-1") as fic:
+        #    txt=fic.read()
+        # txt = txt.replace("//AddImages",AllImages)
+        # with open(desti+"/Ressources.h","w") as fic:
+        #    fic.write(txt)
+
+        with open(destiCode + "/ParticuleEngine.hpp", "r", encoding="ISO-8859-1") as fic:
+            txt = fic.read()
+        txt = txt.replace("//AddScenes", CodeOfScenes)
+        txt = txt.replace("//Components", CasioCode)
+
+        # txt = txt.replace("//CreateTextures", CreateTexturesCode)
+        txt = txt.replace("//TexturesID", TexturesID)
+
+        ####################################################
+        temp = txt.split("//<\LibInclude>", 1)
+        txtInclude, txt = temp[0], temp[1]
+        txtInclude = txtInclude.replace("//<LibInclude>", "")
+        txtInclude = txtInclude.replace('extern "C"', "")
+        txtInclude = txtInclude.split("{", 1)[0] + txtInclude.split("}", 1)[1]
         txtInclude = """#include <gint/keyboard.h>
 #include <stdio.h>
 #include <string.h>
@@ -454,18 +663,19 @@ class BuildSettings(EditorWindow):
         ####################################################
         temp = txt.split("//<\LibInclude>", 1)
         txtInclude, txt = temp[0], temp[1]
-        txtInclude = txtInclude.replace("//<LibInclude>","")
+        txtInclude = txtInclude.replace("//<LibInclude>", "")
+        txtInclude = txtInclude.replace('extern "C"', "")
         txtInclude = txtInclude.split("}")[1]
         txtInclude = """#include <gint/keyboard.h>
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
 #include "string.h"
-#include <gint/mpu/rtc.h>\n"""+txtInclude
-        txtInclude = txtInclude.replace("#include <iostream>","")
+#include <gint/mpu/rtc.h>\n""" + txtInclude
+        txtInclude = txtInclude.replace("#include <iostream>", "")
         txtInclude = txtInclude.replace('#include "usefull.h"', "")
 
-        txt = txtInclude+txt
+        txt = txtInclude + txt
         ####################################################
 
         with open(destiCode + "/ParticuleEngine.cpp", "w") as fic:
@@ -484,12 +694,11 @@ class BuildSettings(EditorWindow):
         with open(destiCode + "/main.cpp", "w") as fic:
             fic.write(txt)
 
-
         with open(desti + "/ParticuleGame/assets-fx/fxconv-metadata.txt", "a", encoding="ISO-8859-1") as fic:
             for i in NameTexture:
                 fic.write(i + """.png:
 type: bopti-image
-name: """ + i+"\n")
+name: """ + i + "\n")
 
         with open(desti + "/ParticuleGame/assets-cg/fxconv-metadata.txt", "a", encoding="ISO-8859-1") as fic:
             for i in NameTexture:
@@ -501,11 +710,11 @@ name: """ + i + "\n")
             txt = fic.read()
         imageAddCMake_fx = "set(ASSETS_fx\n"
         for i in NameTexture:
-            imageAddCMake_fx+="  assets-fx/"+i+".png\n"
+            imageAddCMake_fx += "  assets-fx/" + i + ".png\n"
         imageAddCMake_cg = "set(ASSETS_cg\n"
         for i in NameTexture:
             imageAddCMake_cg += "  assets-cg/" + i + ".png\n"
-        txt = txt.replace("set(ASSETS_fx",imageAddCMake_fx)
+        txt = txt.replace("set(ASSETS_fx", imageAddCMake_fx)
         txt = txt.replace("set(ASSETS_cg", imageAddCMake_cg)
         with open(desti + "/ParticuleGame/CMakeLists.txt", "w") as fic:
             fic.write(txt)
@@ -513,8 +722,10 @@ name: """ + i + "\n")
         imgTemp = cv2.imread(self.Particule.FolderProject + "/ProjectSettings/MainIcon.bmp")
         cv2.imwrite(desti + "/ParticuleGame/assets-fx/icon.png", imgTemp)
 
-        shutil.copy(self.Particule.FolderProject + "/ProjectSettings/icon-sel.png", desti + "/ParticuleGame/assets-cg/icon-sel.png")
-        shutil.copy(self.Particule.FolderProject + "/ProjectSettings/icon-uns.png", desti + "/ParticuleGame/assets-cg/icon-uns.png")
+        shutil.copy(self.Particule.FolderProject + "/ProjectSettings/icon-sel.png",
+                    desti + "/ParticuleGame/assets-cg/icon-sel.png")
+        shutil.copy(self.Particule.FolderProject + "/ProjectSettings/icon-uns.png",
+                    desti + "/ParticuleGame/assets-cg/icon-uns.png")
 
         desti = self.Particule.FolderProject + "/Temp/Compile"
 

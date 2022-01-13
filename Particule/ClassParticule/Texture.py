@@ -29,9 +29,15 @@ class Texture(Object):
                 if "FileVariable" in str(type(obj)):
                     pathTmp = obj.path
             #print(pathTmp)
+            if self.ImgStd!=None:
+                self.Close()
             self.ImgStd = Image.open( pathTmp)
             self.Img = ImageTk.PhotoImage(self.ImgStd)
             #self.name = self.path.split("/")[1]
+
+    def Close(self):
+        self.ImgStd.close()
+
     def ToString(self):
         return self.name
 

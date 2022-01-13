@@ -130,7 +130,9 @@ class SaveData:
             gameObject.sceneCullingMask = i["sceneCullingMask"]
             gameObject.tag = Tag(i["tag"])
             gameObject.Order = i["Order"]
+            tempTransf = gameObject.transform
             gameObject.transform = dicoComponent[i["transform"]]
+            tempTransf.Destroy()
 
             gameObject.OpenIsHierarchy = i["OpenIsHierarchy"]
 

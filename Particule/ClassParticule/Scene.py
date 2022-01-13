@@ -71,6 +71,7 @@ class Scene(EditorWindow):
         self.mouseX = 0
         self.mouseY = 0
         self.zoom = 1
+        self.MaxIDItemOnScene=700
 
     def InitCanvas(self):
         self.surface = Canvas(self, background='white')
@@ -216,18 +217,21 @@ class Scene(EditorWindow):
             self.zoom-=0.5
         if event.num == 4 or event.delta == 120:  # scroll up
             self.zoom += 0.5
+        self.RefreshOrder()
 
     def Update(self):
-        if self.zoom<1:
-            self.zoom=1
+        if self.zoom<0.5:
+            self.zoom=0.5
         GameObjects = self.Particule.Hierarchy.allGameObjectOnScene
         for ID, gameObject in GameObjects.items():
             gameObject.UpdateOnGUI()
 
     def ClearAll(self):
+        maxActu=max(tuple(self.surface.find_all()) + (0,))
         self.surface.delete("all")
-        #self.surface.destroy()
-        #self.InitCanvas()
+        if maxActu>self.MaxIDItemOnScene:
+            self.surface.destroy()
+            self.InitCanvas()
 
     def RefreshOrder(self):
         LstAllGameObjects = self.Particule.Hierarchy.allGameObjectOnScene.items()

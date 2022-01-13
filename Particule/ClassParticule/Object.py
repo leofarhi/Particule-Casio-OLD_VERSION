@@ -24,5 +24,11 @@ class Object:
     def Instantiate(self):
         pass
 
+    def try_or(self,func, default=None):
+        try:
+            return func()
+        except:
+            return default
+
     def __str__(self):
         return str(self.name)

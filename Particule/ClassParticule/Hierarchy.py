@@ -227,7 +227,6 @@ class Hierarchy(EditorWindow):
                     gameObject.ListOfComponent.append(i[0])
                     i[0].gameObject = gameObject
             dico = eval(str(dico).replace(gameobject[0], gameObject.ID))
-            gameObject.transform = gameObject.transform
             name = gameObject.name
             if gameObject.activeSelf:
                 tag = 'Active'

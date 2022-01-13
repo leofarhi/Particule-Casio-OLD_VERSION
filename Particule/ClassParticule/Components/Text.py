@@ -41,9 +41,16 @@ class Text(Component):
         z = self.Particule.Scene.zoom
         self.Particule.Scene.surface.itemconfig(self.Mesh, text=self.text, font=(self.font, int(self.DefaultSize * z)))
         x,y = self.gameObject.transform.position.get()
-        self.Particule.Scene.surface.coords(self.Mesh,(x-self.Particule.Scene.x)*z,(y+self.Particule.Scene.y)*z)
+        posX = (x-self.Particule.Scene.x)*z
+        posY = (y+self.Particule.Scene.y)*z
+        ScreenW = self.Particule.Scene.surface.winfo_width()
+        ScreenH = self.Particule.Scene.surface.winfo_height()
+        self.Particule.Scene.surface.coords(self.Mesh,posX,posY)
         if self.gameObject.activeInHierarchy and self.gameObject.activeSelf:
-            self.Particule.Scene.surface.itemconfig(self.Mesh, state='normal')
+            if posX > ScreenW or posY > ScreenH or posX + (self.DefaultSize*len(self.text)*2 * z) < 0 or posY + (self.DefaultSize*2 * z) < 0:
+                self.Particule.Scene.surface.itemconfig(self.Mesh, state='hidden')
+            else:
+                self.Particule.Scene.surface.itemconfig(self.Mesh, state='normal')
         else:
             self.Particule.Scene.surface.itemconfig(self.Mesh, state='hidden')
 
